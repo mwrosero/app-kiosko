@@ -1,0 +1,27 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KioskController;
+
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+Route::get('/refreshToken', [KioskController::class, 'refreshToken'])->name('refreshToken');
+Route::get('/{mac}', [KioskController::class, 'index'])->name('index');
+Route::get('/ingreso/{mac}', [KioskController::class, 'ingreso'])->name('ingreso');
+Route::get('/menu/{mac}', [KioskController::class, 'menu'])->name('menu');
+Route::get('/proximas-citas/{mac}', [KioskController::class, 'proximasCitas'])->name('proximasCitas');
+Route::get('/carrito/{mac}', [KioskController::class, 'carrito'])->name('carrito');
+Route::get('/datos-facturacion/{mac}', [KioskController::class, 'datosFacturacion'])->name('datosFacturacion');
+
+// Route::get('/kiosko/{mac}', [KioskController::class, 'kiosko'])->name('kiosko');
+// Route::get('/ingreso/{mac}', [KioskController::class, 'ingreso'])->name('ingreso');

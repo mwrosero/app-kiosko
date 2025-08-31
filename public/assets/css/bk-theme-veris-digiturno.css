@@ -1,0 +1,510 @@
+@font-face {
+  font-family: 'Gotham Rounded';
+  src: url('fonts/GothamRnd-BoldItalic.eot');
+  src: local('Gotham Rounded Bold Italic'), local('GothamRnd-BoldItalic'),
+    url('fonts/GothamRnd-BoldItalic.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRnd-BoldItalic.woff2') format('woff2'),
+    url('fonts/GothamRnd-BoldItalic.woff') format('woff'),
+    url('fonts/GothamRnd-BoldItalic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Gotham Rounded SSm';
+  src: url('fonts/GothamRndSSm-Light.eot');
+  src: local('Gotham Rounded SSm Light'), local('GothamRndSSm-Light'),
+    url('fonts/GothamRndSSm-Light.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRndSSm-Light.woff2') format('woff2'),
+    url('fonts/GothamRndSSm-Light.woff') format('woff'),
+    url('fonts/GothamRndSSm-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gotham Rounded SSm';
+  src: url('fonts/GothamRndSSm-LightItalic.eot');
+  src: local('Gotham Rounded SSm Light Italic'), local('GothamRndSSm-LightItalic'),
+    url('fonts/GothamRndSSm-LightItalic.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRndSSm-LightItalic.woff2') format('woff2'),
+    url('fonts/GothamRndSSm-LightItalic.woff') format('woff'),
+    url('fonts/GothamRndSSm-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Gotham Rounded';
+  src: url('fonts/GothamRnd-Medium.eot');
+  src: local('Gotham Rounded Medium'), local('GothamRnd-Medium'),
+    url('fonts/GothamRnd-Medium.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRnd-Medium.woff2') format('woff2'),
+    url('fonts/GothamRnd-Medium.woff') format('woff'),
+    url('fonts/GothamRnd-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gotham Rounded SSm';
+  src: url('fonts/GothamRndSSm-Book.eot');
+  src: local('Gotham Rounded SSm Book'), local('GothamRndSSm-Book'),
+    url('fonts/GothamRndSSm-Book.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRndSSm-Book.woff2') format('woff2'),
+    url('fonts/GothamRndSSm-Book.woff') format('woff'),
+    url('fonts/GothamRndSSm-Book.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gotham Rounded SSm';
+  src: url('fonts/GothamRndSSm-BoldItalic.eot');
+  src: local('Gotham Rounded SSm Bold Italic'), local('GothamRndSSm-BoldItalic'),
+    url('fonts/GothamRndSSm-BoldItalic.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRndSSm-BoldItalic.woff2') format('woff2'),
+    url('fonts/GothamRndSSm-BoldItalic.woff') format('woff'),
+    url('fonts/GothamRndSSm-BoldItalic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Gotham Rounded SSm';
+  src: url('fonts/GothamRndSSm-Bold.eot');
+  src: local('Gotham Rounded SSm Bold'), local('GothamRndSSm-Bold'),
+    url('fonts/GothamRndSSm-Bold.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRndSSm-Bold.woff2') format('woff2'),
+    url('fonts/GothamRndSSm-Bold.woff') format('woff'),
+    url('fonts/GothamRndSSm-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gotham Rounded';
+  src: url('fonts/GothamRnd-BookItalic.eot');
+  src: local('Gotham Rounded Book Italic'), local('GothamRnd-BookItalic'),
+    url('fonts/GothamRnd-BookItalic.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRnd-BookItalic.woff2') format('woff2'),
+    url('fonts/GothamRnd-BookItalic.woff') format('woff'),
+    url('fonts/GothamRnd-BookItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Gotham Rounded';
+  src: url('fonts/GothamRnd-Book.eot');
+  src: local('Gotham Rounded Book'), local('GothamRnd-Book'),
+    url('fonts/GothamRnd-Book.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRnd-Book.woff2') format('woff2'),
+    url('fonts/GothamRnd-Book.woff') format('woff'),
+    url('fonts/GothamRnd-Book.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gotham Rounded';
+  src: url('fonts/GothamRnd-LightItalic.eot');
+  src: local('Gotham Rounded Light Italic'), local('GothamRnd-LightItalic'),
+    url('fonts/GothamRnd-LightItalic.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRnd-LightItalic.woff2') format('woff2'),
+    url('fonts/GothamRnd-LightItalic.woff') format('woff'),
+    url('fonts/GothamRnd-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Gotham Rounded SSm';
+  src: url('fonts/GothamRndSSm-Medium.eot');
+  src: local('Gotham Rounded SSm Medium'), local('GothamRndSSm-Medium'),
+    url('fonts/GothamRndSSm-Medium.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRndSSm-Medium.woff2') format('woff2'),
+    url('fonts/GothamRndSSm-Medium.woff') format('woff'),
+    url('fonts/GothamRndSSm-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gotham Rounded';
+  src: url('fonts/GothamRnd-Bold.eot');
+  src: local('Gotham Rounded Bold'), local('GothamRnd-Bold'),
+    url('fonts/GothamRnd-Bold.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRnd-Bold.woff2') format('woff2'),
+    url('fonts/GothamRnd-Bold.woff') format('woff'),
+    url('fonts/GothamRnd-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gotham Rounded SSm';
+  src: url('fonts/GothamRndSSm-BookItalic.eot');
+  src: local('Gotham Rounded SSm Book Italic'), local('GothamRndSSm-BookItalic'),
+    url('fonts/GothamRndSSm-BookItalic.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRndSSm-BookItalic.woff2') format('woff2'),
+    url('fonts/GothamRndSSm-BookItalic.woff') format('woff'),
+    url('fonts/GothamRndSSm-BookItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Gotham Rounded';
+  src: url('fonts/GothamRnd-Light.eot');
+  src: local('Gotham Rounded Light'), local('GothamRnd-Light'),
+    url('fonts/GothamRnd-Light.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRnd-Light.woff2') format('woff2'),
+    url('fonts/GothamRnd-Light.woff') format('woff'),
+    url('fonts/GothamRnd-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gotham Rounded';
+  src: url('fonts/GothamRnd-MediumItalic.eot');
+  src: local('Gotham Rounded Medium Italic'), local('GothamRnd-MediumItalic'),
+    url('fonts/GothamRnd-MediumItalic.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRnd-MediumItalic.woff2') format('woff2'),
+    url('fonts/GothamRnd-MediumItalic.woff') format('woff'),
+    url('fonts/GothamRnd-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Gotham Rounded SSm';
+  src: url('fonts/GothamRndSSm-MediumItalic.eot');
+  src: local('Gotham Rounded SSm Medium Italic'), local('GothamRndSSm-MediumItalic'),
+    url('fonts/GothamRndSSm-MediumItalic.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRndSSm-MediumItalic.woff2') format('woff2'),
+    url('fonts/GothamRndSSm-MediumItalic.woff') format('woff'),
+    url('fonts/GothamRndSSm-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+:root {
+    --veris-blue: #0071CE;
+    --veris-blue-dark: #0A2240;
+    --veris-blue-light: #99C6EB;
+    --veris-blue-sky: #EBF6FE;
+    --pink-light: #fbe9e8;
+    --silver: #F3F4F5;
+    --pagado: #B9F6CA;
+    --pendiente: #FFC107;
+    --pendiente-light: #FFF8E1;
+    --font: "Gotham Rounded", sans-serif;
+    --caution: #D84315;
+}
+
+
+/* Estilos personalizados */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: var(--font) !important;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Estilos para el Header */
+.header {
+    background-color: #f8f9fa;
+    flex: 0 0 auto;
+}
+
+.logo{
+    max-width: 125px;
+}
+
+.fs-12{
+    font-size: 12px;
+}
+
+.fs-14{
+    font-size: 14px;
+}
+
+.fs-16{
+    font-size: 16px;
+}
+
+.fs-20 {
+    font-size: 20px;
+}
+
+.line-height-20{
+    line-height: 20px;
+}
+
+.fs-40 {
+    font-size: 40px;
+}
+
+.line-height-40{
+    line-height: 40px;
+}
+
+.fs-50 {
+    font-size: 50px;
+}
+
+.line-height-50{
+    line-height: 50px;
+}
+
+.fs-70 {
+    font-size: 70px;
+}
+
+.line-height-70{
+    line-height: 70px;
+}
+
+.line-height-14{
+    line-height: 14px;
+}
+
+.line-height-16{
+    line-height: 16px;
+}
+
+/* Estilos para el Content */
+.content {
+    flex: 1 0 70%; /* Al menos 70% del alto */
+    overflow-y: auto;
+    background-color: #ffffff;
+}
+
+/* Estilos para el Footer */
+.footer {
+    background-color: #f8f9fa;
+    flex: 0 0 auto;
+}
+
+.bg-veris-dark{
+    background: var(--veris-blue-dark);
+}
+
+.text-veris-light{
+    color: var(--veris-blue-light);
+}
+
+.text-veris-dark{
+    color: var(--veris-blue-dark);
+}
+
+.bg-caution{
+    background: var(--caution);
+}
+
+.text-caution{
+    color: var(--caution);
+}
+
+.border-caution-1{
+    border: 1px solid var(--caution);
+}
+
+.bg-veris-light{
+    background: var(--veris-blue-light);
+}
+
+.bg-veris-sky{
+    background: var(--veris-blue-sky);
+}
+
+.text-veris-sky{
+    color: var(--veris-blue-sky);
+}
+
+.bg-pendiente{
+    background: var(--pendiente);
+}
+
+.bg-pendiente-light{
+    background: var(--pendiente-light);
+}
+
+.text-veris{
+    color: var(--veris-blue);
+}
+
+.text-pendiente{
+    color: var(--pendiente);
+}
+
+.bg-veris{
+    background: var(--veris-blue);
+}
+
+.rounded-8{
+    border-radius: 8px;
+}
+
+.bg-silver{
+    background-color: var(--silver);
+}
+
+.border-veris-1{
+    border: 1px solid var(--veris-blue);
+}
+
+.border-veris-5{
+    border: 3px solid var(--veris-blue);
+}
+
+.border-veris-light-1{
+    border: 1px solid var(--veris-blue-light);
+}
+
+.border-pendiente-1{
+    border: 1px solid var(--pendiente) !important;
+}
+
+.border-veris-2{
+    border: 2px solid var(--veris-blue);
+}
+
+.fw-medium{
+    font-weight: 500;
+}
+
+.bg-pagada{
+    background: var(--pagado);
+}
+
+.bg-perdida{
+    background: var(--pink-light);
+}
+
+.icon-tab{
+    font-size: 25px;
+}
+
+.border-perdida{
+    border: 1px solid #d84316;
+}
+
+/*
+.hg-theme-default{
+    border-radius: 0px !important;
+    background-color: #fff !important;
+}
+
+.hg-rows{
+    background: var(--veris-blue) !important;
+}
+
+.hg-button{
+    box-shadow: none !important;
+    border: 0px !important;
+}*/
+
+.item-coincidencia{
+    cursor: pointer;
+}
+
+.item-coincidencia-selected,
+.item-coincidencia:hover{
+    color: #fff !important;
+    background: var(--veris-blue);
+}
+
+.item-coincidencia-selected .letter-name,
+.item-coincidencia:hover .letter-name{
+    color: var(--veris-blue) !important;
+}
+
+button:active {
+    transform: scale(1.05); /* Animación al pasar el cursor */
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3); /* Efecto sombra */
+}
+
+.custom-block-ui {
+    background: transparent;
+    border: none;
+    text-align: center;
+}
+
+/* Animación de crecer y decrecer */
+.custom-loader {
+    width: 80px;
+    height: 80px;
+    animation: grow-shrink 1.5s infinite ease-in-out;
+}
+
+@keyframes grow-shrink {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3);
+    }
+}
+
+.blockUI.blockOverlay {
+    z-index: 99999 !important;
+}
+
+.blockUI.blockMsg.blockPage {
+    z-index: 99999 !important;!i;!;
+}
+
+::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background-color: #DFE9EB;
+}
+
+::-webkit-scrollbar-track:hover {
+  background-color: #D5DEE0;
+}
+
+::-webkit-scrollbar-track:active {
+  background-color: #D5DEE0;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #0071CE;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #19408F;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: #19408F;
+}
+
+@media (min-width: 576px) {
+    .modal-dialog {
+        max-width: 700px;
+    }
+}
+
+/* Estilos específicos para escritorio (lg y arriba) */
+@media (min-width: 992px) {
+    .wrapper {
+        height: 100vh; /* Ocupa toda la altura de la ventana */
+    }
+
+    .content {
+        min-height: 70vh; /* Al menos el 70% del alto */
+    }
+}
