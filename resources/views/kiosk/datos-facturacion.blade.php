@@ -21,9 +21,9 @@
 				</div> --}}
 				<div class="col-6">
                     <label for="tipoIdentificacion" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Elige tu documento *</label>
-                    <select class="form-select input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="tipoIdentificacion" id="tipoIdentificacion" required>
-                        <option value="2">CÉDULA</option>
-                        <option value="1">RUC</option>
+                    <select class="form-select input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3 text-capitalize" name="tipoIdentificacion" id="tipoIdentificacion" required>
+                        {{-- <option value="2">CÉDULA</option>
+                        <option value="1">RUC</option> --}}
                     </select>
                     <div class="invalid-feedback">
                         Elegir el tipo de documento.
@@ -335,6 +335,15 @@
 		$('#descuentoAplicado').html(`$${datosFacturacion.totales.valorDescuento}`)
 		$('#iva').html(`$${datosFacturacion.totales.valorIva}`)
 		$('#total').html(`$${datosFacturacion.totales.valorTotalPaciente}`)
+
+		let options = ``;
+		$.each(datosFacturacion.tiposIdentificacion, function(key, value){
+			options += `<option class="text-capitalize" value="${value.codigoTipoIdentificacion}">${value.nombreTipoIdentificacion.toLowerCase()}</option>`
+		})
+		$('#tipoIdentificacion').html(options);
+		$('#tipoIdentificacion').val(parseInt(datosFacturacion.datosFactura.codigoTipoIdentificacion));
+		$('#numeroIdentificacion').val(datosFacturacion.datosFactura.numeroIdentificacion)
+		$('#nombresCompletos').val(datosFacturacion.datosFactura.nombreCompleto)
 	}
 
 	async function facturar(){
