@@ -13,7 +13,7 @@
 				@include('components.access-bar', ['page' => 'proximas-citas'])
 			</div>
 			<!-- pe-0 -->
-			<div class="col-10 px-3 py-40 h-100 border-silver border-end-0 border-bottom-0">
+			<div class="col-10 px-3 py-40 h-100 border-silver border-end-0 border-bottom-0" style="overflow-y: auto;    max-height: 70vh !important;">
 				<div class="menu-inside d-flex justify-content-start align-items-center gap-2 overflow-auto" id="menu-horizontal">
 				</div>
 				{{-- <div class="menu-inside d-flex justify-content-start align-items-center gap-2 overflow-auto">

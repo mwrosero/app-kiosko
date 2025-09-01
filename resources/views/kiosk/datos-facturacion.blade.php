@@ -20,106 +20,63 @@
 					<input type="text" class="form-control input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="numeroIdentificacion" id="numeroIdentificacion">
 				</div> --}}
 				<div class="col-6">
-	                <div class="row g-3">
-	                    <div class="col-md-12">
-	                        <label for="tipoIdentificacion" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Elige tu documento *</label>
-	                        <select class="form-select input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="tipoIdentificacion" id="tipoIdentificacion" required>
-	                            <option value="2">CÉDULA</option>
-	                            <option value="1">RUC</option>
-	                        </select>
-	                        <div class="invalid-feedback">
-	                            Elegir el tipo de documento.
-	                        </div>
-	                    </div>
-	                    <div class="col-md-12">
-	                        <label for="numeroIdentificacion" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Número de documento *</label>
-	                        <input type="number" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required />
-	                        <div class="invalid-feedback">
-	                            Ingrese un numero de identificacion.
-	                        </div>
-	                    </div>
-	                    <div class="col-md-12 d-none box-ruc">
-	                        <label for="razonSocial" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Razón Social *</label>
-	                        <input type="text" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="razonSocial" id="razonSocial" placeholder="" required />
-	                        <div class="invalid-feedback">
-	                            Ingrese su nombres y apellidos.
-	                        </div>
-	                    </div>
-	                    <div class="col-md-12 box-no-ruc">
-	                        <label for="primerNombre" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Primer Nombre *</label>
-	                        <input type="text" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="primerNombre" id="primerNombre" placeholder="" required />
-	                        <div class="invalid-feedback">
-	                            Ingrese su nombres y apellidos.
-	                        </div>
-	                    </div>
-	                    <div class="col-md-12 box-no-ruc">
-	                        <label for="primerApellido" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Primer Apellido *</label>
-	                        <input type="text" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="primerApellido" id="primerApellido" placeholder="" required />
-	                        <div class="invalid-feedback">
-	                            Ingrese su nombres y apellidos.
-	                        </div>
-	                    </div>
-	                    <div class="col-md-12 box-no-ruc">
-	                        <label for="segundoApellido" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Segundo Apellido *</label>
-	                        <input type="text" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="segundoApellido" id="segundoApellido" placeholder="" required />
-	                        <div class="invalid-feedback">
-	                            Ingrese su nombres y apellidos.
-	                        </div>
-	                    </div>
-	                </div>
-	            </div>
-	            <div class="col-6">
-	                <div class="row g-3">
-	                    <div class="col-md-12">
-	                        <label for="direccion" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Dirección *</label>
-	                        <input type="text" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="direccion" id="direccion" placeholder="" required />
-	                        <div class="invalid-feedback">
-	                            Ingrese una direccion.
-	                        </div>
-	                    </div>
-	                    <div class="col-md-12">
-	                        <label for="telefono" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Teléfono *</label>
-	                        <input type="number" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="telefono" id="telefono" placeholder="+593 999 999 9999" required />
-	                        <div class="invalid-feedback">
-	                            Ingrese un telefono.
-	                        </div>
-	                    </div>
-	                    <div class="col-md-12">
-	                        <label for="mail" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Email *</label>
-	                        <input type="email" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="mail" id="mail" placeholder="micorreo@gmail.com" required />
-	                        <div class="valid-feedback">
-	                            Ingrese un correo electronico.
-	                        </div>
-	                    </div>
-	                    <div class="col-md-12 bg-silver rounded-8">
-	                        <ul class="list-group fs--1 bg-silver py-24 px-3">
-	                            <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fw-medium fs-24 line-height-28 mb-3">
-	                                Detalle de factura
-	                            </li>
-	                            <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
-	                                Subtotal
-	                                <span class="badge text-dark fw-normal" id="subtotal"></span>
-	                            </li>
-	                            <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
-	                                Crédito/convenio
-	                                <span class="badge text-dark fw-normal" id="creditoConvenio"></span>
-	                            </li>
-	                            <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
-	                                Descuento aplicado
-	                                <span class="badge text-dark fw-normal" id="descuentoAplicado"></span>
-	                            </li>
-	                            <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
-	                                IVA
-	                                <span class="badge text-dark fw-normal" id="iva"></span>
-	                            </li>
-	                            <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20 fw-bold">
-	                                Total
-	                                <span class="badge text-dark fw-normal" id="total"></span>
-	                            </li>
-	                        </ul>
-	                    </div>
-	                </div>
-	            </div>
+                    <label for="tipoIdentificacion" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Elige tu documento *</label>
+                    <select class="form-select input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3 text-capitalize" name="tipoIdentificacion" id="tipoIdentificacion" required>
+                        {{-- <option value="2">CÉDULA</option>
+                        <option value="1">RUC</option> --}}
+                    </select>
+                    <div class="invalid-feedback">
+                        Elegir el tipo de documento.
+                    </div>
+                </div>
+                <div class="col-6">
+                    <label for="numeroIdentificacion" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Número de documento *</label>
+                    <input type="number" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required />
+                    <div class="invalid-feedback">
+                        Ingrese un numero de identificacion.
+                    </div>
+                </div>
+                <div class="col-12 mt-3">
+                    <label for="nombresCompletos" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Nombres completos *</label>
+                    <input type="text" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="nombresCompletos" id="nombresCompletos" placeholder="" required />
+                    <div class="invalid-feedback">
+                        Ingrese su nombres y apellidos.
+                    </div>
+                </div>
+                <div class="col-12 mt-3">
+                    <label for="mail" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Correo electrónico *</label>
+                    <input type="email" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="mail" id="mail" placeholder="micorreo@gmail.com" required />
+                    <div class="valid-feedback">
+                        Ingrese un correo electronico.
+                    </div>
+                </div>
+				<div class="col-6 offset-3 bg-silver rounded-8 mt-5">
+                    <ul class="list-group fs--1 bg-silver py-24 px-3">
+                        <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fw-medium fs-24 line-height-28 mb-3">
+                            Detalle de factura
+                        </li>
+                        <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
+                            Subtotal
+                            <span class="badge text-dark fw-normal" id="subtotal"></span>
+                        </li>
+                        <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
+                            Crédito/convenio
+                            <span class="badge text-dark fw-normal" id="creditoConvenio"></span>
+                        </li>
+                        <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
+                            Descuento aplicado
+                            <span class="badge text-dark fw-normal" id="descuentoAplicado"></span>
+                        </li>
+                        <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
+                            IVA
+                            <span class="badge text-dark fw-normal" id="iva"></span>
+                        </li>
+                        <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20 fw-bold">
+                            Total
+                            <span class="badge text-dark fw-bold" id="total"></span>
+                        </li>
+                    </ul>
+                </div>
 	            <div class="col-12 text-center mt-4">
 	                <div class="form-check d-flex justify-content-md-center align-items-center">
 	                    <input class="form-check-input terminos-input me-2 mb-1 width-24" type="checkbox" value="" id="checkTerminosCondicion" required>
@@ -182,6 +139,25 @@
 	.hg-button[data-skbtn="{space}"] {
 		flex: 8; /* ocupa el triple de espacio que una tecla normal */
 	}
+	.hg-button.hg-standardBtn, .hg-button.hg-functionBtn{
+		width: 20px;
+	}
+	{{-- .hg-layout-numbers .hg-rows {
+	    width: 70%;
+	    margin: auto;
+	} --}}
+	.hg-layout-numbers .hg-button.hg-standardBtn,
+	.hg-layout-numbers .hg-button.hg-functionBtn{
+		font-size: 36px !important;
+		margin: 12px !important;
+		padding: 20px 0px !important;
+	}
+
+	.hg-layout-numbers .hg-button[data-skbtnuid="numbers-r3b2"]{
+		border: none !important;
+		background: transparent !important;
+		font-size: 42px !important;
+	}
 
 	{{-- .hg-layout-numbers .hg-button.hg-standardBtn,
 	.hg-layout-numbers .hg-button.hg-functionBtn{
@@ -213,6 +189,7 @@
 
 	document.addEventListener("DOMContentLoaded", async function () {
 		const Keyboard = window.SimpleKeyboard.default;
+
 		let keyboard = new Keyboard({
 			onChange: input => {
 				if(currentInput){
@@ -277,6 +254,25 @@
 			}
 		});
 
+		$("input").on("focus", function () {
+		  currentInput = this;
+
+		  // Si el input tiene clase "numeric", mostramos el teclado numérico
+		  if ($(this).hasClass("numeric")) {
+		    keyboard.setOptions({
+		      layoutName: "numbers"
+		    });
+		  } else {
+		    // Para los demás, dejamos el teclado por defecto (letras)
+		    keyboard.setOptions({
+		      layoutName: "default"
+		    });
+		  }
+
+		  // Sincronizamos valor actual del input con el teclado
+		  keyboard.setInput($(this).val());
+		});
+
 		// función auxiliar para shift
 		function handleShift(){
 			let currentLayout = keyboard.options.layoutName;
@@ -293,7 +289,8 @@
 			keyboard.setInput($(this).val());
 		});
 
-		await consultarCarrito();
+		// await consultarCarrito();
+		await verificarDatosFacturacion();
 	})
 
 	async function consultarCarrito(){
@@ -314,6 +311,55 @@
 	 
 	function onKeyPress(button) {
 	  	console.log("Button pressed", button);
+	}
+
+	let datosFacturacion;
+	async function verificarDatosFacturacion(){
+		let args = [];
+        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/datos_facturacion?macAddress={{ $mac }}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
+        const data = await call(args);
+        console.log(data);
+        datosFacturacion = data.data;
+        if(data.code == 200){
+        	fillFormDatosFactura();
+        }
+	}
+
+	function fillFormDatosFactura(){
+		$('#subtotal').html(`$${datosFacturacion.totales.subtotalVenta}`)
+		$('#creditoConvenio').html(`$${datosFacturacion.totales.valorTotalCliente}`)
+		$('#descuentoAplicado').html(`$${datosFacturacion.totales.valorDescuento}`)
+		$('#iva').html(`$${datosFacturacion.totales.valorIva}`)
+		$('#total').html(`$${datosFacturacion.totales.valorTotalPaciente}`)
+
+		let options = ``;
+		$.each(datosFacturacion.tiposIdentificacion, function(key, value){
+			options += `<option class="text-capitalize" value="${value.codigoTipoIdentificacion}">${value.nombreTipoIdentificacion.toLowerCase()}</option>`
+		})
+		$('#tipoIdentificacion').html(options);
+		$('#tipoIdentificacion').val(parseInt(datosFacturacion.datosFactura.codigoTipoIdentificacion));
+		$('#numeroIdentificacion').val(datosFacturacion.datosFactura.numeroIdentificacion)
+		$('#nombresCompletos').val(datosFacturacion.datosFactura.nombreCompleto)
+	}
+
+	async function facturar(){
+		//http://localhost:3131/kiosko/v1/carrito/10802071/facturar?macAddress=24-1C-04-76-DC-FD&trackId=d08eaf6f-6504-4dec-9813-3bae544204a3
+		let args = [];
+        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/facturar?macAddress={{ $mac }}`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
+        args["bodyType"] = "json";
+        const data = await call(args);
+        console.log(data);
+        if(data.code == 200){
+        	localStorage.setItem("idPreTransaccion", data.data.idPreTransaccion);
+        }
 	}
 </script>
 @endsection
