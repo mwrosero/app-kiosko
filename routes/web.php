@@ -23,7 +23,7 @@ Route::get('/proximas-citas/{mac}', [KioskController::class, 'proximasCitas'])->
 Route::get('/carrito/{mac}', [KioskController::class, 'carrito'])->name('carrito');
 Route::get('/datos-facturacion/{mac}', [KioskController::class, 'datosFacturacion'])->name('datosFacturacion');
 Route::get('/metodos-pago/{mac}', [KioskController::class, 'listaMetodosPago'])->name('listaMetodosPago');
-Route::get('/pago-exitoso/{mac}', [KioskController::class, 'pagoExitoso'])->name('pagoExitoso');
+Route::get('/pago-realizado/{mac}', [KioskController::class, 'pagoExitoso'])->name('pagoExitoso');
 
 // Route::get('/kiosko/{mac}', [KioskController::class, 'kiosko'])->name('kiosko');
 // Route::get('/ingreso/{mac}', [KioskController::class, 'ingreso'])->name('ingreso');
