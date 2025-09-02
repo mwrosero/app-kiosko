@@ -98,6 +98,7 @@
 			<div class="simple-keyboard"></div>
 		</div>
 	</div>
+	@include('components.footer')
 </div>
 <script src="https://unpkg.com/simple-keyboard@latest/build/index.js"></script>
 <style>
@@ -289,8 +290,12 @@
 			keyboard.setInput($(this).val());
 		});
 
+		$('body').on('click', '#btn-validar-datos-factura', function(){
+			location.href = `/metodos-pago/{{ $mac }}`
+		})
+
 		// await consultarCarrito();
-		await verificarDatosFacturacion();
+		await obtenerDatosFacturacion();
 	})
 
 	async function consultarCarrito(){
@@ -313,8 +318,20 @@
 	  	console.log("Button pressed", button);
 	}
 
-	let datosFacturacion;
 	async function verificarDatosFacturacion(){
+		let args = [];
+        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/verificar_datos_factura?macAddress={{ $mac }}`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
+        args["bodyType"] = "json";
+        const data = await call(args);
+        console.log(data);
+	}
+
+	let datosFacturacion;
+	async function obtenerDatosFacturacion(){
 		let args = [];
         args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/datos_facturacion?macAddress={{ $mac }}`;
         args["method"] = "GET";
@@ -344,22 +361,6 @@
 		$('#tipoIdentificacion').val(parseInt(datosFacturacion.datosFactura.codigoTipoIdentificacion));
 		$('#numeroIdentificacion').val(datosFacturacion.datosFactura.numeroIdentificacion)
 		$('#nombresCompletos').val(datosFacturacion.datosFactura.nombreCompleto)
-	}
-
-	async function facturar(){
-		//http://localhost:3131/kiosko/v1/carrito/10802071/facturar?macAddress=24-1C-04-76-DC-FD&trackId=d08eaf6f-6504-4dec-9813-3bae544204a3
-		let args = [];
-        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/facturar?macAddress={{ $mac }}`;
-        args["method"] = "POST";
-        args["showLoader"] = true;
-        {{-- args["sendHeaders"] = false; --}}
-        args["token"] = "{{ $accessToken }}";
-        args["bodyType"] = "json";
-        const data = await call(args);
-        console.log(data);
-        if(data.code == 200){
-        	localStorage.setItem("idPreTransaccion", data.data.idPreTransaccion);
-        }
 	}
 </script>
 @endsection

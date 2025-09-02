@@ -13,7 +13,7 @@
 				@include('components.access-bar', ['page' => 'proximas-citas'])
 			</div>
 			<!-- pe-0 -->
-			<div class="col-10 px-3 py-40 h-100 border-silver border-end-0 border-bottom-0" style="overflow-y: auto;    max-height: 70vh !important;">
+			<div class="col-10 px-3 py-40 h-100 border-silver border-end-0 border-bottom-0" style="overflow-y: auto; max-height: 70vh !important;">
 				<div class="menu-inside d-flex justify-content-start align-items-center gap-2 overflow-auto" id="menu-horizontal">
 				</div>
 				{{-- <div class="menu-inside d-flex justify-content-start align-items-center gap-2 overflow-auto">
@@ -206,12 +206,12 @@
 				$.each(v, function(k1, v1){
 					cards += drawCardItem(v1)
 				})
-				elem += `<div class="row box-dia pt-74">
+				elem += `<div class="row box-dia pt-64">
 					<div class="col-12 fs-18 line-height-24 fw-medium">
 						<span class="text-royal-blue">Agendada para:</span> ${k}
 					</div>
 				</div>
-				<div class="row py-32 cards-items d-flex justify-content-between align-items-start">
+				<div class="row pt-32 cards-items d-flex justify-content-between align-items-start">
 					${cards}
 				</div>`
 			})
