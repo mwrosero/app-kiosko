@@ -55,6 +55,13 @@ class KioskController extends Controller
                 ->with('mac',$mac);
     }
 
+    public function listaMetodosPago($mac) {
+        $token = session('accessToken');
+        return view('kiosk.lista-metodos-pago')
+                ->with('accessToken',$token)
+                ->with('mac',$mac);
+    }
+
     public function refreshToken(){
         $token = Veris::getToken();
         if($token != ""){

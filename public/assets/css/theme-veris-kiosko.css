@@ -208,6 +208,7 @@
     --greenDark: #00C853;
     --redLight:#FBE9E7;
     --redDark: #D84315;
+    --secundary00: #0A2240;
 }
 
 body {
@@ -237,6 +238,10 @@ body {
 
 .rounded-24{
     border-radius: 24px !important;
+}
+
+.rounded-32{
+    border-radius: 32px !important;
 }
 
 .rounded-top-8{
@@ -295,6 +300,10 @@ body {
 
 .text-royal-blue{
     color: var(--royalBlue) !important;
+}
+
+.text-secundary-00{
+    color: var(--secundary00) !important;
 }
 
 .text-royal-blue-shade-20{
@@ -480,6 +489,10 @@ body {
 
 .p-44{
     padding: 44px !important;
+}
+
+.pt-64{
+    padding-top: 64px !important;
 }
 
 .pt-74{
