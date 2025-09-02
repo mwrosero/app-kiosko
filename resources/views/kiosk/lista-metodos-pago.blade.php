@@ -84,7 +84,7 @@
 
 			$('#modalError').modal('show')
 			$('.titleError').html(`Ha ocurrido un error`)
-			$('.msgError').html(${data.message});
+			$('.msgError').html(data.message);
         }
 	}
 </script>
