@@ -2,7 +2,7 @@
 	@php
 		$visibilityClass = "visible";
 	@endphp
-	@if(!isset($showVolverBtn) || !$showVolverBtn)
+	@if(isset($showVolverBtn))
 	@php
 		$visibilityClass = "invisible";
 	@endphp
