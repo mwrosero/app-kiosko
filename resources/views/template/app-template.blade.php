@@ -71,6 +71,7 @@
 
         {{-- <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/swiper/swiper.js"></script> --}}
         <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/html2canvas.min.js"></script>
+        @include('components.modals')
 
         @stack('scripts')
         <style>

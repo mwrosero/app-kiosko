@@ -1,5 +1,13 @@
 <div class="bg-royal-blue-tint-90 py-2 px-3 d-flex justify-content-between align-items-center py-3">
-	<a href="{{ $url }}" class="text-decoration-none back d-flex align-items-center justify-content-start">
+	@php
+		$visibilityClass = "visible";
+	@endphp
+	@if(!isset($showVolverBtn) || !$showVolverBtn)
+	@php
+		$visibilityClass = "invisible";
+	@endphp
+	@endif
+	<a href="{{ $url }}" class="text-decoration-none back d-flex align-items-center justify-content-start {{ $visibilityClass }}">
 		<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-back.svg" alt="">
 		<span class="ms-3 fs-24 line-height-32 fw-bold">Volver</span>
 	</a>

@@ -74,13 +74,17 @@
         	localStorage.setItem("datosFacturados", JSON.stringify(data.data));
         	setTimeout(function(){
         		alert('Pago exitoso, nos vemos pronto')
-        		//location.href = `/pago-realizado/{{ $mac }}`;
+        		location.href = `/pago-realizado/{{ $mac }}`;
         	}, 1000);
         }else{
-        	alert(data.message);
+        	// alert(data.message);
         	$('.page-title').html(`Escoge el método de pago`);
 			$('.box-steps').addClass('d-none');
 			$('.box-metodos').removeClass('d-none');
+
+			$('#modalError').modal('show')
+			$('.titleError').html(`Ha ocurrido un error`)
+			$('.msgError').html(${data.message});
         }
 	}
 </script>
