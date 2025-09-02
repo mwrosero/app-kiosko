@@ -73,7 +73,6 @@
 			$('.box-procesando').removeClass('d-none');
         	localStorage.setItem("datosFacturados", JSON.stringify(data.data));
         	setTimeout(function(){
-        		alert('Pago exitoso, nos vemos pronto')
         		location.href = `/pago-realizado/{{ $mac }}`;
         	}, 1000);
         }else{

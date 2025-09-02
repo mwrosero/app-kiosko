@@ -13,7 +13,7 @@
 				<p class="mt-4 text-secundary-00 fs-32 line-height-40 fw-bold text-center mb-40">Pago exitoso</p>
 				<p class="mt-4 text-secundary-00 fs-24 line-height-32 fw-bold text-center mb-40">Nos vemos pronto.</p>
 				<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/pago-exitoso.svg" class="m-2 img-fluid" alt="">
-				<p class="mt-3 text-silver-dark fs-16 line-height-32">Tu no. de comprobante es el 093333333399, llegará <br> con tu factura al correo electrónico.</p>
+				<p class="mt-3 text-silver-dark fs-16 line-height-32 detalleComprobante"></p>
 				<div class="mt-56 d-flex justify-content-between align-items-center g-2">
 					<a href="/{{ $mac }}" class="btn w-50 me-2 fs-16 line-height-20 text-royal-blue border-royal-blue rounded-8 p-12 px-3">Cerrar</a>
 					<a href="/proximas-citas/{{ $mac }}" class="btn w-50 ms-2 fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3">Ver mi cita</a>
@@ -24,8 +24,18 @@
 	@include('components.footer')
 </div>
 <script>
+	let datosFacturados = JSON.parse(localStorage.getItem('datosFacturados'));
+	trackId = localStorage.getItem('trackId');
 	document.addEventListener("DOMContentLoaded", async function () {
-		
+		if(datosFacturados.factura.transacciones.length == 1){
+			$('.detalleComprobante').html(`Tu número de comprobante es el ${datosFacturados.factura.transacciones[0].numeroComprobante}, llegará <br> con tu factura al correo electrónico.`)
+		}else{
+			let comprobantesArr = [];
+			$.each(datosFacturados.factura.transacciones, function(key, value){
+				comprobantesArr.push(value.numeroComprobante);
+			})
+			$('.detalleComprobante').html(`Tus comprobantes son: ${comprobantesArr.join(', ')}, llegarán <br> con tus facturas al correo electrónico.`)
+		}
 	})
 </script>
 @endsection

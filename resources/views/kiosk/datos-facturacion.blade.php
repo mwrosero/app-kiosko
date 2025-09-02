@@ -347,11 +347,11 @@
 	}
 
 	function fillFormDatosFactura(){
-		$('#subtotal').html(`$${datosFacturacion.totales.subtotalVenta}`)
-		$('#creditoConvenio').html(`$${datosFacturacion.totales.valorTotalCliente}`)
-		$('#descuentoAplicado').html(`$${datosFacturacion.totales.valorDescuento}`)
-		$('#iva').html(`$${datosFacturacion.totales.valorIva}`)
-		$('#total').html(`$${datosFacturacion.totales.valorTotalPaciente}`)
+		$('#subtotal').html(`$${datosFacturacion.totales.subtotalVenta.toFixed(2)}`);
+		$('#creditoConvenio').html(`$${datosFacturacion.totales.valorTotalCliente.toFixed(2)}`);
+		$('#descuentoAplicado').html(`$${datosFacturacion.totales.valorDescuento.toFixed(2)}`);
+		$('#iva').html(`$${datosFacturacion.totales.valorIva.toFixed(2)}`);
+		$('#total').html(`$${datosFacturacion.totales.valorTotalPaciente.toFixed(2)}`);
 
 		let options = ``;
 		$.each(datosFacturacion.tiposIdentificacion, function(key, value){
