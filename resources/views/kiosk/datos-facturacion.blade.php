@@ -90,11 +90,11 @@
 	                </div>
 	            </div>
 	            <div class="col-12 mt-4 text-center">
-	            	<button class="btn bg-royal-blue text-white fs-18 line-height-24 py-3 rounded-16 w-50 fw-medium shadow-none" id="btn-validar-datos-factura">Pagar ahora</button>
+	            	<button class="btn bg-royal-blue text-white fs-18 line-height-24 py-3 rounded-16 w-50 fw-medium shadow-none disabled" id="btn-validar-datos-factura">Pagar ahora</button>
 	            </div>
             </div>
 		</div>
-		<div class="col-10 offset-1 mt-56 bg-silver-light p-44">
+		<div class="col-10 offset-1 mt-56 bg-silver-light p-44 d-none">
 			<div class="simple-keyboard"></div>
 		</div>
 	</div>
@@ -190,11 +190,37 @@
 
 	document.addEventListener("DOMContentLoaded", async function () {
 		const Keyboard = window.SimpleKeyboard.default;
+		await obtenerDatosFacturacion();
 
 		let keyboard = new Keyboard({
-			onChange: input => {
+			onChange: async input => {
 				if(currentInput){
+					let max = $(currentInput).attr("maxlength"); // obtiene el maxlength del input
+				    if(max && input.length > max){
+				      input = input.substring(0, max); // corta el valor
+				      keyboard.setInput(input);        // actualiza el teclado con el valor truncado
+				    }
 					$(currentInput).val(input);
+					console.log(input)
+
+					if(currentInput.id === "numeroIdentificacion"){
+						// Verifica que el tipo sea 2
+						if(parseInt($('#tipoIdentificacion option:selected').val()) == 2){
+
+        				// Verifica longitud 10
+							if(input.length == 10){
+
+								if(!esValidaCedula(input)){
+									$('#modalError').modal('show');
+									$('.titleError').html(`Atención`);
+									$('.msgError').html(`Número de cédula incorrecto.`);
+								} else {
+									await verificarDatosFacturacion();
+								}
+
+							}
+						}
+					}
 				}
 			},
 			onKeyPress: button => {
@@ -225,13 +251,13 @@
 			layoutName: "default",
 			layout: {
 				default: [
-					"q w e r t y u i o p {backspace}",
+					"q w e r t y u i o p {bksp}",
 					"a s d f g h j k l ñ {ent}",
 					"{shift} z x c v b n m -",
 					"{numbers} @ {space} . _"
 				],
 				shift: [
-					"Q W E R T Y U I O P {backspace}",
+					"Q W E R T Y U I O P {bksp}",
 					"A S D F G H J K L Ñ {ent}",
 					"{shift} Z X C V B N M -",
 					"{numbers} @ {space} . _"
@@ -240,7 +266,7 @@
 					"1 2 3",
 					"4 5 6",
 					"7 8 9",
-					"{abc} 0 {backspace}"
+					"{abc} 0 {bksp}"
 				]
 			},
 			display: {
@@ -248,7 +274,7 @@
 				"{ent}": "<i class='fa-solid fa-arrow-right'></i>",
 				"{escape}": "esc ⎋",
 				"{tab}": "tab ⇥",
-				"{backspace}": "<i class='fa fa-backspace'></i>",
+				"{bksp}": "<i class='fa fa-backspace'></i>",
 				"{capslock}": "caps ⇪",
 				"{shift}": "⇧",
 				"{abc}": "ABC"
@@ -256,22 +282,21 @@
 		});
 
 		$("input").on("focus", function () {
-		  currentInput = this;
+			if (this.type === "checkbox") {
+				return; // no hacer nada
+			}
+		  	currentInput = this;
 
-		  // Si el input tiene clase "numeric", mostramos el teclado numérico
-		  if ($(this).hasClass("numeric")) {
-		    keyboard.setOptions({
-		      layoutName: "numbers"
-		    });
-		  } else {
-		    // Para los demás, dejamos el teclado por defecto (letras)
-		    keyboard.setOptions({
-		      layoutName: "default"
-		    });
-		  }
+		  	const isNumeric =
+		    	this.type === "number" ||
+		    	$(this).attr("inputmode") === "numeric";
 
-		  // Sincronizamos valor actual del input con el teclado
-		  keyboard.setInput($(this).val());
+
+		  	keyboard.setOptions({ layoutName: isNumeric ? "numbers" : "default" });
+
+		  	// Sincronizamos valor actual del input con el teclado
+		  	keyboard.setInput($(this).val() || "");
+		  	//keyboard.setInput($(this).val());
 		});
 
 		// función auxiliar para shift
@@ -283,20 +308,71 @@
 			});
 		}
 
-
   		// Detectar qué input tiene el foco
 		$("input").on("focus", function(){
 			currentInput = this;
 			keyboard.setInput($(this).val());
 		});
 
-		$('body').on('click', '#btn-validar-datos-factura', function(){
-			location.href = `/metodos-pago/{{ $mac }}`
+		$('body').on('change', '#tipoIdentificacion', function(){
+			if(parseInt($(this).val()) == 2){
+				$('#numeroIdentificacion').attr('type','number');
+				$('#numeroIdentificacion').attr('maxlength','10');
+			}else{
+				$('#numeroIdentificacion').attr('type','text');
+				$('#numeroIdentificacion').attr('maxlength','15');
+			}
+			setTimeout(function(){
+				$('#numeroIdentificacion').focus();
+			},100)
 		})
 
-		// await consultarCarrito();
-		await obtenerDatosFacturacion();
+		{{-- $('body').on('blur', '#numeroIdentificacion', async function(){
+			console.log(0)
+			if(parseInt($('#tipoIdentificacion option:selected').val()) == 2){
+				console.log(1)
+				if($('#numeroIdentificacion').val().length == 10){
+					console.log(2)
+					if(!esValidaCedula($('#numeroIdentificacion').val())){
+						console.log(3)
+						$('#modalError').modal('show')
+						$('.titleError').html(`Atención`)
+						$('.msgError').html(`Número de cédula incorrecto.`);
+					}else{
+						console.log(4)
+						await verificarDatosFacturacion();
+					}
+				}
+			}
+		}) --}}
+		
+		$('body').on('change', '#checkTerminosCondicion', function(){
+            validateFields();
+        });
+
+		$('body').on('click', '#btn-validar-datos-factura', async function(){
+			if(!datosSeteados){
+				await setearDatosFactura();
+				if(data.code == 200){
+					location.href = `/metodos-pago/{{ $mac }}`
+				}else{
+					$('#modalError').modal('show');
+					$('.titleError').html(`Atención`);
+					$('.msgError').html(data.message);
+				}
+			}else{
+				location.href = `/metodos-pago/{{ $mac }}`
+			}
+		})
 	})
+
+	function validateFields(){
+		if($('#checkTerminosCondicion').is(':checked')) {
+            $('#btn-validar-datos-factura').removeClass('disabled');
+        } else {
+            $('#btn-validar-datos-factura').addClass('disabled');
+        }
+	}
 
 	async function consultarCarrito(){
 		let args = [];
@@ -318,6 +394,26 @@
 	  	console.log("Button pressed", button);
 	}
 
+	async function setearDatosFactura(){
+		let args = [];
+        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/agregar_datos_factura?macAddress={{ $mac }}`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify({
+		  	"codigoTipoIdentificacion": parseInt($('#tipoIdentificacion option:selected').val()),
+		  	"numeroIdentificacion": $('#numeroIdentificacion').val(),
+		  	"nombreCompleto": $('#nombresCompletos').val(),
+		  	"email": $('#mail').val()
+		})
+        const data = await call(args);
+        console.log(data);
+        return data;
+	}
+
+	let datosSeteados = false;
 	async function verificarDatosFacturacion(){
 		let args = [];
         args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/verificar_datos_factura?macAddress={{ $mac }}`;
@@ -326,8 +422,17 @@
         {{-- args["sendHeaders"] = false; --}}
         args["token"] = "{{ $accessToken }}";
         args["bodyType"] = "json";
+        args["data"] = JSON.stringify({
+		  	"codigoTipoIdentificacion": parseInt($('#tipoIdentificacion option:selected').val()),
+		  	"numeroIdentificacion": $('#numeroIdentificacion').val()
+		})
         const data = await call(args);
         console.log(data);
+        if(data.code == 200){
+        	datosSeteados = data.data.datosSeteados;
+        	$('#nombresCompletos').val(data.data.nombreCompleto)
+			$('#mail').val(data.data.mail)
+        }
 	}
 
 	let datosFacturacion;
@@ -342,11 +447,14 @@
         console.log(data);
         datosFacturacion = data.data;
         if(data.code == 200){
-        	fillFormDatosFactura();
+        	if(data.data !== null || data.data.length > 0){
+        		await fillFormDatosFactura();
+        		datosSeteados = true;
+        	}
         }
 	}
 
-	function fillFormDatosFactura(){
+	async function fillFormDatosFactura(){
 		$('#subtotal').html(`$${datosFacturacion.totales.subtotalVenta.toFixed(2)}`);
 		$('#creditoConvenio').html(`$${datosFacturacion.totales.valorTotalCliente.toFixed(2)}`);
 		$('#descuentoAplicado').html(`$${datosFacturacion.totales.valorDescuento.toFixed(2)}`);
@@ -361,6 +469,21 @@
 		$('#tipoIdentificacion').val(parseInt(datosFacturacion.datosFactura.codigoTipoIdentificacion));
 		$('#numeroIdentificacion').val(datosFacturacion.datosFactura.numeroIdentificacion)
 		$('#nombresCompletos').val(datosFacturacion.datosFactura.nombreCompleto)
+		$('#mail').val(datosFacturacion.datosFactura.email)
+
+		if(parseInt(datosFacturacion.datosFactura.codigoTipoIdentificacion) == 2){
+			$('#numeroIdentificacion').attr('type','number');
+			$('#numeroIdentificacion').attr('maxlength','10');
+		}else{
+			$('#numeroIdentificacion').attr('type','text');
+			$('#numeroIdentificacion').attr('maxlength','15');
+		}
+		setTimeout(function(){
+			$('#numeroIdentificacion').focus();
+			setTimeout(function(){
+				$('.simple-keyboard').parent().removeClass('d-none');
+			},100)
+		},100)
 	}
 </script>
 @endsection
