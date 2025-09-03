@@ -31,7 +31,7 @@
                 </div>
                 <div class="col-6">
                     <label for="numeroIdentificacion" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Número de documento *</label>
-                    <input type="number" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required />
+                    <input type="number" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="" required />
                     <div class="invalid-feedback">
                         Ingrese un numero de identificacion.
                     </div>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="col-12 mt-3">
                     <label for="mail" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Correo electrónico *</label>
-                    <input type="email" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="mail" id="mail" placeholder="micorreo@gmail.com" required />
+                    <input type="email" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="mail" id="mail" placeholder="" required />
                     <div class="valid-feedback">
                         Ingrese un correo electronico.
                     </div>
@@ -206,7 +206,6 @@
 					if(currentInput.id === "numeroIdentificacion"){
 						// Verifica que el tipo sea 2
 						if(parseInt($('#tipoIdentificacion option:selected').val()) == 2){
-
         				// Verifica longitud 10
 							if(input.length == 10){
 
@@ -219,11 +218,15 @@
 								}
 
 							}
+						}else if(parseInt($('#tipoIdentificacion option:selected').val()) == 1){
+							if(input.length == 13){
+								await verificarDatosFacturacion();
+							}
 						}
 					}
 				}
 			},
-			onKeyPress: button => {
+			onKeyPress: async button => {
 				if(button === "{bksp}" && currentInput){
 					let val = $(currentInput).val();
 					$(currentInput).val(val.slice(0, -1));
@@ -245,6 +248,15 @@
 					keyboard.setOptions({
 						layoutName: "default"
 					});
+				}
+
+				if(button === "{ent}" && currentInput){
+					if(currentInput.id === "numeroIdentificacion"){
+						let valor = $(currentInput).val();
+						if(parseInt($('#tipoIdentificacion option:selected').val()) == 3 && valor.length > 5){
+							await verificarDatosFacturacion();
+						}
+					}
 				}
 			},
 			mergeDisplay: true,
@@ -315,12 +327,20 @@
 		});
 
 		$('body').on('change', '#tipoIdentificacion', function(){
-			if(parseInt($(this).val()) == 2){
-				$('#numeroIdentificacion').attr('type','number');
-				$('#numeroIdentificacion').attr('maxlength','10');
-			}else{
+			datosSeteados = false;
+			$('#numeroIdentificacion').val('')
+			$('#nombresCompletos').val('')
+			$('#mail').val('')
+			if(parseInt($(this).val()) == 3){
 				$('#numeroIdentificacion').attr('type','text');
 				$('#numeroIdentificacion').attr('maxlength','15');
+			}else{
+				if(parseInt($(this).val()) == 1){
+					$('#numeroIdentificacion').attr('maxlength','13');
+				}else{
+					$('#numeroIdentificacion').attr('maxlength','10');
+				}
+				$('#numeroIdentificacion').attr('type','number');
 			}
 			setTimeout(function(){
 				$('#numeroIdentificacion').focus();
@@ -368,6 +388,7 @@
 
 	function validateFields(){
 		if($('#checkTerminosCondicion').is(':checked')) {
+			// validar datos llenos
             $('#btn-validar-datos-factura').removeClass('disabled');
         } else {
             $('#btn-validar-datos-factura').addClass('disabled');
@@ -421,6 +442,7 @@
         args["showLoader"] = true;
         {{-- args["sendHeaders"] = false; --}}
         args["token"] = "{{ $accessToken }}";
+        args["dismissAlert"] = true;
         args["bodyType"] = "json";
         args["data"] = JSON.stringify({
 		  	"codigoTipoIdentificacion": parseInt($('#tipoIdentificacion option:selected').val()),
@@ -432,6 +454,10 @@
         	datosSeteados = data.data.datosSeteados;
         	$('#nombresCompletos').val(data.data.nombreCompleto)
 			$('#mail').val(data.data.mail)
+        }else{
+        	datosSeteados = false;
+        	$('#nombresCompletos').val('')
+			$('#mail').val('')
         }
 	}
 
