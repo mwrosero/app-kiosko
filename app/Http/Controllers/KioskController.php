@@ -62,6 +62,13 @@ class KioskController extends Controller
                 ->with('mac',$mac);
     }
 
+    public function pagoExitoso($mac) {
+        $token = session('accessToken');
+        return view('kiosk.pago-exitoso')
+                ->with('accessToken',$token)
+                ->with('mac',$mac);
+    }
+
     public function refreshToken(){
         $token = Veris::getToken();
         if($token != ""){

@@ -1251,3 +1251,16 @@ function isKiosk() {
         return false;
     }
 }
+
+function limitarCaracteres(input, maxCaracteres) {
+    // Obtén el valor actual del campo de entrada
+    var valor = input.value;
+
+    // Limita la longitud del valor a `maxCaracteres`
+    if (valor.length > maxCaracteres) {
+        valor = valor.slice(0, maxCaracteres);
+    }
+
+    // Establece el valor limitado en el campo de entrada
+    input.value = valor;
+}
