@@ -260,7 +260,7 @@
 					${drawStatusBox(detalle)}
 					<div class="box-contenido rounded-bottom-16 border-royal-blue-tint-60 border-top-0 border-inside p-12 d-flex justify-content-between align-items-stretch">
 					    <div class="box-icon bg-royal-blue-tint-90 me-2 d-flex align-items-center justify-content-center rounded-8">
-					        <img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/especialidad.svg" class="m-2 img-fluid" alt="">
+					        <img src="${detalle.iconoEspecialidad}" class="m-2 img-fluid" width="56px" alt="">
 					    </div>
 					    <div class="box-info-agendamiento flex-grow-1">
 					        <h3 class="fs-18 line-height-24 text-royal-blue fw-medium mb-2 text-capitalize">${detalle.nombreEspecialidad.toLowerCase()}</h3>
