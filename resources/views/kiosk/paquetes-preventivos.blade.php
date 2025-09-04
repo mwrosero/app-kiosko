@@ -45,7 +45,7 @@
 			</div>
 		</div>
 	</main>
-	<div class="w-100 bg-silver-light p-44 position-absolute bottom-0 start-0 d-none">
+	<div class="w-100 bg-silver-light p-44 position-absolute bottom-0 start-0 d-none" id="box-simple-keyboard">
 		<div class="simple-keyboard"></div>
 	</div>
 	@include('components.footer')
@@ -146,35 +146,20 @@
 		let keyboard = new Keyboard({
 			onChange: async input => {
 				if(currentInput){
-					let max = $(currentInput).attr("maxlength"); // obtiene el maxlength del input
-				    if(max && input.length > max){
-				      input = input.substring(0, max); // corta el valor
-				      keyboard.setInput(input);        // actualiza el teclado con el valor truncado
-				    }
 					$(currentInput).val(input);
 					console.log(input)
 
-					if(currentInput.id === "numeroIdentificacion"){
-						// Verifica que el tipo sea 2
-						if(parseInt($('#tipoIdentificacion option:selected').val()) == 2){
-        				// Verifica longitud 10
-							if(input.length == 10){
-
-								if(!esValidaCedula(input)){
-									$('#modalError').modal('show');
-									$('.titleError').html(`Atención`);
-									$('.msgError').html(`Número de cédula incorrecto.`);
-								} else {
-									await verificarDatosFacturacion();
-								}
-
-							}
-						}else if(parseInt($('#tipoIdentificacion option:selected').val()) == 1){
-							if(input.length == 13){
-								await verificarDatosFacturacion();
-							}
-						}
-					}
+					if(input.length > 3){
+						page = 1;
+	                    $('#listado-paquetes').empty();
+	                    cargandoContenido = true;
+	                    await obtenerPaquetesPromocionales();
+					}else if(input.length == 0){
+		                page = 1;
+		                $('#listado-paquetes').empty();
+		                cargandoContenido = false;
+		                await obtenerPaquetesPromocionales();
+            		}
 				}
 			},
 			onKeyPress: async button => {
@@ -247,7 +232,17 @@
 			}
 		});
 
+		$(document).on('click', function(e) {
+		    if ($('#box-simple-keyboard').is(':visible') && 
+		    	!$(e.target).closest('#box-simple-keyboard').length && 
+		    	!$(e.target).is('input')
+    		){
+		        $('#box-simple-keyboard').addClass('d-none');
+    		}
+		});
+
 		$("input").on("focus", function () {
+			$('#box-simple-keyboard').removeClass('d-none');
 			if (this.type === "checkbox") {
 				return; // no hacer nada
 			}
@@ -446,7 +441,7 @@
         args['endpoint'] = `https://api-phantomx.veris.com.ec/digitalestest/v1/comercial/paquetes?canalOrigen=VER_CMV&codigoEmpresa=1&tipoFiltro=POR_ASIGNAR&page=${page}&perPage=${perPage}&estaPagado=false&verDetalle=false&categoria=&buscarPorPromocion=${ (getInput('buscarPorPromocion').replace(/\s/g, '+')) }`;
         args["sendHeaders"] = false;
         args["method"] = "GET";
-        args["showLoader"] = true;
+        args["showLoader"] = (getInput('buscarPorPromocion') == "") ? true : false;
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data);
