@@ -1,4 +1,4 @@
-<div class="row g-3 align-items-stretch">
+<div class="row gap-3 align-items-stretch border-end">
 	<div class="col-12 px-0 {{ $page == 'proximas-citas' ? 'active-item-menu' : '' }}">
 		<a href="/proximas-citas/{{ $mac }}" class="btn w-100 py-24">
 			<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-proximas-citas.svg" alt="" class="mb-2" style="height:80px">
@@ -12,10 +12,10 @@
 		</button>
 	</div>
 	<div class="col-12 px-0 {{ $page == 'paquetes-preventivos' ? 'active-item-menu' : '' }}">
-		<button class="btn w-100 py-24">
+		<a href="/paquetes-preventivos/{{ $mac }}" class="btn w-100 py-24">
 			<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-paquetes-preventivos.svg" alt="" class="mb-2" style="height:80px">
 			<div class="fs-14 line-height-16 fw-medium">Comprar paquetes <br>preventivos</div>
-		</button>
+		</a>
 	</div>
 	<div class="col-12 px-0 {{ $page == 'tratamientos' ? 'active-item-menu' : '' }}">
 		<button class="btn w-100 py-24">

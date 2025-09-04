@@ -209,6 +209,8 @@
     --redLight:#FBE9E7;
     --redDark: #D84315;
     --secundary00: #0A2240;
+    --midnightBlueTint80: #D0D3D9;
+    --beigeLight: #F1F0F0;
 }
 
 body {
@@ -218,6 +220,14 @@ body {
 
 .fw-medium {
     font-weight: 500 !important;
+}
+
+.rounded-4{
+    border-radius: 4px !important;
+}
+
+.rounded-6{
+    border-radius: 6px !important;
 }
 
 .rounded-8{
@@ -294,6 +304,14 @@ body {
     background: var(--silverLight) !important;
 }
 
+.bg-midnight-blue-tint-80{
+    background: var(--midnightBlueTint80) !important;
+}
+
+.bg-beige-light{
+    background: var(--beigeLight) !important;
+}
+
 .gradient-green{
     background: linear-gradient(0deg, var(--greenLight), var(--greenLight)), linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
 }
@@ -346,6 +364,10 @@ body {
     color: var(--silverDark) !important;
 }
 
+.text-silver-light{
+    color: var(--silverLight) !important;
+}
+
 .text-silver-neutral-40{
     color: var(--silverNeutral40);
 }
@@ -372,6 +394,10 @@ body {
 
 .border-midnight-blue{
     border: 1px solid var(--midnightBlue) !important;
+}
+
+.border-midnight-blue-tint-80{
+    border: 1px solid var(--midnightBlueTint80) !important;
 }
 
 .border-silver{

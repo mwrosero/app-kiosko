@@ -41,6 +41,13 @@ class KioskController extends Controller
                 ->with('mac',$mac);
     }
 
+    public function paquetesPreventivos($mac) {
+        $token = session('accessToken');
+        return view('kiosk.paquetes-preventivos')
+                ->with('accessToken',$token)
+                ->with('mac',$mac);
+    }
+
     public function carrito($mac) {
         $token = session('accessToken');
         return view('kiosk.carrito')
