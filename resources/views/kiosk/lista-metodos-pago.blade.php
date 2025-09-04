@@ -58,6 +58,7 @@
 			}
 		})
 	})
+	
 	async function facturar(){
 		let args = [];
         args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/facturar?macAddress={{ $mac }}`;

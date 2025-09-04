@@ -24,3 +24,17 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Categorías paquetes -->
+<div class="modal modal-top fade" id="modalCategorias" aria-labelledby="modalCategoriasLabel" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
+    <div class="modal-dialog modal modal-md modal-dialog-centered mx-auto my-0">
+        <div class="modal-content rounded-8 rounded-24">
+            <div class="modal-body px-32 py-24 text-center">
+                <h2 class="fs-24 line-height-32 text-royal-blue fw-medium mb-32">Filtrar por</h2>
+                <div class="mb-3" id="lista-categorias">
+                </div>
+                <button class="btn py-24 bg-royal-blue text-white rounded-12 fs-24 line-height-32 w-100 btnAplicarFiltroCategorias" data-bs-dismiss="modal">Aplicar</button>
+            </div>
+        </div>
+    </div>
+</div>
