@@ -16,7 +16,7 @@
 				<p class="mt-3 text-silver-dark fs-16 line-height-32 detalleComprobante"></p>
 				<div class="mt-56 d-flex justify-content-between align-items-center g-2">
 					<a href="/{{ $mac }}" class="btn w-50 me-2 fs-16 line-height-20 text-royal-blue border-royal-blue rounded-8 p-12 px-3">Cerrar</a>
-					<a href="/proximas-citas/{{ $mac }}" class="btn w-50 ms-2 fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3">Ver mi cita</a>
+					<a href="#" class="btn w-50 btn-redirect ms-2 fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3"></a>
 				</div>
 			</div>
 		</div>
@@ -25,8 +25,21 @@
 </div>
 <script>
 	let datosFacturados = JSON.parse(localStorage.getItem('datosFacturados'));
+	let origen = localStorage.getItem('origen');
 	trackId = localStorage.getItem('trackId');
+	
 	document.addEventListener("DOMContentLoaded", async function () {
+		switch(origen){
+			case 'cita':
+				$('.btn-redirect').attr('href',`/proximas-citas/{{ $mac }}`);
+				$('.btn-redirect').html(`Ver mi cita`);
+			break;
+			case 'paquete':
+				$('.btn-redirect').attr('href',`/paquetes-preventivos/{{ $mac }}`);
+				$('.btn-redirect').html(`Ver paquete preventivo`);
+			break;
+		}
+
 		if(datosFacturados.factura.transacciones.length == 1){
 			$('.detalleComprobante').html(`Tu número de comprobante es el ${datosFacturados.factura.transacciones[0].numeroComprobante}, llegará <br> con tu factura al correo electrónico.`)
 		}else{

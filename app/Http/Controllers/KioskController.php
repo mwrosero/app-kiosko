@@ -48,6 +48,13 @@ class KioskController extends Controller
                 ->with('mac',$mac);
     }
 
+    public function detallePaquete($mac) {
+        $token = session('accessToken');
+        return view('kiosk.detalle-paquete')
+                ->with('accessToken',$token)
+                ->with('mac',$mac);
+    }
+
     public function carrito($mac) {
         $token = session('accessToken');
         return view('kiosk.carrito')

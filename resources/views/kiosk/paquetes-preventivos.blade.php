@@ -313,6 +313,13 @@
             }
         })
 
+        $('body').on('click', '.btn-comprar', function(){
+        	let paquete = $(this).attr('data-rel');
+        	console.log(paquete);
+        	localStorage.setItem("paquete", paquete);
+        	location.href = `/detalle-paquete/{{ $mac }}`;
+        })
+
         {{-- $(document.body).on('touchmove', onScroll); // for mobile
         $(window).on('scroll', onScroll); --}}
 
@@ -462,11 +469,11 @@
                         if(value.esDescuentoExclusivo){
                            strDescuento = `<span class="badge badge-discount position-absolute top-0 end-0">Desct. exclusivo web</span>`;
                         }
-                        strDescuentoFooter = `<div class="p-1 font-gotham box-discount fw-medium text-center d-inline-block mb-1">-${value.porcentajeDescuento}% dto.</div><p class="mb-0 font-gotham text-muted text-sm">Antes <span class="text-decoration-line-through"> $${value.valorAnteriorPaquete}</span></p>`;
+                        strDescuentoFooter = `<div class="p-1 fs-12 line-height-16 box-discount fw-medium text-center d-inline-block mb-1">-${value.porcentajeDescuento}% dto.</div><p class="mb-0 text-muted fs-14 line-height-16">Antes <span class="text-decoration-line-through"> $${value.valorAnteriorPaquete}</span></p>`;
                     }
                     if(value.esDomicilio){
                         badgesImg = `<div class="position-absolute bottom-0 p-2 m-1 d-flex justify-content-start align-items-center">
-                            <div class="p-2 badge-domicilio text-primary fw-medium rounded-1 font-gotham d-flex justify-content-between"><img src="{{asset('assets/img/fa-icon-domicilio.svg')}}" style="width: 16px;margin-right: 4px;">A domicilio</div>
+                            <div class="p-2 badge-domicilio text-primary fw-medium rounded-1 fs-12 line-height-16 d-flex justify-content-between"><img src="{{asset('assets/img/fa-icon-domicilio.svg')}}" style="width: 16px;margin-right: 4px;">A domicilio</div>
                         </div>`
                     }
                     elem += `<div class="col-12 col-md-6 mb-4">
@@ -482,7 +489,7 @@
                             <div class="d-flex justify-content-between align-items-end">
                                 <div>
                                     ${strDescuentoFooter}
-                                    <h4 class="text-primary font-gotham fw-bold mb-0">$${value.valorTotalPaquete}</h4>
+                                    <h4 class="text-primary fs-28 line-height-36 fw-bold mb-0">$${value.valorTotalPaquete}</h4>
                                 </div>
                                 <div type="button" data-rel='${JSON.stringify(value)}' class="btn btn-sm bg-royal-blue text-white fs-14 line-height-16 fw-medium ms-2 m-0 btn-comprar rounded-4 py-8 px-3">Ver paquete</div>
                             </div>

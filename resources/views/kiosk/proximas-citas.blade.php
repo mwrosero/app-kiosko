@@ -126,6 +126,7 @@
 <script>
 	let datosCliente = JSON.parse(localStorage.getItem('datosCliente'));
 	trackId = localStorage.getItem('trackId');
+	localStorage.setItem("origen", "cita");
 	document.addEventListener("DOMContentLoaded", async function () {
 		await cargarProximasCitas();
 
