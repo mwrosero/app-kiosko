@@ -57,23 +57,23 @@
                         </li>
                         <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
                             Subtotal
-                            <span class="badge text-dark fw-normal" id="subtotal"></span>
+                            <span class="badge text-dark fw-normal fs-20 line-height-20" id="subtotal"></span>
                         </li>
                         <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
                             Crédito/convenio
-                            <span class="badge text-dark fw-normal" id="creditoConvenio"></span>
+                            <span class="badge text-dark fw-normal fs-20 line-height-20" id="creditoConvenio"></span>
                         </li>
                         <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
                             Descuento aplicado
-                            <span class="badge text-dark fw-normal" id="descuentoAplicado"></span>
+                            <span class="badge text-dark fw-normal fs-20 line-height-20" id="descuentoAplicado"></span>
                         </li>
                         <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
                             IVA
-                            <span class="badge text-dark fw-normal" id="iva"></span>
+                            <span class="badge text-dark fw-normal fs-20 line-height-20" id="iva"></span>
                         </li>
                         <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20 fw-bold">
                             Total
-                            <span class="badge text-dark fw-bold" id="total"></span>
+                            <span class="badge text-dark fs-20 line-height-20 fw-bold" id="total"></span>
                         </li>
                     </ul>
                 </div>
