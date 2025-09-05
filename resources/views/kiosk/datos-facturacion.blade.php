@@ -21,7 +21,7 @@
 				</div> --}}
 				<div class="col-6">
                     <label for="tipoIdentificacion" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Elige tu documento *</label>
-                    <select class="form-select input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3 text-capitalize" name="tipoIdentificacion" id="tipoIdentificacion" required>
+                    <select class="form-select input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3 text-capitalize" name="tipoIdentificacion" id="tipoIdentificacion" required>
                         {{-- <option value="2">CÉDULA</option>
                         <option value="1">RUC</option> --}}
                     </select>
@@ -31,21 +31,21 @@
                 </div>
                 <div class="col-6">
                     <label for="numeroIdentificacion" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Número de documento *</label>
-                    <input type="number" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="" required />
+                    <input type="number" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="" required />
                     <div class="invalid-feedback">
                         Ingrese un numero de identificacion.
                     </div>
                 </div>
                 <div class="col-12 mt-3">
                     <label for="nombresCompletos" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Nombres completos *</label>
-                    <input type="text" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="nombresCompletos" id="nombresCompletos" placeholder="" required />
+                    <input type="text" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3" name="nombresCompletos" id="nombresCompletos" placeholder="" required />
                     <div class="invalid-feedback">
                         Ingrese su nombres y apellidos.
                     </div>
                 </div>
                 <div class="col-12 mt-3">
                     <label for="mail" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Correo electrónico *</label>
-                    <input type="email" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="mail" id="mail" placeholder="" required />
+                    <input type="email" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3" name="mail" id="mail" placeholder="" required />
                     <div class="valid-feedback">
                         Ingrese un correo electronico.
                     </div>
@@ -90,7 +90,7 @@
 	                </div>
 	            </div>
 	            <div class="col-12 mt-4 text-center">
-	            	<button class="btn bg-royal-blue text-white fs-18 line-height-24 py-3 rounded-16 w-50 fw-medium shadow-none disabled" id="btn-validar-datos-factura">Pagar ahora</button>
+	            	<button class="btn bg-royal-blue text-white fs-18 line-height-24 py-3 rounded-8 w-50 fw-medium shadow-none disabled" id="btn-validar-datos-factura">Pagar ahora</button>
 	            </div>
             </div>
 		</div>
