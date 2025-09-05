@@ -257,7 +257,7 @@
 	}
 
 	function drawCardItem(detalle){
-		return `<div class="col-6 col-md-6 box-agenda">
+		return `<div class="col-6 col-md-6 box-agenda mb-4">
 					${drawStatusBox(detalle)}
 					<div class="box-contenido rounded-bottom-16 border-royal-blue-tint-60 border-top-0 border-inside p-12 d-flex justify-content-between align-items-stretch">
 					    <div class="box-icon bg-royal-blue-tint-90 me-2 d-flex align-items-center justify-content-center rounded-8">
