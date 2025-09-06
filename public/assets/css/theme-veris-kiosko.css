@@ -493,6 +493,11 @@ body {
     padding-right: 32px !important;
 }
 
+.px-64{
+    padding-left: 64px !important;
+    padding-right: 64px !important;
+}
+
 .py-8{
     padding-top: 8px !important;
     padding-bottom: 8px !important;
@@ -607,4 +612,8 @@ body {
     font-size: 12px;
     line-height: 16px;
     padding: 8px 12px !important;
+}
+
+.modal-backdrop.show {
+    opacity: 0.75 !important;
 }

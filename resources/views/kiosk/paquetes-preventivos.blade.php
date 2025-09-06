@@ -389,10 +389,10 @@
 
 	async function obtenerCategorias(){
         let args = [];
-        //args["endpoint"] = api_url + `/${api_war}/v1/comercial/categoriasPaquete?canalOrigen=${canalOrigen}`;
-        args["endpoint"] = `https://api-phantomx.veris.com.ec/digitalestest/v1/comercial/categoriasPaquete?canalOrigen=VER_CMV`;
+        args["endpoint"] = `${api_url_digitales}/${api_war}/paquetes/categorias_paquete?macAddress={{ $mac }}`;
         args["method"] = "GET";
-        args["sendHeaders"] = false;
+        //args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         args["showLoader"] = false;
         const data = await call(args);
         
@@ -424,6 +424,16 @@
         return itemsSeleccionados;
     }
 
+    async function obtenerNemonicosCategoriasSeleccionadas(){
+        var itemsSeleccionados = [];
+        $('.category-item').each(function() {
+            if ($(this).hasClass('category-selected')) {
+                    itemsSeleccionados.push($(this).attr('categoria-rel'))
+            }
+        });
+        return itemsSeleccionados;
+    }
+
 	async function agregarItem(datosPago){
 		console.log(datosPago);
 		let args = [];
@@ -443,10 +453,10 @@
 
 	let servicios;
 	async function obtenerPaquetesPromocionales(){
+		let nemonicos = await obtenerNemonicosCategoriasSeleccionadas();
+
 		let args = [];
-        //args["endpoint"] = `${api_url_digitales}/${api_war}/pacientes/paquetes?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}&tipoGestion=TODOS&&page=${page}&perPage=${perPage}`;
-        args['endpoint'] = `https://api-phantomx.veris.com.ec/digitalestest/v1/comercial/paquetes?canalOrigen=VER_CMV&codigoEmpresa=1&tipoFiltro=POR_ASIGNAR&page=${page}&perPage=${perPage}&estaPagado=false&verDetalle=false&categoria=&buscarPorPromocion=${ (getInput('buscarPorPromocion').replace(/\s/g, '+')) }`;
-        args["sendHeaders"] = false;
+		args["endpoint"] = `${api_url_digitales}/${api_war}/paquetes?macAddress={{ $mac }}&page=${page}&perPage=${perPage}&nemonicoGrupoPaciente=${nemonicos.join(',')}`;
         args["method"] = "GET";
         args["showLoader"] = (getInput('buscarPorPromocion') == "") ? true : false;
         args["token"] = "{{ $accessToken }}";
@@ -454,13 +464,15 @@
         console.log(data);
         if (data.code == 200){
             let elem = ``;
-            if(data.data.items.length == 0){
+            if(data.data.rows.length == 0){
                 cargandoContenido = true;
             }else{
                 cargandoContenido = false;  
             }
-            if(data.data.items.length > 0){
-                $.each(data.data.items, function(key, value){
+            if(data.data.rows.length > 0){
+                $.each(data.data.rows, function(key, value){
+                	let urlImagen = (value.urlImagen !== "") ? value.urlImagen : `{{asset('assets/img/img-default-paquete.png')}}`
+
                     let strDescuento = ``;
                     let strDescuentoFooter = ``;
                     let badgesImg = ``;
@@ -469,9 +481,9 @@
                         if(value.esDescuentoExclusivo){
                            strDescuento = `<span class="badge badge-discount position-absolute top-0 end-0">Desct. exclusivo web</span>`;
                         }
-                        strDescuentoFooter = `<div class="p-1 fs-12 line-height-16 box-discount fw-medium text-center d-inline-block mb-1">-${value.porcentajeDescuento}% dto.</div><p class="mb-0 text-muted fs-14 line-height-16">Antes <span class="text-decoration-line-through"> $${value.valorAnteriorPaquete}</span></p>`;
+                        strDescuentoFooter = `<div class="p-1 fs-12 line-height-16 box-discount fw-medium text-center d-inline-block mb-1">-${value.porcentajeDescuento}% dto.</div><p class="mb-0 text-muted fs-14 line-height-16">Antes <span class="text-decoration-line-through"> $${value.subtotalVenta.toFixed(2)}</span></p>`;
                     }
-                    if(value.esDomicilio){
+                    if(value.esPaqueteDomicilio){
                         badgesImg = `<div class="position-absolute bottom-0 p-2 m-1 d-flex justify-content-start align-items-center">
                             <div class="p-2 badge-domicilio text-primary fw-medium rounded-1 fs-12 line-height-16 d-flex justify-content-between"><img src="{{asset('assets/img/fa-icon-domicilio.svg')}}" style="width: 16px;margin-right: 4px;">A domicilio</div>
                         </div>`
@@ -479,7 +491,7 @@
                     elem += `<div class="col-12 col-md-6 mb-4">
                         <div class="card h-100 border-0 box-shadow-3 rounded-4 p-3 border-silver rounded-16">
                             <div type="button" class="zoom-img btn-comprar position-relative rounded-3 overflow-hidden" data-rel='${JSON.stringify(value)}'>
-                                <img src="${value.urlImagen}" onerror="https://www.veris.com.ec/wp-content/themes/veris2025/img/veris.png" class="card-img-top" alt="${value.nombrePaquete}">
+                                <img src="${urlImagen}" onerror="https://www.veris.com.ec/wp-content/themes/veris2025/img/veris.png" class="card-img-top" alt="${value.nombrePaquete}">
                                 ${strDescuento}
                                 ${badgesImg}
                             </div>
@@ -489,7 +501,7 @@
                             <div class="d-flex justify-content-between align-items-end">
                                 <div>
                                     ${strDescuentoFooter}
-                                    <h4 class="text-primary fs-28 line-height-36 fw-bold mb-0">$${value.valorTotalPaquete}</h4>
+                                    <h4 class="text-primary fs-28 line-height-36 fw-bold mb-0">$${value.valorTotal.toFixed(2)}</h4>
                                 </div>
                                 <div type="button" data-rel='${JSON.stringify(value)}' class="btn btn-sm bg-royal-blue text-white fs-14 line-height-16 fw-medium ms-2 m-0 btn-comprar rounded-4 py-8 px-3">Ver paquete</div>
                             </div>

@@ -21,63 +21,80 @@ class KioskController extends Controller
     }
 
     public function ingreso($mac) {
-        $token = session('accessToken');
+        // $token = session('accessToken');
+        $token = Veris::getToken();
         return view('kiosk.ingreso')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
     }
 
     public function menu($mac) {
-        $token = session('accessToken');
+        // $token = session('accessToken');
+        $token = Veris::getToken();
         return view('kiosk.menu')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
     }
 
     public function proximasCitas($mac) {
-        $token = session('accessToken');
+        // $token = session('accessToken');
+        $token = Veris::getToken();
         return view('kiosk.proximas-citas')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
     }
 
     public function paquetesPreventivos($mac) {
-        $token = session('accessToken');
+        // $token = session('accessToken');
+        $token = Veris::getToken();
         return view('kiosk.paquetes-preventivos')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
     }
 
     public function detallePaquete($mac) {
-        $token = session('accessToken');
+        // $token = session('accessToken');
+        $token = Veris::getToken();
         return view('kiosk.detalle-paquete')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
     }
 
+    public function asignarPaquete($mac) {
+        // $token = session('accessToken');
+        $token = Veris::getToken();
+        return view('kiosk.asignar-paquete')
+                ->with('accessToken',$token)
+                ->with('mac',$mac);
+    }
+
     public function carrito($mac) {
-        $token = session('accessToken');
+        // $token = session('accessToken');
+        $token = Veris::getToken();
         return view('kiosk.carrito')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
     }
 
     public function datosFacturacion($mac) {
-        $token = session('accessToken');
+        // $token = session('accessToken');
+        $token = Veris::getToken();
         return view('kiosk.datos-facturacion')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
     }
 
     public function listaMetodosPago($mac) {
-        $token = session('accessToken');
+        // $token = session('accessToken');
+        $token = Veris::getToken();
         return view('kiosk.lista-metodos-pago')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
     }
 
     public function pagoExitoso($mac) {
-        $token = session('accessToken');
+        // $token = session('accessToken');
+        $token = Veris::getToken();
         return view('kiosk.pago-exitoso')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);

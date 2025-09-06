@@ -167,6 +167,10 @@
         console.log(data);
         if(data.code == 200){
         	location.href = '/datos-facturacion/{{ $mac }}';
+        }else{
+        	$('#modalError').modal('show');
+			$('.titleError').html(`Atención`);
+			$('.msgError').html(data.message);
         }
 	}
 

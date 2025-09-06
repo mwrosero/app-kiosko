@@ -40,11 +40,11 @@
 	let datosCliente = JSON.parse(localStorage.getItem('datosCliente'));
 	let paquete = JSON.parse(localStorage.getItem('paquete'));
 	trackId = localStorage.getItem('trackId');
-	localStorage.setItem("origen", "paquete");
 	
 	document.addEventListener("DOMContentLoaded", async function () {
+		let urlImagen = (paquete.urlImagen !== "") ? paquete.urlImagen : `{{asset('assets/img/img-default-paquete.png')}}`
 		$('.page-title').html(paquete.nombreComercialPaquete);
-		$('.img-paquete').attr('src', paquete.urlImagen)
+		$('.img-paquete').attr('src', urlImagen)
 		$('#descripcionPaquete').html(paquete.descripcionPaquete)
 
 		let strDescuento = ``;
@@ -55,7 +55,7 @@
             if(!paquete.esDescuentoExclusivo){
                strDescuento = `<span class="badge badge-discount position-absolute top-0 end-0">Desct. exclusivo web</span>`;
             }
-            strDescuentoFooter = `<div class="p-1 fs-12 line-height-16 box-discount fw-medium text-center d-inline-block mb-1">-${paquete.porcentajeDescuento}% dto.</div><p class="mb-0 text-muted fs-14 line-height-16">Antes <span class="text-decoration-line-through"> $${paquete.valorAnteriorPaquete}</span></p>`;
+            strDescuentoFooter = `<div class="p-1 fs-12 line-height-16 box-discount fw-medium text-center d-inline-block mb-1">-${paquete.porcentajeDescuento}% dto.</div><p class="mb-0 text-muted fs-14 line-height-16">Antes <span class="text-decoration-line-through"> $${paquete.subtotalVenta.toFixed(2)}</span></p>`;
         }
         if(paquete.esDomicilio){
             badgesImg = `<div class="position-absolute bottom-0 p-2 m-1 d-flex justify-content-start align-items-center">
@@ -63,34 +63,28 @@
             </div>`
         }
 
-        $('.box-price').html(`<div class="col-4 my-3">
+        $('.box-price').html(`<div class="col-8 my-3">
                 ${strDescuentoFooter}
-                <h4 class="text-primary fs-28 line-height-36 fw-bold mb-0">$${paquete.valorTotalPaquete}</h4>
+                <h4 class="text-primary fs-28 line-height-36 fw-bold mb-0">$${paquete.valorTotal.toFixed(2)}</h4>
             </div>
-	        <div class="col-8 my-3 d-flex justify-content-end align-items-end gap-2">
-	            <div type="button" data-rel='${JSON.stringify(paquete)}' class="btn border-royal-blue text-royal-blue fs-18 line-height-24 fw-medium ms-2 m-0 btn-add-to-cart rounded-8 p-3 flex-fill btn-pagar">Pagar ahora</div>
-	            <div type="button" data-rel='${JSON.stringify(paquete)}' class="btn bg-royal-blue text-white fs-18 line-height-24 fw-medium ms-2 m-0 btn-add-to-cart rounded-8 p-3 flex-fill">Agregar al carrito</div>
+	        <div class="col-4 my-3 d-flex justify-content-end align-items-end gap-2">
+	            {{-- <div type="button" data-rel='${JSON.stringify(paquete)}' class="btn border-royal-blue text-royal-blue fs-18 line-height-24 fw-medium ms-2 m-0 btn-add-to-cart rounded-8 p-3 flex-fill btn-pagar">Pagar ahora</div> --}}
+	            <div type="button" data-rel='${JSON.stringify(paquete)}' class="btn bg-royal-blue text-white fs-18 line-height-24 fw-medium ms-2 m-0 btn-asignar rounded-8 p-3 flex-fill">Agregar al carrito</div>
     		</div>`)
 
 
 
 		await obtenerDetallePaquete();
 
-        $('body').on('click', '.btn-comprar', function(){
+        {{-- $('body').on('click', '.btn-comprar', function(){
         	let paquete = $(this).attr('data-rel');
         	console.log(paquete);
         	localStorage.setItem("paquete", paquete);
         	location.href = `/detalle-paquete/{{ $mac }}`;
-        })
+        }) --}}
 
-        $('body').on('click', '.btn-pagar', async function(){
-			let datosPago = {
-				"paquetesPromocionales": {
-					"codigoPaquete": paquete.codigoPaquete,
-					"idPaciente": datosCliente.idPaciente
-				}
-			}
-			await agregarItem(datosPago);
+        $('body').on('click', '.btn-asignar', async function(){
+			location.href = `/asignar-paquete/{{ $mac }}`;
 		})
 
 	})
@@ -120,20 +114,16 @@
 	let servicios;
 	async function obtenerDetallePaquete(){
 		let args = [];
-        // args["endpoint"] = api_url + `/${api_war}/v1/comercial/detallePaquete?canalOrigen=${_canalOrigen}&codigoEmpresa=${dataCita.paquete.codigoEmpresaPaquete}&codigoPaquete=${dataCita.paquete.codigoPaquete}`;
-        args['endpoint'] = `https://api-phantomx.veris.com.ec/digitalestest/v1/comercial/detallePaquete?canalOrigen=MVE_CMV&codigoEmpresa=${paquete.codigoEmpresaPaquete}&codigoPaquete=${paquete.codigoPaquete}`;
-        args["sendHeaders"] = false;
+        args["endpoint"] = `${api_url_digitales}/${api_war}/paquetes/${paquete.codigoPaquete}/detalles?macAddress={{ $mac }}`;
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data);
         if (data.code == 200){
         	let elem = ``;
-            $.each(data.data.detallePromocion, function(key, value){
-                $.each(value.detalles, function(k,v){
-                    elem += `<li class="fs-16 line-height-20 mb-1" title="${value.nombreServicio}">${v.nombreComercial}</li>`;
-                })
+            $.each(data.data.detalles, function(key, value){
+                elem += `<li class="fs-16 line-height-20 mb-1 text-capitalize">${value.nombrePrestacion.toLowerCase()}</li>`;
             })
             $('#detallePaquete').append(elem);            
         }else{
