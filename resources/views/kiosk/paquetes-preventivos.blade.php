@@ -456,7 +456,7 @@
 		let nemonicos = await obtenerNemonicosCategoriasSeleccionadas();
 
 		let args = [];
-		args["endpoint"] = `${api_url_digitales}/${api_war}/paquetes?macAddress={{ $mac }}&page=${page}&perPage=${perPage}&nemonicoGrupoPaciente=${nemonicos.join(',')}`;
+		args["endpoint"] = `${api_url_digitales}/${api_war}/paquetes?macAddress={{ $mac }}&page=${page}&perPage=${perPage}&nemonicoGrupoPaciente=${nemonicos.join(',')}&busqueda=${ (getInput('buscarPorPromocion').replace(/\s/g, '+')) }`;
         args["method"] = "GET";
         args["showLoader"] = (getInput('buscarPorPromocion') == "") ? true : false;
         args["token"] = "{{ $accessToken }}";

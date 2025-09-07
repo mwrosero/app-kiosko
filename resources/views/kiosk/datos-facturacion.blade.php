@@ -79,9 +79,9 @@
                 </div>
 	            <div class="col-12 text-center mt-4">
 	                <div class="form-check d-flex justify-content-md-center align-items-center">
-	                    <input class="form-check-input terminos-input me-2 mb-1 width-24" type="checkbox" value="" id="checkTerminosCondicion" required>
-	                    <label class="form-check-label fs--1 fw-medium line-height-16" for="checkTerminosCondicion">
-	                        Acepto los <a href="https://www.veris.com.ec/terminos-y-condiciones/" target="_blank" class="">Términos y condiciones</a> 
+	                    <input class="form-check-input terminos-input me-2 mb-1 width-24" type="checkbox" value="" id="checkTerminosCondicion" required style="width: 20px; height: 20px;">
+	                    <label class="form-check-label fs-20 fw-medium line-height-24" for="">
+	                        Acepto los <div type="button" class="text-decoration-underline text-royal-blue d-inline-block" data-bs-toggle="modal" data-bs-target="#modalTerminos">Términos y condiciones</div> 
 	                        <span id="politicas" class="d-none">y <a href="https://www.veris.com.ec/politicas/" target="_blank">Política de protección de Datos Personales</a></span>
 	                    </label>
 	                    <div class="invalid-feedback">
@@ -473,9 +473,16 @@
         console.log(data);
         datosFacturacion = data.data;
         if(data.code == 200){
-        	if(data.data !== null || data.data.length > 0){
+        	let options = ``;
+			$.each(data.data.tiposIdentificacion, function(key, value){
+				options += `<option class="text-capitalize" value="${value.codigoTipoIdentificacion}">${value.nombreTipoIdentificacion.toLowerCase()}</option>`
+			})
+			$('#tipoIdentificacion').html(options);
+        	if(data.data.datosFactura !== null){
         		await fillFormDatosFactura();
         		datosSeteados = true;
+        	}else{
+        		$('.simple-keyboard').parent().removeClass('d-none')
         	}
         }
 	}
@@ -487,11 +494,6 @@
 		$('#iva').html(`$${datosFacturacion.totales.valorIva.toFixed(2)}`);
 		$('#total').html(`$${datosFacturacion.totales.valorTotalPaciente.toFixed(2)}`);
 
-		let options = ``;
-		$.each(datosFacturacion.tiposIdentificacion, function(key, value){
-			options += `<option class="text-capitalize" value="${value.codigoTipoIdentificacion}">${value.nombreTipoIdentificacion.toLowerCase()}</option>`
-		})
-		$('#tipoIdentificacion').html(options);
 		$('#tipoIdentificacion').val(parseInt(datosFacturacion.datosFactura.codigoTipoIdentificacion));
 		$('#numeroIdentificacion').val(datosFacturacion.datosFactura.numeroIdentificacion)
 		$('#nombresCompletos').val(datosFacturacion.datosFactura.nombreCompleto)

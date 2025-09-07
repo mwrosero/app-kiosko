@@ -211,6 +211,7 @@
     --secundary00: #0A2240;
     --midnightBlueTint80: #D0D3D9;
     --beigeLight: #F1F0F0;
+    --magenta: #C52BD2;
 }
 
 body {
@@ -310,6 +311,10 @@ body {
 
 .bg-beige-light{
     background: var(--beigeLight) !important;
+}
+
+.bg-magenta{
+    background: var(--magenta) !important;
 }
 
 .gradient-green{
