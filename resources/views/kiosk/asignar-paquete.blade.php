@@ -29,13 +29,20 @@
 	document.addEventListener("DOMContentLoaded", async function () {		
         $('body').on('click', '.btn-asignar', async function(){
         	let paciente = JSON.parse($(this).attr('data-rel'));
-			let datosPago = {
-				"paquetesPromocionales": {
-					"codigoPaquete": paquete.codigoPaquete,
-					"idPaciente": paciente.pacPacNumero
+        	if(paciente.genero == paquete.genero){
+				let datosPago = {
+					"paquetesPromocionales": {
+						"codigoPaquete": paquete.codigoPaquete,
+						"idPaciente": paciente.pacPacNumero
+					}
 				}
+				await agregarItem(datosPago);
+			}else{
+				let generoPaquete = (paquete.genero == "F") ? `Femenino` : `Masculino`
+				$('#modalError').modal('show');
+				$('.titleError').html(`Lo sentimos`);
+				$('.msgError').html(`Este paquete está diseñado exclusivamente para pacientes de sexo [${generoPaquete}]. Por favor, selecciona otro paquete o cambia el paciente seleccionado.`);
 			}
-			await agregarItem(datosPago);
 		})
 	})
 </script>

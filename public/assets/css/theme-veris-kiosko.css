@@ -193,6 +193,7 @@
 :root {
     --royalBlue: #296BEF;
     --royalBlueShade20: #2156BF;
+    --royalBlueShade40: #19408F;
     --royalBlueTint60: #A9C4F9;
     --royalBlueTint80: #D4E1FC;
     --royalBlueTint90: #EAF0FD;
@@ -333,6 +334,10 @@ body {
     color: var(--royalBlueShade20) !important;
 }
 
+.text-royal-blue-shade-40{
+    color: var(--royalBlueShade40) !important;
+}
+
 .text-light-sky-blue-tint-90{
     color: var(--lightSkyBlueTint90) !important;
 }
@@ -405,6 +410,10 @@ body {
     border: 1px solid var(--midnightBlueTint80) !important;
 }
 
+.border-bottom-midnight-blue-tint-80{
+    border-bottom: 1px solid var(--midnightBlueTint80) !important;
+}
+
 .border-silver{
     border: 1px solid var(--silver) !important;
 }
@@ -461,6 +470,10 @@ body {
     font-size: 64px !important;
 }
 
+.fs-128{
+    font-size: 128px !important;
+}
+
 .line-height-16{
     line-height: 16px !important;
 }
@@ -491,6 +504,10 @@ body {
 
 .line-height-56{
     line-height: 56px !important;
+}
+
+.line-height-128{
+    line-height: 128px !important;
 }
 
 .px-8{

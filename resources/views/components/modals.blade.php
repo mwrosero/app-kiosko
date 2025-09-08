@@ -62,8 +62,11 @@
         <div class="modal-content rounded-8 rounded-24">
             {{-- <button type="button" class="btn-close position-absolute end-0 top-0 me-3 mt-3 fw-bold" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button> --}}
             <div class="modal-body px-64 py-24 text-center">
-                <h2 class="fs-40 line-height-48 py-32 text-royal-blue fw-medium mb-32">Item agregado al carrito</h2>
+                <h2 class="fs-40 line-height-48 py-32 text-royal-blue fw-medium">Item agregado al carrito</h2>
                 {{-- <h3 class="fs-16 line-height-20 text-silver-dark mb-32">El usuario ingresado para los datos de facturación es menor de edad, para continuar, cambia los datos por los de un usuario mayor de edad.</h3> --}}
+                <div class="mb-32 pb-4">
+                    <i class="fa-solid fa-circle-check fs-128 line-height-128 text-green-dark"></i>
+                </div>
                 <div class="box-actions d-flex justify-content-between align-items-center gap-3">
                     <a href="/menu/{{ $mac }}" class="btn py-24 text-royal-blue border-royal-blue rounded-12 fs-24 line-height-32 w-50">Seguir comprando</button>
                     <a href="/carrito/{{ $mac }}" class="btn py-24 bg-royal-blue text-white rounded-12 fs-24 line-height-32 w-50">Ir a pagar</a>
