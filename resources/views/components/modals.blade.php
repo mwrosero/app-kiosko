@@ -12,7 +12,7 @@
     </div>
 </div>
 
-<!-- Modal Confirmar Cita -->
+<!-- Modal Error -->
 <div class="modal modal-top fade" id="modalError" aria-labelledby="modalErrorLabel" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
     <div class="modal-dialog modal modal-lg modal-dialog-centered mx-auto my-0">
         <div class="modal-content rounded-8 rounded-24">
@@ -40,7 +40,7 @@
     </div>
 </div>
 
-<!-- Modal Confirmar Cita -->
+<!-- Modal Terminos y Condiciones Pago -->
 <div class="modal modal-top fade" id="modalTerminos" aria-labelledby="modalTerminosLabel" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
     <div class="modal-dialog modal modal-lg modal-dialog-centered mx-auto my-0">
         <div class="modal-content rounded-8 rounded-24">
@@ -51,6 +51,23 @@
                     @include('components.terminos')
                 </div>
                 <button class="btn py-24 bg-royal-blue text-white rounded-12 fs-24 line-height-32 w-50" data-bs-dismiss="modal">Entendido</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Producto Agregado -->
+<div class="modal modal-top fade" id="modalProductoAgregado" aria-labelledby="modalProductoAgregadoLabel" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
+    <div class="modal-dialog modal modal-lg modal-dialog-centered mx-auto my-0">
+        <div class="modal-content rounded-8 rounded-24">
+            {{-- <button type="button" class="btn-close position-absolute end-0 top-0 me-3 mt-3 fw-bold" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button> --}}
+            <div class="modal-body px-64 py-24 text-center">
+                <h2 class="fs-40 line-height-48 py-32 text-royal-blue fw-medium mb-32">Item agregado al carrito</h2>
+                {{-- <h3 class="fs-16 line-height-20 text-silver-dark mb-32">El usuario ingresado para los datos de facturación es menor de edad, para continuar, cambia los datos por los de un usuario mayor de edad.</h3> --}}
+                <div class="box-actions d-flex justify-content-between align-items-center gap-3">
+                    <a href="/menu/{{ $mac }}" class="btn py-24 text-royal-blue border-royal-blue rounded-12 fs-24 line-height-32 w-50">Seguir comprando</button>
+                    <a href="/carrito/{{ $mac }}" class="btn py-24 bg-royal-blue text-white rounded-12 fs-24 line-height-32 w-50">Ir a pagar</a>
+                </div>
             </div>
         </div>
     </div>

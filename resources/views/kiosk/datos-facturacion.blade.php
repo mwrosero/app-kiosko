@@ -131,7 +131,9 @@
 		visibility: hidden;
 	}
 
-	.hg-button[data-skbtnuid="default-r1b10"]{
+	.hg-button[data-skbtnuid="default-r1b10"],
+	.hg-button[data-skbtnuid="shift-r1b10"]
+	{
 		border: none !important;
 		background: var(--royalBlue) !important;
 		font-size: 30px !important;
@@ -373,15 +375,12 @@
 		$('body').on('click', '#btn-validar-datos-factura', async function(){
 			if(!datosSeteados){
 				await setearDatosFactura();
-				if(data.code == 200){
+			}else{
+				if($('#numeroIdentificacion').val().length > 0 && $('#nombresCompletos').val().length > 0 && $('#mail').val().length > 0){
 					location.href = `/metodos-pago/{{ $mac }}`
 				}else{
-					$('#modalError').modal('show');
-					$('.titleError').html(`Atención`);
-					$('.msgError').html(data.message);
+
 				}
-			}else{
-				location.href = `/metodos-pago/{{ $mac }}`
 			}
 		})
 	})
@@ -431,11 +430,18 @@
 		})
         const data = await call(args);
         console.log(data);
-        return data;
+        if(data.code == 200){
+			location.href = `/metodos-pago/{{ $mac }}`
+		}else{
+			$('#modalError').modal('show');
+			$('.titleError').html(`Atención`);
+			$('.msgError').html(data.message);
+		}
 	}
 
 	let datosSeteados = false;
 	async function verificarDatosFacturacion(){
+		let numeroIdentificacion = ($('#tipoIdentificacion option:selected').val() !== "3") ? $('#numeroIdentificacion').val() : $('#numeroIdentificacion').val().toUpperCase()
 		let args = [];
         args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/verificar_datos_factura?macAddress={{ $mac }}`;
         args["method"] = "POST";
@@ -446,14 +452,23 @@
         args["bodyType"] = "json";
         args["data"] = JSON.stringify({
 		  	"codigoTipoIdentificacion": parseInt($('#tipoIdentificacion option:selected').val()),
-		  	"numeroIdentificacion": $('#numeroIdentificacion').val()
+		  	"numeroIdentificacion": numeroIdentificacion
 		})
         const data = await call(args);
         console.log(data);
         if(data.code == 200){
         	datosSeteados = data.data.datosSeteados;
-        	$('#nombresCompletos').val(data.data.nombreCompleto)
-			$('#mail').val(data.data.mail)
+        	if(data.data.esMenorDeEdad){
+        		$('#modalError').modal('show');
+				$('.titleError').html(`Atención`);
+				$('.msgError').html(`Número de cédula <b>${$('#numeroIdentificacion').val()}</b> pertenece a menor de edad.`);
+	        	$('#numeroIdentificacion').val('')
+	        	$('#nombresCompletos').val('')
+				$('#mail').val('')
+        	}else{
+	        	$('#nombresCompletos').val(data.data.nombreCompleto)
+				$('#mail').val(data.data.mail)
+			}
         }else{
         	datosSeteados = false;
         	$('#nombresCompletos').val('')

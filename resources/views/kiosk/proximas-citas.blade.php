@@ -20,21 +20,6 @@
 					<div type="button" tipoServicio-rel="L" class="item-servicio text-nowrap bg-royal-blue text-white p-3 rounded-8 fs-14 line-height-16">
 						Consultas
 					</div>
-					<div type="button" tipoServicio-rel="L" class="item-servicio text-nowrap border-royal-blue-tint-60 text-royal-blue p-3 rounded-8 fs-14 line-height-16">
-						Laboratorio
-					</div>
-					<div type="button" tipoServicio-rel="L" class="item-servicio text-nowrap border-royal-blue-tint-60 text-royal-blue p-3 rounded-8 fs-14 line-height-16">
-						Imágenes
-					</div>
-					<div type="button" tipoServicio-rel="L" class="item-servicio text-nowrap border-royal-blue-tint-60 text-royal-blue p-3 rounded-8 fs-14 line-height-16">
-						Procedimientos
-					</div>
-					<div type="button" tipoServicio-rel="L" class="item-servicio text-nowrap border-royal-blue-tint-60 text-royal-blue p-3 rounded-8 fs-14 line-height-16">
-						Terapia física
-					</div>
-					<div type="button" tipoServicio-rel="L" class="item-servicio text-nowrap border-royal-blue-tint-60 text-royal-blue p-3 rounded-8 fs-14 line-height-16">
-						Chequeos ocupacionales
-					</div>
 				</div> --}}
 				<div class="container box-fecha px-0" id="content-area">
 					{{-- <div class="text-center mt-5 pt-5">
@@ -153,27 +138,6 @@
 		})
 	})
 
-	async function agregarItem(datosPago){
-		console.log(datosPago);
-		let args = [];
-        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/agregar?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`;
-        args["method"] = "POST";
-        args["showLoader"] = true;
-        {{-- args["sendHeaders"] = false; --}}
-        args["token"] = "{{ $accessToken }}";
-        args["bodyType"] = "json";
-        args["data"] = JSON.stringify(datosPago);
-        const data = await call(args);
-        console.log(data);
-        if(data.code == 200){
-        	location.href = '/datos-facturacion/{{ $mac }}';
-        }else{
-        	$('#modalError').modal('show');
-			$('.titleError').html(`Atención`);
-			$('.msgError').html(data.message);
-        }
-	}
-
 	let servicios;
 	async function cargarProximasCitas(){
 		let args = [];
@@ -255,7 +219,7 @@
 			}
 		}else{
 			elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3">Reagendar</button>
-				<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Pagar</button>`
+				<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Agregar al carrito</button>`//Pagar
 		}
 		return elem;
 	}

@@ -493,6 +493,11 @@ body {
     line-height: 56px !important;
 }
 
+.px-8{
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}
+
 .px-32{
     padding-left: 32px !important;
     padding-right: 32px !important;

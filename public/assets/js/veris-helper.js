@@ -23,7 +23,7 @@ const _langDate = {
 document.addEventListener("DOMContentLoaded", async function () {
     $('body').on('click', '.view-cart', function(){
         // location.href = `/carrito/${mac}`;
-        location.href = `/datos-facturacion/${mac}`;
+        location.href = `/carrito/${mac}`;
     })
 })
 
@@ -1263,4 +1263,25 @@ function limitarCaracteres(input, maxCaracteres) {
 
     // Establece el valor limitado en el campo de entrada
     input.value = valor;
+}
+
+async function agregarItem(datosPago, idElem = null){
+    console.log(datosPago);
+    let args = [];
+    args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/agregar?macAddress=${mac}&idPaciente=${datosCliente.idPaciente}`;
+    args["method"] = "POST";
+    args["showLoader"] = true;
+    args["token"] = accessToken;
+    args["bodyType"] = "json";
+    args["data"] = JSON.stringify(datosPago);
+    const data = await call(args);
+    console.log(data);
+    if(data.code == 200){
+        // location.href = '/datos-facturacion/{{ $mac }}';
+        $('#modalProductoAgregado').modal('show');
+    }else{
+        $('#modalError').modal('show');
+        $('.titleError').html(`Atención`);
+        $('.msgError').html(data.message);
+    }
 }
