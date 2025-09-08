@@ -47,6 +47,9 @@
 	}
 </style>
 <script>
+	let datosCliente = JSON.parse(localStorage.getItem('datosCliente'));
+	trackId = localStorage.getItem('trackId');
+	
 	document.addEventListener("DOMContentLoaded", async function () {
 		$('body').on('click', '.btn-payment-type', async function(){
 			let metodo = $(this).attr('metodo-rel')
@@ -58,6 +61,7 @@
 			}
 		})
 	})
+	
 	async function facturar(){
 		let args = [];
         args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/facturar?macAddress={{ $mac }}`;
@@ -66,6 +70,7 @@
         {{-- args["sendHeaders"] = false; --}}
         args["token"] = "{{ $accessToken }}";
         args["bodyType"] = "json";
+        args["dismissAlert"] = true;
         const data = await call(args);
         console.log(data);
         if(data.code == 200){

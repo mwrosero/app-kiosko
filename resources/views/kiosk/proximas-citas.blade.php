@@ -13,27 +13,12 @@
 				@include('components.access-bar', ['page' => 'proximas-citas'])
 			</div>
 			<!-- pe-0 -->
-			<div class="col-10 px-3 py-40 h-100 border-silver border-end-0 border-bottom-0" style="overflow-y: auto; max-height: 70vh !important;">
+			<div class="col-10 px-3 py-40 h-100" style="overflow-y: auto; max-height: 70vh !important;">
 				<div class="menu-inside d-flex justify-content-start align-items-center gap-2 overflow-auto" id="menu-horizontal">
 				</div>
 				{{-- <div class="menu-inside d-flex justify-content-start align-items-center gap-2 overflow-auto">
 					<div type="button" tipoServicio-rel="L" class="item-servicio text-nowrap bg-royal-blue text-white p-3 rounded-8 fs-14 line-height-16">
 						Consultas
-					</div>
-					<div type="button" tipoServicio-rel="L" class="item-servicio text-nowrap border-royal-blue-tint-60 text-royal-blue p-3 rounded-8 fs-14 line-height-16">
-						Laboratorio
-					</div>
-					<div type="button" tipoServicio-rel="L" class="item-servicio text-nowrap border-royal-blue-tint-60 text-royal-blue p-3 rounded-8 fs-14 line-height-16">
-						Imágenes
-					</div>
-					<div type="button" tipoServicio-rel="L" class="item-servicio text-nowrap border-royal-blue-tint-60 text-royal-blue p-3 rounded-8 fs-14 line-height-16">
-						Procedimientos
-					</div>
-					<div type="button" tipoServicio-rel="L" class="item-servicio text-nowrap border-royal-blue-tint-60 text-royal-blue p-3 rounded-8 fs-14 line-height-16">
-						Terapia física
-					</div>
-					<div type="button" tipoServicio-rel="L" class="item-servicio text-nowrap border-royal-blue-tint-60 text-royal-blue p-3 rounded-8 fs-14 line-height-16">
-						Chequeos ocupacionales
 					</div>
 				</div> --}}
 				<div class="container box-fecha px-0" id="content-area">
@@ -126,6 +111,7 @@
 <script>
 	let datosCliente = JSON.parse(localStorage.getItem('datosCliente'));
 	trackId = localStorage.getItem('trackId');
+	localStorage.setItem("origen", "cita");
 	document.addEventListener("DOMContentLoaded", async function () {
 		await cargarProximasCitas();
 
@@ -152,27 +138,10 @@
 		})
 	})
 
-	async function agregarItem(datosPago){
-		console.log(datosPago);
-		let args = [];
-        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/agregar?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`;
-        args["method"] = "POST";
-        args["showLoader"] = true;
-        {{-- args["sendHeaders"] = false; --}}
-        args["token"] = "{{ $accessToken }}";
-        args["bodyType"] = "json";
-        args["data"] = JSON.stringify(datosPago);
-        const data = await call(args);
-        console.log(data);
-        if(data.code == 200){
-        	location.href = '/datos-facturacion/{{ $mac }}';
-        }
-	}
-
 	let servicios;
 	async function cargarProximasCitas(){
 		let args = [];
-        args["endpoint"] = `${api_url_digitales}/${api_war}/pacientes/proximas_citas?macAddress={{ $mac }}&trackId=${trackId}&idPaciente=${datosCliente.idPaciente}`;
+        args["endpoint"] = `${api_url_digitales}/${api_war}/pacientes/proximas_citas?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["token"] = "{{ $accessToken }}";
@@ -250,17 +219,17 @@
 			}
 		}else{
 			elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3">Reagendar</button>
-				<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Pagar</button>`
+				<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Agregar al carrito</button>`//Pagar
 		}
 		return elem;
 	}
 
 	function drawCardItem(detalle){
-		return `<div class="col-6 col-md-6 box-agenda">
+		return `<div class="col-6 col-md-6 box-agenda mb-4">
 					${drawStatusBox(detalle)}
 					<div class="box-contenido rounded-bottom-16 border-royal-blue-tint-60 border-top-0 border-inside p-12 d-flex justify-content-between align-items-stretch">
 					    <div class="box-icon bg-royal-blue-tint-90 me-2 d-flex align-items-center justify-content-center rounded-8">
-					        <img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/especialidad.svg" class="m-2 img-fluid" alt="">
+					        <img src="${detalle.iconoEspecialidad}" class="m-2 img-fluid" width="56px" alt="">
 					    </div>
 					    <div class="box-info-agendamiento flex-grow-1">
 					        <h3 class="fs-18 line-height-24 text-royal-blue fw-medium mb-2 text-capitalize">${detalle.nombreEspecialidad.toLowerCase()}</h3>

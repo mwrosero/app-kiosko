@@ -19,7 +19,13 @@ Route::get('/refreshToken', [KioskController::class, 'refreshToken'])->name('ref
 Route::get('/{mac}', [KioskController::class, 'index'])->name('index');
 Route::get('/ingreso/{mac}', [KioskController::class, 'ingreso'])->name('ingreso');
 Route::get('/menu/{mac}', [KioskController::class, 'menu'])->name('menu');
+
 Route::get('/proximas-citas/{mac}', [KioskController::class, 'proximasCitas'])->name('proximasCitas');
+Route::get('/paquetes-preventivos/{mac}', [KioskController::class, 'paquetesPreventivos'])->name('paquetesPreventivos');
+Route::get('/detalle-paquete/{mac}', [KioskController::class, 'detallePaquete'])->name('detallePaquete');
+
+Route::get('/asignar-paquete/{mac}', [KioskController::class, 'asignarPaquete'])->name('asignarPaquete');
+
 Route::get('/carrito/{mac}', [KioskController::class, 'carrito'])->name('carrito');
 Route::get('/datos-facturacion/{mac}', [KioskController::class, 'datosFacturacion'])->name('datosFacturacion');
 Route::get('/metodos-pago/{mac}', [KioskController::class, 'listaMetodosPago'])->name('listaMetodosPago');

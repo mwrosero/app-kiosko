@@ -21,7 +21,7 @@
 				</div> --}}
 				<div class="col-6">
                     <label for="tipoIdentificacion" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Elige tu documento *</label>
-                    <select class="form-select input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3 text-capitalize" name="tipoIdentificacion" id="tipoIdentificacion" required>
+                    <select class="form-select input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3 text-capitalize" name="tipoIdentificacion" id="tipoIdentificacion" required>
                         {{-- <option value="2">CÉDULA</option>
                         <option value="1">RUC</option> --}}
                     </select>
@@ -31,21 +31,21 @@
                 </div>
                 <div class="col-6">
                     <label for="numeroIdentificacion" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Número de documento *</label>
-                    <input type="number" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required />
+                    <input type="number" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="" required />
                     <div class="invalid-feedback">
                         Ingrese un numero de identificacion.
                     </div>
                 </div>
                 <div class="col-12 mt-3">
                     <label for="nombresCompletos" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Nombres completos *</label>
-                    <input type="text" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="nombresCompletos" id="nombresCompletos" placeholder="" required />
+                    <input type="text" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3" name="nombresCompletos" id="nombresCompletos" placeholder="" required />
                     <div class="invalid-feedback">
                         Ingrese su nombres y apellidos.
                     </div>
                 </div>
                 <div class="col-12 mt-3">
                     <label for="mail" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Correo electrónico *</label>
-                    <input type="email" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="mail" id="mail" placeholder="micorreo@gmail.com" required />
+                    <input type="email" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3" name="mail" id="mail" placeholder="" required />
                     <div class="valid-feedback">
                         Ingrese un correo electronico.
                     </div>
@@ -57,31 +57,31 @@
                         </li>
                         <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
                             Subtotal
-                            <span class="badge text-dark fw-normal" id="subtotal"></span>
+                            <span class="badge text-dark fw-normal fs-20 line-height-20" id="subtotal"></span>
                         </li>
                         <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
                             Crédito/convenio
-                            <span class="badge text-dark fw-normal" id="creditoConvenio"></span>
+                            <span class="badge text-dark fw-normal fs-20 line-height-20" id="creditoConvenio"></span>
                         </li>
                         <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
                             Descuento aplicado
-                            <span class="badge text-dark fw-normal" id="descuentoAplicado"></span>
+                            <span class="badge text-dark fw-normal fs-20 line-height-20" id="descuentoAplicado"></span>
                         </li>
                         <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
                             IVA
-                            <span class="badge text-dark fw-normal" id="iva"></span>
+                            <span class="badge text-dark fw-normal fs-20 line-height-20" id="iva"></span>
                         </li>
                         <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20 fw-bold">
                             Total
-                            <span class="badge text-dark fw-bold" id="total"></span>
+                            <span class="badge text-dark fs-20 line-height-20 fw-bold" id="total"></span>
                         </li>
                     </ul>
                 </div>
 	            <div class="col-12 text-center mt-4">
 	                <div class="form-check d-flex justify-content-md-center align-items-center">
-	                    <input class="form-check-input terminos-input me-2 mb-1 width-24" type="checkbox" value="" id="checkTerminosCondicion" required>
-	                    <label class="form-check-label fs--1 fw-medium line-height-16" for="checkTerminosCondicion">
-	                        Acepto los <a href="https://www.veris.com.ec/terminos-y-condiciones/" target="_blank" class="">Términos y condiciones</a> 
+	                    <input class="form-check-input terminos-input me-2 mb-1 width-24" type="checkbox" value="" id="checkTerminosCondicion" required style="width: 20px; height: 20px;">
+	                    <label class="form-check-label fs-20 fw-medium line-height-24" for="">
+	                        Acepto los <div type="button" class="text-decoration-underline text-royal-blue d-inline-block" data-bs-toggle="modal" data-bs-target="#modalTerminos">Términos y condiciones</div> 
 	                        <span id="politicas" class="d-none">y <a href="https://www.veris.com.ec/politicas/" target="_blank">Política de protección de Datos Personales</a></span>
 	                    </label>
 	                    <div class="invalid-feedback">
@@ -90,7 +90,7 @@
 	                </div>
 	            </div>
 	            <div class="col-12 mt-4 text-center">
-	            	<button class="btn bg-royal-blue text-white fs-18 line-height-24 py-3 rounded-16 w-50 fw-medium shadow-none disabled" id="btn-validar-datos-factura">Pagar ahora</button>
+	            	<button class="btn bg-royal-blue text-white fs-18 line-height-24 py-3 rounded-8 w-50 fw-medium shadow-none disabled" id="btn-validar-datos-factura">Pagar ahora</button>
 	            </div>
             </div>
 		</div>
@@ -131,7 +131,9 @@
 		visibility: hidden;
 	}
 
-	.hg-button[data-skbtnuid="default-r1b10"]{
+	.hg-button[data-skbtnuid="default-r1b10"],
+	.hg-button[data-skbtnuid="shift-r1b10"]
+	{
 		border: none !important;
 		background: var(--royalBlue) !important;
 		font-size: 30px !important;
@@ -206,7 +208,6 @@
 					if(currentInput.id === "numeroIdentificacion"){
 						// Verifica que el tipo sea 2
 						if(parseInt($('#tipoIdentificacion option:selected').val()) == 2){
-
         				// Verifica longitud 10
 							if(input.length == 10){
 
@@ -219,11 +220,15 @@
 								}
 
 							}
+						}else if(parseInt($('#tipoIdentificacion option:selected').val()) == 1){
+							if(input.length == 13){
+								await verificarDatosFacturacion();
+							}
 						}
 					}
 				}
 			},
-			onKeyPress: button => {
+			onKeyPress: async button => {
 				if(button === "{bksp}" && currentInput){
 					let val = $(currentInput).val();
 					$(currentInput).val(val.slice(0, -1));
@@ -245,6 +250,15 @@
 					keyboard.setOptions({
 						layoutName: "default"
 					});
+				}
+
+				if(button === "{ent}" && currentInput){
+					if(currentInput.id === "numeroIdentificacion"){
+						let valor = $(currentInput).val();
+						if(parseInt($('#tipoIdentificacion option:selected').val()) == 3 && valor.length > 5){
+							await verificarDatosFacturacion();
+						}
+					}
 				}
 			},
 			mergeDisplay: true,
@@ -315,12 +329,20 @@
 		});
 
 		$('body').on('change', '#tipoIdentificacion', function(){
-			if(parseInt($(this).val()) == 2){
-				$('#numeroIdentificacion').attr('type','number');
-				$('#numeroIdentificacion').attr('maxlength','10');
-			}else{
+			datosSeteados = false;
+			$('#numeroIdentificacion').val('')
+			$('#nombresCompletos').val('')
+			$('#mail').val('')
+			if(parseInt($(this).val()) == 3){
 				$('#numeroIdentificacion').attr('type','text');
 				$('#numeroIdentificacion').attr('maxlength','15');
+			}else{
+				if(parseInt($(this).val()) == 1){
+					$('#numeroIdentificacion').attr('maxlength','13');
+				}else{
+					$('#numeroIdentificacion').attr('maxlength','10');
+				}
+				$('#numeroIdentificacion').attr('type','number');
 			}
 			setTimeout(function(){
 				$('#numeroIdentificacion').focus();
@@ -353,21 +375,19 @@
 		$('body').on('click', '#btn-validar-datos-factura', async function(){
 			if(!datosSeteados){
 				await setearDatosFactura();
-				if(data.code == 200){
+			}else{
+				if($('#numeroIdentificacion').val().length > 0 && $('#nombresCompletos').val().length > 0 && $('#mail').val().length > 0){
 					location.href = `/metodos-pago/{{ $mac }}`
 				}else{
-					$('#modalError').modal('show');
-					$('.titleError').html(`Atención`);
-					$('.msgError').html(data.message);
+
 				}
-			}else{
-				location.href = `/metodos-pago/{{ $mac }}`
 			}
 		})
 	})
 
 	function validateFields(){
 		if($('#checkTerminosCondicion').is(':checked')) {
+			// validar datos llenos
             $('#btn-validar-datos-factura').removeClass('disabled');
         } else {
             $('#btn-validar-datos-factura').addClass('disabled');
@@ -410,28 +430,49 @@
 		})
         const data = await call(args);
         console.log(data);
-        return data;
+        if(data.code == 200){
+			location.href = `/metodos-pago/{{ $mac }}`
+		}else{
+			$('#modalError').modal('show');
+			$('.titleError').html(`Atención`);
+			$('.msgError').html(data.message);
+		}
 	}
 
 	let datosSeteados = false;
 	async function verificarDatosFacturacion(){
+		let numeroIdentificacion = ($('#tipoIdentificacion option:selected').val() !== "3") ? $('#numeroIdentificacion').val() : $('#numeroIdentificacion').val().toUpperCase()
 		let args = [];
         args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/verificar_datos_factura?macAddress={{ $mac }}`;
         args["method"] = "POST";
         args["showLoader"] = true;
         {{-- args["sendHeaders"] = false; --}}
         args["token"] = "{{ $accessToken }}";
+        args["dismissAlert"] = true;
         args["bodyType"] = "json";
         args["data"] = JSON.stringify({
 		  	"codigoTipoIdentificacion": parseInt($('#tipoIdentificacion option:selected').val()),
-		  	"numeroIdentificacion": $('#numeroIdentificacion').val()
+		  	"numeroIdentificacion": numeroIdentificacion
 		})
         const data = await call(args);
         console.log(data);
         if(data.code == 200){
         	datosSeteados = data.data.datosSeteados;
-        	$('#nombresCompletos').val(data.data.nombreCompleto)
-			$('#mail').val(data.data.mail)
+        	if(data.data.esMenorDeEdad){
+        		$('#modalError').modal('show');
+				$('.titleError').html(`Atención`);
+				$('.msgError').html(`Número de cédula <b>${$('#numeroIdentificacion').val()}</b> pertenece a menor de edad.`);
+	        	$('#numeroIdentificacion').val('')
+	        	$('#nombresCompletos').val('')
+				$('#mail').val('')
+        	}else{
+	        	$('#nombresCompletos').val(data.data.nombreCompleto)
+				$('#mail').val(data.data.mail)
+			}
+        }else{
+        	datosSeteados = false;
+        	$('#nombresCompletos').val('')
+			$('#mail').val('')
         }
 	}
 
@@ -447,9 +488,16 @@
         console.log(data);
         datosFacturacion = data.data;
         if(data.code == 200){
-        	if(data.data !== null || data.data.length > 0){
+        	let options = ``;
+			$.each(data.data.tiposIdentificacion, function(key, value){
+				options += `<option class="text-capitalize" value="${value.codigoTipoIdentificacion}">${value.nombreTipoIdentificacion.toLowerCase()}</option>`
+			})
+			$('#tipoIdentificacion').html(options);
+        	if(data.data.datosFactura !== null){
         		await fillFormDatosFactura();
         		datosSeteados = true;
+        	}else{
+        		$('.simple-keyboard').parent().removeClass('d-none')
         	}
         }
 	}
@@ -461,11 +509,6 @@
 		$('#iva').html(`$${datosFacturacion.totales.valorIva.toFixed(2)}`);
 		$('#total').html(`$${datosFacturacion.totales.valorTotalPaciente.toFixed(2)}`);
 
-		let options = ``;
-		$.each(datosFacturacion.tiposIdentificacion, function(key, value){
-			options += `<option class="text-capitalize" value="${value.codigoTipoIdentificacion}">${value.nombreTipoIdentificacion.toLowerCase()}</option>`
-		})
-		$('#tipoIdentificacion').html(options);
 		$('#tipoIdentificacion').val(parseInt(datosFacturacion.datosFactura.codigoTipoIdentificacion));
 		$('#numeroIdentificacion').val(datosFacturacion.datosFactura.numeroIdentificacion)
 		$('#nombresCompletos').val(datosFacturacion.datosFactura.nombreCompleto)
