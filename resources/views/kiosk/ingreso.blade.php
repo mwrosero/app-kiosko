@@ -92,6 +92,7 @@
 	let tipoFiltro;
 	let currentInput = null;
 	const Keyboard = window.SimpleKeyboard.default;
+	callCounter = false;
 	document.addEventListener("DOMContentLoaded", async function () {
 		switch(tipo){
 			case 'C':

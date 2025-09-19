@@ -14,12 +14,13 @@
 
 <!-- Modal Error -->
 <div class="modal modal-top fade" id="modalError" aria-labelledby="modalErrorLabel" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
-    <div class="modal-dialog modal modal-lg modal-dialog-centered mx-auto my-0">
+    <div class="modal-dialog modal modal-md modal-dialog-centered mx-auto my-0">
         <div class="modal-content rounded-8 rounded-24">
             <button type="button" class="btn-close position-absolute end-0 top-0 me-3 mt-3 fw-bold" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
             <div class="modal-body px-64 py-24 text-center">
                 <h2 class="fs-24 line-height-32 text-royal-blue fw-medium mb-32 titleError">Ha ocurrido un error</h2>
-                <h3 class="fs-16 line-height-20 text-silver-dark mb-32 msgError">El usuario ingresado para los datos de facturación es menor de edad, para continuar, cambia los datos por los de un usuario mayor de edad.</h3>
+                <h3 class="fs-16 line-height-20 text-silver-dark mb-32 msgError"></h3>
+                {{-- El usuario ingresado para los datos de facturación es menor de edad, para continuar, cambia los datos por los de un usuario mayor de edad --}}
                 <button class="btn py-24 bg-royal-blue text-white rounded-12 fs-24 line-height-32 w-50" data-bs-dismiss="modal">Entendido</button>
             </div>
         </div>
@@ -75,3 +76,24 @@
         </div>
     </div>
 </div>
+
+{{-- modal Error modal --}}
+<div class="modal modal-top fade" id="modalErrorToast" aria-labelledby="modalErrorToastLabel" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
+    <div class="modal-dialog modal modal-md modal-dialog-centered mx-auto my-0">
+        <div class="modal-content rounded-8 rounded-24">
+            <button type="button" class="btn-close position-absolute end-0 top-0 me-3 mt-3 fw-bold" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
+            <div class="modal-body px-64 py-24 text-center">
+                <h2 class="fs-24 line-height-32 text-royal-blue fw-medium mb-32">Atención</h2>
+                <h3 class="fs-16 line-height-20 text-silver-dark mb-32 msgErrorToast">El usuario ingresado para los datos de facturación es menor de edad, para continuar, cambia los datos por los de un usuario mayor de edad.</h3>
+                <button class="btn py-24 bg-royal-blue text-white rounded-12 fs-24 line-height-32 w-50" data-bs-dismiss="modal">Entendido</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showMessageModal(type, message){
+        $('#modalErrorToast').modal('show');
+        $('.msgErrorToast').html(message)
+    }
+</script>

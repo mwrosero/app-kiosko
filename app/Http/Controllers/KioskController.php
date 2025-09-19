@@ -68,6 +68,46 @@ class KioskController extends Controller
                 ->with('mac',$mac);
     }
 
+    public function citaElegirPaciente($mac) {
+        // $token = session('accessToken');
+        $token = Veris::getToken();
+        return view('kiosk.cita-elegir-paciente')
+                ->with('accessToken',$token)
+                ->with('mac',$mac);
+    }
+
+    public function citaElegirModalidad($mac) {
+        // $token = session('accessToken');
+        $token = Veris::getToken();
+        return view('kiosk.cita-elegir-modalidad')
+                ->with('accessToken',$token)
+                ->with('mac',$mac);
+    }
+
+    public function citaElegirDatos($mac) {
+        // $token = session('accessToken');
+        $token = Veris::getToken();
+        return view('kiosk.cita-elegir-datos')
+                ->with('accessToken',$token)
+                ->with('mac',$mac);
+    }
+
+    public function citaElegirFecha($mac) {
+        // $token = session('accessToken');
+        $token = Veris::getToken();
+        return view('kiosk.cita-elegir-fecha')
+                ->with('accessToken',$token)
+                ->with('mac',$mac);
+    }
+
+    public function citaReservar($mac) {
+        // $token = session('accessToken');
+        $token = Veris::getToken();
+        return view('kiosk.cita-reservar')
+                ->with('accessToken',$token)
+                ->with('mac',$mac);
+    }
+
     public function carrito($mac) {
         // $token = session('accessToken');
         $token = Veris::getToken();

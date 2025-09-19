@@ -2,6 +2,8 @@
 </div>
 <script>
 	document.addEventListener("DOMContentLoaded", async function () {
+        localStorage.removeItem("pagoUnico");
+        localStorage.removeItem("agendamiento");
 		await grupoFamiliar();
 	})
 

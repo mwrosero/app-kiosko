@@ -6,10 +6,10 @@
 		</a>
 	</div>
 	<div class="col-12 px-0 {{ $page == 'cita-medica' ? 'active-item-menu' : '' }}">
-		<button class="btn w-100 py-24">
+		<a href="/cita-elegir-paciente/{{ $mac }}" class="btn w-100 py-24">
 			<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-agendar-cita-medica.svg" alt="" class="mb-2" style="height:80px">
 			<div class="fs-14 line-height-16 fw-medium">Agendar <br>cita médica</div>
-		</button>
+		</a>
 	</div>
 	<div class="col-12 px-0 {{ $page == 'paquetes-preventivos' ? 'active-item-menu' : '' }}">
 		<a href="/paquetes-preventivos/{{ $mac }}" class="btn w-100 py-24">

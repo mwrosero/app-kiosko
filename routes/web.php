@@ -26,6 +26,12 @@ Route::get('/detalle-paquete/{mac}', [KioskController::class, 'detallePaquete'])
 
 Route::get('/asignar-paquete/{mac}', [KioskController::class, 'asignarPaquete'])->name('asignarPaquete');
 
+Route::get('/cita-elegir-paciente/{mac}', [KioskController::class, 'citaElegirPaciente'])->name('citaElegirPaciente');
+Route::get('/cita-elegir-modalidad/{mac}', [KioskController::class, 'citaElegirModalidad'])->name('citaElegirModalidad');
+Route::get('/cita-elegir-datos/{mac}', [KioskController::class, 'citaElegirDatos'])->name('citaElegirDatos');
+Route::get('/citas-elegir-fecha-doctor/{mac}', [KioskController::class, 'citaElegirFecha'])->name('citaElegirFecha');
+Route::get('/citas-revisa-tus-datos/{mac}', [KioskController::class, 'citaReservar'])->name('citaReservar');
+
 Route::get('/carrito/{mac}', [KioskController::class, 'carrito'])->name('carrito');
 Route::get('/datos-facturacion/{mac}', [KioskController::class, 'datosFacturacion'])->name('datosFacturacion');
 Route::get('/metodos-pago/{mac}', [KioskController::class, 'listaMetodosPago'])->name('listaMetodosPago');

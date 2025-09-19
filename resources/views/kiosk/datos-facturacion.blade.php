@@ -189,9 +189,11 @@
 	let tipo = localStorage.getItem('tipo');
 	let currentInput = null;
 	trackId = localStorage.getItem('trackId');
+	let infoCarrito;
 
 	document.addEventListener("DOMContentLoaded", async function () {
 		const Keyboard = window.SimpleKeyboard.default;
+		await consultarCarrito();
 		await obtenerDatosFacturacion();
 
 		let keyboard = new Keyboard({
@@ -403,6 +405,25 @@
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data);
+        infoCarrito = data.data;
+	}
+
+	async function obtenerAgrupaciones(){
+		let esPagoUnico = (localStorage.getItem("itemAgregado") !== null) ? true : false;
+		let agrupacionesArr = []
+		if(esPagoUnico){
+			let detalle = JSON.parse(localStorage.getItem("itemAgregado"));
+			agrupacionesArr.push(detalle[0].idAgrupacion);
+		}else{
+			$.each(infoCarrito, function(key, value){
+			    $.each(value.agrupaciones, function(k,v){
+			        agrupacionesArr.push(v.idAgrupacion)
+			    })
+			})
+		}
+		console.table(agrupacionesArr)
+		localStorage.setItem("agrupacionFacturar", JSON.stringify(agrupacionesArr));
+		return agrupacionesArr
 	}
 
 	function onChange(input) {
@@ -415,6 +436,7 @@
 	}
 
 	async function setearDatosFactura(){
+		let agrupaciones = await obtenerAgrupaciones();
 		let args = [];
         args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/agregar_datos_factura?macAddress={{ $mac }}`;
         args["method"] = "POST";
@@ -426,7 +448,8 @@
 		  	"codigoTipoIdentificacion": parseInt($('#tipoIdentificacion option:selected').val()),
 		  	"numeroIdentificacion": $('#numeroIdentificacion').val(),
 		  	"nombreCompleto": $('#nombresCompletos').val(),
-		  	"email": $('#mail').val()
+		  	"email": $('#mail').val(),
+		  	"idAgrupacion": agrupaciones
 		})
         const data = await call(args);
         console.log(data);
@@ -478,8 +501,9 @@
 
 	let datosFacturacion;
 	async function obtenerDatosFacturacion(){
+		let agrupaciones = await obtenerAgrupaciones();
 		let args = [];
-        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/datos_facturacion?macAddress={{ $mac }}`;
+        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/datos_facturacion?idAgrupacion=${agrupaciones.join(',')}&macAddress={{ $mac }}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         {{-- args["sendHeaders"] = false; --}}

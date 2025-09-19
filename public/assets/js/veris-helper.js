@@ -1265,8 +1265,8 @@ function limitarCaracteres(input, maxCaracteres) {
     input.value = valor;
 }
 
-async function agregarItem(datosPago, idElem = null){
-    console.log(datosPago);
+async function agregarItem(datosPago, pagoUnico = false){
+    //console.log(datosPago);
     let args = [];
     args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/agregar?macAddress=${mac}&idPaciente=${datosCliente.idPaciente}`;
     args["method"] = "POST";
@@ -1277,8 +1277,16 @@ async function agregarItem(datosPago, idElem = null){
     const data = await call(args);
     console.log(data);
     if(data.code == 200){
+        if(pagoUnico){
+            //localStorage.setItem("pagoUnico", true);
+            localStorage.setItem("itemAgregado", JSON.stringify(data.data));
+            //localStorage.setItem("agendamiento", JSON.stringify(dataCita));
+            location.href = `/datos-facturacion/${mac}`;
+        }else{
+            location.href = `/carrito/${$mac}`;
+        }
         // location.href = '/datos-facturacion/{{ $mac }}';
-        $('#modalProductoAgregado').modal('show');
+        // $('#modalProductoAgregado').modal('show');
     }else{
         $('#modalError').modal('show');
         $('.titleError').html(`Atención`);

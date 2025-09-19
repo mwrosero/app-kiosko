@@ -23,10 +23,10 @@
 				</a>
 			</div>
 			<div class="col-6">
-				<button class="btn btn-light w-100 py-32 border rounded-4 h-100">
+				<a href="/cita-elegir-paciente/{{ $mac }}" class="btn btn-light w-100 py-32 border rounded-4 h-100">
 					<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-agendar-cita-medica.svg" alt="" class="mb-2" style="height:120px">
 					<div class="fs-32 line-height-40 fw-medium">Agendar <br>cita médica</div>
-				</button>
+				</a>
 			</div>
 			<div class="col-6">
 				<a href="/paquetes-preventivos/{{ $mac }}" class="btn btn-light w-100 py-32 border rounded-4 h-100">

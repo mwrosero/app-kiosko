@@ -51,6 +51,7 @@
             const _idOrganizacionLogin = "{{ \App\Models\Veris::IDORGANIZACION_LOGIN }}";
             let trackId = '';
             let canalOrigen = 'MVE_CMV';
+            let callCounter = true;
         </script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script> 
@@ -90,6 +91,28 @@
                 opacity: .5;
                 background-size: 1.5rem;
             }
-        </style>    
+        </style>
+        <script>
+            document.addEventListener("DOMContentLoaded", async function () {
+                await contadorItemsCarrito()
+            })
+
+            async function contadorItemsCarrito(){
+                if(!callCounter){
+                    return;
+                }
+                let args = [];
+                args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/contador?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`;
+                args["method"] = "GET";
+                args["showLoader"] = false;
+                {{-- args["sendHeaders"] = false; --}}
+                args["token"] = "{{ $accessToken }}";
+                const data = await call(args);
+                console.log(data);
+                if(data.code == 200){
+                    $('.qtyCart').html(data.data.contador);
+                }
+            }
+        </script>
     </body>
 </html>

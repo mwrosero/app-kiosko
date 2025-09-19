@@ -3,9 +3,9 @@
 <div class="container-fluid px-0 d-flex flex-column min-vh-100">
 	@include('components.header')
 	<!-- Sub-header -->
-	@include('components.sub-header', ['showTurnoBtn' => true, 'url' => '/detalle-paquete/'.$mac])
+	@include('components.sub-header', ['showTurnoBtn' => true, 'url' => '/menu/'.$mac])
 	<!-- Carrito -->
-	@include('components.cart-bar', ['title' => '¿Para quién es el paquete?'])
+	@include('components.cart-bar', ['title' => '¿Para quién es el la cita?'])
 	<!-- Contenido principal -->
 	<main class="flex-fill px-0 py-0">
 		<div class="row g-3 d-flex justify-content-between align-items-start h-100 mx-0">
@@ -22,27 +22,16 @@
 </div>
 <script>
 	let datosCliente = JSON.parse(localStorage.getItem('datosCliente'));
-	let paquete = JSON.parse(localStorage.getItem('paquete'));
 	trackId = localStorage.getItem('trackId');
-	localStorage.setItem("origen", "paquete");
+	localStorage.setItem("origen", "agendamiento");
 	
 	document.addEventListener("DOMContentLoaded", async function () {		
         $('body').on('click', '.btn-asignar', async function(){
         	let paciente = JSON.parse($(this).attr('data-rel'));
-        	if(paciente.genero == paquete.genero || paquete.genero == "A"){
-				let datosPago = {
-					"paquetesPromocionales": {
-						"codigoPaquete": paquete.codigoPaquete,
-						"idPaciente": paciente.pacPacNumero
-					}
-				}
-				await agregarItem(datosPago);
-			}else{
-				let generoPaquete = (paquete.genero == "F") ? `Femenino` : `Masculino`
-				$('#modalError').modal('show');
-				$('.titleError').html(`Lo sentimos`);
-				$('.msgError').html(`Este paquete está diseñado exclusivamente para pacientes de sexo [${generoPaquete}]. Por favor, selecciona otro paquete o cambia el paciente seleccionado.`);
-			}
+        	let dataCita = {}
+        	dataCita.paciente = paciente;
+        	localStorage.setItem("agendamiento", JSON.stringify(dataCita));
+        	location.href = `/cita-elegir-modalidad/{{ $mac }}`
 		})
 	})
 </script>
