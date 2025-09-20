@@ -1283,7 +1283,7 @@ async function agregarItem(datosPago, pagoUnico = false){
             //localStorage.setItem("agendamiento", JSON.stringify(dataCita));
             location.href = `/datos-facturacion/${mac}`;
         }else{
-            location.href = `/carrito/${$mac}`;
+            location.href = `/carrito/${mac}`;
         }
         // location.href = '/datos-facturacion/{{ $mac }}';
         // $('#modalProductoAgregado').modal('show');
