@@ -16,8 +16,8 @@
 				<div class="col-12 fs-18 line-height-24 px-8 py-4 bg-royal-blue-tint-90 border-silver mb-3">
 					Revisa tu carrito
 				</div>
-				<div class="col-12 px-3 py-4 border-bottom-midnight-blue-tint-80">
-					<div class="row d-flex justify-content-between align-items-center">
+				<div class="col-12 px-3" id="listadoItems">
+					{{-- <div class="row d-flex justify-content-between align-items-center">
 						<div class="col-8">
 							<p class="fs-16 line-height-20 fw-medium text-royal-blue mb-1">Laboratorio</p>
 							<p class="fs-14 line-height-16 mb-1"><span class="text-royal-blue-shade-40">Paciente:</span> Michael Washington Rosero Peralta</p>
@@ -65,7 +65,11 @@
 								</li>
 							</ul>
 						</div>
-					</div>
+					</div> --}}
+				</div>
+				<div class="col-12 d-flex justify-content-center align-items-center gap-3 mt-4">
+					<a href="/menu/{{ $mac }}" class="btn py-24 text-royal-blue border-royal-blue rounded-12 fs-24 line-height-32 flex-grow-1">Agregar mas servicios</button>
+                    <a href="/datos-facturacion/{{ $mac }}" class="btn py-24 bg-royal-blue text-white rounded-12 fs-24 line-height-32 flex-grow-1">Pagar</a>
 				</div>
             </div>
 		</div>
@@ -85,8 +89,8 @@
 		localStorage.removeItem("itemAgregado");
 		localStorage.removeItem("agendamiento");
 		localStorage.removeItem("agrupacionFacturar");
-		
-		// await consultarCarrito();
+
+		await consultarCarrito();
 		$('body').on('click', '.box-action', function(){
 			let type = $(this).attr('type-rel');
 			console.log(type);
@@ -122,13 +126,67 @@
         }
 	}
 
+	function obtenerConvenio(beneficio){
+		if(beneficio.paquetePromocional !== null){
+			return `<p class="fs-14 line-height-16 mb-1 text-capitalize"><span class="text-royal-blue-shade-40">Convenio:</span> ${beneficio.paquetePromocional.nombrePaquete.toLowerCase()}</p>`
+		}else if(beneficio.convenio !== null){
+			return `<p class="fs-14 line-height-16 mb-1 text-capitalize"><span class="text-royal-blue-shade-40">Convenio:</span> ${beneficio.convenio.nombreConvenio.toLowerCase()}</p>`
+		}
+	}
+
 	async function drawCartItems(){
+		let elem = ``;
+		let tipoServicio = ``;
+		let totalItem = ``;
+		let convenio = ``;
 		$.each(carrito, function(key, value){
-			console.log(value.nombreCompleto)
+			let prestaciones = ``;
 			$.each(value.agrupaciones, function(k, item){
-				console.log(item.tipoOrdenTransaccion)
+				tipoServicio = item.tipoOrdenTransaccion;
+				totalItem = item.totalAgrupacion.paciente.valorTotal;
+				convenio = obtenerConvenio(item.beneficio);
+				$.each(item.detallesAgrupacion, function(k1, v1){
+					prestaciones += `<li class="p-3 d-flex justify-content-between align-items-center fs-14 line-height-16">
+						<div class="col-7 text-capitalize">${v1.nombrePrestacion.toLowerCase()}</div>
+							<div class="col-4">
+								<div class="row fw-medium text-end">
+									<div class="col-4">$12.40</div>
+									<div class="col-4">$12.40</div>
+									<div class="col-4">$12.40</div>
+								</div>
+							</div>
+							<div class="col-1 text-end">
+								<i class="fa-solid fa-circle-info text-red-dark"></i>
+							</div>
+						</li>`;
+				})
 			})
+			elem += `<div class="row d-flex justify-content-between align-items-center py-4 border-bottom-midnight-blue-tint-80">
+				<div class="col-8">
+					<p class="fs-16 line-height-20 fw-medium text-royal-blue mb-1 text-capitalize">${tipoServicio.toLowerCase()}</p>
+					<p class="fs-14 line-height-16 mb-1 text-capitalize"><span class="text-royal-blue-shade-40">Paciente:</span> ${value.paciente.nombreCompleto.toLowerCase()}</p>
+					<p class="fs-14 line-height-16 mb-1"><span class="text-royal-blue-shade-40">Orden Válida hasta:</span> 23/07/2025</p>
+					${convenio}
+					<p class="fs-14 line-height-16 mb-3"><span class="text-royal-blue-shade-40">Tratamiento:</span> Alergología | 20/07/2025</p>
+					<div type="button" class="fs-14 line-height-16 fw-medium mt-3 text-royal-blue d-flex justify-content-start align-items-center box-action" type-rel='S'>
+						Ver detalle
+						<i class="fa-solid fa-chevron-down ms-2"></i>
+					</div>
+				</div>
+				<div class="col-2 fs-16 fw-medium line-height-20 text-end">
+					$${totalItem.toFixed(2)}
+				</div>
+				<div class="col-2 text-end">
+					<i class="fa-regular fa-trash-can text-red-dark fs-28 line-height-28"></i>
+				</div>
+				<div class="col-12 pt-40 box-detail d-none">
+					<ul class="list-unstyled border-bottom-midnight-blue-tint-80 mx-40 my-0">
+						${prestaciones}
+					</ul>
+				</div>
+			</div>`
 		})
+		$('#listadoItems').html(elem);
 	}
 
 </script>
