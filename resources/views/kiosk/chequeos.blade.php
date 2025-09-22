@@ -139,7 +139,7 @@
 			$('#empresaAceptacion').html(detalleChequeoSeleccionado.nombreConvenio);
 			$('#'+chequeo.nombreTipoContrato.toLowerCase()+'ChequeoAceptacion').html("X");
 			
-			await mostrarDetalleModalChequeo(chequeo);
+			await mostrarDetalleModalChequeoActivar(chequeo);
 			$('#modalActivarChequeo').modal('show')
 		})
 
@@ -196,6 +196,112 @@
 			await agregarItem(datosPago);
 		})
 
+		$('body').on('click', '.btn-notificar-llegada', async function(){
+			let detalle = JSON.parse($(this).parent().attr('data-rel'));
+			let notificar = await notificarLlegada(detalle);
+			if(notificar.code != 200){
+				return;
+			}
+			await mostrarDetalleModalChequeoDetalle(detalle);
+			$('.title-detalle-chequeo').html(detalle.nombreServicioNivel1.toLowerCase())
+			$('#modalDetalleChequeo').modal('show');
+			await cargarMisChequeos(false)
+		})
+
+		$('body').on('click', '.btn-reagendar', async function(){
+			let detalle = JSON.parse($(this).parent().attr('data-rel'));
+		})
+
+		$('body').on('click', '.btn-agendar', async function(){
+			let detalle = JSON.parse($(this).parent().attr('data-rel'));
+			console.log(detalle)
+			{{-- let datosServicio = $(this).data('rel');
+	        let url = $(this).attr('url-rel');
+	        let esTerapiaAgrupada = $(this).attr('esTerapiAgrupada-rel');
+	        // console.log(datosServicio.detallesServicios)
+	        // return
+	        if(esTerapiaAgrupada !== undefined && esTerapiaAgrupada !== null && esTerapiaAgrupada == "true"){
+	            esTerapiaAgrupada = true;
+	        }else{
+	            esTerapiaAgrupada = false;
+	        }
+
+	        if(datosServicio.permiteReserva == "N" && !esTerapiaAgrupada){
+	            $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoReserva);
+	            $('#modalPermiteCambiar').modal('show');
+	            return;
+	        }
+
+	        console.log('datosServicio', datosServicio);
+	        let modalidad;
+	        if (datosServicio.modalidad === 'ONLINE') {
+	            modalidad = 'S';
+	        } else if (datosServicio.modalidad === 'PRESENCIAL') {
+	            modalidad = 'N';
+	        }
+
+	        dataCita.online = modalidad;
+	        let tipoServicio = datosServicio.tipoServicio.toLowerCase();
+	        dataCita.tipoFlujo = "agenda/tratamiento/"+tipoServicio;
+	        tipoFlujo = dataCita.tipoFlujo;
+
+	        dataCita.especialidad = {
+	            codigoEspecialidad: datosServicio.codigoEspecialidad,
+	            nombre : datosServicio.nombreEspecialidad,
+	            imagen : datosServicio.urlImagenTipoServicio,
+	            esOnline : modalidad,
+	            codigoServicio : datosServicio.codigoServicio,
+	            codigoPrestacion : datosServicio.codigoPrestacion,
+	            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+	            codigoSucursal : datosServicio.codigoSucursal,
+	            origen: "Listatratamientos"
+	        };
+	        dataCita.origen = "Listatratamientos";
+	        dataCita.convenio = ultimoTratamiento.datosConvenio;
+	        dataCita.convenio.origen = "Listatratamientos";
+
+	        dataCita.tratamiento = {
+	            cantidadIntervalosReserva: datosServicio.cantidadIntervalosReserva,
+	            numeroOrden: datosServicio.idOrden,
+	            codigoEmpOrden: datosServicio.codigoEmpresa,
+	            lineaDetalle: datosServicio.lineaDetalleOrden,
+	            esPagada: datosServicio.esPagada
+	        }
+
+	        if(esTerapiaAgrupada){
+	            dataCita.tipoFlujo = "agenda/tratamiento/terapia_agrupada";
+	            dataCita.detallesServicios = datosServicio.detallesServicios;
+	            dataCita.secuenciaAtencion = secuenciaAtencion.secuenciaAtenciones;
+	            dataCita.datosTratamiento = datosTratamiento;
+	            dataCita.cantidadMaximaAgenda = parseInt($(this).attr('qty-rel'));
+	            localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
+	            location = "/agendamiento-multiple/{{ $tokenMods }}";
+	            return;
+	        }
+
+	        if(dataCita.convenio.aplicaVerificacionConvenio && dataCita.convenio.aplicaVerificacionConvenio == "S"){
+	            let controlEmbarazo = await validacionConvenio(dataCita);
+	            if(controlEmbarazo){
+	                $('#datosGen').val(data);
+	                $('.btn-respuesta-embarazo').attr("url-rel",$url);
+	                $('#modalEmbarazo').modal("show");
+	            }else{
+	                localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
+	                location = url;
+	            }
+	        }else{
+	            localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
+	            location = url;
+	        } --}}
+		})
+
+		$('body').on('click', '.btn-detalle-chequeo', async function(){
+			let detalle = JSON.parse($(this).parent().attr('data-rel'));
+			await mostrarDetalleModalChequeoDetalle(detalle);
+			$('.title-detalle-chequeo').html(detalle.nombreServicioNivel1.toLowerCase())
+			$('#modalDetalleChequeo').modal('show')
+		})
+
 		$("#modalAceptacionResultados").on('shown.bs.modal', function () {
             console.log("El modal ha sido abierto.");
             // clearInterval(temporizadorInactividad)
@@ -208,6 +314,41 @@
         });
 	})
 
+	async function notificarLlegada(detalle){
+		let args = [];
+	    args["endpoint"] = `${api_url_digitales}/${api_war}/turnero/activar_orden_laboratorio?macAddress=${mac}&idPaciente=${datosCliente.idPaciente}`;
+	    args["method"] = "POST";
+	    args["showLoader"] = true;
+	    args["token"] = accessToken;
+	    args["bodyType"] = "json";
+	    args["data"] = JSON.stringify({
+	        "codigoOrdenApoyo": detalle.detalles[0].codigoOrdApoyo
+	    });
+	    args["dismissAlert"] = true;
+	    const data = await call(args);
+	    console.log(data);
+	    if(data.code != 200){
+	    	$('#modalError').modal('show')
+			$('.titleError').html(`Ha ocurrido un error`)
+			$('.msgError').html(data.message);
+	    }
+	    return data;
+	}
+
+	async function mostrarDetalleModalChequeoDetalle(detalle){
+		let elem = ``;
+		$.each(detalle.detalles, function(key, value){
+			if(detalle.nombreServicioNivel1 == "LABORATORIO"){
+				// muestraEntregada
+				elem += `<li class="d-flex justify-content-between align-items-start mb-2">
+					${value.nombrePrestacion}
+					<span class="badge rounded-pill p-1 fs-10 line-height-14 border-royal-blue text-royal-blue ms-2">Realizado</span>
+				</li>`;
+			}
+		})
+		$('.listado-items-chequeo-detalle').html(elem);
+	}
+
 	let detalleChequeoSeleccionado;
 	async function aceptarEntregaResultadosChequeo(){
 	    //localStorage.getItem("idPreTransaccion")
@@ -217,6 +358,7 @@
 	    args["showLoader"] = true;
 	    args["token"] = accessToken;
 	    args["bodyType"] = "json";
+	    args["dismissAlert"] = true;
 	    args["data"] = JSON.stringify({
 	        "secuenciaAfiliado": detalleChequeoSeleccionado.secuenciaAfiliado
 	    });
@@ -255,7 +397,7 @@
         }
 	}
 
-	async function mostrarDetalleModalChequeo(chequeo){
+	async function mostrarDetalleModalChequeoActivar(chequeo){
 		let elem = ``;
 		$.each(chequeo.detalles, function(key, value){
 			elem += `<li class="p-3 border-bottom-midnight-blue-tint-80">${value.nombrePrestacion}</li>`
@@ -264,11 +406,11 @@
 	}
 
 	let chequeos;
-	async function cargarMisChequeos(){
+	async function cargarMisChequeos(showLoader = true){
 		let args = [];
         args["endpoint"] = `${api_url_digitales}/${api_war}/pacientes/mis_chequeos?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`;
         args["method"] = "GET";
-        args["showLoader"] = true;
+        args["showLoader"] = showLoader;
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         if(data.data.length == 0){
@@ -324,29 +466,38 @@
 	function drawStatusButtons(detalle){
 		let estaPagado = detalle.estaPagado;
 		let accionBoton = detalle.accionBoton;
+		let qtyItems = detalle.detalles.length;
 		let elem = ``;
-		if(accionBoton == "ACTIVAR_CHEQUEO"){
-			elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-activar-chequeo" data-rel='${JSON.stringify(detalle)}'>Activar</button>`;
+		if(accionBoton == "ACTIVAR_CHEQUEO"){ // || detalle.nombreServicioNivel1 == "LABORATORIO"
+			elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-activar-chequeo">Activar</button>`;
+		}else if(accionBoton == "ACTIVAR_LABORATORIO"){
+			elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-notificar-llegada">Notificar llegada</button>`;
 		}else{
-			elem += ``;
-		}
-		return elem;
-		if(estaPagado){
-			if(condicionTiempo == "TIEMPO_AGOTADO"){
-				elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-reagendar">Reagendar</button>`;
+			if(qtyItems == 1){
+				let item = detalle.detalles[0];
+				if(item.requiereAgendamientoPrevio || item.esAgendable){
+					// Prestacion agendable
+					if(item.codigoReserva !== null){
+						elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3 btn-reagendar">Reagendar</button>
+							<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-consultorio" consultorio-rel='${(detalle.detalles[0].nombreSitio.split(' '))[1]}'>Ver consultorio</button>`;
+					}else{
+						elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-agendar">Agendar</button>`;
+					}
+				}else{
+					elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-detalle-chequeo">Ver detalle</button>`;
+				}
 			}else{
-				elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3">Reagendar</button>
-					<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-consultorio" consultorio-rel='${(detalle.nombreSitio.split(' '))[1]}'>Ver consultorio</button>`;
+				elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-detalle-chequeo">Ver detalle</button>`;
 			}
-		}else{
-			elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3">Reagendar</button>
-				<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Agregar al carrito</button>`//Pagar
 		}
 		return elem;
 	}
 
 	function detallesReserva(detalle){
-		return `<p class="fs-14 line-height-16 fw-medium mb-1"><span class="text-royal-blue-shade-20 me-1">Empresa:</span> ${detalle.nombreConvenio}</p>`;
+		let title = (detalle.detalles.length == 1) ? detalle.detalles[0].nombreServicio : detalle.nombreServicioNivel1;
+		let elem = `<h3 class="fs-18 line-height-24 text-royal-blue fw-medium mb-2 text-capitalize">${title.toLowerCase()}</h3>`;
+		elem += `<p class="fs-14 line-height-16 fw-medium mb-1 text-capitalize"><span class="text-royal-blue-shade-20 me-1">Empresa:</span> ${detalle.nombreConvenio.toLowerCase()}</p>`;
+		return elem;
 		/*`<h3 class="fs-18 line-height-24 text-royal-blue fw-medium mb-2 text-capitalize">${detalle.nombreEspecialidad.toLowerCase()}</h3>
         <p class="fs-14 line-height-16 fw-medium mb-1 text-capitalize"><span class="text-royal-blue-shade-20 me-1">Profesional:</span> ${detalle.nombreMedico.toLowerCase()}</p>
         <p class="fs-14 line-height-16 fw-medium mb-1 text-capitalize"><span class="text-royal-blue-shade-20 me-1 text-capitalize">Central médica:</span> ${detalle.nombreSucursal.toLowerCase()}</p>

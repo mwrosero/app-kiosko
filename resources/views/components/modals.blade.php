@@ -120,6 +120,28 @@
     </div>
 </div>
 
+<!-- Modal Detalle Chequeo -->
+<div class="modal modal-top fade" id="modalDetalleChequeo" aria-labelledby="modalDetalleChequeoLabel" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
+    <div class="modal-dialog modal modal-lg modal-dialog-centered mx-auto my-0">
+        <div class="modal-content rounded-8 rounded-24">
+            <button type="button" class="btn-close position-absolute end-0 top-0 me-3 mt-3 fw-bold" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
+            <div class="modal-body px-64 py-24 text-center">
+                <h2 class="fs-24 line-height-32 text-royal-blue-shade-20 fw-medium my-32 title-detalle-chequeo text-capitalize"></h2>
+                {{-- <p class="text-dark-veris fs-16 line-height-20 mt-32 mb-4 subtitle-detalle-chequeo"></p> --}}
+                <div class="box-items-chequeo-detalle text-start p-4 border-silver mb-32 py-3 px-32" style="max-height: 700px; overflow-y: auto;">
+                    <ul class="list-unstyled listado-items-chequeo-detalle">
+                        {{-- <li class="p-3 border-bottom-midnight-blue-tint-80">asdasdlist-unstyled</li>
+                        <li class="p-3 border-bottom-midnight-blue-tint-80">asdasdlist-unstyled</li> --}}
+                    </ul>
+                </div>
+                <div class="d-flex justify-content-center align-items-center gap-3">
+                    <button class="btn py-24 bg-royal-blue text-white rounded-12 fs-24 line-height-32 w-50" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @include('components.modal-terminos-reultados')
 
 <script>

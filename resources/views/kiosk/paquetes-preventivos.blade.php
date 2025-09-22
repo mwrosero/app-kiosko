@@ -8,13 +8,13 @@
 	<!-- Carrito -->
 	@include('components.cart-bar', ['title' => 'Paquetes preventivos'])
 	<!-- Contenido principal -->
-	<main class="flex-fill px-0 py-0">
-		<div class="row g-3 d-flex justify-content-between align-items-start h-100 mx-0">
+	<main class="flex-grow-1 d-flex flex-column">
+		<div class="row g-3 flex-grow-1 mx-0 align-items-stretch">
 			<div class="col-2">
 				@include('components.access-bar', ['page' => 'paquetes-preventivos'])
 			</div>
 			<!-- pe-0 -->
-			<div class="col-10 px-3 h-100" style="overflow-y: auto; max-height: 70vh !important;">
+			<div class="col-10 px-3 d-flex flex-column flex-grow-1 overflow-auto">
 				<div class="row border-bottom py-32">
 					<div class="col-6 offset-3 border d-flex justify-content-between align-items-center border-silver rounded-6 p-1 mb-3">
 						<button class="btn p-3 rounded-4 bg-royal-blue text-white fs-20 line-height-16 flex-fill">Comprar</button>
