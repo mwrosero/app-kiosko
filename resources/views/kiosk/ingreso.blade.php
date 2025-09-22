@@ -96,7 +96,7 @@
 	document.addEventListener("DOMContentLoaded", async function () {
 		switch(tipo){
 			case 'C':
-				$('#box-input').html(`<input type="text" autofocus id="numeroDocumento" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3">`);
+				$('#box-input').html(`<input type="text" autofocus id="numeroDocumento" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" readonly>`);
 				tipoFiltro = "CEDULA";
 				$('#title').html(`Ingresa el número de cédula del paciente`);
 				let keyboard = new Keyboard({

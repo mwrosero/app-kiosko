@@ -113,7 +113,7 @@
                 </div>
                 <div class="d-flex justify-content-between align-items-center gap-3">
                     <button class="btn py-24 border-royal-blue text-royal-blue rounded-12 fs-24 line-height-32 w-50" data-bs-dismiss="modal">Ahora no</button>
-                    <button class="btn py-24 bg-royal-blue text-white rounded-12 fs-24 line-height-32 w-50 btn-activar">Sí, quiero activar</button>
+                    <button class="btn py-24 bg-royal-blue text-white rounded-12 fs-24 line-height-32 w-50 btn-activar" data-bs-dismiss="modal">Sí, quiero activar</button>
                 </div>
             </div>
         </div>

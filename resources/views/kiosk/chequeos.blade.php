@@ -245,7 +245,7 @@
         args["dismissAlert"] = true;
         const data = await call(args);
         console.log(data);
-        $('#modalActivarChequeo').modal('hide')
+        // $('#modalActivarChequeo').modal('hide')
         if(data.code == 200){
         	await cargarMisChequeos();
         }else{

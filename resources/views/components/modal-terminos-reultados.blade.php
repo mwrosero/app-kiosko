@@ -56,7 +56,7 @@
     </div>
 </div>
 <style>
-    .modal-dialog.modal-fullscreen{
+    {{-- .modal-dialog.modal-fullscreen{
         max-width: 100% !important;
     }
     .btn-cerrar-modal {
@@ -69,6 +69,6 @@
     }
     .modal.show:nth-of-type(2) {
         z-index: 1065;
-    }
+    } --}}
 
 </style>
