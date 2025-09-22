@@ -9,7 +9,7 @@
 	<!-- Contenido principal -->
 	<main class="flex-fill px-0 py-0">
 		<div class="row g-3 d-flex justify-content-between align-items-start h-100 mx-0">
-			<div class="col-2 pb-4">
+			<div class="col-2">
 				@include('components.access-bar', ['page' => 'paquetes-preventivos'])
 			</div>
 			{{-- style="overflow-y: auto; max-height: 70vh !important;" --}}

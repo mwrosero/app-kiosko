@@ -108,6 +108,14 @@ class KioskController extends Controller
                 ->with('mac',$mac);
     }
 
+    public function chequeos($mac) {
+        // $token = session('accessToken');
+        $token = Veris::getToken();
+        return view('kiosk.chequeos')
+                ->with('accessToken',$token)
+                ->with('mac',$mac);
+    }
+
     public function carrito($mac) {
         // $token = session('accessToken');
         $token = Veris::getToken();

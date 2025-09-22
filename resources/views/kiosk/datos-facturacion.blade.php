@@ -408,24 +408,6 @@
         infoCarrito = data.data;
 	}
 
-	async function obtenerAgrupaciones(){
-		let esPagoUnico = (localStorage.getItem("itemAgregado") !== null) ? true : false;
-		let agrupacionesArr = []
-		if(esPagoUnico){
-			let detalle = JSON.parse(localStorage.getItem("itemAgregado"));
-			agrupacionesArr.push(detalle[0].idAgrupacion);
-		}else{
-			$.each(infoCarrito, function(key, value){
-			    $.each(value.agrupaciones, function(k,v){
-			        agrupacionesArr.push(v.idAgrupacion)
-			    })
-			})
-		}
-		console.table(agrupacionesArr)
-		localStorage.setItem("agrupacionFacturar", JSON.stringify(agrupacionesArr));
-		return agrupacionesArr
-	}
-
 	function onChange(input) {
 		document.querySelector(".input").value = input;
 		console.log("Input changed", input);

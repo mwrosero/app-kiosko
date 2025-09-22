@@ -205,7 +205,7 @@
     --silverDark: #717C8C;
     --silverLight: #F3F4F5;
     --silverNeutral40: #A1A7B2;
-    --silverNeutral80: #425065
+    --silverNeutral80: #425065;
     --silverBlue:#6E7A8C;
     --orangeLight: #FFF8E1;
     --orangeDark: #FFC107;
@@ -219,6 +219,7 @@
     --beigeLight: #F1F0F0;
     --magenta: #C52BD2;
     --primaryTint20: #3A5068;
+    --darkVeris:#3D4E66;
 }
 
 body {
@@ -347,6 +348,10 @@ body {
 
 .text-veris{
     color: var(--blueVeris) !important;
+}
+
+.text-dark-veris{
+    color: var(--darkVeris) !important;
 }
 
 .text-secundary-00{
@@ -674,6 +679,10 @@ body {
 
 .mt-40{
     margin-top: 40px !important;
+}
+
+.mt-32{
+    margin-top: 32px !important;
 }
 
 .my-32{

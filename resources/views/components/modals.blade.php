@@ -48,7 +48,7 @@
             <button type="button" class="btn-close position-absolute end-0 top-0 me-3 mt-3 fw-bold" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
             <div class="modal-body px-64 py-24 text-center">
                 <h2 class="fs-24 line-height-32 text-royal-blue fw-medium mb-32">Términos y condiciones</h2>
-                <div class="box-terminos text-start p-4 border-silver mb-32" style="height: 560px; overflow-y: auto;">
+                <div class="box-terminos text-start p-4 border-silver mb-32" style="height: 700px; overflow-y: auto;">
                     @include('components.terminos')
                 </div>
                 <button class="btn py-24 bg-royal-blue text-white rounded-12 fs-24 line-height-32 w-50" data-bs-dismiss="modal">Entendido</button>
@@ -90,6 +90,37 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Activar Chequeo -->
+<div class="modal modal-top fade" id="modalActivarChequeo" aria-labelledby="modalActivarChequeoLabel" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
+    <div class="modal-dialog modal modal-lg modal-dialog-centered mx-auto my-0">
+        <div class="modal-content rounded-8 rounded-24">
+            <button type="button" class="btn-close position-absolute end-0 top-0 me-3 mt-3 fw-bold" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
+            <div class="modal-body px-64 py-24 text-center">
+                <h2 class="fs-24 line-height-32 text-royal-blue-shade-20 fw-medium my-32">¿Estás seguro de querer activar tu orden?</h2>
+                <p class="text-dark-veris fs-16 line-height-20 mt-32 mb-4">Debes activar tu orden cuando estés listo para realizar la toma de muestra.</p>
+                <div class="box-items-chequeo text-start p-4 border-silver mb-32 py-3 px-32" style="max-height: 700px; overflow-y: auto;">
+                    <ul class="list-unstyled listado-items-chequeo">
+                        {{-- <li class="p-3 border-bottom-midnight-blue-tint-80">asdasdlist-unstyled</li>
+                        <li class="p-3 border-bottom-midnight-blue-tint-80">asdasdlist-unstyled</li> --}}
+                    </ul>
+                </div>
+                <div class="checkbox checkbox-primary fs-18 line-height-22 d-flex justify-content-center align-items-start mb-32 box-aceptacion d-none">
+                    <input id="autorizacion" class="me-4" type="checkbox" style="height:25px; width: 25px;">
+                    <label for="">
+                        Acepto <span class="text-veris fw-bold" data-bs-toggle="modal" data-bs-target="#modalAceptacionResultados">los términos y condiciones</span> que los resultados <br> serán entregados a la Empresa.
+                    </label>
+                </div>
+                <div class="d-flex justify-content-between align-items-center gap-3">
+                    <button class="btn py-24 border-royal-blue text-royal-blue rounded-12 fs-24 line-height-32 w-50" data-bs-dismiss="modal">Ahora no</button>
+                    <button class="btn py-24 bg-royal-blue text-white rounded-12 fs-24 line-height-32 w-50 btn-activar">Sí, quiero activar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@include('components.modal-terminos-reultados')
 
 <script>
     function showMessageModal(type, message){

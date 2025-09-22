@@ -1,4 +1,4 @@
-<div class="row gap-3 align-items-stretch border-end">
+<div class="row gap-3 align-items-stretch border-end h-100">
 	<div class="col-12 px-0 {{ $page == 'proximas-citas' ? 'active-item-menu' : '' }}">
 		<a href="/proximas-citas/{{ $mac }}" class="btn w-100 py-24">
 			<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-proximas-citas.svg" alt="" class="mb-2" style="height:80px">
@@ -29,10 +29,10 @@
 			<div class="fs-14 line-height-16 fw-medium">Tengo una orden <br>externa</div>
 		</button>
 	</div>
-	<div class="col-12 px-0 {{ $page == 'chequeos-ocupacionales' ? 'active-item-menu' : '' }}">
-		<button class="btn w-100 py-24">
+	<div class="col-12 px-0 {{ $page == 'chequeos' ? 'active-item-menu' : '' }}">
+		<a href="/chequeos/{{ $mac }}" class="btn w-100 py-24">
 			<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-chequeos-ocupacionales.svg" alt="" class="mb-2" style="height:80px">
 			<div class="fs-14 line-height-16 fw-medium">Gestionar chequeos <br>ocupacionales</div>
-		</button>
+		</a>
 	</div>
 </div>

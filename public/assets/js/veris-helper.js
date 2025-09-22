@@ -1265,7 +1265,7 @@ function limitarCaracteres(input, maxCaracteres) {
     input.value = valor;
 }
 
-async function agregarItem(datosPago, pagoUnico = false){
+async function agregarItem(datosPago, pagoUnico = false, onlyReturn = false){
     //console.log(datosPago);
     let args = [];
     args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/agregar?macAddress=${mac}&idPaciente=${datosCliente.idPaciente}`;
@@ -1277,19 +1277,55 @@ async function agregarItem(datosPago, pagoUnico = false){
     const data = await call(args);
     console.log(data);
     if(data.code == 200){
+        // Para no pasar proceso de facturacion ni pago, y manejarlo dentro de la misma vista
         if(pagoUnico){
-            //localStorage.setItem("pagoUnico", true);
             localStorage.setItem("itemAgregado", JSON.stringify(data.data));
-            //localStorage.setItem("agendamiento", JSON.stringify(dataCita));
+            if(onlyReturn){
+                return data;
+            }
             location.href = `/datos-facturacion/${mac}`;
         }else{
             location.href = `/carrito/${mac}`;
         }
-        // location.href = '/datos-facturacion/{{ $mac }}';
-        // $('#modalProductoAgregado').modal('show');
     }else{
         $('#modalError').modal('show');
         $('.titleError').html(`Atención`);
         $('.msgError').html(data.message);
     }
+}
+
+async function obtenerAgrupaciones(){
+    let esPagoUnico = (localStorage.getItem("itemAgregado") !== null) ? true : false;
+    let agrupacionesArr = []
+    if(esPagoUnico){
+        let detalle = JSON.parse(localStorage.getItem("itemAgregado"));
+        agrupacionesArr.push(detalle[0].idAgrupacion);
+    }else{
+        $.each(infoCarrito, function(key, value){
+            $.each(value.agrupaciones, function(k,v){
+                agrupacionesArr.push(v.idAgrupacion)
+            })
+        })
+    }
+    console.table(agrupacionesArr)
+    localStorage.setItem("agrupacionFacturar", JSON.stringify(agrupacionesArr));
+    return agrupacionesArr
+}
+
+async function generarTurno(){
+    //localStorage.getItem("idPreTransaccion")
+    let args = [];
+    args["endpoint"] = `${api_url_digitales}/${api_war}/turnero/generar_turno?macAddress=${mac}&idPaciente=${datosCliente.idPaciente}`;
+    args["method"] = "POST";
+    args["showLoader"] = true;
+    args["token"] = accessToken;
+    args["bodyType"] = "json";
+    args["data"] = JSON.stringify({
+        "tipoIdentificacion": datosCliente.nombreTipoIdentificacion,
+        "numeroIdentificacion": datosCliente.numeroIdentificacion,
+        "nombreCompleto": datosCliente.nombreCompleto
+    });
+    const data = await call(args);
+    console.log(data);
+    return data;
 }
