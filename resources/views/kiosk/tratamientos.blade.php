@@ -85,7 +85,7 @@
 	function mostrarConvenio(detalle){
 		let elem = ``
 		if(detalle.nombreConvenio !== null){
-			elem += `<p class="fs-14 line-height-16 fw-medium mb-1"><span class="text-royal-blue-shade-20 me-1">Convenio:</span> ${detalle.nombreConvenio}</p>`
+			elem += `<p class="fs-14 line-height-16 fw-medium mb-1 text-capitalize"><span class="text-royal-blue-shade-20 me-1">Convenio:</span> ${detalle.nombreConvenio.toLowerCase()}</p>`
 		}
 		return elem;
 	}

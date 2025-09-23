@@ -51,11 +51,12 @@
 		await cargarInfoTratamiento();
 		await cargarDetalleTratamiento();
 
-		$('body').on('click', '.btn-ver-orden', async function(){
-			let detalle = JSON.parse($(this).parent().attr('data-rel'));
-			localStorage.setItem('tratamiento', JSON.stringify(detalle))
-			location.href = `/detalle-tratamiento/{{ $mac }}`;
+		$('body').on('click', '.btn-detalle-orden', async function(){
+			let item = JSON.parse($(this).attr('item-rel'));
+			let convenio = detalleTratamiento.datosConvenio;
+			$('#modalDetalleOrdenTratamiento').modal('show');
 		})
+
 	})
 
 	function mostrarConvenio(detalle){

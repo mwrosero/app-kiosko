@@ -64,6 +64,7 @@
 </div>
 <script>
 	let datosCliente = JSON.parse(localStorage.getItem('datosCliente'));
+	callCounter = false;
 	document.addEventListener("DOMContentLoaded", async function () {
 		$('.primerNombre').html(datosCliente.primerNombre.toLowerCase());
 

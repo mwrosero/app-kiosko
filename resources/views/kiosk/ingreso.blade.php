@@ -92,14 +92,21 @@
 	let tipoFiltro;
 	let currentInput = null;
 	const Keyboard = window.SimpleKeyboard.default;
+	let keyboardInit;
 	callCounter = false;
 	document.addEventListener("DOMContentLoaded", async function () {
+
+		window.addEventListener("beforeunload", () => {
+			console.log("Destroy Keyboard");
+			keyboardInit.destroy()
+		});
+
 		switch(tipo){
 			case 'C':
 				$('#box-input').html(`<input type="text" autofocus id="numeroDocumento" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" readonly>`);
 				tipoFiltro = "CEDULA";
 				$('#title').html(`Ingresa el número de cédula del paciente`);
-				let keyboard = new Keyboard({
+				keyboardInit = new Keyboard({
 					onChange: input => onChange(input),
 					onKeyPress: button => onKeyPress(button),
 					layout: {
@@ -145,7 +152,7 @@
 
 	async function loadKeyboardAlfanumerico(){
 		$('.simple-keyboard').css('width','100%');
-		let keyboard = new Keyboard({
+		keyboardInit = new Keyboard({
 			onChange: input => {
 				if(currentInput){
 					$(currentInput).val(input);

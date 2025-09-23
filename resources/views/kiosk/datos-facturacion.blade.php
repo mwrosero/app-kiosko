@@ -269,20 +269,27 @@
 	let currentInput = null;
 	trackId = localStorage.getItem('trackId');
 	let infoCarrito;
+	const Keyboard = window.SimpleKeyboard.default;
+	let keyboardInit;
 
 	document.addEventListener("DOMContentLoaded", async function () {
 		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
-		const Keyboard = window.SimpleKeyboard.default;
+
+		window.addEventListener("beforeunload", () => {
+			console.log("Destroy Keyboard");
+			keyboardInit.destroy()
+		});
+
 		await consultarCarrito();
 		await obtenerDatosFacturacion();
 
-		let keyboard = new Keyboard({
+		let keyboardInit = new Keyboard({
 			onChange: async input => {
 				if(currentInput){
 					let max = $(currentInput).attr("maxlength"); // obtiene el maxlength del input
 				    if(max && input.length > max){
 				      input = input.substring(0, max); // corta el valor
-				      keyboard.setInput(input);        // actualiza el teclado con el valor truncado
+				      keyboardInit.setInput(input);        // actualiza el teclado con el valor truncado
 				    }
 					$(currentInput).val(input);
 					console.log(input)
@@ -314,7 +321,7 @@
 				if(button === "{bksp}" && currentInput){
 					let val = $(currentInput).val();
 					$(currentInput).val(val.slice(0, -1));
-					keyboard.setInput($(currentInput).val());
+					keyboardInit.setInput($(currentInput).val());
 				}
 
     			// 👉 Aquí manejamos los cambios de layout
@@ -323,13 +330,13 @@
 				}
 
 				if(button === "{numbers}"){
-					keyboard.setOptions({
+					keyboardInit.setOptions({
 						layoutName: "numbers"
 					});
 				}
 
 				if(button === "{abc}"){
-					keyboard.setOptions({
+					keyboardInit.setOptions({
 						layoutName: "default"
 					});
 				}
@@ -388,18 +395,18 @@
 		    	$(this).attr("inputmode") === "numeric";
 
 
-		  	keyboard.setOptions({ layoutName: isNumeric ? "numbers" : "default" });
+		  	keyboardInit.setOptions({ layoutName: isNumeric ? "numbers" : "default" });
 
 		  	// Sincronizamos valor actual del input con el teclado
-		  	keyboard.setInput($(this).val() || "");
-		  	//keyboard.setInput($(this).val());
+		  	keyboardInit.setInput($(this).val() || "");
+		  	//keyboardInit.setInput($(this).val());
 		});
 
 		// función auxiliar para shift
 		function handleShift(){
-			let currentLayout = keyboard.options.layoutName;
+			let currentLayout = keyboardInit.options.layoutName;
 			let shiftToggle = currentLayout === "default" ? "shift" : "default";
-			keyboard.setOptions({
+			keyboardInit.setOptions({
 				layoutName: shiftToggle
 			});
 		}
@@ -417,7 +424,7 @@
 		$("input").on("focus", function(){
 			$('#box-simple-keyboard').removeClass('d-none');
 			currentInput = this;
-			keyboard.setInput($(this).val());
+			keyboardInit.setInput($(this).val());
 		});
 
 		$('body').on('change', '#tipoIdentificacion', function(){

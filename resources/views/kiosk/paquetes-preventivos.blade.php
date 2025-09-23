@@ -136,14 +136,20 @@
     let perPage = 12;
     let cargandoContenido = false;
     let isFiltered = false;
+	const Keyboard = window.SimpleKeyboard.default;
+    let keyboardInit;
 
     let currentInput = null;
 	document.addEventListener("DOMContentLoaded", async function () {
-		const Keyboard = window.SimpleKeyboard.default;
 		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
+		window.addEventListener("beforeunload", () => {
+			console.log("Destroy Keyboard");
+			keyboardInit.destroy()
+		});
+
 		await obtenerPaquetesPromocionales();
 
-		let keyboard = new Keyboard({
+		keyboardInit = new Keyboard({
 			onChange: async input => {
 				if(currentInput){
 					$(currentInput).val(input);
@@ -166,7 +172,7 @@
 				if(button === "{bksp}" && currentInput){
 					let val = $(currentInput).val();
 					$(currentInput).val(val.slice(0, -1));
-					keyboard.setInput($(currentInput).val());
+					keyboardInit.setInput($(currentInput).val());
 				}
 
     			// 👉 Aquí manejamos los cambios de layout
@@ -175,13 +181,13 @@
 				}
 
 				if(button === "{numbers}"){
-					keyboard.setOptions({
+					keyboardInit.setOptions({
 						layoutName: "numbers"
 					});
 				}
 
 				if(button === "{abc}"){
-					keyboard.setOptions({
+					keyboardInit.setOptions({
 						layoutName: "default"
 					});
 				}
@@ -253,18 +259,18 @@
 		    	$(this).attr("inputmode") === "numeric";
 
 
-		  	keyboard.setOptions({ layoutName: isNumeric ? "numbers" : "default" });
+		  	keyboardInit.setOptions({ layoutName: isNumeric ? "numbers" : "default" });
 
 		  	// Sincronizamos valor actual del input con el teclado
-		  	keyboard.setInput($(this).val() || "");
-		  	//keyboard.setInput($(this).val());
+		  	keyboardInit.setInput($(this).val() || "");
+		  	//keyboardInit.setInput($(this).val());
 		});
 
 		// función auxiliar para shift
 		function handleShift(){
-			let currentLayout = keyboard.options.layoutName;
+			let currentLayout = keyboardInit.options.layoutName;
 			let shiftToggle = currentLayout === "default" ? "shift" : "default";
-			keyboard.setOptions({
+			keyboardInit.setOptions({
 				layoutName: shiftToggle
 			});
 		}
@@ -272,7 +278,7 @@
   		// Detectar qué input tiene el foco
 		$("input").on("focus", function(){
 			currentInput = this;
-			keyboard.setInput($(this).val());
+			keyboardInit.setInput($(this).val());
 		});
 
 		$('body').on('click', '.btnEliminarCategoria', async function(){
@@ -325,6 +331,7 @@
 
         async function onScroll(){
             console.log('onScroll');
+            $('#box-simple-keyboard').addClass('d-none');
             if(!cargandoContenido && !isFiltered && $(window).scrollTop() + $(window).height() + 100 > $(document).height()) {
                 cargandoContenido = true;
                 console.log("near bottom!");
@@ -491,7 +498,7 @@
                     elem += `<div class="col-12 col-md-6 mb-4">
                         <div class="card h-100 border-0 box-shadow-3 rounded-4 p-3 border-silver rounded-16">
                             <div type="button" class="zoom-img btn-comprar position-relative rounded-3 overflow-hidden" data-rel='${JSON.stringify(value)}'>
-                                <img src="${urlImagen}" onerror="https://www.veris.com.ec/wp-content/themes/veris2025/img/veris.png" class="card-img-top" alt="${value.nombrePaquete}">
+                                <img src="${urlImagen}" onerror="this.src='https://www.veris.com.ec/wp-content/themes/veris2025/img/veris.png'" class="card-img-top" alt="${value.nombrePaquete}">
                                 ${strDescuento}
                                 ${badgesImg}
                             </div>

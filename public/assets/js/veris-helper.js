@@ -25,6 +25,16 @@ document.addEventListener("DOMContentLoaded", async function () {
         // location.href = `/carrito/${mac}`;
         location.href = `/carrito/${mac}`;
     })
+
+    $("a").on("click", function (e) {
+        if ($(this).data("clicked")) {
+            console.log("paralizar")
+            e.preventDefault();
+            return;
+        }
+        $(this).data("clicked", true);
+        setTimeout(() => $(this).removeData("clicked"), 1200); // vuelve a habilitar
+    });
 })
 
 async function call(args){
