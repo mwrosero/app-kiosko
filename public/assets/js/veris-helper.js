@@ -103,7 +103,7 @@ async function call(args){
     const url = new URL(args.endpoint, window.location.origin); // base por si endpoint es relativo
     url.searchParams.set("trackId", trackId); // genera uno si no viene
     const endpointWithTrackId = url.toString();
-    console.log(endpointWithTrackId)
+    // console.log(endpointWithTrackId)
     
     return fetch(endpointWithTrackId, requestOptions)
         .then((response) => {

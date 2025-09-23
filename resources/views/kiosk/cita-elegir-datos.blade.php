@@ -3,7 +3,7 @@
 <div class="container-fluid px-0 d-flex flex-column min-vh-100">
 	@include('components.header')
 	<!-- Sub-header -->
-	@include('components.sub-header', ['showTurnoBtn' => true, 'url' => '/cita-elegir-paciente/'.$mac])
+	@include('components.sub-header', ['showTurnoBtn' => true, 'url' => '/cita-elegir-modalidad/'.$mac])
 	<!-- Carrito -->
 	@include('components.cart-bar', ['title' => 'Elige los datos de tu cita'])
 	<!-- Contenido principal -->
@@ -83,14 +83,13 @@
         </div>
     </div>
 
-	<main class="flex-fill px-0 py-0">
-		<div class="row d-flex justify-content-center align-items-start h-100 mx-0">
-			{{-- <div class="col-2 pb-4">
-				@include('components.access-bar', ['page' => 'paquetes-preventivos'])
-			</div> --}}
-			{{-- style="overflow-y: auto; height: 70vh !important;" --}}
-			<div class="col-7 px-32 h-100 d-flex flex-column justify-content-center align-items-start mt-0 pt-74">
-				
+	<main class="flex-grow-1 d-flex flex-column">
+        <div class="row g-3 flex-grow-1 mx-0 ">
+            <div class="col-2 box-accesos-lateral">
+                @include('components.access-bar', ['page' => 'proximas-citas'])
+            </div>
+            {{-- <div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central mt-0 pt-74" style="overflow-y: auto;">                --}}
+            <div class="col-6 offset-2 px-3 d-flex flex-column overflow-auto contenido-central mt-0 pt-74" style="overflow-y: auto;">				
                 <!-- CONVENIOS -->
                 <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-md modal-dialog-centered mx-auto">
@@ -248,7 +247,8 @@
         }
     }
 	
-	document.addEventListener("DOMContentLoaded", async function () {		
+	document.addEventListener("DOMContentLoaded", async function () {
+        $('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
         $('#btn-no-tratamiento').on('click', function(event) {
             // Reemplaza esta condición con tu validación
             // alert(0)

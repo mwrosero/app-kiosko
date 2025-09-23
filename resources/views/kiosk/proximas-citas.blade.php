@@ -7,14 +7,13 @@
 	<!-- Carrito -->
 	@include('components.cart-bar', ['title' => 'Próximas citas'])
 	<!-- Contenido principal -->
-	<main class="flex-fill px-0 py-0">
-		<div class="row g-3 d-flex justify-content-between align-items-start h-100 mx-0">
-			{{--  pb-4 --}}
-			<div class="col-2">
+	<main class="flex-grow-1 d-flex flex-column">
+		<div class="row g-3 flex-grow-1 mx-0 ">
+			<div class="col-2 box-accesos-lateral">
 				@include('components.access-bar', ['page' => 'proximas-citas'])
 			</div>
 			<!-- pe-0 -->
-			<div class="col-10 px-3 py-40 h-100" style="overflow-y: auto; max-height: 70vh !important;">
+			<div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central" style="overflow-y: auto;">
 				<div class="menu-inside d-flex justify-content-start align-items-center gap-2 overflow-auto" id="menu-horizontal">
 				</div>
 				{{-- <div class="menu-inside d-flex justify-content-start align-items-center gap-2 overflow-auto">
@@ -114,6 +113,7 @@
 	trackId = localStorage.getItem('trackId');
 	localStorage.setItem("origen", "cita");
 	document.addEventListener("DOMContentLoaded", async function () {
+		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
 		await cargarProximasCitas();
 
 		$('body').on('click','.item-servicio', async function(){

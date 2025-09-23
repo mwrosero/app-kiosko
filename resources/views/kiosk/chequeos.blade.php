@@ -7,104 +7,18 @@
 	<!-- Carrito -->
 	@include('components.cart-bar', ['title' => 'Gestionar chequeos ocupacionales'])
 	<!-- Contenido principal -->
-	<main class="flex-fill px-0 py-0">
-		<div class="row g-3 d-flex justify-content-between align-items-start h-100 mx-0">
-			{{--  pb-4 --}}
-			<div class="col-2">
+	<main class="flex-grow-1 d-flex flex-column">
+		<div class="row g-3 flex-grow-1 mx-0 ">
+			<div class="col-2 box-accesos-lateral">
 				@include('components.access-bar', ['page' => 'chequeos'])
 			</div>
 			<!-- pe-0 -->
-			<div class="col-10 px-3 py-40 h-100" style="overflow-y: auto; max-height: 70vh !important;">
+			<div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central" style="overflow-y: auto;">
 				<div class="menu-inside d-flex justify-content-start align-items-center gap-2 overflow-auto" id="menu-horizontal">
 				</div>
-				{{-- <div class="menu-inside d-flex justify-content-start align-items-center gap-2 overflow-auto">
-					<div type="button" tipoServicio-rel="L" class="item-servicio text-nowrap bg-royal-blue text-white p-3 rounded-8 fs-14 line-height-16">
-						Consultas
-					</div>
-				</div> --}}
 				<div class="container box-fecha px-0">
 					<div class="row py-32 cards-items d-flex justify-content-between align-items-start" id="content-area">
-						
 					</div>
-					{{-- <div class="text-center mt-5 pt-5">
-						<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/anime-doctor.svg" class="img-fluid mt-5" alt="">
-						<p class="text-center py-40 mb-0 fs-28 line-height-32">Aún no tienes citas médicas <br> agendadas</p>
-						<a href="/nueva-cita/{{ $mac }}" class="btn bg-royal-blue text-white fs-18 line-height-24 py-3 rounded-16 w-50 fw-medium shadow-none" id="btn-ingresar">Agendar nueva cita</a>
-					</div> --}}
-					{{-- <div class="row box-dia pt-74">
-						<div class="col-12 fs-18 line-height-24 fw-medium">
-							<span class="text-royal-blue">Agendada para:</span> Viernes 18 de Julio, 2025
-						</div>
-					</div>
-					<div class="row py-32 cards-items d-flex justify-content-between align-items-start">
-						<div class="col-6 col-md-6 box-agenda">
-							<div class="box-estado rounded-top-8 d-flex justify-content-end align-items-center px-3 py-12 fw-medium bg-orange-light text-orange-dark">
-								<i class="fa-solid fa-circle fs-16 me-2"></i><span class="fs-12 line-height-16">No atendida</span>
-							</div>
-							<div class="box-contenido rounded-bottom-16 border-royal-blue-tint-60 border-top-0 border-inside p-12 d-flex justify-content-between align-items-stretch">
-							    <div class="box-icon bg-royal-blue-tint-90 me-2 d-flex align-items-center justify-content-center rounded-8">
-							        <img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/especialidad.svg" class="m-2 img-fluid" alt="">
-							    </div>
-							    <div class="box-info-agendamiento flex-grow-1">
-							        <h3 class="fs-18 line-height-24 text-royal-blue fw-medium mb-2">Agendamiento</h3>
-							        <p class="fs-14 line-height-16 fw-medium mb-1"><span class="text-royal-blue-shade-20 me-1">Profesional:</span>Alban Galvez Juliana Romina</p>
-							        <p class="fs-14 line-height-16 fw-medium mb-1"><span class="text-royal-blue-shade-20 me-1">Central médica:</span>Veris - Kennedy</p>
-							        <p class="fs-14 line-height-16 fw-medium mb-1"><span class="text-royal-blue-shade-20 me-1">Hora:</span>12:00-12:20</p>
-							        <div class="box-action py-32 pb-0 d-flex justify-content-end align-items-center gap-2">
-							        	<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3">Reagendar</button>
-							        	<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-consultorio">Ver consultorio</button>
-							        </div>
-							    </div>
-							</div>
-						</div>
-						<div class="col-6 col-md-6 box-agenda">
-							<div class="box-estado rounded-top-8 d-flex justify-content-end align-items-center px-3 py-12 fw-medium gradient-green text-green-dark">
-								<i class="fa-solid fa-circle fs-16 me-2"></i><span class="fs-12 line-height-16">Cita pagada</span>
-							</div>
-							<div class="box-contenido rounded-bottom-16 border-royal-blue-tint-60 border-top-0 border-inside p-12 d-flex justify-content-between align-items-stretch">
-							    <div class="box-icon bg-royal-blue-tint-90 me-2 d-flex align-items-center justify-content-center rounded-8">
-							        <img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/especialidad.svg" class="m-2 img-fluid" alt="">
-							    </div>
-							    <div class="box-info-agendamiento flex-grow-1">
-							        <h3 class="fs-18 line-height-24 text-royal-blue fw-medium mb-2">Agendamiento</h3>
-							        <p class="fs-14 line-height-16 fw-medium mb-1"><span class="text-royal-blue-shade-20 me-1">Profesional:</span>Alban Galvez Juliana Romina</p>
-							        <p class="fs-14 line-height-16 fw-medium mb-1"><span class="text-royal-blue-shade-20 me-1">Central médica:</span>Veris - Kennedy</p>
-							        <p class="fs-14 line-height-16 fw-medium mb-1"><span class="text-royal-blue-shade-20 me-1">Hora:</span>12:00-12:20</p>
-							        <div class="box-action py-32 pb-0 d-flex justify-content-end align-items-center gap-2">
-							        	<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3">Reagendar</button>
-							        	<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3">Ver consultorio</button>
-							        </div>
-							    </div>
-							</div>
-						</div>
-					</div>
-					<div class="row box-dia pt-74">
-						<div class="col-12 fs-18 line-height-24 fw-medium">
-							<span class="text-royal-blue">Agendada para:</span> Sábado 19 de Julio, 2025
-						</div>
-					</div>
-					<div class="row py-32 cards-items d-flex justify-content-between align-items-start">
-						<div class="col-6 col-md-6 box-agenda">
-							<div class="box-estado rounded-top-8 d-flex justify-content-end align-items-center px-3 py-12 fw-medium bg-red-light text-red-dark">
-								<i class="fa-solid fa-circle fs-16 me-2"></i><span class="fs-12 line-height-16">Pago pendiente</span>
-							</div>
-							<div class="box-contenido rounded-bottom-16 border-royal-blue-tint-60 border-top-0 border-inside p-12 d-flex justify-content-between align-items-stretch">
-							    <div class="box-icon bg-royal-blue-tint-90 me-2 d-flex align-items-center justify-content-center rounded-8">
-							        <img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/especialidad.svg" class="m-2 img-fluid" alt="">
-							    </div>
-							    <div class="box-info-agendamiento flex-grow-1">
-							        <h3 class="fs-18 line-height-24 text-royal-blue fw-medium mb-2">Agendamiento</h3>
-							        <p class="fs-14 line-height-16 fw-medium mb-1"><span class="text-royal-blue-shade-20 me-1">Profesional:</span>Alban Galvez Juliana Romina</p>
-							        <p class="fs-14 line-height-16 fw-medium mb-1"><span class="text-royal-blue-shade-20 me-1">Central médica:</span>Veris - Kennedy</p>
-							        <p class="fs-14 line-height-16 fw-medium mb-1"><span class="text-royal-blue-shade-20 me-1">Hora:</span>12:00-12:20</p>
-							        <div class="box-action py-32 pb-0 d-flex justify-content-end align-items-center gap-2">
-							        	<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3">Reagendar</button>
-							        	<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3">Pagar</button>
-							        </div>
-							    </div>
-							</div>
-						</div>
-					</div> --}}
 				</div>
 			</div>
 		</div>
@@ -117,6 +31,7 @@
 	trackId = localStorage.getItem('trackId');
 	localStorage.setItem("origen", "cita");
 	document.addEventListener("DOMContentLoaded", async function () {
+		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
 		await cargarMisChequeos();
 
 		$('body').on('click','.item-servicio', async function(){
@@ -126,7 +41,7 @@
 		});
 
 		$('body').on('click', '.btn-activar-chequeo', async function(){
-			let chequeo = JSON.parse($(this).attr('data-rel'));
+			let chequeo = JSON.parse($(this).parent().attr('data-rel'));
 			detalleChequeoSeleccionado = chequeo;
 			if(!chequeo.esAutorizadoEnvResultDg){
 				$('.box-aceptacion').removeClass('d-none');
@@ -153,10 +68,13 @@
 
 		$('body').on('click', '.btn-activar', async function(){
 			if(!detalleChequeoSeleccionado.esAutorizadoEnvResultDg){
+				console.log(0)
 				let aceptacion = await aceptarEntregaResultadosChequeo();
 				if(aceptacion.code != 200){
+					console.log(1)
 					return;
 				}else{
+					console.log(2)
 					detalleChequeoSeleccionado.esAutorizadoEnvResultDg = true;
 				}
 			}
@@ -209,12 +127,63 @@
 		})
 
 		$('body').on('click', '.btn-reagendar', async function(){
-			let detalle = JSON.parse($(this).parent().attr('data-rel'));
+			let detalle = JSON.parse($(this).attr('data-rel'));
+			let item = JSON.parse($(this).attr('item-rel'));
 		})
 
 		$('body').on('click', '.btn-agendar', async function(){
-			let detalle = JSON.parse($(this).parent().attr('data-rel'));
-			console.log(detalle)
+			let detalle = JSON.parse($(this).attr('data-rel'));
+			let item = JSON.parse($(this).attr('item-rel'));
+			
+			let dataCita = {}
+			let modalidad = (item.esTeleconsulta) ? 'S' : 'N';
+	        dataCita.online = modalidad;
+	       	
+	       	dataCita.especialidad = {
+	            codigoEspecialidad: item.codigoEspecialidadServicio,
+	            nombre : item.nombreEspecialidad,
+	            imagen : item.urlImagenTipoServicio,
+	            esOnline : modalidad,
+	            codigoServicio : item.codigoServicio,
+	            codigoPrestacion : item.codigoPrestacion,
+	            codigoTipoAtencion : "C",
+	            // codigoSucursal : item.codigoSucursal,
+	            origen: "Listatratamientos"
+	        };
+
+	        let dataCitaReserva = {
+                "paciente": {
+                    "tipoIdentificacion": paciente.codigoTipoIdentificacion,
+                    "numeroIdentificacion": paciente.numeroIdentificacion,
+                    "numeroPaciente": paciente.idPaciente,
+                    "primerNombre": paciente.primerNombre,
+                    "segundoNombre": paciente.segundoNombre,
+                    "primerApellido": paciente.primerApellido,
+                    "segundoApellido": paciente.segundoApellido,
+                    // "idPersona": "MTQwMDc4MDA3Ni0y",
+                },
+                "convenio": convenioItem,
+                "tratamiento": {
+                    "numeroOrden": item.codigoOrdApoyo,
+                    "codigoEmpOrden": detalle.codigoEmpresa,
+                    "lineaDetalle": detalle.lineaDetalleOrden,
+                    "codigoEmpOrden": 1,
+                    "esPagada": esPagada
+                },
+                "online": (detalle.esTeleconsulta) ? "S" : "N",
+                "especialidad": {
+                    "codigoEspecialidad": item.codigoEspecialidadServicio,
+                    "nombre": "",
+                    "esOnline": modalidad,
+                    "codigoServicio": item.codigoServicio,
+                    "codigoPrestacion": item.codigoPrestacion,
+                    "codigoTipoAtencion": "C",
+                    // "codigoSucursal": detalle.codigoSucursal,
+                    "origen": "Listatratamientos"
+                },
+                "origen": origen,
+            }
+
 			{{-- let datosServicio = $(this).data('rel');
 	        let url = $(this).attr('url-rel');
 	        let esTerapiaAgrupada = $(this).attr('esTerapiAgrupada-rel');
@@ -338,11 +307,27 @@
 	async function mostrarDetalleModalChequeoDetalle(detalle){
 		let elem = ``;
 		$.each(detalle.detalles, function(key, value){
+			let labelStatus = (value.muestraEntregada) ? `Realizado` : `Por realizar`;
 			if(detalle.nombreServicioNivel1 == "LABORATORIO"){
 				// muestraEntregada
 				elem += `<li class="d-flex justify-content-between align-items-start mb-2">
 					${value.nombrePrestacion}
-					<span class="badge rounded-pill p-1 fs-10 line-height-14 border-royal-blue text-royal-blue ms-2">Realizado</span>
+					<span class="badge rounded-pill p-1 fs-10 line-height-14 border-royal-blue text-royal-blue ms-2">${labelStatus}</span>
+				</li>`;
+			}else{
+				let buttonElem = ``;
+				if(value.requiereAgendamientoPrevio || value.esAgendable){
+					if(value.codigoReserva !== null){ //value.muestraEntregada
+						buttonElem += `<button item-rel='${JSON.stringify(value)}' data-rel='${JSON.stringify(detalle)}' class="btn fs-10 line-height-14 border-royal-blue text-royal-blue rounded-8 p-12 px-3 ms-3 btn-reagendar">Reagendar</button>`;
+					}else{
+						buttonElem += `<button item-rel='${JSON.stringify(value)}' data-rel='${JSON.stringify(detalle)}' class="btn fs-10 line-height-14 border-royal-blue text-royal-blue rounded-8 p-12 px-3 ms-3 btn-agendar">Agendar</button>`;
+					}
+				}else{
+					buttonElem += `<span class="badge rounded-pill p-1 fs-10 line-height-14 border-royal-blue text-royal-blue ms-3">${labelStatus}</span>`;
+				}
+				elem += `<li class="d-flex justify-content-between align-items-start mb-2">
+					${value.nombrePrestacion}
+					${buttonElem}
 				</li>`;
 			}
 		})
@@ -478,10 +463,10 @@
 				if(item.requiereAgendamientoPrevio || item.esAgendable){
 					// Prestacion agendable
 					if(item.codigoReserva !== null){
-						elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3 btn-reagendar">Reagendar</button>
+						elem += `<button item-rel='${JSON.stringify(item)}' data-rel='${JSON.stringify(detalle)}' class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3 btn-reagendar">Reagendar</button>
 							<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-consultorio" consultorio-rel='${(detalle.detalles[0].nombreSitio.split(' '))[1]}'>Ver consultorio</button>`;
 					}else{
-						elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-agendar">Agendar</button>`;
+						elem += `<button item-rel='${JSON.stringify(item)}' data-rel='${JSON.stringify(detalle)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-agendar">Agendar</button>`;
 					}
 				}else{
 					elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-detalle-chequeo">Ver detalle</button>`;

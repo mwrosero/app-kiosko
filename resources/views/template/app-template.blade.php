@@ -108,7 +108,6 @@
                 {{-- args["sendHeaders"] = false; --}}
                 args["token"] = "{{ $accessToken }}";
                 const data = await call(args);
-                console.log(data);
                 if(data.code == 200){
                     $('.qtyCart').html(data.data.contador);
                 }

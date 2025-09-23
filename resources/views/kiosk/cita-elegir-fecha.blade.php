@@ -90,7 +90,7 @@
             <div class="modal-content">
                 <div class="modal-body p-3 pb-2">
                 	<h2 class="fs-24 line-height-32 text-royal-blue fw-medium mb-32 text-center">Horarios</h2>
-                    <div id="listaHorariosMedico" class="row g-2">
+                    <div id="listaHorariosMedico" class="row g-2" style="max-height: 700px; overflow-y: auto;">
                         {{-- <div class="card card-body rounded-3 position-relative py-2 mb-2">
                             <a href="{{route('citas.detalleCita')}}">
                                 <div class="badge-discount-top fs--3 fw-medium"><span>{{ __('-30%') }}</span></div>
@@ -135,43 +135,51 @@
             </div>
         </div>
     </div>
-	<main class="flex-fill px-0 py-0">
-		<div class="row g-0 justify-content-center">
-            <div class="col-auto p-0 bg-transparent box-agendamiento-multiple d-none" style="min-width: 375px;">
-                <div class="w-100 p-2 d-flex justify-content-between align-items-center">
-                    <span>Terapias seleccionadas</span>
-                    <button type="button" class="text-royal-blue bg-transparent text-decoration-underline cursor-pointer border-0" data-bs-toggle="modal" data-bs-target="#modaDetalleAgendaMultiple">Ver detalle</button>
-                </div>
-                <div class="w-100 mt-0 py-3 text-center fs-18 fw-medium label-info-agenda-multiple text-capitalize bg-white"></div>
+    <!-- Contenido principal -->
+    <main class="flex-grow-1 d-flex flex-column">
+        <div class="row g-3 flex-grow-1 mx-0 ">
+            <div class="col-2 box-accesos-lateral">
+                @include('components.access-bar', ['page' => 'proximas-citas'])
             </div>
-        </div>
-        <div class="row g-0 justify-content-center bg-royal-blue-shade-40">
-            <div class="col-auto p-3 bg-dark-blue-veris-medium" style="min-width: 375px;">
-                <p class="text-center text-white fw-medium fs-26 line-height-34 m-0 text-capitalize" id="month-name"></p>
-                <div class="row g-0 d-flex" style="height: 85px;">
-                    <div class="col-12">
-                        <div class="calendar-container invisible p-0 mb-1 w-100">
-                            <span class="arrow mt-3" id="prev-week">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </span>
-                            <div class="calendar-header">
-                                <div class="week-container pt-4 mt-1" id="week-days"></div>
+            <div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central mt-0 pt-74" style="overflow-y: auto;">
+                <div class="row g-0 justify-content-center">
+                    <div class="col-auto p-0 bg-transparent box-agendamiento-multiple d-none" style="min-width: 375px;">
+                        <div class="w-100 p-2 d-flex justify-content-between align-items-center">
+                            <span>Terapias seleccionadas</span>
+                            <button type="button" class="text-royal-blue bg-transparent text-decoration-underline cursor-pointer border-0" data-bs-toggle="modal" data-bs-target="#modaDetalleAgendaMultiple">Ver detalle</button>
+                        </div>
+                        <div class="w-100 mt-0 py-3 text-center fs-18 fw-medium label-info-agenda-multiple text-capitalize bg-white"></div>
+                    </div>
+                </div>
+                <div class="row g-0 justify-content-center bg-royal-blue-shade-40">
+                    <div class="col-auto p-3 bg-dark-blue-veris-medium" style="min-width: 375px;">
+                        <p class="text-center text-white fw-medium fs-26 line-height-34 m-0 text-capitalize" id="month-name"></p>
+                        <div class="row g-0 d-flex" style="height: 85px;">
+                            <div class="col-12">
+                                <div class="calendar-container invisible p-0 mb-1 w-100">
+                                    <span class="arrow mt-3" id="prev-week">
+                                        <i class="fa-solid fa-chevron-left"></i>
+                                    </span>
+                                    <div class="calendar-header">
+                                        <div class="week-container pt-4 mt-1" id="week-days"></div>
+                                    </div>
+                                    <span class="arrow mt-3" id="next-week">
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </span>
+                                </div>
                             </div>
-                            <span class="arrow mt-3" id="next-week">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center align-items-start h-100 mx-0">
+                    <div class="col-12 h-100 mt-0 pt-56" style="overflow-y: auto; height: 60vh !important;">
+                        <div class="row" id="listaMedicos">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-		<div class="row d-flex justify-content-center align-items-start h-100 mx-0">
-			<div class="col-11 px-32 h-100 mt-0 pt-56" style="overflow-y: auto; height: 60vh !important;">
-				<div class="row" id="listaMedicos">
-				</div>
-			</div>
-		</div>
-	</main>
+    </main>
 	@include('components.footer')
 </div>
 <script>
@@ -251,6 +259,7 @@
 
     // llamada al dom 
     document.addEventListener("DOMContentLoaded", async function () {
+        $('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
         // if((dataCita.central && dataCita.central.codigoTipoSucursal == "CAP") || dataCita.hasOwnProperty('detalleItemPaquete')){
 
         if(dataCita.hasOwnProperty('items')){

@@ -9,12 +9,12 @@
 	@include('components.cart-bar', ['title' => 'Paquetes preventivos'])
 	<!-- Contenido principal -->
 	<main class="flex-grow-1 d-flex flex-column">
-		<div class="row g-3 flex-grow-1 mx-0 align-items-stretch">
-			<div class="col-2">
+		<div class="row g-3 flex-grow-1 mx-0 ">
+			<div class="col-2 box-accesos-lateral">
 				@include('components.access-bar', ['page' => 'paquetes-preventivos'])
 			</div>
 			<!-- pe-0 -->
-			<div class="col-10 px-3 d-flex flex-column flex-grow-1 overflow-auto">
+			<div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central" style="overflow-y: auto;">
 				<div class="row border-bottom py-32">
 					<div class="col-6 offset-3 border d-flex justify-content-between align-items-center border-silver rounded-6 p-1 mb-3">
 						<button class="btn p-3 rounded-4 bg-royal-blue text-white fs-20 line-height-16 flex-fill">Comprar</button>
@@ -140,7 +140,7 @@
     let currentInput = null;
 	document.addEventListener("DOMContentLoaded", async function () {
 		const Keyboard = window.SimpleKeyboard.default;
-
+		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
 		await obtenerPaquetesPromocionales();
 
 		let keyboard = new Keyboard({
@@ -428,7 +428,7 @@
         var itemsSeleccionados = [];
         $('.category-item').each(function() {
             if ($(this).hasClass('category-selected')) {
-                    itemsSeleccionados.push($(this).attr('categoria-rel'))
+                itemsSeleccionados.push($(this).attr('categoria-rel'))
             }
         });
         return itemsSeleccionados;
