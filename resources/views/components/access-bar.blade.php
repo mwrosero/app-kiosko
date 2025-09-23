@@ -18,10 +18,10 @@
 		</a>
 	</div>
 	<div class="col-12 px-0 {{ $page == 'tratamientos' ? 'active-item-menu' : '' }}">
-		<button class="btn w-100 py-24">
+		<a href="/tratamientos/{{ $mac }}" class="btn w-100 py-24">
 			<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-tratamientos.svg" alt="" class="mb-2" style="height:80px">
 			<div class="fs-14 line-height-16 fw-medium">Gestionar mi <br>tratamiento</div>
-		</button>
+		</a>
 	</div>
 	<div class="col-12 px-0 {{ $page == 'orden-externa' ? 'active-item-menu' : '' }}">
 		<button class="btn w-100 py-24">

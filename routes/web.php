@@ -32,6 +32,9 @@ Route::get('/cita-elegir-datos/{mac}', [KioskController::class, 'citaElegirDatos
 Route::get('/citas-elegir-fecha-doctor/{mac}', [KioskController::class, 'citaElegirFecha'])->name('citaElegirFecha');
 Route::get('/citas-revisa-tus-datos/{mac}', [KioskController::class, 'citaReservar'])->name('citaReservar');
 
+Route::get('/tratamientos/{mac}', [KioskController::class, 'tratamientos'])->name('tratamientos');
+Route::get('/detalle-tratamiento/{mac}', [KioskController::class, 'detalleTratamiento'])->name('detalleTratamiento');
+
 Route::get('/chequeos/{mac}', [KioskController::class, 'chequeos'])->name('chequeos');
 
 Route::get('/carrito/{mac}', [KioskController::class, 'carrito'])->name('carrito');

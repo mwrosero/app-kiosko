@@ -7,77 +7,32 @@
 	@include('components.sub-header', ['showTurnoBtn' => true, 'url' => '/menu/'.$mac])
 	<!-- Carrito -->
 	@include('components.cart-bar', ['title' => 'Carrito', 'showQtyBtn' => false])
-	<div class="row mx-0">
-		<div class="col-2">
-			@include('components.access-bar', ['page' => ''])
+	<main class="flex-grow-1 d-flex flex-column">
+		<div class="row g-3 flex-grow-1 mx-0 ">
+			<div class="col-2 box-accesos-lateral">
+				@include('components.access-bar', ['page' => 'proximas-citas'])
+			</div>
+			<div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central mt-0 pt-74" style="overflow-y: auto;">
+				<div class="row mx-0">
+					<div class="col-12 fs-18 line-height-24 px-8 py-4 bg-royal-blue-tint-90 border-silver mb-3">
+						Revisa tu carrito
+					</div>
+					<div class="col-12 px-3" id="listadoItems">
+						
+					</div>
+					<div class="col-12 d-flex justify-content-between align-items-center gap-3 mt-5 fs-16 line-height-20">
+						<span class="text-dark-veris">Subtotal</span>
+						<span class="text-royal-blue fw-medium subtotal"></span>
+					</div>
+					<div class="col-9 d-flex justify-content-center align-items-center gap-3 mt-32 mx-auto">
+						<a href="/menu/{{ $mac }}" class="btn fw-medium py-3 text-royal-blue border-royal-blue rounded-8 fs-18 line-height-24 w-50">Agregar más servicios</a>
+	                    <a href="/datos-facturacion/{{ $mac }}" class="btn fw-medium py-3 bg-royal-blue text-white rounded-8 fs-18 line-height-24 w-50">Pagar</a>
+					</div>
+	            </div>
+			</div>
 		</div>
-		<div class="col-10 px-3 py-40 h-100" style="overflow-y: auto; height: 70vh !important;">
-			<div class="row mx-0">
-				<div class="col-12 fs-18 line-height-24 px-8 py-4 bg-royal-blue-tint-90 border-silver mb-3">
-					Revisa tu carrito
-				</div>
-				<div class="col-12 px-3" id="listadoItems">
-					{{-- <div class="row d-flex justify-content-between align-items-center">
-						<div class="col-8">
-							<p class="fs-16 line-height-20 fw-medium text-royal-blue mb-1">Laboratorio</p>
-							<p class="fs-14 line-height-16 mb-1"><span class="text-royal-blue-shade-40">Paciente:</span> Michael Washington Rosero Peralta</p>
-							<p class="fs-14 line-height-16 mb-1"><span class="text-royal-blue-shade-40">Orden Válida hasta:</span> 23/07/2025</p>
-							<p class="fs-14 line-height-16 mb-1"><span class="text-royal-blue-shade-40">Convenio:</span> Saludsa- práctico 5d</p>
-							<p class="fs-14 line-height-16 mb-3"><span class="text-royal-blue-shade-40">Tratamiento:</span> Alergología | 20/07/2025</p>
-							<div type="button" class="fs-14 line-height-16 fw-medium mt-3 text-royal-blue d-flex justify-content-start align-items-center box-action" type-rel='S'>
-								Ver detalle
-								<i class="fa-solid fa-chevron-down ms-2"></i>
-							</div>
-						</div>
-						<div class="col-2 fs-16 fw-medium line-height-20 text-end">
-							$20.40
-						</div>
-						<div class="col-2 text-end">
-							<i class="fa-regular fa-trash-can text-red-dark fs-28 line-height-28"></i>
-						</div>
-						<div class="col-12 pt-40 box-detail d-none">
-							<ul class="list-unstyled border-bottom-midnight-blue-tint-80 mx-40 my-0">
-								<li class="p-3 d-flex justify-content-between align-items-center fs-14 line-height-16">
-									<div class="col-7">Pcr para coronavirus 2019-ncov (Covid-19)</div>
-									<div class="col-4">
-										<div class="row fw-medium text-end">
-											<div class="col-4">$12.40</div>
-											<div class="col-4">$12.40</div>
-											<div class="col-4">$12.40</div>
-										</div>
-									</div>
-									<div class="col-1 text-end">
-										<i class="fa-solid fa-circle-info text-red-dark"></i>
-									</div>
-								</li>
-								<li class="p-3 d-flex justify-content-between align-items-center fs-14 line-height-16">
-									<div class="col-7">Biometría hemática</div>
-									<div class="col-4">
-										<div class="row fw-medium text-end">
-											<div class="col-4">$12.40</div>
-											<div class="col-4">$12.40</div>
-											<div class="col-4">$12.40</div>
-										</div>
-									</div>
-									<div class="col-1 text-end">
-										<i class="fa-solid fa-circle-info text-red-dark"></i>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</div> --}}
-				</div>
-				<div class="col-12 d-flex justify-content-between align-items-center gap-3 mt-5 fs-16 line-height-20">
-					<span class="text-dark-veris">Subtotal</span>
-					<span class="text-royal-blue fw-medium subtotal"></span>
-				</div>
-				<div class="col-9 d-flex justify-content-center align-items-center gap-3 mt-32 mx-auto">
-					<a href="/menu/{{ $mac }}" class="btn py-24 text-royal-blue border-royal-blue rounded-12 fs-18 line-height-24 w-50">Agregar más servicios</button>
-                    <a href="/datos-facturacion/{{ $mac }}" class="btn py-24 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50">Pagar</a>
-				</div>
-            </div>
-		</div>
-	</div>
+	</main>
+
 	@include('components.footer')
 	{{-- Tootltip --}}
 	{{-- https://codepen.io/sanjeevks121/pen/xQmErr --}}
@@ -93,6 +48,8 @@
 		localStorage.removeItem("itemAgregado");
 		localStorage.removeItem("agendamiento");
 		localStorage.removeItem("agrupacionFacturar");
+
+		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
 
 		await consultarCarrito();
 		$('body').on('click', '.box-action', function(){
@@ -179,23 +136,24 @@
 				totalItem = item.totalAgrupacion.paciente.valorTotal;
 				subtotal += totalItem;
 				convenio = obtenerConvenio(item.beneficio);
+				let hideInfoPaquetes = (item.nemonicoTipoOrdenTransaccion == "PAQUETE_PROMOCIONAL") ? `d-none` : ``;
 				if(item.beneficio.paquetePromocional !== null){
 					tipoServicio = item.beneficio.paquetePromocional.nombrePaquete;
 				}
 				$.each(item.detallesAgrupacion, function(k1, v1){
 					prestaciones += `<li class="p-3 d-flex justify-content-between align-items-center fs-14 line-height-16">
 						<div class="col-7 text-capitalize">${v1.nombrePrestacion.toLowerCase()}</div>
-							<div class="col-4">
-								<div class="row fw-medium text-end">
-									<div class="col-4">$${v1.valoresPaciente.valorTotal}</div>
-									<div class="col-4">$${v1.valoresEmpresa.valorTotal}</div>
-									<div class="col-4">$${v1.valoresVenta.valorTotal}</div>
-								</div>
+						<div class="col-4 ${hideInfoPaquetes}">
+							<div class="row fw-medium text-end">
+								<div class="col-4">$${v1.valoresPaciente.valorTotal}</div>
+								<div class="col-4">$${v1.valoresEmpresa.valorTotal}</div>
+								<div class="col-4">$${v1.valoresVenta.valorTotal}</div>
 							</div>
-							<div class="col-1 text-end">
-								<i class="fa-solid fa-circle-info text-red-dark"></i>
-							</div>
-						</li>`;
+						</div>
+						<div class="col-1 text-end ${hideInfoPaquetes}">
+							<i class="fa-solid fa-circle-info text-red-dark"></i>
+						</div>
+					</li>`;
 				})
 			})
 			elem += `<div class="row d-flex justify-content-between align-items-center py-4 border-bottom-midnight-blue-tint-80">

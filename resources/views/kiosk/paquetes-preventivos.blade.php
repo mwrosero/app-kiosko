@@ -23,7 +23,7 @@
 					<div class="col-10 offset-1 py-4 d-flex justify-content-between align-items-center gap-2">
 						<div class="input-group bg-beige-light border-midnight-blue-tint-80 search-box rounded-8">
 		                    <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="{{asset('assets/img/svg/search.svg')}}" alt="veris-promociones"></span>
-		                    <input type="search" class="form-control bg-transparent fs-16 line-height-20 border-0 p-2 ps-0" name="buscarPorPromocion" id="buscarPorPromocion" placeholder="Ejemplo: Exámenes de laboratorio" aria-describedby="search" style="outline: none;box-shadow: none;"/>
+		                    <input type="search" class="form-control bg-transparent fs-16 line-height-20 border-0 p-2 ps-0" name="buscarPorPromocion" id="buscarPorPromocion" placeholder="Ejemplo: Exámenes de laboratorio" aria-describedby="search" style="outline: none;box-shadow: none;" readonly />
 		                </div>
 		                <button class="btn h-100 d-flex justify-content-between p-12 align-items-center fs-18 line-height-24 border-royal-blue text-royal-blue rounded-8" style="width: 175px;" data-bs-toggle="modal" data-bs-target="#modalCategorias">
 		                	Filtrar por

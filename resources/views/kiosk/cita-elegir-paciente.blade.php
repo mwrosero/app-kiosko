@@ -5,14 +5,14 @@
 	<!-- Sub-header -->
 	@include('components.sub-header', ['showTurnoBtn' => true, 'url' => '/menu/'.$mac])
 	<!-- Carrito -->
-	@include('components.cart-bar', ['title' => '¿Para quién es el la cita?'])
+	@include('components.cart-bar', ['title' => '¿Para quién es la cita?'])
 	<!-- Contenido principal -->
 	<main class="flex-grow-1 d-flex flex-column">
 		<div class="row g-3 flex-grow-1 mx-0 ">
 			<div class="col-2 box-accesos-lateral">
-				@include('components.access-bar', ['page' => 'proximas-citas'])
+				@include('components.access-bar', ['page' => 'cita-medica'])
 			</div>
-			<div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central mt-0 pt-74" style="overflow-y: auto;">
+			<div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central mt-0" style="overflow-y: auto;">
 				@include('components.grupo_familiar')
 			</div>
 		</div>

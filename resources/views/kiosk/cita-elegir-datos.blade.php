@@ -86,10 +86,10 @@
 	<main class="flex-grow-1 d-flex flex-column">
         <div class="row g-3 flex-grow-1 mx-0 ">
             <div class="col-2 box-accesos-lateral">
-                @include('components.access-bar', ['page' => 'proximas-citas'])
+                @include('components.access-bar', ['page' => 'cita-medica'])
             </div>
             {{-- <div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central mt-0 pt-74" style="overflow-y: auto;">                --}}
-            <div class="col-6 offset-2 px-3 d-flex flex-column overflow-auto contenido-central mt-0 pt-74" style="overflow-y: auto;">				
+            <div class="col-6 offset-2 px-3 d-flex flex-column overflow-auto contenido-central mt-0 pt-74" style="overflow-y: auto;">
                 <!-- CONVENIOS -->
                 <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-md modal-dialog-centered mx-auto">

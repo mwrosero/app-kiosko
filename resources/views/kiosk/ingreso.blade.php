@@ -14,7 +14,7 @@
 			
 		</div>
 		<div class="col-6 offset-3 text-center mt-56 mb-40">
-			<button disabled class="btn bg-silver text-silver-neutral-40 fs-18 line-height-24 py-3 rounded-16 w-100 fw-medium shadow-none" id="btn-ingresar">Ingresar</button>
+			<button disabled class="btn bg-silver text-silver-neutral-40 fs-18 line-height-24 py-3 rounded-8 w-100 fw-medium shadow-none" id="btn-ingresar">Ingresar</button>
 		</div>
 		<div class="col-10 offset-1 mt-56 bg-silver-light p-44">
 			<div class="simple-keyboard"></div>

@@ -10,9 +10,9 @@
 	<main class="flex-grow-1 d-flex flex-column">
 		<div class="row g-3 flex-grow-1 mx-0 ">
 			<div class="col-2 box-accesos-lateral">
-				@include('components.access-bar', ['page' => 'proximas-citas'])
+				@include('components.access-bar', ['page' => 'cita-medica'])
 			</div>
-			<div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central mt-0 pt-74" style="overflow-y: auto;">
+			<div class="col-6 offset-2 px-3 d-flex flex-column overflow-auto contenido-central mt-0 pt-74" style="overflow-y: auto;">
 				<p class="fs-26 line-height-34 mt-40 mb-3 w-100">1. Elige la modalidad de la cita médica</p>
 				<div class="d-flex justify-content-between align-items-center gap-4 w-100">
 					<button class="btn bg-silver-light border-silver-3 text-silver-blue fs-24 line-height-28 p-4 rounded-12 flex-grow-1 fw-medium btn-modalidad" online-rel="N">Presencial</button>

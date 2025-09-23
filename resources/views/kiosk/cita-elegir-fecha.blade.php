@@ -139,7 +139,7 @@
     <main class="flex-grow-1 d-flex flex-column">
         <div class="row g-3 flex-grow-1 mx-0 ">
             <div class="col-2 box-accesos-lateral">
-                @include('components.access-bar', ['page' => 'proximas-citas'])
+                @include('components.access-bar', ['page' => 'cita-medica'])
             </div>
             <div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central mt-0 pt-74" style="overflow-y: auto;">
                 <div class="row g-0 justify-content-center">
@@ -172,7 +172,8 @@
                     </div>
                 </div>
                 <div class="row d-flex justify-content-center align-items-start h-100 mx-0">
-                    <div class="col-12 h-100 mt-0 pt-56" style="overflow-y: auto; height: 60vh !important;">
+                    {{-- <div class="col-12 h-100 mt-0 pt-56" style="overflow-y: auto; height: 60vh !important;"> --}}
+                    <div class="col-12 h-100 mt-0 pt-56">
                         <div class="row" id="listaMedicos">
                         </div>
                     </div>

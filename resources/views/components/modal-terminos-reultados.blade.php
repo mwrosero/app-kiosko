@@ -18,7 +18,7 @@
                     Versión: 1 Fecha: 27-Ene.-2025 <br>
                     Autorización
                 </div>
-                <p>Yo,<span class="fw-bold text-royal-blue" id="nombreAceptacion"></span>, mayor de edad, con C.C., No: <span class="fw-bold text-royal-blue" id="cedulaAceptacion"></span>, en mi calidad de titular de la información proporcionada a VERIS S.A. (en adelante “VERIS”), DOY MI CONSENTIMIENTO expreso, libre, voluntario, específico, informado e inequívoco para el tratamiento de mi información personal, incluyendo datos de contacto, domicilio, sensibles y datos de salud (“Información Personal”) con el propósito de ser recopilados y tratados por VERIS a través de cualquiera de sus marcas VERIS®, ParaMí®, y/o aliados estratégicos, dentro de las siguientes finalidades:</p>
+                <p>Yo, <span class="fw-bold text-royal-blue" id="nombreAceptacion"></span>, mayor de edad, con C.C., No: <span class="fw-bold text-royal-blue" id="cedulaAceptacion"></span>, en mi calidad de titular de la información proporcionada a VERIS S.A. (en adelante “VERIS”), DOY MI CONSENTIMIENTO expreso, libre, voluntario, específico, informado e inequívoco para el tratamiento de mi información personal, incluyendo datos de contacto, domicilio, sensibles y datos de salud (“Información Personal”) con el propósito de ser recopilados y tratados por VERIS a través de cualquiera de sus marcas VERIS®, ParaMí®, y/o aliados estratégicos, dentro de las siguientes finalidades:</p>
                 <div class="w-50 mx-auto my-3">
                     <table class="table table-bordered">
                         <tr>

@@ -7,13 +7,12 @@
 	<!-- Carrito -->
 	@include('components.cart-bar', ['title' => ''])
 	<!-- Contenido principal -->
-	<main class="flex-fill px-0 py-0">
-		<div class="row g-3 d-flex justify-content-between align-items-start h-100 mx-0">
-			<div class="col-2">
-				@include('components.access-bar', ['page' => 'paquetes-preventivos'])
+	<main class="flex-grow-1 d-flex flex-column">
+		<div class="row g-3 flex-grow-1 mx-0 ">
+			<div class="col-2 box-accesos-lateral">
+				@include('components.access-bar', ['page' => 'proximas-citas'])
 			</div>
-			{{-- style="overflow-y: auto; max-height: 70vh !important;" --}}
-			<div class="col-10 px-32 h-100">
+			<div class="col-10 px-32 d-flex flex-column overflow-auto contenido-central mt-0" style="overflow-y: auto;">
 				<div class="row">
 					<div class="col-12 my-3">
 						<img src="" class="img-fluid w-100 rounded-16 img-paquete" alt="">

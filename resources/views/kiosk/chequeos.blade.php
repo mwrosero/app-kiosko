@@ -29,7 +29,7 @@
 <script>
 	let datosCliente = JSON.parse(localStorage.getItem('datosCliente'));
 	trackId = localStorage.getItem('trackId');
-	localStorage.setItem("origen", "cita");
+	localStorage.setItem("origen", "Listatratamientos");
 	document.addEventListener("DOMContentLoaded", async function () {
 		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
 		await cargarMisChequeos();
@@ -402,7 +402,7 @@
         	//Empty space
         	$('#content-area').html(`<div class="text-center mt-5 pt-5">
 					<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/anime-doctor.svg" class="img-fluid mt-5" alt="">
-					<p class="text-center py-40 mb-0 fs-28 line-height-32">No tienes chequeos ocupacioanles <br> agendadas</p>
+					<p class="text-center py-40 mb-0 fs-28 line-height-32">No tienes chequeos ocupacioanles <br> agendados</p>
 					<a href="/cita-elegir-paciente/{{ $mac }}" class="d-none btn bg-royal-blue text-white fs-24 line-height-32 py-3 rounded-16 w-50 fw-medium shadow-none" id="btn-ingresar">Agendar nueva cita</a>
 				</div>`);
         }else{
