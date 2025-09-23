@@ -14,7 +14,7 @@
 			</div>
 			<!-- pe-0 -->
 			<div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central" style="overflow-y: auto;">
-				<div class="menu-inside d-flex justify-content-start align-items-center gap-2 overflow-auto" id="menu-horizontal">
+				<div class="menu-inside d-flex justify-content-start align-items-center gap-2 mt-40" id="menu-horizontal">
 				</div>
 				<div class="container box-fecha px-0">
 					<div class="row py-32 cards-items d-flex justify-content-between align-items-start" id="content-area">

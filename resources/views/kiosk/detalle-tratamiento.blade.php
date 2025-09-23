@@ -14,12 +14,26 @@
 			</div>
 			<!-- pe-0 -->
 			<div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central" style="overflow-y: auto;">
-				<div class="info-tratamiento d-flex justify-content-start align-items-center gap-2 px-3 py-32">
+				<div class="info-tratamiento d-flex justify-content-start align-items-center gap-2 px-0 py-32">
 					
 				</div>
-				<div class="container box-fecha px-0">
-					<div class="row pb-32 cards-items d-flex justify-content-between align-items-start" id="content-area">
+				<div class="w-100">
+					<div class="col-12 bg-royal-blue-tint-90 my-2 p-3 fs-18 line-height-24 fw-medium">
+						Órdenes pendientes
 					</div>
+				</div>
+				<div class="w-100" id="listadoOrdenes">
+					{{-- <div class="col-12 px-32 py-4 fs-18 line-height-24 fw-medium d-flex justify-content-between align-items-center border-bottom-midnight-blue-tint-80">
+						<img src="https://dikg1979lm6fy.cloudfront.net/app/cmv/servicios/procedimiento_tp.png" alt="" width="56px">
+						<div class="mx-3 flex-grow-1">
+							<h2 class="text-royal-blue-shade-20 fw-medium fs-16 line-height-20 mb-1">Farmacia</h2>
+							<p class="fs-14 line-height-16 mb-12 fw-normal"><span class="text-royal-blue-shade-40">Orden Válida hasta:</span> 23/07/2025</p>
+							<div class="text-orange-dark fs-12 line-height-16">
+								<i class="fa-solid fa-circle fs-16 me-1"></i><span class="fs-12 line-height-16">Por comprar</span>
+							</div>
+						</div>
+						<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-detalle-chequeo">Ver detalle</button>
+					</div> --}}
 				</div>
 			</div>
 		</div>
@@ -73,45 +87,54 @@
         args["showLoader"] = showLoader;
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
-        if(data.data.length == 0){
+        if(data.data.pendientes.length == 0){
         	//Empty space
-        	$('#content-area').html(`<div class="text-center mt-5 pt-5">
+        	$('#listadoOrdenes').html(`<div class="text-center mt-5 pt-5">
 					<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/anime-doctor.svg" class="img-fluid mt-5" alt="">
 					<p class="text-center py-40 mb-0 fs-28 line-height-32">No tienes órdenes <br> pendientes para tu tratamiento</p>
 					<a href="/cita-elegir-paciente/{{ $mac }}" class="d-none btn bg-royal-blue text-white fs-24 line-height-32 py-3 rounded-16 w-50 fw-medium shadow-none" id="btn-ingresar">Agendar nueva cita</a>
 				</div>`);
         }else{
         	detalleTratamiento = data.data
-       		//await drawCardsServicio();
+       		await drawCardsServicio();
         }
+	}
+
+	function boxEstadoPago(value){
+		let elem = ``;
+		if(value.esPagada == "S"){
+			elem += `<div class="text-green-dark fs-12 line-height-16">
+				<i class="fa-solid fa-circle fs-16 me-1"></i><span class="fs-12 line-height-16">Comprado</span>
+			</div>`;
+		}else{
+			elem += `<div class="text-orange-dark fs-12 line-height-16">
+				<i class="fa-solid fa-circle fs-16 me-1"></i><span class="fs-12 line-height-16">Por comprar</span>
+			</div>`;
+		}
+		return elem;
 	}
 
 	async function drawCardsServicio(){
 		let elem = ``;
-		$.each(tratamientos, function(key, value){
-			let cards = ``;
-		    $.each(value, function(k, v){
-		        $.each(v, function(k1, v1){
-		            cards += drawCardItem(v1)
-		        })
-				elem += `<div class="row box-dia pt-40">
-					<div class="col-12 fs-18 line-height-24 fw-medium">
-						<span class="text-royal-blue">Enviado:</span> ${capitalizarPrimeraLetra(k)}
-					</div>
+		$.each(detalleTratamiento.pendientes, function(key, value){
+		    elem += `<div class="col-12 px-32 py-4 fs-18 line-height-24 fw-medium d-flex justify-content-between align-items-center border-bottom-midnight-blue-tint-80">
+				<img src="${value.urlImagenTipoServicio}" alt="" width="56px">
+				<div class="mx-3 flex-grow-1">
+					<h2 class="text-royal-blue-shade-20 fw-medium fs-16 line-height-20 mb-1 text-capitalize">${value.nombreServicio.toLowerCase()}</h2>
+					<p class="fs-14 line-height-16 mb-12 fw-normal"><span class="text-royal-blue-shade-40">Orden Válida hasta:</span> </p>
+					${boxEstadoPago(value)}
 				</div>
-				<div class="row pt-32 cards-items d-flex justify-content-between align-items-start">
-					${cards}
-				</div>`
-		    })
+				<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-detalle-orden">Ver detalle</button>
+			</div>`
 		})
 		
-		$('#content-area').html(elem);
+		$('#listadoOrdenes').html(elem);
 	}
 
 	function mostrarConvenio(detalle){
 		let elem = ``
 		if(detalle.nombreConvenio !== null){
-			elem += `<p class="fs-14 line-height-16 fw-medium mb-1"><span class="text-royal-blue-shade-20 me-1">Convenio:</span> ${detalle.nombreConvenio}</p>`
+			elem += `<p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-20 me-1">Convenio:</span> ${detalle.nombreConvenio.toLowerCase()}</p>`
 		}
 		return elem;
 	}

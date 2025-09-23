@@ -47,7 +47,7 @@
 	                        Ingrese un correo electronico.
 	                    </div>
 	                </div>
-					<div class="col-6 offset-3 bg-silver rounded-8 mt-5">
+					<div class="col-8 offset-2 bg-silver rounded-8 mt-5">
 	                    <ul class="list-group fs--1 bg-silver py-24 px-3">
 	                        <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fw-medium fs-24 line-height-28 mb-3">
 	                            Detalle de factura

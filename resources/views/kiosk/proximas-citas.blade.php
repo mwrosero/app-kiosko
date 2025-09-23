@@ -14,7 +14,7 @@
 			</div>
 			<!-- pe-0 -->
 			<div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central" style="overflow-y: auto;">
-				<div class="menu-inside d-flex justify-content-start align-items-center gap-2 overflow-auto" id="menu-horizontal">
+				<div class="menu-inside d-flex justify-content-start align-items-center gap-2 mt-40" id="menu-horizontal">
 				</div>
 				{{-- <div class="menu-inside d-flex justify-content-start align-items-center gap-2 overflow-auto">
 					<div type="button" tipoServicio-rel="L" class="item-servicio text-nowrap bg-royal-blue text-white p-3 rounded-8 fs-14 line-height-16">
@@ -230,7 +230,7 @@
 					${drawStatusBox(detalle)}
 					<div class="box-contenido rounded-bottom-16 border-royal-blue-tint-60 border-top-0 border-inside p-12 d-flex justify-content-between align-items-stretch">
 					    <div class="box-icon bg-royal-blue-tint-90 me-2 d-flex align-items-center justify-content-center rounded-8">
-					        <img src="${detalle.iconoEspecialidad}" class="m-2 img-fluid" width="56px" alt="">
+					        <img src="${detalle.iconoEspecialidad}" class="m-2" width="56px" alt="">
 					    </div>
 					    <div class="box-info-agendamiento flex-grow-1">
 					        <h3 class="fs-18 line-height-24 text-royal-blue fw-medium mb-2 text-capitalize">${detalle.nombreEspecialidad.toLowerCase()}</h3>

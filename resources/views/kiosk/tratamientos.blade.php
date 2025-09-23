@@ -94,7 +94,7 @@
 		return `<div class="col-6 col-md-6 box-agenda">
 				<div class="rounded-16 border-royal-blue-tint-60 border-inside p-12 d-flex justify-content-between align-items-stretch">
 				    <div class="box-icon bg-royal-blue-tint-90 me-2 d-flex align-items-center justify-content-center rounded-8">
-				        <img src="${detalle.urlImagenEspecialidad}" class="m-2 img-fluid" width="56px" alt="">
+				        <img src="${detalle.urlImagenEspecialidad}" class="m-2" width="56px" alt="">
 				    </div>
 				    <div class="box-info-agendamiento flex-grow-1">
 				        <h3 class="fs-20 line-height-24 text-royal-blue fw-medium mb-2 text-capitalize">${detalle.nombreEspecialidad.toLowerCase()}</h3>
