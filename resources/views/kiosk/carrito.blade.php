@@ -10,7 +10,7 @@
 	<main class="flex-grow-1 d-flex flex-column">
 		<div class="row g-3 flex-grow-1 mx-0 ">
 			<div class="col-2 box-accesos-lateral">
-				@include('components.access-bar', ['page' => 'proximas-citas'])
+				@include('components.access-bar', ['page' => ''])
 			</div>
 			<div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central mt-0 pt-74" style="overflow-y: auto;">
 				<div class="row mx-0">
@@ -155,31 +155,32 @@
 						</div>
 					</li>`;
 				})
-			})
-			elem += `<div class="row d-flex justify-content-between align-items-center py-4 border-bottom-midnight-blue-tint-80">
-				<div class="col-8">
-					<p class="fs-16 line-height-20 fw-medium text-royal-blue mb-1 text-capitalize">${tipoServicio.toLowerCase()}</p>
-					<p class="fs-14 line-height-16 mb-1 text-capitalize"><span class="text-royal-blue-shade-40">Paciente:</span> ${value.paciente.nombreCompleto.toLowerCase()}</p>
-					<p class="fs-14 line-height-16 mb-1 d-none"><span class="text-royal-blue-shade-40">Orden Válida hasta:</span> 23/07/2025</p>
-					${convenio}
-					<p class="fs-14 line-height-16 mb-3 d-none"><span class="text-royal-blue-shade-40">Tratamiento:</span> Alergología | 20/07/2025</p>
-					<div type="button" class="fs-14 line-height-16 fw-medium mt-3 text-royal-blue d-flex justify-content-start align-items-center box-action" type-rel='S'>
-						Ver detalle
-						<i class="fa-solid fa-chevron-down ms-2"></i>
+			
+				elem += `<div class="row d-flex justify-content-between align-items-center py-4 border-bottom-midnight-blue-tint-80">
+					<div class="col-8">
+						<p class="fs-16 line-height-20 fw-medium text-royal-blue mb-1 text-capitalize">${tipoServicio.toLowerCase()}</p>
+						<p class="fs-14 line-height-16 mb-1 text-capitalize"><span class="text-royal-blue-shade-40">Paciente:</span> ${value.paciente.nombreCompleto.toLowerCase()}</p>
+						<p class="fs-14 line-height-16 mb-1 d-none"><span class="text-royal-blue-shade-40">Orden Válida hasta:</span> 23/07/2025</p>
+						${convenio}
+						<p class="fs-14 line-height-16 mb-3 d-none"><span class="text-royal-blue-shade-40">Tratamiento:</span> Alergología | 20/07/2025</p>
+						<div type="button" class="fs-14 line-height-16 fw-medium mt-3 text-royal-blue d-flex justify-content-start align-items-center box-action" type-rel='S'>
+							Ver detalle
+							<i class="fa-solid fa-chevron-down ms-2"></i>
+						</div>
 					</div>
-				</div>
-				<div class="col-2 fs-16 fw-medium line-height-20 text-end">
-					$${totalItem.toFixed(2)}
-				</div>
-				<div class="col-2 text-end">
-					<i class="fa-regular fa-trash-can text-red-dark fs-28 line-height-28 btn-eliminar-item" idAgrupacion-rel='${idAgrupacion}'></i>
-				</div>
-				<div class="col-12 pt-40 box-detail d-none">
-					<ul class="list-unstyled border-bottom-midnight-blue-tint-80 mx-40 my-0">
-						${prestaciones}
-					</ul>
-				</div>
-			</div>`
+					<div class="col-2 fs-16 fw-medium line-height-20 text-end">
+						$${totalItem.toFixed(2)}
+					</div>
+					<div class="col-2 text-end">
+						<i class="fa-regular fa-trash-can text-red-dark fs-28 line-height-28 btn-eliminar-item" idAgrupacion-rel='${idAgrupacion}'></i>
+					</div>
+					<div class="col-12 pt-40 box-detail d-none">
+						<ul class="list-unstyled border-bottom-midnight-blue-tint-80 mx-40 my-0">
+							${prestaciones}
+						</ul>
+					</div>
+				</div>`
+			})
 		})
 		$('#listadoItems').html(elem);
 		$('.subtotal').html(`$${subtotal.toFixed(2)}`)

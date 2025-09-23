@@ -12,7 +12,7 @@
 	<main class="flex-grow-1 d-flex flex-column">
 		<div class="row g-3 flex-grow-1 mx-0 ">
 			<div class="col-2 box-accesos-lateral">
-				@include('components.access-bar', ['page' => 'proximas-citas'])
+				@include('components.access-bar', ['page' => ''])
 			</div>
 			<div class="col-8 offset-1 px-3 d-flex flex-column overflow-auto contenido-central mt-0 pt-74" style="overflow-y: auto;">
 				<div class="row mx-0">
