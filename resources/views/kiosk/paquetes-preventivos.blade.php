@@ -18,7 +18,7 @@
 				<div class="row border-bottom py-32">
 					<div class="col-6 offset-3 border d-flex justify-content-between align-items-center border-silver rounded-6 p-1 mb-3">
 						<button class="btn p-3 rounded-4 bg-royal-blue text-white fs-20 line-height-16 flex-fill">Comprar</button>
-						<button class="btn p-3 rounded-4 fs-20 line-height-16 flex-fill">Agendar</button>
+						<a href="/mis-paquetes/{{ $mac }}" class="btn p-3 rounded-4 fs-20 line-height-16 flex-fill">Agendar</a>
 					</div>
 					<div class="col-10 offset-1 py-4 d-flex justify-content-between align-items-center gap-2">
 						<div class="input-group bg-beige-light border-midnight-blue-tint-80 search-box rounded-8">
