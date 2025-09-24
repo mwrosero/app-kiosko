@@ -25,6 +25,21 @@ document.addEventListener("DOMContentLoaded", async function () {
         // location.href = `/carrito/${mac}`;
         location.href = `/carrito/${mac}`;
     })
+
+    $('body').on('click', '.btn-generar-turno', async function(){
+        localStorage.setItem('tipoTurnoGenerar', 'demanda');
+        location.href = `/turno/${mac}`;
+    })
+
+    $("a").on("click", function (e) {
+        if ($(this).data("clicked")) {
+            console.log("paralizar")
+            e.preventDefault();
+            return;
+        }
+        $(this).data("clicked", true);
+        setTimeout(() => $(this).removeData("clicked"), 1200); // vuelve a habilitar
+    });
 })
 
 async function call(args){
@@ -103,7 +118,7 @@ async function call(args){
     const url = new URL(args.endpoint, window.location.origin); // base por si endpoint es relativo
     url.searchParams.set("trackId", trackId); // genera uno si no viene
     const endpointWithTrackId = url.toString();
-    console.log(endpointWithTrackId)
+    // console.log(endpointWithTrackId)
     
     return fetch(endpointWithTrackId, requestOptions)
         .then((response) => {
@@ -1265,8 +1280,8 @@ function limitarCaracteres(input, maxCaracteres) {
     input.value = valor;
 }
 
-async function agregarItem(datosPago, idElem = null){
-    console.log(datosPago);
+async function agregarItem(datosPago, pagoUnico = false, onlyReturn = false){
+    //console.log(datosPago);
     let args = [];
     args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/agregar?macAddress=${mac}&idPaciente=${datosCliente.idPaciente}`;
     args["method"] = "POST";
@@ -1277,11 +1292,55 @@ async function agregarItem(datosPago, idElem = null){
     const data = await call(args);
     console.log(data);
     if(data.code == 200){
-        // location.href = '/datos-facturacion/{{ $mac }}';
-        $('#modalProductoAgregado').modal('show');
+        // Para no pasar proceso de facturacion ni pago, y manejarlo dentro de la misma vista
+        if(pagoUnico){
+            localStorage.setItem("itemAgregado", JSON.stringify(data.data));
+            if(onlyReturn){
+                return data;
+            }
+            location.href = `/datos-facturacion/${mac}`;
+        }else{
+            location.href = `/carrito/${mac}`;
+        }
     }else{
         $('#modalError').modal('show');
         $('.titleError').html(`Atención`);
         $('.msgError').html(data.message);
     }
+}
+
+async function obtenerAgrupaciones(){
+    let esPagoUnico = (localStorage.getItem("itemAgregado") !== null) ? true : false;
+    let agrupacionesArr = []
+    if(esPagoUnico){
+        let detalle = JSON.parse(localStorage.getItem("itemAgregado"));
+        agrupacionesArr.push(detalle[0].idAgrupacion);
+    }else{
+        $.each(infoCarrito, function(key, value){
+            $.each(value.agrupaciones, function(k,v){
+                agrupacionesArr.push(v.idAgrupacion)
+            })
+        })
+    }
+    console.table(agrupacionesArr)
+    localStorage.setItem("agrupacionFacturar", JSON.stringify(agrupacionesArr));
+    return agrupacionesArr
+}
+
+async function generarTurno(){
+    //localStorage.getItem("idPreTransaccion")
+    let args = [];
+    args["endpoint"] = `${api_url_digitales}/${api_war}/turnero/generar_turno?macAddress=${mac}&idPaciente=${datosCliente.idPaciente}`;
+    args["method"] = "POST";
+    args["showLoader"] = true;
+    args["token"] = accessToken;
+    args["bodyType"] = "json";
+    args["data"] = JSON.stringify({
+        "tipoIdentificacion": datosCliente.nombreTipoIdentificacion,
+        "numeroIdentificacion": datosCliente.numeroIdentificacion,
+        "nombreCompleto": datosCliente.nombreCompleto
+    });
+    const data = await call(args);
+    console.log(data);
+    return data;
 }

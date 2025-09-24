@@ -23,10 +23,10 @@
 				</a>
 			</div>
 			<div class="col-6">
-				<button class="btn btn-light w-100 py-32 border rounded-4 h-100">
+				<a href="/cita-elegir-paciente/{{ $mac }}" class="btn btn-light w-100 py-32 border rounded-4 h-100">
 					<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-agendar-cita-medica.svg" alt="" class="mb-2" style="height:120px">
 					<div class="fs-32 line-height-40 fw-medium">Agendar <br>cita médica</div>
-				</button>
+				</a>
 			</div>
 			<div class="col-6">
 				<a href="/paquetes-preventivos/{{ $mac }}" class="btn btn-light w-100 py-32 border rounded-4 h-100">
@@ -35,10 +35,10 @@
 				</a>
 			</div>
 			<div class="col-6">
-				<button class="btn btn-light w-100 py-32 border rounded-4 h-100">
+				<a href="/tratamientos/{{ $mac }}" class="btn btn-light w-100 py-32 border rounded-4 h-100">
 					<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-tratamientos.svg" alt="" class="mb-2" style="height:120px">
 					<div class="fs-32 line-height-40 fw-medium">Gestionar mi <br>tratamiento</div>
-				</button>
+				</a>
 			</div>
 			<div class="col-6">
 				<button class="btn btn-light w-100 py-32 border rounded-4 h-100">
@@ -47,16 +47,16 @@
 				</button>
 			</div>
 			<div class="col-6">
-				<button class="btn btn-light w-100 py-32 border rounded-4 h-100">
+				<a href="/chequeos/{{ $mac }}" class="btn btn-light w-100 py-32 border rounded-4 h-100">
 					<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-chequeos-ocupacionales.svg" alt="" class="mb-2" style="height:120px">
 					<div class="fs-32 line-height-40 fw-medium">Gestionar chequeos <br>ocupacionales</div>
-				</button>
+				</a>
 			</div>
 		</div>
 
 		<!-- Botón principal -->
 		<div class="mt-4 text-center">
-			<button class="btn fs-32 line-height-40 border-royal-blue-tint-80 py-3 rounded-16 w-50 fw-medium shadow-veris">Generar turno</button>
+			<button class="btn fs-32 line-height-40 border-royal-blue-tint-80 py-3 rounded-16 w-50 fw-medium shadow-veris btn-generar-turno">Generar turno</button>
 		</div>
 	</main>
 
@@ -64,9 +64,10 @@
 </div>
 <script>
 	let datosCliente = JSON.parse(localStorage.getItem('datosCliente'));
+	callCounter = false;
 	document.addEventListener("DOMContentLoaded", async function () {
 		$('.primerNombre').html(datosCliente.primerNombre.toLowerCase());
-
+		deleteStorage();
 		await iniciarCarrito();
 
 		$('body').on('click','.item-servicio', async function(){
@@ -79,6 +80,22 @@
 			$('#modalConsultorio').modal('show')
 		})
 	})
+
+	function deleteStorage(){
+		{{-- localStorage.removeItem("tipo");
+		localStorage.removeItem("datosCliente");
+		localStorage.removeItem("trackId"); --}}
+		localStorage.removeItem("detalle-paquete-preventivo");
+		localStorage.removeItem("idPreTransaccion");
+		localStorage.removeItem("paquete");
+		localStorage.removeItem("tratamiento");
+		localStorage.removeItem("origen");
+		localStorage.removeItem("itemAgregado");
+		localStorage.removeItem("agendamiento");
+		localStorage.removeItem("agrupacionFacturar");
+		localStorage.removeItem("datosFacturados");
+		localStorage.removeItem("pagoUnico");
+	}
 
 	async function iniciarCarrito(){
 		if(localStorage.getItem('idPreTransaccion') !== null){

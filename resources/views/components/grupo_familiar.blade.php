@@ -2,6 +2,8 @@
 </div>
 <script>
 	document.addEventListener("DOMContentLoaded", async function () {
+        localStorage.removeItem("pagoUnico");
+        localStorage.removeItem("agendamiento");
 		await grupoFamiliar();
 	})
 
@@ -24,8 +26,8 @@
                            	<div class="d-flex ${backgroundClass} justify-content-center rounded-circle mx-auto align-items-center mb-3 fs-28 line-height-28 fw-medium text-white" style="width: 64px; height: 64px;">
                                 ${value.primerNombre.charAt(0).toUpperCase()}
                             </div>
-                            <p class="text-veris fw-medium fs-18 line-height-24 mb-2">${capitalizarElemento(value.primerNombre)} <br> ${capitalizarElemento(value.primerApellido)} ${capitalizarElemento(value.segundoApellido)}</p>
-                            <p class="text-veris fs-16 line-height-20 mb-0 text-capitalize">${value.nombreTipoParentesco.toLowerCase()}</p>
+                            <p class="fw-medium fs-18 line-height-24 mb-2">${capitalizarElemento(value.primerNombre)} <br> ${capitalizarElemento(value.primerApellido)} ${capitalizarElemento(value.segundoApellido)}</p>
+                            <p class="fs-16 line-height-20 mb-0 text-capitalize">${value.nombreTipoParentesco.toLowerCase()}</p>
                         </div>
                     </div>
                 </div> `;

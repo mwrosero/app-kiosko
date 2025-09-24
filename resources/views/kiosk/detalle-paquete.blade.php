@@ -7,13 +7,12 @@
 	<!-- Carrito -->
 	@include('components.cart-bar', ['title' => ''])
 	<!-- Contenido principal -->
-	<main class="flex-fill px-0 py-0">
-		<div class="row g-3 d-flex justify-content-between align-items-start h-100 mx-0">
-			<div class="col-2 pb-4">
+	<main class="flex-grow-1 d-flex flex-column">
+		<div class="row g-3 flex-grow-1 mx-0 ">
+			<div class="col-2 box-accesos-lateral">
 				@include('components.access-bar', ['page' => 'paquetes-preventivos'])
 			</div>
-			{{-- style="overflow-y: auto; max-height: 70vh !important;" --}}
-			<div class="col-10 px-32 h-100">
+			<div class="col-10 px-32 d-flex flex-column overflow-auto contenido-central mt-0" style="overflow-y: auto;">
 				<div class="row">
 					<div class="col-12 my-3">
 						<img src="" class="img-fluid w-100 rounded-16 img-paquete" alt="">
@@ -44,8 +43,9 @@
 	document.addEventListener("DOMContentLoaded", async function () {
 		let urlImagen = (paquete.urlImagen !== "") ? paquete.urlImagen : `{{asset('assets/img/img-default-paquete.png')}}`
 		$('.page-title').html(paquete.nombreComercialPaquete);
-		$('.img-paquete').attr('src', urlImagen)
-		$('#descripcionPaquete').html(paquete.descripcionPaquete)
+		$('.img-paquete').attr('src', urlImagen);
+		let descripcion = paquete.descripcionPaquete.replace(/\u00A0/g, " ").replace(/\n/g, "<br>");
+		$('#descripcionPaquete').html(descripcion)
 
 		let strDescuento = ``;
         let strDescuentoFooter = ``;
@@ -88,28 +88,6 @@
 		})
 
 	})
-
-	async function agregarItem(datosPago){
-		console.log(datosPago);
-		let args = [];
-        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/agregar?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`;
-        args["method"] = "POST";
-        args["showLoader"] = true;
-        {{-- args["sendHeaders"] = false; --}}
-        args["token"] = "{{ $accessToken }}";
-        args["bodyType"] = "json";
-        args["dismissAlert"] = true;
-        args["data"] = JSON.stringify(datosPago);
-        const data = await call(args);
-        console.log(data);
-        if(data.code == 200){
-        	location.href = '/datos-facturacion/{{ $mac }}';
-        }else{
-        	$('#modalError').modal('show');
-			$('.titleError').html(`Atención`);
-			$('.msgError').html(data.message);
-        }
-	}
 
 	let servicios;
 	async function obtenerDetallePaquete(){

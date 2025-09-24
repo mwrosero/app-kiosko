@@ -5,25 +5,104 @@
 <div class="container-fluid px-0 d-flex flex-column min-vh-100">
 	@include('components.header')
 	<!-- Sub-header -->
-	@include('components.sub-header', ['showTurnoBtn' => true, 'url' => '/menu/'.$mac])
+	{{-- @include('components.sub-header', ['showTurnoBtn' => true, 'url' => '/carrito/'.$mac]) --}}
+	@include('components.sub-header', ['showTurnoBtn' => true, 'url' => url()->previous() ])
 	<!-- Carrito -->
 	@include('components.cart-bar', ['title' => 'Revisa los datos de facturación'])
-	<div class="row mx-0">
+	<main class="flex-grow-1 d-flex flex-column">
+		<div class="row g-3 flex-grow-1 mx-0 ">
+			<div class="col-2 box-accesos-lateral">
+				@include('components.access-bar', ['page' => ''])
+			</div>
+			<div class="col-8 offset-1 px-3 d-flex flex-column overflow-auto contenido-central mt-0 pt-74" style="overflow-y: auto;">
+				<div class="row mx-0">
+					<div class="col-6">
+	                    <label for="tipoIdentificacion" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Elige tu documento *</label>
+	                    <select class="form-select input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3 text-capitalize" name="tipoIdentificacion" id="tipoIdentificacion" required>
+	                        {{-- <option value="2">CÉDULA</option>
+	                        <option value="1">RUC</option> --}}
+	                    </select>
+	                    <div class="invalid-feedback">
+	                        Elegir el tipo de documento.
+	                    </div>
+	                </div>
+	                <div class="col-6">
+	                    <label for="numeroIdentificacion" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Número de documento *</label>
+	                    <input type="number" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="" required readonly/>
+	                    <div class="invalid-feedback">
+	                        Ingrese un número de identificacion.
+	                    </div>
+	                </div>
+	                <div class="col-12 mt-3">
+	                    <label for="nombresCompletos" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Nombres completos *</label>
+	                    <input type="text" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3" name="nombresCompletos" id="nombresCompletos" placeholder="" required readonly/>
+	                    <div class="invalid-feedback">
+	                        Ingrese su nombres y apellidos.
+	                    </div>
+	                </div>
+	                <div class="col-12 mt-3">
+	                    <label for="mail" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Correo electrónico *</label>
+	                    <input type="email" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3" name="mail" id="mail" placeholder="" required readonly/>
+	                    <div class="valid-feedback">
+	                        Ingrese un correo electronico.
+	                    </div>
+	                </div>
+					<div class="col-8 offset-2 bg-silver rounded-8 mt-5">
+	                    <ul class="list-group fs--1 bg-silver py-24 px-3">
+	                        <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fw-medium fs-24 line-height-28 mb-3">
+	                            Detalle de factura
+	                        </li>
+	                        <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
+	                            Subtotal
+	                            <span class="badge text-dark fw-normal fs-20 line-height-20" id="subtotal"></span>
+	                        </li>
+	                        <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
+	                            Crédito/convenio
+	                            <span class="badge text-dark fw-normal fs-20 line-height-20" id="creditoConvenio"></span>
+	                        </li>
+	                        <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
+	                            Descuento aplicado
+	                            <span class="badge text-dark fw-normal fs-20 line-height-20" id="descuentoAplicado"></span>
+	                        </li>
+	                        <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20">
+	                            IVA
+	                            <span class="badge text-dark fw-normal fs-20 line-height-20" id="iva"></span>
+	                        </li>
+	                        <li class="bg-transparent d-flex justify-content-between align-items-center py-0 px-2 fs-20 mb-2 line-height-20 fw-bold">
+	                            Total
+	                            <span class="badge text-dark fs-20 line-height-20 fw-bold" id="total"></span>
+	                        </li>
+	                    </ul>
+	                </div>
+		            <div class="col-12 text-center mt-4">
+		                <div class="form-check d-flex justify-content-md-center align-items-center">
+		                    <input class="form-check-input terminos-input me-2 mb-1 width-24" type="checkbox" value="" id="checkTerminosCondicion" required style="width: 20px; height: 20px;">
+		                    <label class="form-check-label fs-20 fw-medium line-height-24" for="">
+		                        Acepto los <div type="button" class="text-decoration-underline text-royal-blue d-inline-block" data-bs-toggle="modal" data-bs-target="#modalTerminos">Términos y condiciones</div> 
+		                        <span id="politicas" class="d-none">y <a href="https://www.veris.com.ec/politicas/" target="_blank">Política de protección de Datos Personales</a></span>
+		                    </label>
+		                    <div class="invalid-feedback">
+		                        Debes aceptar antes de enviar
+		                    </div>
+		                </div>
+		            </div>
+		            <div class="col-12 mt-4 text-center">
+		            	<button class="btn bg-royal-blue text-white fs-18 line-height-24 py-3 rounded-8 w-50 fw-medium shadow-none disabled" id="btn-validar-datos-factura">Pagar ahora</button>
+		            </div>
+	            </div>
+			</div>
+		</div>
+	</main>
+	<div class="w-100 bg-silver-light p-44 position-absolute bottom-0 start-0 d-none" id="box-simple-keyboard">
+		<div class="simple-keyboard"></div>
+	</div>
+	{{-- <div class="row mx-0">
 		<div class="col-10 offset-1 py-40 px-4 border mt-40">
 			<div class="row">
-				{{-- <div class="col-6">
-					<label class="text-silver-neutral-40 form-label" for="tipoIdentificacion">Tipo de identificación</label>
-					<input type="text" class="form-control input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="tipoIdentificacion" id="tipoIdentificacion">
-				</div>
-				<div class="col-6">
-					<label class="text-silver-neutral-40 form-label" for="numeroIdentificacion">Número de identificación</label>
-					<input type="text" class="form-control input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" name="numeroIdentificacion" id="numeroIdentificacion">
-				</div> --}}
+				
 				<div class="col-6">
                     <label for="tipoIdentificacion" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Elige tu documento *</label>
                     <select class="form-select input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3 text-capitalize" name="tipoIdentificacion" id="tipoIdentificacion" required>
-                        {{-- <option value="2">CÉDULA</option>
-                        <option value="1">RUC</option> --}}
                     </select>
                     <div class="invalid-feedback">
                         Elegir el tipo de documento.
@@ -97,7 +176,7 @@
 		<div class="col-10 offset-1 mt-56 bg-silver-light p-44 d-none">
 			<div class="simple-keyboard"></div>
 		</div>
-	</div>
+	</div> --}}
 	@include('components.footer')
 </div>
 <script src="https://unpkg.com/simple-keyboard@latest/build/index.js"></script>
@@ -189,18 +268,28 @@
 	let tipo = localStorage.getItem('tipo');
 	let currentInput = null;
 	trackId = localStorage.getItem('trackId');
+	let infoCarrito;
+	const Keyboard = window.SimpleKeyboard.default;
+	let keyboardInit;
 
 	document.addEventListener("DOMContentLoaded", async function () {
-		const Keyboard = window.SimpleKeyboard.default;
+		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
+
+		window.addEventListener("beforeunload", () => {
+			console.log("Destroy Keyboard");
+			keyboardInit.destroy()
+		});
+
+		await consultarCarrito();
 		await obtenerDatosFacturacion();
 
-		let keyboard = new Keyboard({
+		let keyboardInit = new Keyboard({
 			onChange: async input => {
 				if(currentInput){
 					let max = $(currentInput).attr("maxlength"); // obtiene el maxlength del input
 				    if(max && input.length > max){
 				      input = input.substring(0, max); // corta el valor
-				      keyboard.setInput(input);        // actualiza el teclado con el valor truncado
+				      keyboardInit.setInput(input);        // actualiza el teclado con el valor truncado
 				    }
 					$(currentInput).val(input);
 					console.log(input)
@@ -232,7 +321,7 @@
 				if(button === "{bksp}" && currentInput){
 					let val = $(currentInput).val();
 					$(currentInput).val(val.slice(0, -1));
-					keyboard.setInput($(currentInput).val());
+					keyboardInit.setInput($(currentInput).val());
 				}
 
     			// 👉 Aquí manejamos los cambios de layout
@@ -241,13 +330,13 @@
 				}
 
 				if(button === "{numbers}"){
-					keyboard.setOptions({
+					keyboardInit.setOptions({
 						layoutName: "numbers"
 					});
 				}
 
 				if(button === "{abc}"){
-					keyboard.setOptions({
+					keyboardInit.setOptions({
 						layoutName: "default"
 					});
 				}
@@ -306,26 +395,36 @@
 		    	$(this).attr("inputmode") === "numeric";
 
 
-		  	keyboard.setOptions({ layoutName: isNumeric ? "numbers" : "default" });
+		  	keyboardInit.setOptions({ layoutName: isNumeric ? "numbers" : "default" });
 
 		  	// Sincronizamos valor actual del input con el teclado
-		  	keyboard.setInput($(this).val() || "");
-		  	//keyboard.setInput($(this).val());
+		  	keyboardInit.setInput($(this).val() || "");
+		  	//keyboardInit.setInput($(this).val());
 		});
 
 		// función auxiliar para shift
 		function handleShift(){
-			let currentLayout = keyboard.options.layoutName;
+			let currentLayout = keyboardInit.options.layoutName;
 			let shiftToggle = currentLayout === "default" ? "shift" : "default";
-			keyboard.setOptions({
+			keyboardInit.setOptions({
 				layoutName: shiftToggle
 			});
 		}
 
+		$(document).on('click', function(e) {
+		    if ($('#box-simple-keyboard').is(':visible') && 
+		    	!$(e.target).closest('#box-simple-keyboard').length && 
+		    	!$(e.target).is('input')
+    		){
+		        $('#box-simple-keyboard').addClass('d-none');
+    		}
+		});
+
   		// Detectar qué input tiene el foco
 		$("input").on("focus", function(){
+			$('#box-simple-keyboard').removeClass('d-none');
 			currentInput = this;
-			keyboard.setInput($(this).val());
+			keyboardInit.setInput($(this).val());
 		});
 
 		$('body').on('change', '#tipoIdentificacion', function(){
@@ -345,7 +444,7 @@
 				$('#numeroIdentificacion').attr('type','number');
 			}
 			setTimeout(function(){
-				$('#numeroIdentificacion').focus();
+				// $('#numeroIdentificacion').focus();
 			},100)
 		})
 
@@ -403,6 +502,7 @@
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data);
+        infoCarrito = data.data;
 	}
 
 	function onChange(input) {
@@ -415,6 +515,7 @@
 	}
 
 	async function setearDatosFactura(){
+		let agrupaciones = await obtenerAgrupaciones();
 		let args = [];
         args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/agregar_datos_factura?macAddress={{ $mac }}`;
         args["method"] = "POST";
@@ -426,7 +527,8 @@
 		  	"codigoTipoIdentificacion": parseInt($('#tipoIdentificacion option:selected').val()),
 		  	"numeroIdentificacion": $('#numeroIdentificacion').val(),
 		  	"nombreCompleto": $('#nombresCompletos').val(),
-		  	"email": $('#mail').val()
+		  	"email": $('#mail').val(),
+		  	"idAgrupacion": agrupaciones
 		})
         const data = await call(args);
         console.log(data);
@@ -478,8 +580,9 @@
 
 	let datosFacturacion;
 	async function obtenerDatosFacturacion(){
+		let agrupaciones = await obtenerAgrupaciones();
 		let args = [];
-        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/datos_facturacion?macAddress={{ $mac }}`;
+        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/datos_facturacion?idAgrupacion=${agrupaciones.join(',')}&macAddress={{ $mac }}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         {{-- args["sendHeaders"] = false; --}}
@@ -497,7 +600,7 @@
         		await fillFormDatosFactura();
         		datosSeteados = true;
         	}else{
-        		$('.simple-keyboard').parent().removeClass('d-none')
+        		// $('.simple-keyboard').parent().removeClass('d-none')
         	}
         }
 	}
@@ -522,9 +625,9 @@
 			$('#numeroIdentificacion').attr('maxlength','15');
 		}
 		setTimeout(function(){
-			$('#numeroIdentificacion').focus();
+			// $('#numeroIdentificacion').focus();
 			setTimeout(function(){
-				$('.simple-keyboard').parent().removeClass('d-none');
+				// $('.simple-keyboard').parent().removeClass('d-none');
 			},100)
 		},100)
 	}

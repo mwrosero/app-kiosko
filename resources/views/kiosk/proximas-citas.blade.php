@@ -7,14 +7,14 @@
 	<!-- Carrito -->
 	@include('components.cart-bar', ['title' => 'Próximas citas'])
 	<!-- Contenido principal -->
-	<main class="flex-fill px-0 py-0">
-		<div class="row g-3 d-flex justify-content-between align-items-start h-100 mx-0">
-			<div class="col-2 pb-4">
+	<main class="flex-grow-1 d-flex flex-column">
+		<div class="row g-3 flex-grow-1 mx-0 ">
+			<div class="col-2 box-accesos-lateral">
 				@include('components.access-bar', ['page' => 'proximas-citas'])
 			</div>
 			<!-- pe-0 -->
-			<div class="col-10 px-3 py-40 h-100" style="overflow-y: auto; max-height: 70vh !important;">
-				<div class="menu-inside d-flex justify-content-start align-items-center gap-2 overflow-auto" id="menu-horizontal">
+			<div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central" style="overflow-y: auto;">
+				<div class="menu-inside d-flex justify-content-start align-items-center gap-2 mt-40" id="menu-horizontal">
 				</div>
 				{{-- <div class="menu-inside d-flex justify-content-start align-items-center gap-2 overflow-auto">
 					<div type="button" tipoServicio-rel="L" class="item-servicio text-nowrap bg-royal-blue text-white p-3 rounded-8 fs-14 line-height-16">
@@ -113,6 +113,7 @@
 	trackId = localStorage.getItem('trackId');
 	localStorage.setItem("origen", "cita");
 	document.addEventListener("DOMContentLoaded", async function () {
+		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
 		await cargarProximasCitas();
 
 		$('body').on('click','.item-servicio', async function(){
@@ -151,7 +152,7 @@
         	$('#content-area').html(`<div class="text-center mt-5 pt-5">
 						<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/anime-doctor.svg" class="img-fluid mt-5" alt="">
 						<p class="text-center py-40 mb-0 fs-28 line-height-32">Aún no tienes citas médicas <br> agendadas</p>
-						<a href="/nueva-cita/{{ $mac }}" class="btn bg-royal-blue text-white fs-18 line-height-24 py-3 rounded-16 w-50 fw-medium shadow-none" id="btn-ingresar">Agendar nueva cita</a>
+						<a href="/cita-elegir-paciente/{{ $mac }}" class="btn bg-royal-blue text-white fs-24 line-height-32 py-3 rounded-16 w-50 fw-medium shadow-none" id="btn-ingresar">Agendar nueva cita</a>
 					</div>`);
         }else{
         	servicios = data.data
@@ -229,7 +230,7 @@
 					${drawStatusBox(detalle)}
 					<div class="box-contenido rounded-bottom-16 border-royal-blue-tint-60 border-top-0 border-inside p-12 d-flex justify-content-between align-items-stretch">
 					    <div class="box-icon bg-royal-blue-tint-90 me-2 d-flex align-items-center justify-content-center rounded-8">
-					        <img src="${detalle.iconoEspecialidad}" class="m-2 img-fluid" width="56px" alt="">
+					        <img src="${detalle.iconoEspecialidad}" class="m-2" width="56px" alt="">
 					    </div>
 					    <div class="box-info-agendamiento flex-grow-1">
 					        <h3 class="fs-18 line-height-24 text-royal-blue fw-medium mb-2 text-capitalize">${detalle.nombreEspecialidad.toLowerCase()}</h3>

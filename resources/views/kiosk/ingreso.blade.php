@@ -14,7 +14,7 @@
 			
 		</div>
 		<div class="col-6 offset-3 text-center mt-56 mb-40">
-			<button disabled class="btn bg-silver text-silver-neutral-40 fs-18 line-height-24 py-3 rounded-16 w-100 fw-medium shadow-none" id="btn-ingresar">Ingresar</button>
+			<button disabled class="btn bg-silver text-silver-neutral-40 fs-18 line-height-24 py-3 rounded-8 w-100 fw-medium shadow-none" id="btn-ingresar">Ingresar</button>
 		</div>
 		<div class="col-10 offset-1 mt-56 bg-silver-light p-44">
 			<div class="simple-keyboard"></div>
@@ -92,13 +92,21 @@
 	let tipoFiltro;
 	let currentInput = null;
 	const Keyboard = window.SimpleKeyboard.default;
+	let keyboardInit;
+	callCounter = false;
 	document.addEventListener("DOMContentLoaded", async function () {
+
+		window.addEventListener("beforeunload", () => {
+			console.log("Destroy Keyboard");
+			keyboardInit.destroy()
+		});
+
 		switch(tipo){
 			case 'C':
-				$('#box-input').html(`<input type="text" autofocus id="numeroDocumento" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3">`);
+				$('#box-input').html(`<input type="text" autofocus id="numeroDocumento" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" readonly>`);
 				tipoFiltro = "CEDULA";
 				$('#title').html(`Ingresa el número de cédula del paciente`);
-				let keyboard = new Keyboard({
+				keyboardInit = new Keyboard({
 					onChange: input => onChange(input),
 					onKeyPress: button => onKeyPress(button),
 					layout: {
@@ -144,7 +152,7 @@
 
 	async function loadKeyboardAlfanumerico(){
 		$('.simple-keyboard').css('width','100%');
-		let keyboard = new Keyboard({
+		keyboardInit = new Keyboard({
 			onChange: input => {
 				if(currentInput){
 					$(currentInput).val(input);
@@ -239,7 +247,24 @@
         if(data.code == 200){
         	localStorage.setItem("datosCliente", JSON.stringify(data.data[0]));
         	localStorage.setItem("trackId", data.trackId);
+        	await verificarUsuarioDigital();
         	location.href = '/menu/{{ $mac }}'
+        }
+	}
+
+	async function verificarUsuarioDigital(){
+		let datosCliente = JSON.parse(localStorage.getItem('datosCliente'));
+		trackId = localStorage.getItem('trackId');
+		let args = [];
+		args["endpoint"] = `${api_url_digitales}/${api_war}/pacientes/validar_cuenta_digital?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
+        const data = await call(args);
+        console.log(data);
+        if(data.code == 200){
+        	localStorage.setItem("usuarioDigital", JSON.stringify(data.data));
         }
 	}
 

@@ -25,7 +25,7 @@
         <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/fonts/fontawesome.css" />
         {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/> --}}
         <!-- Core CSS -->
-        <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/css/theme-veris-kiosko.css?v=1.0.6')}}">
+        <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/css/theme-veris-kiosko.css?v=1.0.9')}}">
         <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/css/keyboard.css?v=1.0.1')}}">
         <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/css/bootstrap-icons.min.css?v=1.0')}}">
 
@@ -51,10 +51,11 @@
             const _idOrganizacionLogin = "{{ \App\Models\Veris::IDORGANIZACION_LOGIN }}";
             let trackId = '';
             let canalOrigen = 'MVE_CMV';
+            let callCounter = true;
         </script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script> 
-        <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.1.3"></script>
+        <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.1.7"></script>
         {{-- <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/jquery.idle.min.js"></script> --}}
         <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.js"></script>
     </head>
@@ -90,6 +91,27 @@
                 opacity: .5;
                 background-size: 1.5rem;
             }
-        </style>    
+        </style>
+        <script>
+            document.addEventListener("DOMContentLoaded", async function () {
+                await contadorItemsCarrito()
+            })
+
+            async function contadorItemsCarrito(){
+                if(!callCounter){
+                    return;
+                }
+                let args = [];
+                args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/contador?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`;
+                args["method"] = "GET";
+                args["showLoader"] = false;
+                {{-- args["sendHeaders"] = false; --}}
+                args["token"] = "{{ $accessToken }}";
+                const data = await call(args);
+                if(data.code == 200){
+                    $('.qtyCart').html(data.data.contador);
+                }
+            }
+        </script>
     </body>
 </html>

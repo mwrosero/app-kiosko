@@ -24,6 +24,7 @@
 	@include('components.footer')
 </div>
 <script>
+	let datosCliente = JSON.parse(localStorage.getItem('datosCliente'));
 	let datosFacturados = JSON.parse(localStorage.getItem('datosFacturados'));
 	let origen = localStorage.getItem('origen');
 	trackId = localStorage.getItem('trackId');

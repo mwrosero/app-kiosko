@@ -8,22 +8,22 @@
 	<!-- Carrito -->
 	@include('components.cart-bar', ['title' => 'Paquetes preventivos'])
 	<!-- Contenido principal -->
-	<main class="flex-fill px-0 py-0">
-		<div class="row g-3 d-flex justify-content-between align-items-start h-100 mx-0">
-			<div class="col-2 pb-4">
+	<main class="flex-grow-1 d-flex flex-column">
+		<div class="row g-3 flex-grow-1 mx-0 ">
+			<div class="col-2 box-accesos-lateral">
 				@include('components.access-bar', ['page' => 'paquetes-preventivos'])
 			</div>
 			<!-- pe-0 -->
-			<div class="col-10 px-3 h-100" style="overflow-y: auto; max-height: 70vh !important;">
+			<div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central" style="overflow-y: auto;">
 				<div class="row border-bottom py-32">
 					<div class="col-6 offset-3 border d-flex justify-content-between align-items-center border-silver rounded-6 p-1 mb-3">
 						<button class="btn p-3 rounded-4 bg-royal-blue text-white fs-20 line-height-16 flex-fill">Comprar</button>
-						<button class="btn p-3 rounded-4 fs-20 line-height-16 flex-fill">Agendar</button>
+						<a href="/mis-paquetes/{{ $mac }}" class="btn p-3 rounded-4 fs-20 line-height-16 flex-fill">Agendar</a>
 					</div>
 					<div class="col-10 offset-1 py-4 d-flex justify-content-between align-items-center gap-2">
 						<div class="input-group bg-beige-light border-midnight-blue-tint-80 search-box rounded-8">
 		                    <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="{{asset('assets/img/svg/search.svg')}}" alt="veris-promociones"></span>
-		                    <input type="search" class="form-control bg-transparent fs-16 line-height-20 border-0 p-2 ps-0" name="buscarPorPromocion" id="buscarPorPromocion" placeholder="Ejemplo: Exámenes de laboratorio" aria-describedby="search" style="outline: none;box-shadow: none;"/>
+		                    <input type="search" class="form-control bg-transparent fs-16 line-height-20 border-0 p-2 ps-0" name="buscarPorPromocion" id="buscarPorPromocion" placeholder="Ejemplo: Exámenes de laboratorio" aria-describedby="search" style="outline: none;box-shadow: none;" readonly />
 		                </div>
 		                <button class="btn h-100 d-flex justify-content-between p-12 align-items-center fs-18 line-height-24 border-royal-blue text-royal-blue rounded-8" style="width: 175px;" data-bs-toggle="modal" data-bs-target="#modalCategorias">
 		                	Filtrar por
@@ -136,14 +136,20 @@
     let perPage = 12;
     let cargandoContenido = false;
     let isFiltered = false;
+	const Keyboard = window.SimpleKeyboard.default;
+    let keyboardInit;
 
     let currentInput = null;
 	document.addEventListener("DOMContentLoaded", async function () {
-		const Keyboard = window.SimpleKeyboard.default;
+		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
+		window.addEventListener("beforeunload", () => {
+			console.log("Destroy Keyboard");
+			keyboardInit.destroy()
+		});
 
 		await obtenerPaquetesPromocionales();
 
-		let keyboard = new Keyboard({
+		keyboardInit = new Keyboard({
 			onChange: async input => {
 				if(currentInput){
 					$(currentInput).val(input);
@@ -166,7 +172,7 @@
 				if(button === "{bksp}" && currentInput){
 					let val = $(currentInput).val();
 					$(currentInput).val(val.slice(0, -1));
-					keyboard.setInput($(currentInput).val());
+					keyboardInit.setInput($(currentInput).val());
 				}
 
     			// 👉 Aquí manejamos los cambios de layout
@@ -175,15 +181,19 @@
 				}
 
 				if(button === "{numbers}"){
-					keyboard.setOptions({
+					keyboardInit.setOptions({
 						layoutName: "numbers"
 					});
 				}
 
 				if(button === "{abc}"){
-					keyboard.setOptions({
+					keyboardInit.setOptions({
 						layoutName: "default"
 					});
+				}
+
+				if (button === "{close}") {
+					$('#box-simple-keyboard').addClass('d-none');
 				}
 
 				if(button === "{ent}" && currentInput){
@@ -205,13 +215,13 @@
 					"q w e r t y u i o p {bksp}",
 					"a s d f g h j k l ñ {ent}",
 					"{shift} z x c v b n m -",
-					"{numbers} @ {space} . _"
+					"{numbers} @ {space} . {close}"
 				],
 				shift: [
 					"Q W E R T Y U I O P {bksp}",
 					"A S D F G H J K L Ñ {ent}",
 					"{shift} Z X C V B N M -",
-					"{numbers} @ {space} . _"
+					"{numbers} @ {space} . {close}"
 				],
 				numbers: [
 					"1 2 3",
@@ -228,7 +238,8 @@
 				"{bksp}": "<i class='fa fa-backspace'></i>",
 				"{capslock}": "caps ⇪",
 				"{shift}": "⇧",
-				"{abc}": "ABC"
+				"{abc}": "ABC",
+				"{close}": "<i class='fa-regular fa-circle-xmark'></i>"
 			}
 		});
 
@@ -253,18 +264,18 @@
 		    	$(this).attr("inputmode") === "numeric";
 
 
-		  	keyboard.setOptions({ layoutName: isNumeric ? "numbers" : "default" });
+		  	keyboardInit.setOptions({ layoutName: isNumeric ? "numbers" : "default" });
 
 		  	// Sincronizamos valor actual del input con el teclado
-		  	keyboard.setInput($(this).val() || "");
-		  	//keyboard.setInput($(this).val());
+		  	keyboardInit.setInput($(this).val() || "");
+		  	//keyboardInit.setInput($(this).val());
 		});
 
 		// función auxiliar para shift
 		function handleShift(){
-			let currentLayout = keyboard.options.layoutName;
+			let currentLayout = keyboardInit.options.layoutName;
 			let shiftToggle = currentLayout === "default" ? "shift" : "default";
-			keyboard.setOptions({
+			keyboardInit.setOptions({
 				layoutName: shiftToggle
 			});
 		}
@@ -272,7 +283,7 @@
   		// Detectar qué input tiene el foco
 		$("input").on("focus", function(){
 			currentInput = this;
-			keyboard.setInput($(this).val());
+			keyboardInit.setInput($(this).val());
 		});
 
 		$('body').on('click', '.btnEliminarCategoria', async function(){
@@ -325,6 +336,7 @@
 
         async function onScroll(){
             console.log('onScroll');
+            
             if(!cargandoContenido && !isFiltered && $(window).scrollTop() + $(window).height() + 100 > $(document).height()) {
                 cargandoContenido = true;
                 console.log("near bottom!");
@@ -428,28 +440,11 @@
         var itemsSeleccionados = [];
         $('.category-item').each(function() {
             if ($(this).hasClass('category-selected')) {
-                    itemsSeleccionados.push($(this).attr('categoria-rel'))
+                itemsSeleccionados.push($(this).attr('categoria-rel'))
             }
         });
         return itemsSeleccionados;
     }
-
-	async function agregarItem(datosPago){
-		console.log(datosPago);
-		let args = [];
-        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/agregar?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`;
-        args["method"] = "POST";
-        args["showLoader"] = true;
-        {{-- args["sendHeaders"] = false; --}}
-        args["token"] = "{{ $accessToken }}";
-        args["bodyType"] = "json";
-        args["data"] = JSON.stringify(datosPago);
-        const data = await call(args);
-        console.log(data);
-        if(data.code == 200){
-        	location.href = '/datos-facturacion/{{ $mac }}';
-        }
-	}
 
 	let servicios;
 	async function obtenerPaquetesPromocionales(){
@@ -491,7 +486,7 @@
                     elem += `<div class="col-12 col-md-6 mb-4">
                         <div class="card h-100 border-0 box-shadow-3 rounded-4 p-3 border-silver rounded-16">
                             <div type="button" class="zoom-img btn-comprar position-relative rounded-3 overflow-hidden" data-rel='${JSON.stringify(value)}'>
-                                <img src="${urlImagen}" onerror="https://www.veris.com.ec/wp-content/themes/veris2025/img/veris.png" class="card-img-top" alt="${value.nombrePaquete}">
+                                <img src="${urlImagen}" onerror="this.src='https://www.veris.com.ec/wp-content/themes/veris2025/img/veris.png'" class="card-img-top" alt="${value.nombrePaquete}">
                                 ${strDescuento}
                                 ${badgesImg}
                             </div>

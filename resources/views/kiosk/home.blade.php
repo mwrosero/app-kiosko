@@ -46,6 +46,7 @@ bg-royal-blue-tint-90
 	}
 </style>
 <script>
+	callCounter = false;
 	document.addEventListener("DOMContentLoaded", async function () {
 		await cargarParametros();
 		deleteStorage();
@@ -60,9 +61,16 @@ bg-royal-blue-tint-90
 		localStorage.removeItem("tipo");
 		localStorage.removeItem("datosCliente");
 		localStorage.removeItem("trackId");
+		localStorage.removeItem("usuarioDigital");
+		{{-- localStorage.removeItem("detalle-paquete-preventivo");
 		localStorage.removeItem("idPreTransaccion");
 		localStorage.removeItem("paquete");
 		localStorage.removeItem("origen");
+		localStorage.removeItem("itemAgregado");
+		localStorage.removeItem("agendamiento");
+		localStorage.removeItem("agrupacionFacturar");
+		localStorage.removeItem("datosFacturados");
+		localStorage.removeItem("pagoUnico"); --}}
 	}
 
 	async function cargarParametros(){

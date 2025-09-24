@@ -7,13 +7,12 @@
 	<!-- Carrito -->
 	@include('components.cart-bar', ['title' => '¿Para quién es el paquete?'])
 	<!-- Contenido principal -->
-	<main class="flex-fill px-0 py-0">
-		<div class="row g-3 d-flex justify-content-between align-items-start h-100 mx-0">
-			{{-- <div class="col-2 pb-4">
-				@include('components.access-bar', ['page' => 'paquetes-preventivos'])
-			</div> --}}
-			{{-- style="overflow-y: auto; max-height: 70vh !important;" --}}
-			<div class="col-10 offset-1 px-32 h-100">
+	<main class="flex-grow-1 d-flex flex-column">
+		<div class="row g-3 flex-grow-1 mx-0 ">
+			<div class="col-2 box-accesos-lateral">
+				@include('components.access-bar', ['page' => 'detalle-paquete'])
+			</div>
+			<div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central mt-0" style="overflow-y: auto;">
 				@include('components.grupo_familiar')
 			</div>
 		</div>
@@ -29,7 +28,7 @@
 	document.addEventListener("DOMContentLoaded", async function () {		
         $('body').on('click', '.btn-asignar', async function(){
         	let paciente = JSON.parse($(this).attr('data-rel'));
-        	if(paciente.genero == paquete.genero){
+        	if(paciente.genero == paquete.genero || paquete.genero == "A"){
 				let datosPago = {
 					"paquetesPromocionales": {
 						"codigoPaquete": paquete.codigoPaquete,
