@@ -192,6 +192,10 @@
 					});
 				}
 
+				if (button === "{close}") {
+					$('#box-simple-keyboard').addClass('d-none');
+				}
+
 				if(button === "{ent}" && currentInput){
 					if(currentInput.id === "numeroIdentificacion"){
 						let valor = $(currentInput).val();
@@ -211,13 +215,13 @@
 					"q w e r t y u i o p {bksp}",
 					"a s d f g h j k l ñ {ent}",
 					"{shift} z x c v b n m -",
-					"{numbers} @ {space} . _"
+					"{numbers} @ {space} . {close}"
 				],
 				shift: [
 					"Q W E R T Y U I O P {bksp}",
 					"A S D F G H J K L Ñ {ent}",
 					"{shift} Z X C V B N M -",
-					"{numbers} @ {space} . _"
+					"{numbers} @ {space} . {close}"
 				],
 				numbers: [
 					"1 2 3",
@@ -234,7 +238,8 @@
 				"{bksp}": "<i class='fa fa-backspace'></i>",
 				"{capslock}": "caps ⇪",
 				"{shift}": "⇧",
-				"{abc}": "ABC"
+				"{abc}": "ABC",
+				"{close}": "<i class='fa-regular fa-circle-xmark'></i>"
 			}
 		});
 
@@ -331,7 +336,7 @@
 
         async function onScroll(){
             console.log('onScroll');
-            $('#box-simple-keyboard').addClass('d-none');
+            
             if(!cargandoContenido && !isFiltered && $(window).scrollTop() + $(window).height() + 100 > $(document).height()) {
                 cargandoContenido = true;
                 console.log("near bottom!");

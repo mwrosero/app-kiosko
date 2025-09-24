@@ -53,11 +53,67 @@
 
 		$('body').on('click', '.btn-detalle-orden', async function(){
 			let item = JSON.parse($(this).attr('item-rel'));
-			let convenio = detalleTratamiento.datosConvenio;
+			console.log(item);
+			await mostrarDetalleOrden(item);
 			$('#modalDetalleOrdenTratamiento').modal('show');
 		})
 
 	})
+
+	async function mostrarDetalleOrden(detalle){
+		let elemContent = ``;
+		let buttonActions = ``;
+
+		let tituloDetalle = (detalle.tipoServicio == "LABORATORIO") ? `${detalle.tipoServicio}` : `${detalle.tipoServicio} - ${detalle.nombreEspecialidad}`;
+		let elemHeader = `<h3 class="fs-24 line-height-32 text-royal-blue-shade-20 fw-medium mb-2 text-capitalize">${tituloDetalle.toLowerCase()}</h3>
+	        <p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-40 me-1">Profesional:</span> ${tratamiento.nombreMedico.toLowerCase()}</p>
+	        <p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-40 me-1 text-capitalize">Central médica:</span> </p>
+	        ${ mostrarConvenio(tratamiento, 40) }`;
+
+	    let elemTotales = `<p class="col-6 mb-0 fs-16 line-height-20 fw-medium text-dark-veris">Subtotal</p>
+                    <p class="col-6 mb-0 fs-16 line-height-20 fw-medium text-end text-royal-blue">$8.40</p>`;
+
+		
+		if(detalle.tipoServicio == "LABORATORIO"){
+			buttonActions += `<button class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50" data-bs-dismiss="modal">Cerrar</button>`;
+			if(detalle.detalleLaboratorio !== null){
+				$.each(detalle.detalleLaboratorio.listaOrdenesDetalle, function(key, value){
+					elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 pb-3">
+				    	<p class="col-6 mb-0 fs-12 line-height-16 text-capitalize">${value.nombrePrestacion.toLowerCase()}</p>
+			            <p class="col-2 mb-0 fs-12 text-center line-height-16">$10.40</p>
+			            <p class="col-2 mb-0 fs-12 text-center line-height-16">-$2.40</p>
+			            <p class="col-2 mb-0 fs-12 text-center line-height-16">$8.40</p>
+					</li>`
+				})
+			}
+		}else{
+			elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 pb-3">
+		    	<p class="col-6 mb-0 fs-12 line-height-16 text-capitalize">${detalle.nombrePrestacion.toLowerCase()}</p>
+	            <p class="col-2 mb-0 fs-12 text-center line-height-16">$10.40</p>
+	            <p class="col-2 mb-0 fs-12 text-center line-height-16">-$2.40</p>
+	            <p class="col-2 mb-0 fs-12 text-center line-height-16">$8.40</p>
+			</li>`
+			if(detalle.esPagada == "S"){
+				if(detalle.esAgendable == "S"){
+					if(detalle.detalleReserva !== null){
+						buttonActions += `<button item-rel='${JSON.stringify(detalle)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-agendar w-50">Agendar</button>`;
+					}else{
+						buttonActions += `<button item-rel='${JSON.stringify(detalle)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-agendar w-50">Agendar</button>`;
+					}
+				}
+			}else{
+				buttonActions += `<button item-rel='${JSON.stringify(detalle)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-agendar w-50">Agendar</button>`;
+			}
+		}
+
+		$('.box-actions-detalle-orden').html(buttonActions)
+		
+
+		$('.header-orden').html(elemHeader);
+		$('.listado-items-orden-detalle').html(elemContent);
+		$('.totalesDetalleOrden').html(elemTotales);
+		//$('.listado-items-orden-detalle')
+	}
 
 	function mostrarConvenio(detalle){
 		let elem = ``
@@ -75,7 +131,7 @@
 		        <h3 class="fs-20 line-height-24 text-royal-blue fw-medium mb-2 text-capitalize">${tratamiento.nombreEspecialidad.toLowerCase()}</h3>
 		        <p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-20 me-1">Profesional:</span> ${tratamiento.nombreMedico.toLowerCase()}</p>
 		        <p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-20 me-1 text-capitalize">Central médica:</span> </p>
-		        ${ mostrarConvenio(tratamiento) }
+		        ${ mostrarConvenio(tratamiento, 20) }
 		        <p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-20 me-1">Enviado:</span> ${ capitalizarPrimeraLetra(tratamiento.fechaTratamientoFormat) }</p>
 		    </div>`)
 	}
@@ -132,10 +188,10 @@
 		$('#listadoOrdenes').html(elem);
 	}
 
-	function mostrarConvenio(detalle){
+	function mostrarConvenio(detalle, tintText){
 		let elem = ``
 		if(detalle.nombreConvenio !== null){
-			elem += `<p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-20 me-1">Convenio:</span> ${detalle.nombreConvenio.toLowerCase()}</p>`
+			elem += `<p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-${tintText} me-1">Convenio:</span> ${detalle.nombreConvenio.toLowerCase()}</p>`
 		}
 		return elem;
 	}

@@ -147,17 +147,31 @@
     <div class="modal-dialog modal modal-lg modal-dialog-centered mx-auto my-0">
         <div class="modal-content rounded-8 rounded-24">
             <button type="button" class="btn-close position-absolute end-0 top-0 me-3 mt-3 fw-bold" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
-            <div class="modal-body px-64 py-24 text-center">
-                <h2 class="fs-24 line-height-32 text-royal-blue-shade-20 fw-medium my-32 text-capitalize">Revisa el detalle de tu orden</h2>
+            <div class="modal-body px-64 py-24">
+                <h2 class="fs-24 line-height-32 fw-medium my-32 text-center">Revisa el detalle de tu orden</h2>
                 {{-- <p class="text-dark-veris fs-16 line-height-20 mt-32 mb-4 subtitle-detalle-chequeo"></p> --}}
-                <div class="box-items-chequeo-detalle text-start p-4 border-silver mb-32 py-3 px-32" style="max-height: 700px; overflow-y: auto;">
-                    <ul class="list-unstyled listado-items-chequeo-detalle">
+                <div class="header-orden my-3"></div>
+                <hr>
+                <div class="excerpt">
+                    <p class="mb-2 fs-18 line-height-24 fw-medium text-royal-blue">Detalle</p>
+                    <p class="fs-12 line-height-16 mb-0 text-dark-veris">A continuación se  muestra la prestación y los valores después de aplicado el crédito de la aseguradora, mientras la orden se encuentra vigente.</p>
+                </div>
+                <div class="row mt-24 mb-2 px-3">
+                    <p class="col-6 mb-0 fs-16 line-height-20 fw-medium">Prestación</p>
+                    <p class="col-2 mb-0 fs-16 line-height-20 fw-medium text-center">PVP.</p>
+                    <p class="col-2 mb-0 fs-16 line-height-20 fw-medium text-center">Crédito</p>
+                    <p class="col-2 mb-0 fs-16 line-height-20 fw-medium text-center">Total</p>
+                </div>
+                <div class="text-start border-silver mb-2 py-3 px-3" style="max-height: 700px; overflow-y: auto;">
+                    <ul class="listado-items-orden-detalle list-unstyled">
                         {{-- <li class="p-3 border-bottom-midnight-blue-tint-80">asdasdlist-unstyled</li>
                         <li class="p-3 border-bottom-midnight-blue-tint-80">asdasdlist-unstyled</li> --}}
                     </ul>
                 </div>
-                <div class="d-flex justify-content-center align-items-center gap-3">
-                    <button class="btn py-24 bg-royal-blue text-white rounded-12 fs-24 line-height-32 w-50" data-bs-dismiss="modal">Cerrar</button>
+                <div class="row mt-24 mb-32 px-3 totalesDetalleOrden">
+                </div>
+                <div class="d-flex justify-content-center align-items-center gap-3 box-actions-detalle-orden">
+                    
                 </div>
             </div>
         </div>
