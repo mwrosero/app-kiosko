@@ -12,6 +12,6 @@
 		<span class="ms-3 fs-24 line-height-32 fw-bold">Volver</span>
 	</a>
 	@if(isset($showTurnoBtn) && $showTurnoBtn)
-	<button class="btn bg-white rounded-8 text-royal-blue border-royal-blue p-3 px-4 fs-24 line-height-28 fw-medium">Generar turno</button>
+	<button class="btn bg-white rounded-8 text-royal-blue border-royal-blue p-3 px-4 fs-24 line-height-28 fw-medium btn-generar-turno">Generar turno</button>
 	@endif
 </div>

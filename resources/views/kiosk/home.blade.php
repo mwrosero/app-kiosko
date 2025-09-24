@@ -61,6 +61,8 @@ bg-royal-blue-tint-90
 		localStorage.removeItem("tipo");
 		localStorage.removeItem("datosCliente");
 		localStorage.removeItem("trackId");
+		localStorage.removeItem("usuarioDigital");
+		{{-- localStorage.removeItem("detalle-paquete-preventivo");
 		localStorage.removeItem("idPreTransaccion");
 		localStorage.removeItem("paquete");
 		localStorage.removeItem("origen");
@@ -68,7 +70,7 @@ bg-royal-blue-tint-90
 		localStorage.removeItem("agendamiento");
 		localStorage.removeItem("agrupacionFacturar");
 		localStorage.removeItem("datosFacturados");
-		localStorage.removeItem("pagoUnico");
+		localStorage.removeItem("pagoUnico"); --}}
 	}
 
 	async function cargarParametros(){

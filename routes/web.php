@@ -20,11 +20,14 @@ Route::get('/{mac}', [KioskController::class, 'index'])->name('index');
 Route::get('/ingreso/{mac}', [KioskController::class, 'ingreso'])->name('ingreso');
 Route::get('/menu/{mac}', [KioskController::class, 'menu'])->name('menu');
 
+Route::get('/turno/{mac}', [KioskController::class, 'turno'])->name('turno');
+
 Route::get('/proximas-citas/{mac}', [KioskController::class, 'proximasCitas'])->name('proximasCitas');
 Route::get('/paquetes-preventivos/{mac}', [KioskController::class, 'paquetesPreventivos'])->name('paquetesPreventivos');
-Route::get('/mis-paquetes/{mac}', [KioskController::class, 'misPreventivos'])->name('misPreventivos');
 Route::get('/detalle-paquete/{mac}', [KioskController::class, 'detallePaquete'])->name('detallePaquete');
 Route::get('/asignar-paquete/{mac}', [KioskController::class, 'asignarPaquete'])->name('asignarPaquete');
+Route::get('/mis-paquetes/{mac}', [KioskController::class, 'misPreventivos'])->name('misPreventivos');
+Route::get('/detalle-paquete-comprado/{mac}', [KioskController::class, 'detallePaqueteComprado'])->name('detallePaqueteComprado');
 
 Route::get('/cita-elegir-paciente/{mac}', [KioskController::class, 'citaElegirPaciente'])->name('citaElegirPaciente');
 Route::get('/cita-elegir-modalidad/{mac}', [KioskController::class, 'citaElegirModalidad'])->name('citaElegirModalidad');

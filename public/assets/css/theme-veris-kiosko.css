@@ -219,12 +219,17 @@
     --beigeLight: #F1F0F0;
     --magenta: #C52BD2;
     --primaryTint20: #3A5068;
+    --primaryTint60: #99C6EB;
     --darkVeris:#3D4E66;
 }
 
 body {
     font-family: "Gotham Rounded", "Gotham Rounded SSm", sans-serif !important;
     color: var(--midnightBlue) !important;
+}
+
+.fw-light{
+    font-family: 'Gotham Rounded SSm' !important;
 }
 
 .fw-medium {
@@ -251,16 +256,16 @@ body {
     border-radius: 16px !important;
 }
 
-.rounded-12{
-    border-radius: 12px !important;
-}
-
 .rounded-24{
     border-radius: 24px !important;
 }
 
 .rounded-32{
     border-radius: 32px !important;
+}
+
+.rounded-200{
+    border-radius: 200px !important;
 }
 
 .rounded-top-8{
@@ -328,6 +333,10 @@ body {
 
 .bg-midnight-blue-tint-80{
     background: var(--midnightBlueTint80) !important;
+}
+
+.bg-primary-tint-60{
+    background: var(--primaryTint60) !important;
 }
 
 .bg-beige-light{
@@ -542,6 +551,10 @@ body {
     font-size: 48px !important;
 }
 
+.fs-60{
+    font-size: 60px !important;
+}
+
 .fs-64{
     font-size: 64px !important;
 }
@@ -655,6 +668,10 @@ body {
     padding-top: 40px !important;
 }
 
+.p-32{
+    padding: 32px !important;
+}
+
 .p-44{
     padding: 44px !important;
 }
@@ -683,6 +700,10 @@ body {
 
 .mb-12{
     margin-bottom: 12px !important;
+}
+
+.mb-92{
+    margin-bottom: 92px !important;
 }
 
 .mt-24{

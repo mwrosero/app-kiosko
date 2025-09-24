@@ -54,20 +54,21 @@
 		$('body').on('click', '.btn-detalle-orden', async function(){
 			let item = JSON.parse($(this).attr('item-rel'));
 			console.log(item);
-			await mostrarDetalleOrden(item);
+			await mostrarDetalleOrdenModal(item);
 			$('#modalDetalleOrdenTratamiento').modal('show');
 		})
 
 	})
 
-	async function mostrarDetalleOrden(detalle){
+	async function mostrarDetalleOrdenModal(detalle){
 		let elemContent = ``;
 		let buttonActions = ``;
+		let sucursal = (detalle.nombreSucursal !== null) ? `<p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-40 me-1 text-capitalize">Central médica:</span> ${detalle.nombreSucursal.toLowerCase()}</p>` : ``;
 
 		let tituloDetalle = (detalle.tipoServicio == "LABORATORIO") ? `${detalle.tipoServicio}` : `${detalle.tipoServicio} - ${detalle.nombreEspecialidad}`;
 		let elemHeader = `<h3 class="fs-24 line-height-32 text-royal-blue-shade-20 fw-medium mb-2 text-capitalize">${tituloDetalle.toLowerCase()}</h3>
 	        <p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-40 me-1">Profesional:</span> ${tratamiento.nombreMedico.toLowerCase()}</p>
-	        <p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-40 me-1 text-capitalize">Central médica:</span> </p>
+			${sucursal}
 	        ${ mostrarConvenio(tratamiento, 40) }`;
 
 	    let elemTotales = `<p class="col-6 mb-0 fs-16 line-height-20 fw-medium text-dark-veris">Subtotal</p>
@@ -78,7 +79,7 @@
 			buttonActions += `<button class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50" data-bs-dismiss="modal">Cerrar</button>`;
 			if(detalle.detalleLaboratorio !== null){
 				$.each(detalle.detalleLaboratorio.listaOrdenesDetalle, function(key, value){
-					elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 pb-3">
+					elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
 				    	<p class="col-6 mb-0 fs-12 line-height-16 text-capitalize">${value.nombrePrestacion.toLowerCase()}</p>
 			            <p class="col-2 mb-0 fs-12 text-center line-height-16">$10.40</p>
 			            <p class="col-2 mb-0 fs-12 text-center line-height-16">-$2.40</p>
@@ -87,7 +88,7 @@
 				})
 			}
 		}else{
-			elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 pb-3">
+			elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
 		    	<p class="col-6 mb-0 fs-12 line-height-16 text-capitalize">${detalle.nombrePrestacion.toLowerCase()}</p>
 	            <p class="col-2 mb-0 fs-12 text-center line-height-16">$10.40</p>
 	            <p class="col-2 mb-0 fs-12 text-center line-height-16">-$2.40</p>
@@ -96,7 +97,11 @@
 			if(detalle.esPagada == "S"){
 				if(detalle.esAgendable == "S"){
 					if(detalle.detalleReserva !== null){
-						buttonActions += `<button item-rel='${JSON.stringify(detalle)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-agendar w-50">Agendar</button>`;
+						if(detalle.habilitaBotonAgendar == "S"){
+							buttonActions += `<button item-rel='${JSON.stringify(detalle)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-reagendar w-50">Reagendar</button>`;
+						}else{
+							buttonActions += `<button class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50" data-bs-dismiss="modal">Cerrar</button>`;
+						}
 					}else{
 						buttonActions += `<button item-rel='${JSON.stringify(detalle)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-agendar w-50">Agendar</button>`;
 					}
@@ -124,15 +129,17 @@
 	}
 
 	async function cargarInfoTratamiento(){
+		let sucursal = (tratamiento.nombreSucursal !== null) ? `<p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-20 me-1 text-capitalize">Central médica:</span> ${tratamiento.nombreSucursal.toLowerCase()}</p>` : ``;
+
 		$('.info-tratamiento').html(`<div class="box-icon bg-royal-blue-tint-90 me-2 d-flex align-items-center justify-content-center rounded-8 h-100">
 		        <img src="${tratamiento.urlImagenEspecialidad}" class="m-2 img-fluid" width="56px" alt="">
 		    </div>
 		    <div class="box-info-agendamiento flex-grow-1">
 		        <h3 class="fs-20 line-height-24 text-royal-blue fw-medium mb-2 text-capitalize">${tratamiento.nombreEspecialidad.toLowerCase()}</h3>
 		        <p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-20 me-1">Profesional:</span> ${tratamiento.nombreMedico.toLowerCase()}</p>
-		        <p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-20 me-1 text-capitalize">Central médica:</span> </p>
+		        ${sucursal}
 		        ${ mostrarConvenio(tratamiento, 20) }
-		        <p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-20 me-1">Enviado:</span> ${ capitalizarPrimeraLetra(tratamiento.fechaTratamientoFormat) }</p>
+		        <p class="fs-14 line-height-16 fw-medium mb-2"><span class="text-royal-blue-shade-20 me-1">Enviado:</span> ${ capitalizarPrimeraLetra(tratamiento.fechaTratamientoFormat) }</p>
 		    </div>`)
 	}
 
@@ -173,16 +180,20 @@
 
 	async function drawCardsServicio(){
 		let elem = ``;
+		//<p class="fs-14 line-height-16 mb-12 fw-normal"><span class="text-royal-blue-shade-40">Orden Válida hasta:</span> </p>
 		$.each(detalleTratamiento.pendientes, function(key, value){
-		    elem += `<div class="col-12 px-32 py-4 fs-18 line-height-24 fw-medium d-flex justify-content-between align-items-center border-bottom-midnight-blue-tint-80">
-				<img src="${value.urlImagenTipoServicio}" alt="" width="56px">
-				<div class="mx-3 flex-grow-1">
-					<h2 class="text-royal-blue-shade-20 fw-medium fs-16 line-height-20 mb-1 text-capitalize">${value.nombreServicio.toLowerCase()}</h2>
-					<p class="fs-14 line-height-16 mb-12 fw-normal"><span class="text-royal-blue-shade-40">Orden Válida hasta:</span> </p>
-					${boxEstadoPago(value)}
-				</div>
-				<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-detalle-orden">Ver detalle</button>
-			</div>`
+			//if(detalleTratamiento.mostrarTerapiasAgrupadas == "S"){}
+			if(value.detallesServicios == null){
+			    elem += `<div class="col-12 px-32 py-4 fs-18 line-height-24 fw-medium d-flex justify-content-between align-items-center border-bottom-midnight-blue-tint-80">
+					<img src="${value.urlImagenTipoServicio}" alt="" width="56px">
+					<div class="mx-3 flex-grow-1">
+						<h2 class="text-royal-blue-shade-20 fw-medium fs-16 line-height-20 mb-1 text-capitalize">${value.nombreServicio.toLowerCase()}</h2>
+						<p class="fs-14 line-height-16 mb-12 fw-normal"><span class="text-royal-blue-shade-40">Nro. Orden:</span> ${value.idOrden}</p>
+						${boxEstadoPago(value)}
+					</div>
+					<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-detalle-orden">Ver detalle</button>
+				</div>`
+			}
 		})
 		
 		$('#listadoOrdenes').html(elem);
@@ -197,6 +208,7 @@
 	}
 
 	function drawCardItem(detalle){
+		let sucursal = (detalle.nombreSucursal !== null) ? `<p class="fs-14 line-height-16 fw-medium mb-1 text-capitalize"><span class="text-royal-blue-shade-20 me-1 text-capitalize">Central médica:</span> ${detalle.nombreSucursal.toLowerCase()}</p>` : ``;
 		return `<div class="col-6 col-md-6 box-agenda">
 				<div class="rounded-16 border-royal-blue-tint-60 border-inside p-12 d-flex justify-content-between align-items-stretch">
 				    <div class="box-icon bg-royal-blue-tint-90 me-2 d-flex align-items-center justify-content-center rounded-8">
@@ -205,7 +217,7 @@
 				    <div class="box-info-agendamiento flex-grow-1">
 				        <h3 class="fs-18 line-height-24 text-royal-blue fw-medium mb-2 text-capitalize">${detalle.nombreEspecialidad.toLowerCase()}</h3>
 				        <p class="fs-14 line-height-16 fw-medium mb-1 text-capitalize"><span class="text-royal-blue-shade-20 me-1">Profesional:</span> ${detalle.nombreMedico.toLowerCase()}</p>
-				        <p class="fs-14 line-height-16 fw-medium mb-1 text-capitalize"><span class="text-royal-blue-shade-20 me-1 text-capitalize">Central médica:</span> </p>
+				        ${sucursal}
 				        ${ mostrarConvenio(detalle) }
 				        <div class="box-action pt-32 pb-2 pb-0 d-flex justify-content-end align-items-center gap-2" data-rel='${JSON.stringify(detalle)}'>
 							<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-ver-orden">Ver órdenes</button>

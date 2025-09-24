@@ -28,6 +28,14 @@ class KioskController extends Controller
                 ->with('mac',$mac);
     }
 
+    public function turno($mac) {
+        // $token = session('accessToken');
+        $token = Veris::getToken();
+        return view('kiosk.turno')
+                ->with('accessToken',$token)
+                ->with('mac',$mac);
+    }
+
     public function menu($mac) {
         // $token = session('accessToken');
         $token = Veris::getToken();
@@ -52,6 +60,15 @@ class KioskController extends Controller
                 ->with('mac',$mac);
     }
 
+
+    public function detallePaquete($mac) {
+        // $token = session('accessToken');
+        $token = Veris::getToken();
+        return view('kiosk.detalle-paquete')
+                ->with('accessToken',$token)
+                ->with('mac',$mac);
+    }
+
     public function misPreventivos($mac) {
         // $token = session('accessToken');
         $token = Veris::getToken();
@@ -60,10 +77,10 @@ class KioskController extends Controller
                 ->with('mac',$mac);
     }
 
-    public function detallePaquete($mac) {
+    public function detallePaqueteComprado($mac) {
         // $token = session('accessToken');
         $token = Veris::getToken();
-        return view('kiosk.detalle-paquete')
+        return view('kiosk.detalle-paquete-comprado')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
     }

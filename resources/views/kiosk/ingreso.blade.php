@@ -247,7 +247,24 @@
         if(data.code == 200){
         	localStorage.setItem("datosCliente", JSON.stringify(data.data[0]));
         	localStorage.setItem("trackId", data.trackId);
+        	await verificarUsuarioDigital();
         	location.href = '/menu/{{ $mac }}'
+        }
+	}
+
+	async function verificarUsuarioDigital(){
+		let datosCliente = JSON.parse(localStorage.getItem('datosCliente'));
+		trackId = localStorage.getItem('trackId');
+		let args = [];
+		args["endpoint"] = `${api_url_digitales}/${api_war}/pacientes/validar_cuenta_digital?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
+        const data = await call(args);
+        console.log(data);
+        if(data.code == 200){
+        	localStorage.setItem("usuarioDigital", JSON.stringify(data.data));
         }
 	}
 

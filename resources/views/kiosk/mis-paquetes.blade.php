@@ -10,11 +10,15 @@
 	<main class="flex-grow-1 d-flex flex-column">
 		<div class="row g-3 flex-grow-1 mx-0 ">
 			<div class="col-2 box-accesos-lateral">
-				@include('components.access-bar', ['page' => 'proximas-citas'])
+				@include('components.access-bar', ['page' => 'paquetes-preventivos'])
 			</div>
-			<div class="col-10 px-32 d-flex flex-column overflow-auto contenido-central mt-0" style="overflow-y: auto;">
-				<div class="row">
-					<div class="col-12 mb-3">
+			<div class="col-10 px-3 d-flex flex-column overflow-auto contenido-central" style="overflow-y: auto;">
+				<div class="row border-bottom py-32">
+					<div class="col-6 offset-3 border d-flex justify-content-between align-items-center border-silver rounded-6 p-1 mb-3">
+						<a href="/paquetes-preventivos/{{ $mac }}" class="btn p-3 rounded-4 fs-20 line-height-16 flex-fill">Comprar</a>
+						<button class="btn p-3 rounded-4 bg-royal-blue text-white fs-20 line-height-16 flex-fill">Agendar</button>
+					</div>
+					<div class="col-10 offset-1 py-4 d-flex justify-content-between align-items-center gap-2">
 						<div class="row" id="listado-paquetes">
 						</div>
 					</div>
@@ -30,6 +34,7 @@
 	trackId = localStorage.getItem('trackId');
 	
 	document.addEventListener("DOMContentLoaded", async function () {
+		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
 		await obtenerMisPaquetesPreventivos();
 
         {{-- $('body').on('click', '.btn-comprar', function(){
@@ -40,39 +45,18 @@
         	location.href = `/detalle-paquete/{{ $mac }}`;
         }) --}}
 
-        $('body').on('click', '.btn-asignar', async function(){
-			location.href = `/asignar-paquete/{{ $mac }}`;
+        $('body').on('click', '.btn-detalle-paquete', async function(){
+        	localStorage.setItem('detalle-paquete-preventivo', $(this).attr('data-rel'))
+			location.href = `/detalle-paquete-comprado/{{ $mac }}`;
 		})
 
 	})
-
-	async function agregarItem(datosPago){
-		console.log(datosPago);
-		let args = [];
-        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/agregar?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`;
-        args["method"] = "POST";
-        args["showLoader"] = true;
-        {{-- args["sendHeaders"] = false; --}}
-        args["token"] = "{{ $accessToken }}";
-        args["bodyType"] = "json";
-        args["dismissAlert"] = true;
-        args["data"] = JSON.stringify(datosPago);
-        const data = await call(args);
-        console.log(data);
-        if(data.code == 200){
-        	location.href = '/datos-facturacion/{{ $mac }}';
-        }else{
-        	$('#modalError').modal('show');
-			$('.titleError').html(`Atención`);
-			$('.msgError').html(data.message);
-        }
-	}
 
 	let servicios;
 	async function obtenerMisPaquetesPreventivos(){
 		let args = [];
 		//tipoGestion: TODOS, FACTURADOS, ASIGNADOS
-       	args["endpoint"] = `${api_url_digitales}/${api_war}/pacientes/paquetes?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}&tipoGestion=TODOS`;
+       	args["endpoint"] = `${api_url_digitales}/${api_war}/pacientes/paquetes?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}&tipoGestion=FACTURADOS`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["token"] = "{{ $accessToken }}";
@@ -81,15 +65,18 @@
         if (data.code == 200){
         	let elem = ``;
             $.each(data.data, function(key, value){
+            	let pathUrl = (value.urlImagen == "" || value.urlImagen === null) ? `{{asset('assets/img/paquete-default.png')}}` : value.urlImagen;
                 elem += `<div class="col-md-6 mt-0 mb-3 item-promocion" id="promocion-${value.secuenciaPaquetePaciente}">
-                    <div class="card m-1 mt-0 mb-0">
-                        <div class="card-header position-relative feature-img-promocion" style="background: url(${value.urlImagen}) no-repeat center;">
+                    <div class="card m-1 mt-0 mb-0 border-royal-blue-tint-90 rounded-16 h-100">
+                        <div class="card-header position-relative feature-img-promocion m-3 rounded-8 border-0" style="background: url(${pathUrl}) no-repeat center;">
                         </div>
-                        <div class="card-body p-3 pb-0">
-                            <h2 class="title-promocion-mis-compras line-height-20 fs--16 mb-2">${capitalizarCadaPalabra(value.nombreComercialPaquete)}</h2>
+                        <div class="card-body p-3 py-0">
+                            <h2 class="line-height-24 fs-20 text-royal-blue fw-medium mb-1">${capitalizarPrimeraLetra(value.nombreComercialPaquete)}</h2>
+                			<p class="fs-12 line-height-16 text-capitalize mb-1">${datosCliente.nombreCompleto.toLowerCase()}</p>
+                			<p class="fs-12 line-height-16 text-capitalize mb-0">Válida hasta: <span class="text-royal-blue">${value.fechaVigencia}</span></p>
                         </div>
-                        <div class="card-footer border-0 d-flex justify-content-end align-items-center p-3 pt-0 mt-3">
-                			<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle-paquete" data-rel='${JSON.stringify(value)}'>Ver paquete</div>
+                        <div class="card-footer border-0 d-flex justify-content-end align-items-center p-3 pt-0 mt-4 bg-transparent">
+                			<div class="btn bg-royal-blue text-white fs-14 line-height-16 px-3 py-2 btn-detalle-paquete" data-rel='${JSON.stringify(value)}'>Usar paquete</div>
                         </div>
                     </div>
                 </div>`;
@@ -100,4 +87,9 @@
         }
 	}
 </script>
+<style>
+	.feature-img-promocion{
+		height: 230px;
+	}
+</style>
 @endsection

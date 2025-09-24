@@ -26,6 +26,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         location.href = `/carrito/${mac}`;
     })
 
+    $('body').on('click', '.btn-generar-turno', async function(){
+        localStorage.setItem('tipoTurnoGenerar', 'demanda');
+        location.href = `/turno/${mac}`;
+    })
+
     $("a").on("click", function (e) {
         if ($(this).data("clicked")) {
             console.log("paralizar")

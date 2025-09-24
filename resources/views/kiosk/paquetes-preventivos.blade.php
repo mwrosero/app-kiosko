@@ -446,23 +446,6 @@
         return itemsSeleccionados;
     }
 
-	async function agregarItem(datosPago){
-		console.log(datosPago);
-		let args = [];
-        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/agregar?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`;
-        args["method"] = "POST";
-        args["showLoader"] = true;
-        {{-- args["sendHeaders"] = false; --}}
-        args["token"] = "{{ $accessToken }}";
-        args["bodyType"] = "json";
-        args["data"] = JSON.stringify(datosPago);
-        const data = await call(args);
-        console.log(data);
-        if(data.code == 200){
-        	location.href = '/datos-facturacion/{{ $mac }}';
-        }
-	}
-
 	let servicios;
 	async function obtenerPaquetesPromocionales(){
 		let nemonicos = await obtenerNemonicosCategoriasSeleccionadas();

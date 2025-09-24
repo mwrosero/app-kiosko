@@ -162,7 +162,7 @@
                     <p class="col-2 mb-0 fs-16 line-height-20 fw-medium text-center">Crédito</p>
                     <p class="col-2 mb-0 fs-16 line-height-20 fw-medium text-center">Total</p>
                 </div>
-                <div class="text-start border-silver mb-2 py-3 px-3" style="max-height: 700px; overflow-y: auto;">
+                <div class="text-start border-silver mb-2 py-0 px-3" style="max-height: 700px; overflow-y: auto;">
                     <ul class="listado-items-orden-detalle list-unstyled">
                         {{-- <li class="p-3 border-bottom-midnight-blue-tint-80">asdasdlist-unstyled</li>
                         <li class="p-3 border-bottom-midnight-blue-tint-80">asdasdlist-unstyled</li> --}}
