@@ -1335,12 +1335,30 @@ async function generarTurno(){
     args["showLoader"] = true;
     args["token"] = accessToken;
     args["bodyType"] = "json";
-    args["data"] = JSON.stringify({
+    let payload = {
         "tipoIdentificacion": datosCliente.nombreTipoIdentificacion,
         "numeroIdentificacion": datosCliente.numeroIdentificacion,
         "nombreCompleto": datosCliente.nombreCompleto
-    });
+    }
+    if(localStorage.getItem('tipoTurnoGenerar') !== "demanda"){
+        payload.idPreTransaccion = localStorage.getItem('idPreTransaccion')
+    }
+    args["data"] = JSON.stringify(payload);
     const data = await call(args);
     console.log(data);
+    if(data.code == 200){
+        await printTurnoAPI(data.data)
+    }
     return data;
+}
+
+async function printTurnoAPI(detalle){
+    let args = [];
+    args["endpoint"] = `http://localhost:3002/printer-ticket/v1/turnero?turno=${detalle.turno}&sucursal=${detalle.nombreSucursalTurnero.toUpperCase()}&paciente=${detalle.nombreCompleo}&fechaTicket=${detalle.fechaEmision}&nombreMuestraTurnero=${dataParametrosGenerales.nombreMuestraTurnero}`;
+    args["method"] = "GET";
+    const data = await call(args);
+    if(data.code == 200){
+        // console.log(data)
+    }
+    return;
 }
