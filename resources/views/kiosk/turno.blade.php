@@ -40,7 +40,7 @@
 			$('.numero-turno').html(turno.data.turno)
 			setTimeout(function(){
 				location.href = `/{{ $mac }}`;
-			},2000);
+			}, 3000);
 		}
 	})
 </script>

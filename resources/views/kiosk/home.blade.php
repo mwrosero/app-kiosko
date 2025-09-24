@@ -62,6 +62,7 @@ bg-royal-blue-tint-90
 		localStorage.removeItem("datosCliente");
 		localStorage.removeItem("trackId");
 		localStorage.removeItem("usuarioDigital");
+		localStorage.removeItem("idPreTransaccion");
 		{{-- localStorage.removeItem("detalle-paquete-preventivo");
 		localStorage.removeItem("idPreTransaccion");
 		localStorage.removeItem("paquete");

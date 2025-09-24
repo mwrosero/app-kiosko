@@ -98,7 +98,7 @@
             })
 
             async function contadorItemsCarrito(){
-                if(!callCounter){
+                if(localStorage.getItem('idPreTransaccion') === null){
                     return;
                 }
                 let args = [];

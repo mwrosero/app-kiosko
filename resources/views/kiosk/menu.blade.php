@@ -64,7 +64,6 @@
 </div>
 <script>
 	let datosCliente = JSON.parse(localStorage.getItem('datosCliente'));
-	callCounter = false;
 	document.addEventListener("DOMContentLoaded", async function () {
 		$('.primerNombre').html(datosCliente.primerNombre.toLowerCase());
 		deleteStorage();
@@ -86,7 +85,6 @@
 		localStorage.removeItem("datosCliente");
 		localStorage.removeItem("trackId"); --}}
 		localStorage.removeItem("detalle-paquete-preventivo");
-		localStorage.removeItem("idPreTransaccion");
 		localStorage.removeItem("paquete");
 		localStorage.removeItem("tratamiento");
 		localStorage.removeItem("origen");
