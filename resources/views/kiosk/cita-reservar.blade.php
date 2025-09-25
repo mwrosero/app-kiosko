@@ -3,7 +3,7 @@
 <div class="container-fluid px-0 d-flex flex-column min-vh-100">
 	@include('components.header')
 	<!-- Sub-header -->
-	@include('components.sub-header', ['showTurnoBtn' => true, 'url' => '/citas-elegir-fecha-doctor/'.$mac])
+	@include('components.sub-header', ['showTurnoBtn' => true, 'url' => url()->previous()])
 	<!-- Carrito -->
 	@include('components.cart-bar', ['title' => 'Revisa los datos'])
 

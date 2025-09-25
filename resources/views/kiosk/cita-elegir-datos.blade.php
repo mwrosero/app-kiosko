@@ -3,7 +3,7 @@
 <div class="container-fluid px-0 d-flex flex-column min-vh-100">
 	@include('components.header')
 	<!-- Sub-header -->
-	@include('components.sub-header', ['showTurnoBtn' => true, 'url' => '/cita-elegir-modalidad/'.$mac])
+	@include('components.sub-header', ['showTurnoBtn' => true, 'url' => url()->previous()])
 	<!-- Carrito -->
 	@include('components.cart-bar', ['title' => 'Elige los datos de tu cita'])
 	<!-- Contenido principal -->

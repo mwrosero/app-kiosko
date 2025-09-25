@@ -92,7 +92,7 @@
 
 	function drawCardItem(detalle){
 		let sucursal = (detalle.nombreSucursal !== null) ? `<p class="fs-14 line-height-16 fw-medium mb-1 text-capitalize"><span class="text-royal-blue-shade-20 me-1 text-capitalize">Central médica:</span> ${detalle.nombreSucursal.toLowerCase()}</p>` : ``;
-		return `<div class="col-6 col-md-6 box-agenda">
+		return `<div class="col-6 col-md-6 box-agenda mb-3">
 				<div class="rounded-16 border-royal-blue-tint-60 border-inside p-12 d-flex justify-content-between align-items-stretch">
 				    <div class="box-icon bg-royal-blue-tint-90 me-2 d-flex align-items-center justify-content-center rounded-8">
 				        <img src="${detalle.urlImagenEspecialidad}" class="m-2" width="56px" alt="">

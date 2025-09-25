@@ -73,7 +73,7 @@
                         <div class="card-body p-3 py-0">
                             <h2 class="line-height-24 fs-20 text-royal-blue fw-medium mb-1">${capitalizarPrimeraLetra(value.nombreComercialPaquete)}</h2>
                 			<p class="fs-12 line-height-16 text-capitalize mb-1">${datosCliente.nombreCompleto.toLowerCase()}</p>
-                			<p class="fs-12 line-height-16 text-capitalize mb-0">Válida hasta: <span class="text-royal-blue">${value.fechaVigencia}</span></p>
+                			<p class="fs-12 line-height-16 text-capitalize mb-0">Válida hasta: <span class="text-royal-blue">${value.fechaCaducidadUsoPaquete}</span></p>
                         </div>
                         <div class="card-footer border-0 d-flex justify-content-end align-items-center p-3 pt-0 mt-4 bg-transparent">
                 			<div class="btn bg-royal-blue text-white fs-14 line-height-16 px-3 py-2 btn-detalle-paquete" data-rel='${JSON.stringify(value)}'>Usar paquete</div>

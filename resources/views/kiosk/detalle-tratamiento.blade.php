@@ -223,15 +223,39 @@
 	    })
 
 	    // boton btn-pagar
-	    $(document).on('click', '.btn-pagar', function(){
+	    $(document).on('click', '.btn-pagar', async function(){
+	    	$('#modalDetalleOrdenTratamiento').modal('hide')
 	        let datosServicio = $(this).data('rel');
 	        let convenio = JSON.parse($(this).attr('convenio-rel'));
+	        console.log(datosServicio);
 
-	        if(datosServicio.esPagada && datosServicio.tipoCard == "LAB" && datosServicio.modalidad == "PRESENCIAL"){
-	            // $('#mensajeNoPermiteCambiar').html(datosServicio.mensaje);
+	        {{-- if(datosServicio.esPagada == "N" && datosServicio.tipoCard == "LAB" && datosServicio.modalidad == "PRESENCIAL"){
 	            $('#mensajeNoPermiteCambiar').html('Para agendar este procedimiento acerquese a caja con el turno que emitiremos');
 	            $('#modalPermiteCambiar').modal('show');
 	            return;
+	        } --}}
+	        if(datosServicio.tipoCard == "LAB"){
+	        	if(datosServicio.permitePago == "S" && datosServicio.esPagada == "N"){
+	        		let lineaDetalleOrdenArr = [];
+
+	        		$.each(datosServicio.detalleLaboratorio.listaOrdenesDetalle, function(key, value){
+						lineaDetalleOrdenArr.push(value.lineaDetalle)
+					})
+	        		
+	        		let datosPago = {
+						"tratamientos": {
+						    "idPaciente": detalleTratamiento.idPaciente,
+						    "numeroOrden": datosServicio.idOrden,
+						    "codigoConvenio": detalleTratamiento.datosConvenio.codigoConvenio,
+						    "codigoTratamiento": detalleTratamiento.codigoTratamiento,
+						    "detalles": lineaDetalleOrdenArr
+						}
+					}
+					await agregarItem(datosPago);
+	        		return;
+	        	}else{
+	        		return;
+	        	}
 	        }
 
 	        if(datosServicio.permitePago == "N" && datosServicio.tipoCard != "LAB"){
