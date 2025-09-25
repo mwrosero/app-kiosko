@@ -60,8 +60,60 @@
 
 	})
 
+	async function obtenerValoresOrden(detalle){
+		let lineaDetalleOrdenArr = [];
+		if(detalle.detallesServicios == null && detalle.detalleLaboratorio == null){
+			lineaDetalleOrdenArr.push(detalle.lineaDetalleOrden)
+		}else if(detalle.detalleLaboratorio !== null){
+			$.each(detalle.detalleLaboratorio.listaOrdenesDetalle, function(key, value){
+				lineaDetalleOrdenArr.push(value.lineaDetalle)
+			})
+		}
+
+		let args = [];
+        args["endpoint"] = `${api_url_digitales}/${api_war}/util/valorizar_prestaciones?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}&codigoTratamiento=${tratamiento.codigoTratamiento}`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+	    args["data"] = JSON.stringify({
+	        "numeroOrden": detalle.idOrden,
+			"lineaDetalleOrden": lineaDetalleOrdenArr,
+			"codigoConvenio": detalleTratamiento.datosConvenio.codigoConvenio,
+			"secuenciaAfiliado": detalleTratamiento.datosConvenio.secuenciaAfiliado,
+			"codigoTratamiento": tratamiento.codigoTratamiento,
+	    });
+        args["token"] = "{{ $accessToken }}";
+        const data = await call(args);
+        console.log(data);
+        return data;
+	}
+
 	async function mostrarDetalleOrdenModal(detalle){
 		let elemContent = ``;
+		let detallePrestacionesValores = await obtenerValoresOrden(detalle);
+		let valorTotal = 0;
+		if(detallePrestacionesValores.code == 200){
+			$.each(detallePrestacionesValores.data, function(key, value){
+				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
+			    	<p class="col-6 mb-0 fs-12 line-height-16 text-capitalize">${value.nombrePrestacion.toLowerCase()}</p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorPaciente.toFixed(2)}</p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16">-$${value.valorDescuento.toFixed(2)}</p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorTotal.toFixed(2)}</p>
+				</li>`
+				valorTotal += value.valorTotal;
+			})
+		}else if(detalle.detalleLaboratorio !== null){
+			// Default
+			console.log("default")
+			$.each(detalle.detalleLaboratorio.listaOrdenesDetalle, function(key, value){
+				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
+			    	<p class="col-6 mb-0 fs-12 line-height-16 text-capitalize">${value.nombrePrestacion.toLowerCase()}</p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$10.40</p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16">-$2.40</p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$8.40</p>
+				</li>`
+			})
+		}
 		let buttonActions = ``;
 		let sucursal = (detalle.nombreSucursal !== null) ? `<p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-40 me-1 text-capitalize">Central médica:</span> ${detalle.nombreSucursal.toLowerCase()}</p>` : ``;
 
@@ -72,28 +124,18 @@
 	        ${ mostrarConvenio(tratamiento, 40) }`;
 
 	    let elemTotales = `<p class="col-6 mb-0 fs-16 line-height-20 fw-medium text-dark-veris">Subtotal</p>
-                    <p class="col-6 mb-0 fs-16 line-height-20 fw-medium text-end text-royal-blue">$8.40</p>`;
+                    <p class="col-6 mb-0 fs-16 line-height-20 fw-medium text-end text-royal-blue">$${valorTotal.toFixed(2)}</p>`;
 
 		
 		if(detalle.tipoServicio == "LABORATORIO"){
 			buttonActions += `<button class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50" data-bs-dismiss="modal">Cerrar</button>`;
-			if(detalle.detalleLaboratorio !== null){
-				$.each(detalle.detalleLaboratorio.listaOrdenesDetalle, function(key, value){
-					elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
-				    	<p class="col-6 mb-0 fs-12 line-height-16 text-capitalize">${value.nombrePrestacion.toLowerCase()}</p>
-			            <p class="col-2 mb-0 fs-12 text-center line-height-16">$10.40</p>
-			            <p class="col-2 mb-0 fs-12 text-center line-height-16">-$2.40</p>
-			            <p class="col-2 mb-0 fs-12 text-center line-height-16">$8.40</p>
-					</li>`
-				})
-			}
 		}else{
-			elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
+			/*elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
 		    	<p class="col-6 mb-0 fs-12 line-height-16 text-capitalize">${detalle.nombrePrestacion.toLowerCase()}</p>
 	            <p class="col-2 mb-0 fs-12 text-center line-height-16">$10.40</p>
 	            <p class="col-2 mb-0 fs-12 text-center line-height-16">-$2.40</p>
 	            <p class="col-2 mb-0 fs-12 text-center line-height-16">$8.40</p>
-			</li>`
+			</li>`*/
 			if(detalle.esPagada == "S"){
 				if(detalle.esAgendable == "S"){
 					if(detalle.detalleReserva !== null){
@@ -159,8 +201,8 @@
 					<a href="/cita-elegir-paciente/{{ $mac }}" class="d-none btn bg-royal-blue text-white fs-24 line-height-32 py-3 rounded-16 w-50 fw-medium shadow-none" id="btn-ingresar">Agendar nueva cita</a>
 				</div>`);
         }else{
-        	detalleTratamiento = data.data
-       		await drawCardsServicio();
+        	detalleTratamiento = data.data;
+       		await drawCardOrden();
         }
 	}
 
@@ -178,7 +220,7 @@
 		return elem;
 	}
 
-	async function drawCardsServicio(){
+	async function drawCardOrden(){
 		let elem = ``;
 		//<p class="fs-14 line-height-16 mb-12 fw-normal"><span class="text-royal-blue-shade-40">Orden Válida hasta:</span> </p>
 		$.each(detalleTratamiento.pendientes, function(key, value){
