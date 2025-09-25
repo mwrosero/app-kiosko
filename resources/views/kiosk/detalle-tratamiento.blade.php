@@ -44,6 +44,14 @@
 <script>
 	let datosCliente = JSON.parse(localStorage.getItem('datosCliente'));
 	let tratamiento = JSON.parse(localStorage.getItem('tratamiento'));
+	let dataCita = {};
+	dataCita.paciente = {
+        "numeroIdentificacion": datosCliente.numeroIdentificacion,
+        "tipoIdentificacion": datosCliente.codigoTipoIdentificacion,
+        "nombrePaciente": datosCliente.nombreCompleto,
+        "numeroPaciente": datosCliente.idPaciente,
+        "pacPacNumero": datosCliente.idPaciente,
+    }
 	trackId = localStorage.getItem('trackId');
 	localStorage.setItem("origen", "cita");
 	document.addEventListener("DOMContentLoaded", async function () {
@@ -120,7 +128,7 @@
 	            "codigoCiudad": datosServicio.idCiudad
 	        }
 
-	        localStorage.setItem('cita-{{ $mac }}', JSON.stringify(dataCita));
+	        localStorage.setItem('agendamiento', JSON.stringify(dataCita));
 	        location = url;
 	    });
 
@@ -184,7 +192,7 @@
 	            dataCita.secuenciaAtencion = secuenciaAtencion.secuenciaAtenciones;
 	            dataCita.datosTratamiento = datosTratamiento;
 	            dataCita.cantidadMaximaAgenda = parseInt($(this).attr('qty-rel'));
-	            localStorage.setItem('cita-{{ $mac }}', JSON.stringify(dataCita));
+	            localStorage.setItem('agendamiento', JSON.stringify(dataCita));
 	            location = "/agendamiento-multiple/{{ $mac }}";
 	            return;
 	        }
@@ -196,11 +204,11 @@
 	                $('.btn-respuesta-embarazo').attr("url-rel",$url);
 	                $('#modalEmbarazo').modal("show");
 	            }else{
-	                localStorage.setItem('cita-{{ $mac }}', JSON.stringify(dataCita));
+	                localStorage.setItem('agendamiento', JSON.stringify(dataCita));
 	                location = url;
 	            }
 	        }else{
-	            localStorage.setItem('cita-{{ $mac }}', JSON.stringify(dataCita));
+	            localStorage.setItem('agendamiento', JSON.stringify(dataCita));
 	            location = url;
 	        }
 	        
@@ -209,7 +217,7 @@
 	    $('body').on('click', '.btn-respuesta-embarazo', async function(){
 	        let estaEmbarazada = $(this).attr('respuesta-rel');
 	        dataCita.estaEmbarazada = estaEmbarazada;
-	        localStorage.setItem('cita-{{ $mac }}', JSON.stringify(dataCita));
+	        localStorage.setItem('agendamiento', JSON.stringify(dataCita));
 	        let ruta = $(this).attr('url-rel');
 	        location.href = ruta;
 	    })
@@ -265,106 +273,172 @@
 	        dataCita.datosTratamiento.origen = "Listatratamientos";
 	        console.log(dataCita)
 
-	        localStorage.setItem('cita-{{ $mac }}', JSON.stringify(dataCita));
+	        localStorage.setItem('agendamiento', JSON.stringify(dataCita));
 	        location.href = $(this).attr("url-rel");
 	    });
 
 		$(document).on('click', '.btn-informacion', function(){
 			console.log(9)
-        let datos = JSON.parse($(this).attr('data-rel'));
-        let datosTratamiento = JSON.parse($(this).attr('datosTratamiento-rel'));
-        if(datosTratamiento.mostrarTerapiasAgrupadas == "S" && datos.tipoCard == "AGENDA_TERAPIA" && datos.esCaducado == "N"){
-            let datosServicio = datos;
-            let esTerapiaAgrupada = true;
-            // console.log(datosServicio.detallesServicios)
-            // return
-            {{-- if(datosServicio.permiteReserva == "N"){
-                $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoReserva);
-                $('#modalPermiteCambiar').modal('show');
-                return;
-            } --}}
-            console.log('datosServicio', datosServicio);
-            let modalidad;
-            if (datosServicio.modalidad === 'ONLINE') {
-                modalidad = 'S';
-            } else if (datosServicio.modalidad === 'PRESENCIAL') {
-                modalidad = 'N';
-            }
+	        let datos = JSON.parse($(this).attr('data-rel'));
+	        let datosTratamiento = JSON.parse($(this).attr('datosTratamiento-rel'));
+	        if(datosTratamiento.mostrarTerapiasAgrupadas == "S" && datos.tipoCard == "AGENDA_TERAPIA" && datos.esCaducado == "N"){
+	            let datosServicio = datos;
+	            let esTerapiaAgrupada = true;
+	            // console.log(datosServicio.detallesServicios)
+	            // return
+	            {{-- if(datosServicio.permiteReserva == "N"){
+	                $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoReserva);
+	                $('#modalPermiteCambiar').modal('show');
+	                return;
+	            } --}}
+	            console.log('datosServicio', datosServicio);
+	            let modalidad;
+	            if (datosServicio.modalidad === 'ONLINE') {
+	                modalidad = 'S';
+	            } else if (datosServicio.modalidad === 'PRESENCIAL') {
+	                modalidad = 'N';
+	            }
 
-            dataCita.online = modalidad;
-            let tipoServicio = datosServicio.tipoServicio.toLowerCase();
-            dataCita.tipoFlujo = "agenda/tratamiento/"+tipoServicio;
-            tipoFlujo = dataCita.tipoFlujo;
+	            dataCita.online = modalidad;
+	            let tipoServicio = datosServicio.tipoServicio.toLowerCase();
+	            dataCita.tipoFlujo = "agenda/tratamiento/"+tipoServicio;
+	            tipoFlujo = dataCita.tipoFlujo;
 
-            dataCita.especialidad = {
-                codigoEspecialidad: datosServicio.codigoEspecialidad,
-                nombre : datosServicio.nombreEspecialidad,
-                imagen : datosServicio.urlImagenTipoServicio,
-                esOnline : modalidad,
-                codigoServicio : datosServicio.codigoServicio,
-                codigoPrestacion : datosServicio.codigoPrestacion,
-                codigoTipoAtencion : datosServicio.codigoTipoAtencion,
-                codigoSucursal : datosServicio.codigoSucursal,
-                origen: "Listatratamientos"
-            };
-            dataCita.origen = "Listatratamientos";
-            dataCita.convenio = ultimoTratamiento.datosConvenio;
-            dataCita.convenio.origen = "Listatratamientos";
+	            dataCita.especialidad = {
+	                codigoEspecialidad: datosServicio.codigoEspecialidad,
+	                nombre : datosServicio.nombreEspecialidad,
+	                imagen : datosServicio.urlImagenTipoServicio,
+	                esOnline : modalidad,
+	                codigoServicio : datosServicio.codigoServicio,
+	                codigoPrestacion : datosServicio.codigoPrestacion,
+	                codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+	                codigoSucursal : datosServicio.codigoSucursal,
+	                origen: "Listatratamientos"
+	            };
+	            dataCita.origen = "Listatratamientos";
+	            dataCita.convenio = ultimoTratamiento.datosConvenio;
+	            dataCita.convenio.origen = "Listatratamientos";
 
-            dataCita.tratamiento = {
-                cantidadIntervalosReserva: datosServicio.cantidadIntervalosReserva,
-                numeroOrden: datosServicio.idOrden,
-                codigoEmpOrden: datosServicio.codigoEmpresa,
-                lineaDetalle: datosServicio.lineaDetalleOrden,
-                esPagada: datosServicio.esPagada
-            }
+	            dataCita.tratamiento = {
+	                cantidadIntervalosReserva: datosServicio.cantidadIntervalosReserva,
+	                numeroOrden: datosServicio.idOrden,
+	                codigoEmpOrden: datosServicio.codigoEmpresa,
+	                lineaDetalle: datosServicio.lineaDetalleOrden,
+	                esPagada: datosServicio.esPagada
+	            }
 
-            dataCita.tipoFlujo = "agenda/tratamiento/terapia_agrupada";
-            dataCita.detallesServicios = datosServicio.detallesServicios;
-            dataCita.secuenciaAtencion = secuenciaAtencion.secuenciaAtenciones;
-            dataCita.datosTratamiento = datosTratamiento;
-            dataCita.cantidadMaximaAgenda = parseInt($(this).attr('qty-rel'));
-            localStorage.setItem('cita-{{ $mac }}', JSON.stringify(dataCita));
-            location = "/agendamiento-multiple/{{ $mac }}";;
-            return;
-        }else{
-        	console.log()
-            $("#informacionCitaModal").modal('show');
-        }
-        if (datos.esCaducado === "S" && datos.esAgendable === "S") {
-            // CAMBIAR TITUOLO MODAL
-            $('#tituloModalInformacionCita').text('Orden expirada');
-            $('#mensajeInformacionCita').text('El tiempo para agendar esta orden expiró, puedes agendar la cita sin cobertura.');
-            // limpiar footer
-            $('#footerInformacionCita').empty();
-            // agregar boton agendar y salir
-            let ruta = "/citas-elegir-fecha-doctor/{{ $mac }}";
-            if (datos.modalidad == "PRESENCIAL") {
-                ruta = "/seleccionar-datos-cita/{{ $mac }}";
-            }
-            let esTerapiaAgrupada = false;
-            let qtyMaximaAgrupado = 0;
-            if(datos.tipoCard == "AGENDA_TERAPIA"){
-                esTerapiaAgrupada = true;
-                qtyMaximaAgrupado = datos.cantidadMaximaAgenda;
-            }
-            $('#footerInformacionCita').append(`<div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3 btn-agendar" data-bs-dismiss="modal" qty-rel='${qtyMaximaAgrupado}' esTerapiAgrupada-rel='${esTerapiaAgrupada}' url-rel="${ruta}" data-rel='${JSON.stringify(datos)}' id="btnAgendarCitaModal__BK">{{ __('Agendar') }}</button>
-                </div>
-                <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn fs--18 line-height-24 m-0 w-100 text-primary-veris px-4 py-3" data-bs-dismiss="modal">{{ __('Salir') }}</button>
-                </div>`);
-        } else if(datos.esAgendable === "N") {
-                $('#tituloModalInformacionCita').text('Información');
-                $('#mensajeInformacionCita').text(datos.mensaje);
-                $('#footerInformacionCita').empty();
-                $('#footerInformacionCita').append(`<div class="modal-footer pt-0 pb-3 px-3">
-                        <button type="button" class="btn btn-primary-veris fs--18 line-height-24 fw-medium m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
-                    </div>`)
-        } else {
-            $('#mensajeInformacionCita').text(datos.mensaje);
-        }
-    });
+	            dataCita.tipoFlujo = "agenda/tratamiento/terapia_agrupada";
+	            dataCita.detallesServicios = datosServicio.detallesServicios;
+	            dataCita.secuenciaAtencion = secuenciaAtencion.secuenciaAtenciones;
+	            dataCita.datosTratamiento = datosTratamiento;
+	            dataCita.cantidadMaximaAgenda = parseInt($(this).attr('qty-rel'));
+	            localStorage.setItem('agendamiento', JSON.stringify(dataCita));
+	            location = "/agendamiento-multiple/{{ $mac }}";;
+	            return;
+	        }else{
+	        	console.log()
+	            $("#informacionCitaModal").modal('show');
+	        }
+	        if (datos.esCaducado === "S" && datos.esAgendable === "S") {
+	            // CAMBIAR TITUOLO MODAL
+	            $('#tituloModalInformacionCita').text('Orden expirada');
+	            $('#mensajeInformacionCita').text('El tiempo para agendar esta orden expiró, puedes agendar la cita sin cobertura.');
+	            // limpiar footer
+	            $('#footerInformacionCita').empty();
+	            // agregar boton agendar y salir
+	            let ruta = "/citas-elegir-fecha-doctor/{{ $mac }}";
+	            if (datos.modalidad == "PRESENCIAL") {
+	                ruta = "/cita-elegir-datos/{{ $mac }}";
+	            }
+	            let esTerapiaAgrupada = false;
+	            let qtyMaximaAgrupado = 0;
+	            if(datos.tipoCard == "AGENDA_TERAPIA"){
+	                esTerapiaAgrupada = true;
+	                qtyMaximaAgrupado = datos.cantidadMaximaAgenda;
+	            }
+	            $('#footerInformacionCita').append(`<div class="modal-footer pt-0 pb-3 px-3">
+	                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3 btn-agendar" data-bs-dismiss="modal" qty-rel='${qtyMaximaAgrupado}' esTerapiAgrupada-rel='${esTerapiaAgrupada}' url-rel="${ruta}" data-rel='${JSON.stringify(datos)}' id="btnAgendarCitaModal__BK">{{ __('Agendar') }}</button>
+	                </div>
+	                <div class="modal-footer pt-0 pb-3 px-3">
+	                    <button type="button" class="btn fs--18 line-height-24 m-0 w-100 text-primary-veris px-4 py-3" data-bs-dismiss="modal">{{ __('Salir') }}</button>
+	                </div>`);
+	        } else if(datos.esAgendable === "N") {
+	                $('#tituloModalInformacionCita').text('Información');
+	                $('#mensajeInformacionCita').text(datos.mensaje);
+	                $('#footerInformacionCita').empty();
+	                $('#footerInformacionCita').append(`<div class="modal-footer pt-0 pb-3 px-3">
+	                        <button type="button" class="btn btn-primary-veris fs--18 line-height-24 fw-medium m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+	                    </div>`)
+	        } else {
+	            $('#mensajeInformacionCita').text(datos.mensaje);
+	        }
+	    });
+
+		$(document).on('click', '.btn-CambiarFechaCita', function(){
+	        console.log('click entro a cambiar fecha');
+	        let data = $(this).data('rel');
+	        let url = $(this).attr('url-rel');
+	        let convenio = JSON.parse($(this).attr('convenio-rel'));
+	        // console.log(convenio);return;
+
+	        if(data.permiteReserva == "N" && data.esPagada != "S"){
+	            $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
+	            $('#modalPermiteCambiar').modal('show');
+	            return;
+	        }
+
+	        console.log('dataCa', data);
+	        console.log('urlCa', url);
+	        // const dataConvenio = await consultarConvenios(data);
+	        // const dataPaciente = await consultarDatosPaciente(data);
+	        let esVirtual = "N";
+	        if(data.modalidad != "PRESENCIAL"){
+	            esVirtual = "S";
+	        }
+	        
+	        let params = {}
+	        let tipoServicio = data.tipoServicio.toLowerCase();
+	        tipoFlujo = "reagenda/tratamiento/"+tipoServicio;
+	        params.tipoFlujo = tipoFlujo;;
+	        params.online = esVirtual;
+	        params.especialidad = {
+	            codigoEspecialidad: data.codigoEspecialidad,
+	            codigoPrestacion  : data.codigoPrestacion,
+	            codigoServicio   : data.codigoServicio,
+	            codigoTipoAtencion: data.codigoTipoAtencion,
+	            esOnline : esVirtual,
+	            nombre : data.nombreEspecialidad,
+	        }
+	        {{-- params.paciente = {
+	            "numeroIdentificacion": data.numeroIdentificacion,
+	            "tipoIdentificacion": data.tipoIdentificacion,
+	            "nombrePaciente": data.nombrePaciente,
+	            "numeroPaciente": data.pacPacNumero
+	        } --}}
+	        params.paciente = dataCita.paciente;
+	        params.central = {
+	            "codigoSucursal": data.detalleReserva.codigoSucursal,
+	            "nombreSucursal": data.detalleReserva.nombreSucursal
+	        }
+	        params.ciudad = {
+	            "codigoPais": data.idPais,
+	            "codigoProvincia": data.idProvincia,
+	            "codigoCiudad": data.idCiudad
+	        }
+	        params.reservaEdit = {
+	            "estaPagada": data.esPagada,
+	            "numeroOrden": (data.numeroOrden) ? data.numeroOrden : data.idOrden,
+	            "lineaDetalleOrden": data.lineaDetalleOrden,
+	            "codigoEmpresaOrden": (data.codigoEmpresaOrden) ? data.codigoEmpresaOrden : data.codigoEmpresa,
+	            "idOrdenAgendable": data.idOrdenAgendable,
+	            "idCita": data.detalleReserva.codigoReserva
+	        }
+	        params.origen = "inicios";
+	        params.convenio = convenio;
+	        
+	        localStorage.setItem('agendamiento', JSON.stringify(params));
+	        location = url;
+	    });
 
 	})
 
@@ -505,7 +579,7 @@
                                 if (datosServicio.habilitaBotonAgendar == 'S' && datosServicio.esExterna == "N") {
                                     let ruta = "/citas-elegir-fecha-doctor/{{ $mac }}";
                                     if (datosServicio.modalidad == "PRESENCIAL") {
-                                        ruta = "/seleccionar-datos-cita/{{ $mac }}";
+                                        ruta = "/cita-elegir-datos/{{ $mac }}";
                                     }
                                     respuestaAgenda += `<div qty-rel='${qtyMaximaAgrupado}' esTerapiAgrupada-rel='${esTerapiaAgrupada}' url-rel="${ruta}" data-rel='${JSON.stringify(datosServicio)}' class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-agendar">Agendar</div>`;
                                 } else {
@@ -516,7 +590,7 @@
                             } else {
                                 // abrir modal no permite reserva
                                 // respuestaAgenda += `<button type="button" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal">Agendar</button>`;
-                                respuestaAgenda += `<button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris btn-agendar shadow-none" esTerapiAgrupada-rel='${esTerapiaAgrupada}' qty-rel='${qtyMaximaAgrupado}' data-rel='${JSON.stringify(datosServicio)}'>Agendar</button>`;
+                                respuestaAgenda += `<button type="button" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-agendar shadow-none" esTerapiAgrupada-rel='${esTerapiaAgrupada}' qty-rel='${qtyMaximaAgrupado}' data-rel='${JSON.stringify(datosServicio)}'>Agendar</button>`;
                             }
                         }
                     } else if (datosServicio.estado == 'AGENDADO'){
@@ -524,14 +598,14 @@
                         //respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Ver orden</a>`;
                         let ruta = "/citas-elegir-fecha-doctor/{{ $mac }}";
                         if (datosServicio.modalidad == "PRESENCIAL") {
-                            ruta = "/seleccionar-datos-cita/{{ $mac }}";
+                            ruta = "/cita-elegir-datos/{{ $mac }}";
                         }
                         if (datosServicio.permitePago == 'S' && datosServicio.esPagada == "N"){
                             // mostrar boton de pagar
                             if(datosServicio.detalleReserva === null){
                                 //respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
                             }else{
-                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 text-primary-veris border-none shadow-none btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
                             }
 
                             respuestaAgenda += `<div url-rel="/citas-datos-facturacion/{{ $mac }}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}'>Pagar</div>`;
@@ -540,12 +614,12 @@
                                 //respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
                             }
                             if((datosServicio.esPagada == "S" && datosServicio.modalidad == "ONLINE") || datosServicio.esPagada == "N"){
-                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 text-primary-veris border-none shadow-none btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
                             }else{
-                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 btn-primary-veris shadow-none btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
                             }
                             if(datosServicio.modalidad == "ONLINE" && datosServicio.esPagada == "S"){
-                                respuestaAgenda += `<a href="${datosServicio.detalleReserva.idTeleconsulta}" class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 btn-primary-veris shadow-none">Conectarme</a>`;
+                                respuestaAgenda += `<a href="${datosServicio.detalleReserva.idTeleconsulta}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50">Conectarme</a>`;
                             }
                             if(datosServicio.esPagada == "N"){
                                 respuestaAgenda += `<div url-rel="/citas-datos-facturacion/{{ $mac }}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}'>Pagar</div>`;
@@ -575,7 +649,7 @@
                     if (estado == 'PENDIENTE'){
                         if(datosServicio.verResultados != "S" && datosServicio.aplicaSolicitud != "S" && datosServicio.permitePago != "S"){
                             // respuesta += ` <button type="button" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
-                            //respuesta += ` <button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 text-primary-veris border-none shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                            //respuesta += ` <button type="button" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                             let params = {}
                             params.idPaciente = detalleTratamiento.idPaciente;
                             params.numeroOrden = datosServicio.idOrden;
@@ -619,7 +693,7 @@
                     } else if (estado == 'REALIZADO'){
                         // console.log('estadossss2', estado);
                         respuesta = "";
-                        //respuesta += ` <button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                        //respuesta += ` <button type="button" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                     
                     }else if (datosServicio.estado == 'ATENDIDO'){
                         // mostrar boton de ver orden
@@ -632,15 +706,15 @@
                     let respuestaReceta = ``;
                     if (estado == 'REALIZADO') {
                         //respuestaReceta += ` <button class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
-                        respuestaReceta += `<button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris btnVerOrden" data-bs-toggle="offcanvas" data-bs-target="#detalleRecetaMedica" aria-controls="detalleRecetaMedica" data-rel='${JSON.stringify(datosServicio)}'>Ver receta</button>`;
+                        respuestaReceta += `<button type="button" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btnVerOrden" data-bs-toggle="offcanvas" data-bs-target="#detalleRecetaMedica" aria-controls="detalleRecetaMedica" data-rel='${JSON.stringify(datosServicio)}'>Ver receta</button>`;
                     } else if(estado == "PENDIENTE") {
                         if(datosServicio.aplicaSolicitud != "S"){
-                            //respuestaReceta += ` <button class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                            //respuestaReceta += ` <button class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                         }else{
                             //respuestaReceta += ` <button class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                         }
                         if(datosServicio.aplicaSolicitud == "S"){
-                            respuestaReceta += `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris fw-medium shadow-none"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                            respuestaReceta += `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
                         }
                     }
                     return respuestaReceta;
@@ -650,9 +724,9 @@
                     if(estado == "PENDIENTE"){
                         //respuestaOdontologia += ` <button class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                         // ABRIRE MODAL DE VIDEO CONSULTA
-                        respuestaOdontologia += `<button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal">Agendar</button>`;
+                        respuestaOdontologia += `<button type="button" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal">Agendar</button>`;
                     }else if(estado == 'REALIZADO'){
-                        //respuestaOdontologia += ` <button class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                        //respuestaOdontologia += ` <button class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                     }
                     return respuestaOdontologia;
                     break;
@@ -690,6 +764,9 @@
 		    </div>`)
 	}
 
+	let secuenciaAtencion;
+	let ultimoTratamientoData;
+	let ultimoTratamiento;
 	let detalleTratamiento;
 	async function cargarDetalleTratamiento(showLoader = true){
 		let args = [];
@@ -706,6 +783,10 @@
 					<a href="/cita-elegir-paciente/{{ $mac }}" class="d-none btn bg-royal-blue text-white fs-24 line-height-32 py-3 rounded-16 w-50 fw-medium shadow-none" id="btn-ingresar">Agendar nueva cita</a>
 				</div>`);
         }else{
+        	secuenciaAtencion = data.data;
+            ultimoTratamientoData = data.data;
+            ultimoTratamiento = data.data;
+
         	detalleTratamiento = data.data;
        		await drawCardOrden();
         }
@@ -731,16 +812,19 @@
 		$.each(detalleTratamiento.pendientes, function(key, value){
 			//if(detalleTratamiento.mostrarTerapiasAgrupadas == "S"){}
 			if(value.detallesServicios == null){
+				let buttonActionCard = (value.tipoCard !== "RECETAS") ? `<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-detalle-orden">Ver detalle</button>` : ``;
+				let labelNumeroOrden = (value.tipoCard !== "RECETAS") ? `<p class="fs-14 line-height-16 mb-2 fw-normal"><span class="text-royal-blue-shade-40">Nro. Orden:</span> ${value.idOrden}</p>` : ``;
+
 			    elem += `<div class="col-12 px-32 py-4 fs-18 line-height-24 fw-medium d-flex justify-content-between align-items-center border-bottom-midnight-blue-tint-80">
 					<img src="${value.urlImagenTipoServicio}" alt="" width="56px">
 					<div class="mx-3 flex-grow-1">
 						<h2 class="text-royal-blue-shade-20 fw-medium fs-16 line-height-20 mb-1 text-capitalize">${value.nombreServicio.toLowerCase()}</h2>
-						<p class="fs-14 line-height-16 mb-2 fw-normal"><span class="text-royal-blue-shade-40">Nro. Orden:</span> ${value.idOrden}</p>
+			    		${labelNumeroOrden}
 						<p class="fs-14 line-height-16 mb-12 fw-normal d-none"><span class="text-royal-blue-shade-40">Orden Válida hasta:</span> ${value.fechaCaducidad}</p>
 			    		${determinarFechaCaducidadEncabezado(value, detalleTratamiento)}
 						${boxEstadoPago(value)}
 					</div>
-					<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-detalle-orden">Ver detalle</button>
+					${buttonActionCard}
 				</div>`
 			}
 		})
