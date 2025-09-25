@@ -363,7 +363,9 @@
 	        	console.log()
 	            $("#informacionCitaModal").modal('show');
 	        }
-	        if (datos.esCaducado === "S" && datos.esAgendable === "S") {
+	        
+	        //if (datos.esCaducado === "S" && datos.esAgendable === "S") {
+	        if (false) {
 	            // CAMBIAR TITUOLO MODAL
 	            $('#tituloModalInformacionCita').text('Orden expirada');
 	            $('#mensajeInformacionCita').text('El tiempo para agendar esta orden expiró, puedes agendar la cita sin cobertura.');
@@ -503,9 +505,9 @@
 				let nombrePrestacion = value.nombrePrestacion.replace(/\u00A0/g, " ").replace(/\n/g, "<br>");
 				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
 			    	<p class="col-6 mb-0 fs-12 line-height-16">${capitalizarPrimeraLetra(nombrePrestacion)}</p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorServicio.toFixed(2)}</p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorEmpresa.toFixed(2)}</p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorPaciente.toFixed(2)}</p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorDescuento.toFixed(2)}</p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorTotal.toFixed(2)}</p>
 				</li>`
 				valorTotal += value.valorTotal;
 			})

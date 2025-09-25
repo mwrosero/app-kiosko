@@ -71,10 +71,16 @@
 		let elem = ``;
 		$.each(paquete.detallesPaquete, function(key, value){
 			let labelInfo = (!value.requiereAgendamientoPrevio && !value.esAgendable) ? `<p class="fs-14 line-height-16 mb-12 fw-normal">No requiere agendar cita, solo deben activarse.</p>` : ``;
+			let nombrePrestacion = ``;
+			if(value.nombreServicioN1 == "CONSULTA"){
+				nombrePrestacion = value.nombreServicio.toLowerCase();
+			}else{
+				nombrePrestacion = value.nombrePrestacion.toLowerCase();
+			}
 		    elem += `<div class="col-12 px-32 py-4 fs-18 line-height-24 fw-medium d-flex justify-content-between align-items-center border-bottom-midnight-blue-tint-80">
 				<img src="${value.imagenServicioNivel1}" alt="" width="56px">
 				<div class="mx-3 flex-grow-1">
-					<h2 class="text-royal-blue-shade-20 fw-medium fs-16 line-height-20 mb-1 text-capitalize">${value.nombreServicioN1.toLowerCase()}</h2>
+					<h2 class="text-royal-blue-shade-20 fw-medium fs-16 line-height-20 mb-1 text-capitalize">${nombrePrestacion}</h2>
 					${labelInfo}
 					${boxEstadoPago(paquete.estaPagado)}
 				</div>
