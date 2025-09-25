@@ -406,7 +406,7 @@
 				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
 			    	<p class="col-6 mb-0 fs-12 line-height-16">${capitalizarPrimeraLetra(nombrePrestacion)}</p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorPaciente.toFixed(2)}</p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16">-$${value.valorDescuento.toFixed(2)}</p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorDescuento.toFixed(2)}</p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorTotal.toFixed(2)}</p>
 				</li>`
 				valorTotal += value.valorTotal;
@@ -417,9 +417,9 @@
 			$.each(detalle.detalleLaboratorio.listaOrdenesDetalle, function(key, value){
 				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
 			    	<p class="col-6 mb-0 fs-12 line-height-16 text-capitalize">${value.nombrePrestacion.toLowerCase()}</p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$10.40</p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16">-$2.40</p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$8.40</p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
 				</li>`
 			})
 		}

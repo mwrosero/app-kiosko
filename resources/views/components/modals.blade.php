@@ -1,3 +1,23 @@
+<!-- Modal Busqueda Usuario -->
+<div class="modal modal-top fade" id="modalUsuariosEncontrados" aria-labelledby="modalUsuariosEncontradosLabel" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
+    <div class="modal-dialog modal modal-lg modal-dialog-centered mx-auto my-0">
+        <div class="modal-content rounded-8 rounded-24">
+            <button type="button" class="btn-close position-absolute end-0 top-0 me-3 mt-3 fw-bold" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
+            <div class="modal-body px-64 py-24 text-center">
+                <h2 class="fs-24 line-height-32 text-royal-blue-shade-20 fw-medium my-32">Elige el paciente</h2>
+                <div class="box-items-chequeo text-start p-4 border-silver mb-32 py-3 px-32" style="max-height: 700px; overflow-y: auto;">
+                    <ul class="list-unstyled listado-coincidencias-pacientes">
+                        {{-- <li type="button" class="p-3 border-bottom-midnight-blue-tint-80 fs-16 line-height-20 text-dark-veris">
+                            <p class="mb-2">Maria Rosero Peralta</p>
+                            <p class="mb-0">XXXXXX7895</p>
+                        </li> --}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Confirmar Cita -->
 <div class="modal modal-top fade" id="modalConsultorio" aria-labelledby="modalConsultorioLabel" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
     <div class="modal-dialog modal modal-lg modal-dialog-centered mx-auto my-0">
