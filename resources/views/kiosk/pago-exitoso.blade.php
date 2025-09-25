@@ -39,6 +39,10 @@
 				$('.btn-redirect').attr('href',`/paquetes-preventivos/{{ $mac }}`);
 				$('.btn-redirect').html(`Ver paquete preventivo`);
 			break;
+			default:
+				$('.btn-redirect').attr('href',`/menu/{{ $mac }}`);
+				$('.btn-redirect').html(`Volver al menú`);
+			break;
 		}
 
 		if(datosFacturados.factura.transacciones.length == 1){

@@ -58,6 +58,9 @@
 				$('.box-steps').addClass('d-none');
 				$('.box-pasarela').removeClass('d-none');
 				await facturar();
+			}else{
+				localStorage.setItem('tipoTurnoGenerar', 'pretransaccion');
+        		location.href = `/turno/${mac}`;
 			}
 		})
 	})

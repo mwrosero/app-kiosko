@@ -950,7 +950,14 @@ function determinarMeridiano(horaInicio){
     return meridiano;
 }
 
-
+function determinarValoresNull(valor){
+    if(valor == null){
+        return '';
+    }
+    else{
+        return valor;
+    }
+}
 
 const determinarFechaCaducidadEncabezado = (datos, datosTratamiento) => {
     let dataFechas;
@@ -962,7 +969,7 @@ const determinarFechaCaducidadEncabezado = (datos, datosTratamiento) => {
                 if(datos.fechaCaducidad == null){
                     dataFechas = ``;
                 } else {
-                    dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                    dataFechas = `<p class="fs-14 line-height-16 mb-12 fw-normal">Orden expirada: <span class="fecha-cita text-red-dark me-2 text-capitalize">${determinarValoresNull(datos.fechaCaducidad).toLowerCase()}</span></p>`;
                 }
             } else {
                 // orden valida
@@ -971,7 +978,7 @@ const determinarFechaCaducidadEncabezado = (datos, datosTratamiento) => {
                     dataFechas = ``;
                     
                 } else {
-                    dataFechas = `<p class="fs--2 fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary-veris me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                    dataFechas = `<p class="fs-14 line-height-16 mb-12 fw-normal">Orden válida hasta: <span class="fecha-cita me-2 text-capitalize">${determinarValoresNull(datos.fechaCaducidad).toLowerCase()}</span></p>`;
             
                 }
             }
