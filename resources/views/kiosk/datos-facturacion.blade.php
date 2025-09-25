@@ -385,6 +385,7 @@
 		});
 
 		$("input").on("focus", function () {
+			$('#box-simple-keyboard').removeClass('d-none');
 			if (this.type === "checkbox") {
 				return; // no hacer nada
 			}
@@ -421,11 +422,14 @@
 		});
 
   		// Detectar qué input tiene el foco
-		$("input").on("focus", function(){
+		{{-- $("input").on("focus", function(){
 			$('#box-simple-keyboard').removeClass('d-none');
+			if (this.type === "checkbox") {
+				return; // no hacer nada
+			}
 			currentInput = this;
 			keyboardInit.setInput($(this).val());
-		});
+		}); --}}
 
 		$('body').on('change', '#tipoIdentificacion', function(){
 			datosSeteados = false;
@@ -478,7 +482,9 @@
 				if($('#numeroIdentificacion').val().length > 0 && $('#nombresCompletos').val().length > 0 && $('#mail').val().length > 0){
 					location.href = `/metodos-pago/{{ $mac }}`
 				}else{
-
+					$('#modalError').modal('show');
+					$('.titleError').html(`Atención`);
+					$('.msgError').html("Revise los campos obligatorios para la facturación.");
 				}
 			}
 		})

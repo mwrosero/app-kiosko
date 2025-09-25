@@ -1348,7 +1348,7 @@ async function generarTurno(){
         "nombreCompleto": datosCliente.nombreCompleto
     }
     if(localStorage.getItem('tipoTurnoGenerar') !== "demanda"){
-        payload.idPreTransaccion = localStorage.getItem('idPreTransaccion')
+        payload.idPreTransaccion = parseInt(localStorage.getItem('idPreTransaccion'))
     }
     args["data"] = JSON.stringify(payload);
     const data = await call(args);
