@@ -847,11 +847,12 @@
 						<h2 class="text-royal-blue-shade-20 fw-medium fs-16 line-height-20 mb-1 text-capitalize">${value.nombreServicio.toLowerCase()}</h2>
 			    		${labelNumeroOrden}
 						<p class="fs-14 line-height-16 mb-12 fw-normal d-none"><span class="text-royal-blue-shade-40">Orden Válida hasta:</span> ${value.fechaCaducidad}</p>
-			    		${determinarFechaCaducidadEncabezado(value, detalleTratamiento)}
+			    		
 						${boxEstadoPago(value)}
 					</div>
 					${buttonActionCard}
 				</div>`
+				//${determinarFechaCaducidadEncabezado(value, detalleTratamiento)}
 			}
 		})
 		
