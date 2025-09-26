@@ -475,7 +475,7 @@
                 await crearPreTransaccion();
             }else{
                 guardarData();
-                location.href = '/cita-agendada/{{ $mac }}';
+                location.href = '/pago-realizado/{{ $mac }}';
             }
         }else{
             $.each(validacionReserva.data.listaCita, function(key, value){
@@ -832,13 +832,13 @@
             //let urlParams = btoa(JSON.stringify(params));
             if(dataCita.tratamiento && dataCita.tratamiento.esPagada && dataCita.tratamiento.esPagada =="S"){
                 $('#btn-pagar').html('Continuar');
-                $('#btn-pagar').attr('href','/cita-agendada/{{ $mac }}');
+                $('#btn-pagar').attr('href','/pago-realizado/{{ $mac }}');
             }
             if (dataCita.reservaEdit == null || dataCita.reservaEdit.estaPagada !== "S") {
                 $('#btn-pagar').attr('href','/citas-datos-facturacion/{{ $mac }}');
             }else{
                 $('#btn-pagar').html('Continuar');
-                $('#btn-pagar').attr('href','/cita-agendada/{{ $mac }}');
+                $('#btn-pagar').attr('href','/pago-realizado/{{ $mac }}');
             }
             $('#btn-pagar').removeClass('d-none');
 
@@ -876,7 +876,7 @@
         const data = await call(args);
 
         if (data.code == 200){
-            location.href = '/cita-agendada/{{ $mac }}';
+            location.href = '/pago-realizado/{{ $mac }}';
         }
     }
 
@@ -1000,7 +1000,7 @@
             dataCita.reserva = data.data;
             guardarData();
             if(dataCita.tratamiento && dataCita.tratamiento.esPagada == "S"){
-                location.href = '/cita-agendada/{{ $mac }}';
+                location.href = '/pago-realizado/{{ $mac }}';
                 return;
             }
             if(data.data.permitePago == "S"){
@@ -1016,7 +1016,7 @@
 				await agregarItem(datosPago, true);
                 //location.href = '/citas-datos-facturacion/{{ $mac }}';
             }else{
-                location.href = '/cita-agendada/{{ $mac }}';
+                location.href = '/pago-realizado/{{ $mac }}';
             }
         }else{
             //guardarData();

@@ -385,10 +385,11 @@
 		});
 
 		$("input").on("focus", function () {
-			$('#box-simple-keyboard').removeClass('d-none');
 			if (this.type === "checkbox") {
+				console.log(99)
 				return; // no hacer nada
 			}
+			$('#box-simple-keyboard').removeClass('d-none');
 		  	currentInput = this;
 
 		  	const isNumeric =
