@@ -365,6 +365,10 @@
             await cargarConvenios();
             await consultarCiudades();
             await consultarCentralesMedicasRecomendadas();
+            $('#btn-convenio').removeClass('disabled')
+            $('#btn-ciudad').removeClass('disabled')
+            $('#btn-especialidad').removeClass('disabled')
+            $('#btn-central').removeClass('disabled')
         //}
         }
 
