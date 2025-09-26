@@ -3,7 +3,7 @@
 <div class="container-fluid px-0 d-flex flex-column min-vh-100">
 	@include('components.header')
 	<!-- Sub-header -->
-	@include('components.sub-header', ['showTurnoBtn' => true, 'url' => '/cita-elegir-modalidad/'.$mac])
+	@include('components.sub-header', ['showTurnoBtn' => true, 'url' => url()->previous()])
 	<!-- Carrito -->
 	@include('components.cart-bar', ['title' => 'Elige los datos de tu cita'])
 	<!-- Contenido principal -->
@@ -112,7 +112,7 @@
                 </div>
                 <p class="text-secondary-tint-40 fs-18 line-height-24 fw-medium mb-2 element-no-paquete">Convenio*</p>
                 <div class="mb-4 w-100 box-btn-convenio element-no-paquete border-royal-blue-2 rounded-12">
-                    <button class="btn w-100 btn-sm d-flex justify-content-between align-items-center p-4 text-royal-blue" type="button" data-bs-toggle="modal" data-bs-target="#convenioModal" id="btn-convenio" data-rel="">
+                    <button class="btn disabled w-100 btn-sm d-flex justify-content-between align-items-center p-4 text-royal-blue" type="button" data-bs-toggle="modal" data-bs-target="#convenioModal" id="btn-convenio" data-rel="">
                         <p class="fw-medium fs-18 line-height-24 mb-0 text-truncate"></p>
                         <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Convenios"> 
                     </button>
@@ -140,7 +140,7 @@
                 </div>
                 <p class="text-secondary-tint-40 fs-18 line-height-24 fw-medium mb-2 item-presencial">Ciudad*</p>
                 <div class="mb-1 w-100 box-btn-ciudad item-presencial border-royal-blue-2 rounded-12">
-                    <button class="btn w-100 btn-sm d-flex justify-content-between align-items-center p-4 text-royal-blue" type="button" data-bs-toggle="modal" data-bs-target="#ciudadModal" id="btn-ciudad" data-rel="">
+                    <button class="btn disabled w-100 btn-sm d-flex justify-content-between align-items-center p-4 text-royal-blue" type="button" data-bs-toggle="modal" data-bs-target="#ciudadModal" id="btn-ciudad" data-rel="">
                         <p class="fw-medium fs-20 line-height-24 mb-0"></p>
                         <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Ciudad"> 
                     </button>
@@ -182,7 +182,7 @@
                 </div>
                 <p class="mt-4 text-secondary-tint-40 fs-18 line-height-24 fw-medium mb-2 element-no-paquete">Especialidad*</p>
                 <div class="mb-4 w-100 box-btn-especialidad element-no-paquete border-royal-blue-2 rounded-12">
-                    <button class="btn w-100 d-flex justify-content-between align-items-center p-4 text-royal-blue" type="button" data-bs-toggle="modal" data-bs-target="#especialidadModal" id="btn-especialidad" data-rel="">
+                    <button class="btn disabled w-100 d-flex justify-content-between align-items-center p-4 text-royal-blue" type="button" data-bs-toggle="modal" data-bs-target="#especialidadModal" id="btn-especialidad" data-rel="">
                         <p class="fw-medium fs-20 line-height-24 mb-0">Seleccionar</p>
                         <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Especialidad"> 
                     </button>
@@ -223,10 +223,10 @@
                 </div>
                 <p class="text-secondary-tint-40 fs-18 line-height-24 fw-medium mb-2 item-presencial">Central médica*</p>
                 <div class="mb-1 w-100 box-btn-central item-presencial border-royal-blue-2 rounded-12">
-                    <button class="btn w-100 btn-sm d-flex justify-content-between align-items-center p-4 text-royal-blue" type="button" id="btn-central" data-rel="">
+                    <button class="btn disabled w-100 btn-sm d-flex justify-content-between align-items-center p-4 text-royal-blue" type="button" id="btn-central" data-rel="">
                         {{-- data-bs-toggle="modal" data-bs-target="#centralModal" --}}
                         <p class="fw-medium fs-20 line-height-24 mb-0"></p>
-                        <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Especialidad"> 
+                        <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Central Médica"> 
                     </button>
                 </div>
                 <span class="mb-0 d-block fs-16 line-height-24 text-silver-blue d-none label-sugerencia label-sugerencia-central">Seleccionada en base a tus agendamientos anteriores</span>
@@ -1007,4 +1007,76 @@
 
     }
 </script>
+<style>
+    #buscar{
+        border: none !important;
+        background: initial !important;
+    }
+    .btn-modalidad{
+        color: #13243F;
+    }
+
+    .text-title-select{
+        color: #6C7A8C;
+    }
+
+    .bg-white-80{
+        background: #FFFFFFCC;
+    }
+
+    .btn{
+        border-radius: 8px !important;
+    }
+
+    .shadow-item-modal{
+        border: 1px solid #E7E9EC;
+        box-shadow: 0px 4px 8px 0px #0000001A;
+    }
+
+    .list-group-checkable {
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+    .list-group-checkable::-webkit-scrollbar {
+      height: 10px;
+      width: 10px;
+    }
+    .list-group-checkable::-webkit-scrollbar-track {
+      border-radius: 5px;
+      background-color: #DFE9EB;
+    }
+
+    .list-group-checkable::-webkit-scrollbar-track:hover {
+      background-color: #D5DEE0;
+    }
+
+    .list-group-checkable::-webkit-scrollbar-track:active {
+      background-color: #D5DEE0;
+    }
+
+    .list-group-checkable::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      background-color: #0071CE;
+    }
+
+    .list-group-checkable::-webkit-scrollbar-thumb:hover {
+      background-color: #19408F;
+    }
+
+    .list-group-checkable::-webkit-scrollbar-thumb:active {
+      background-color: #19408F;
+    }
+    .btn.disabled {
+        color: #3D4E66 !important;
+        background: #E7E9EC;
+        border: 1px solid #6C7A8C !important;
+    }
+    .btn.selectable{
+        font-weight: normal !important;
+        color: #3D4E66 !important;
+        background: #fff !important;
+        border: 1px solid #E7E9EC !important;
+    }
+</style>
 @endsection

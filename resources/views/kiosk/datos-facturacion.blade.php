@@ -386,8 +386,10 @@
 
 		$("input").on("focus", function () {
 			if (this.type === "checkbox") {
+				console.log(99)
 				return; // no hacer nada
 			}
+			$('#box-simple-keyboard').removeClass('d-none');
 		  	currentInput = this;
 
 		  	const isNumeric =
@@ -421,11 +423,14 @@
 		});
 
   		// Detectar qué input tiene el foco
-		$("input").on("focus", function(){
+		{{-- $("input").on("focus", function(){
 			$('#box-simple-keyboard').removeClass('d-none');
+			if (this.type === "checkbox") {
+				return; // no hacer nada
+			}
 			currentInput = this;
 			keyboardInit.setInput($(this).val());
-		});
+		}); --}}
 
 		$('body').on('change', '#tipoIdentificacion', function(){
 			datosSeteados = false;
@@ -473,12 +478,20 @@
 
 		$('body').on('click', '#btn-validar-datos-factura', async function(){
 			if(!datosSeteados){
-				await setearDatosFactura();
+				if($('#numeroIdentificacion').val().length > 0 && $('#nombresCompletos').val().length > 0 && $('#mail').val().length > 0){
+					await setearDatosFactura();
+				}else{
+					$('#modalError').modal('show');
+					$('.titleError').html(`Atención`);
+					$('.msgError').html("Revise los campos obligatorios para la facturación.");
+				}
 			}else{
 				if($('#numeroIdentificacion').val().length > 0 && $('#nombresCompletos').val().length > 0 && $('#mail').val().length > 0){
 					location.href = `/metodos-pago/{{ $mac }}`
 				}else{
-
+					$('#modalError').modal('show');
+					$('.titleError').html(`Atención`);
+					$('.msgError').html("Revise los campos obligatorios para la facturación.");
 				}
 			}
 		})
@@ -521,6 +534,7 @@
         args["method"] = "POST";
         args["showLoader"] = true;
         {{-- args["sendHeaders"] = false; --}}
+        args["dismissAlert"] = true;
         args["token"] = "{{ $accessToken }}";
         args["bodyType"] = "json";
         args["data"] = JSON.stringify({

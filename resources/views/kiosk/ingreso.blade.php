@@ -122,17 +122,17 @@
 				 * Update simple-keyboard when input is changed directly
 				 */
 				document.querySelector(".input").addEventListener("input", event => {
-					keyboard.setInput(event.target.value);
+					keyboardInit.setInput(event.target.value);
 				});
 			break;
 			case 'P':
-				$('#box-input').html(`<input type="text" autofocus id="numeroDocumento" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3">`);
+				$('#box-input').html(`<input type="text" autofocus id="numeroDocumento" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" readonly>`);
 				tipoFiltro = "PASAPORTE";
 				$('#title').html(`Ingresa el número de pasaporte del paciente`);
 				loadKeyboardAlfanumerico()
 			break;
 			case 'N':
-				$('#box-input').html(`<input type="text" autofocus id="numeroDocumento" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" placeholder="Nombres y Apellidos">`);
+				$('#box-input').html(`<input type="text" autofocus id="numeroDocumento" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" placeholder="Nombres y Apellidos" readonly>`);
 				tipoFiltro = "NOMBRES";
 				$('#title').html(`Ingresa los nombres y apellidos del paciente`);
 				loadKeyboardAlfanumerico()
@@ -146,6 +146,13 @@
 
 		$('body').on('click', '#btn-ingresar', async function(){
 			await buscarCliente();
+		})
+
+		$('body').on('click', '.btn-acceder-user', async function(){
+			let paciente = $(this).attr('data-rel')
+			localStorage.setItem("datosCliente", paciente);
+        	await verificarUsuarioDigital();
+        	location.href = '/menu/{{ $mac }}'
 		})
 
 	})
@@ -164,7 +171,7 @@
 				if(button === "{bksp}" && currentInput){
 					let val = $(currentInput).val();
 					$(currentInput).val(val.slice(0, -1));
-					keyboard.setInput($(currentInput).val());
+					keyboardInit.setInput($(currentInput).val());
 				}
 
     			// 👉 Aquí manejamos los cambios de layout
@@ -173,13 +180,13 @@
 				}
 
 				if(button === "{numbers}"){
-					keyboard.setOptions({
+					keyboardInit.setOptions({
 						layoutName: "numbers"
 					});
 				}
 
 				if(button === "{abc}"){
-					keyboard.setOptions({
+					keyboardInit.setOptions({
 						layoutName: "default"
 					});
 				}
@@ -220,9 +227,9 @@
 
 		// función auxiliar para shift
 		function handleShift(){
-			let currentLayout = keyboard.options.layoutName;
+			let currentLayout = keyboardInit.options.layoutName;
 			let shiftToggle = currentLayout === "default" ? "shift" : "default";
-			keyboard.setOptions({
+			keyboardInit.setOptions({
 				layoutName: shiftToggle
 			});
 		}
@@ -231,7 +238,7 @@
   		// Detectar qué input tiene el foco
 		$("input").on("focus", function(){
 			currentInput = this;
-			keyboard.setInput($(this).val());
+			keyboardInit.setInput($(this).val());
 		});
 	}
 
@@ -245,11 +252,39 @@
         const data = await call(args);
         console.log(data);
         if(data.code == 200){
-        	localStorage.setItem("datosCliente", JSON.stringify(data.data[0]));
-        	localStorage.setItem("trackId", data.trackId);
-        	await verificarUsuarioDigital();
-        	location.href = '/menu/{{ $mac }}'
+	        localStorage.setItem("trackId", data.trackId);
+        	if(tipoFiltro == "NOMBRES"){
+        		if(data.data.length == 0){
+        			$('#modalError').modal('show');
+					$('.titleError').html(`Atención`);
+					$('.msgError').html(`No se encontraron coincidencias para la búsqueda del paciente.`);
+        		}else{
+        			let elem = ``;
+        			$.each(data.data, function(key, value){
+	        			elem += `<li data-rel='${JSON.stringify(value)}' type="button" class="p-3 border-bottom-midnight-blue-tint-80 fs-16 line-height-20 text-dark-veris btn-acceder-user" data-bs-dismiss="modal">
+	                            <p class="mb-2 text-capitalize">${value.nombreCompleto.toLowerCase()}</p>
+	                            <p class="mb-0">${enmascarar(value.numeroIdentificacion)}</p>
+	                        </li>`
+	                })
+	                $('.listado-coincidencias-pacientes').html(elem);
+	                $('#modalUsuariosEncontrados').modal('show')
+        		}
+        	}else{
+        		if(data.data.length == 0){
+        			$('#modalError').modal('show');
+					$('.titleError').html(`Atención`);
+					$('.msgError').html(`No se encontraron coincidencias para la búsqueda del paciente.`);
+        		}else{
+		        	localStorage.setItem("datosCliente", JSON.stringify(data.data[0]));
+		        	await verificarUsuarioDigital();
+		        	location.href = '/menu/{{ $mac }}'
+		        }
+	        }
         }
+	}
+
+	function enmascarar(str) {
+		return str.replace(/.(?=.{4})/g, 'X');
 	}
 
 	async function verificarUsuarioDigital(){

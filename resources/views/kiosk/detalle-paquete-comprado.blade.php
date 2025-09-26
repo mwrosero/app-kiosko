@@ -44,10 +44,51 @@
 	
 	document.addEventListener("DOMContentLoaded", async function () {
 		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
-		$('.imagenPaquete').html(`<img src="${paquete.urlImagen}" class="img-fluid rounded-3 w-100" />`);
+		let urlImagen = (paquete.urlImagen !== "") ? paquete.urlImagen : `{{asset('assets/img/img-default-paquete.png')}}`
+		$('.imagenPaquete').html(`<img src="${urlImagen}" class="img-fluid rounded-3 w-100" />`);
 		$('.nombrePaquete').html(paquete.nombreComercialPaquete);
 		$('.nombrePaciente').html(datosCliente.nombreCompleto.toLowerCase());
-		$('.fechaVigencia').html(paquete.fechaVigencia);
+		$('.fechaVigencia').html(paquete.fechaCaducidadUsoPaquete);
+
+		await drawCardsItems();
 	})
+
+	function boxEstadoPago(esPagada){
+		let elem = ``;
+		if(esPagada){
+			elem += `<div class="text-green-dark fs-12 line-height-16">
+				<i class="fa-solid fa-circle fs-16 me-1"></i><span class="fs-12 line-height-16">Comprado</span>
+			</div>`;
+		}else{
+			elem += `<div class="text-orange-dark fs-12 line-height-16">
+				<i class="fa-solid fa-circle fs-16 me-1"></i><span class="fs-12 line-height-16">Por comprar</span>
+			</div>`;
+		}
+		return elem;
+	}
+
+	async function drawCardsItems(){
+		let elem = ``;
+		$.each(paquete.detallesPaquete, function(key, value){
+			let labelInfo = (!value.requiereAgendamientoPrevio && !value.esAgendable) ? `<p class="fs-14 line-height-16 mb-12 fw-normal">No requiere agendar cita, solo deben activarse.</p>` : ``;
+			let nombrePrestacion = ``;
+			if(value.nombreServicioN1 == "CONSULTA"){
+				nombrePrestacion = value.nombreServicio.toLowerCase();
+			}else{
+				nombrePrestacion = value.nombrePrestacion.toLowerCase();
+			}
+		    elem += `<div class="col-12 px-32 py-4 fs-18 line-height-24 fw-medium d-flex justify-content-between align-items-center border-bottom-midnight-blue-tint-80">
+				<img src="${value.imagenServicioNivel1}" alt="" width="56px">
+				<div class="mx-3 flex-grow-1">
+					<h2 class="text-royal-blue-shade-20 fw-medium fs-16 line-height-20 mb-1 text-capitalize">${nombrePrestacion}</h2>
+					${labelInfo}
+					${boxEstadoPago(paquete.estaPagado)}
+				</div>
+				<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-detalle-orden">Ver detalle</button>
+			</div>`
+		})
+		
+		$('#listadoOrdenes').html(elem);
+	}
 </script>
 @endsection

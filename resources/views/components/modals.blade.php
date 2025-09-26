@@ -1,3 +1,23 @@
+<!-- Modal Busqueda Usuario -->
+<div class="modal modal-top fade" id="modalUsuariosEncontrados" aria-labelledby="modalUsuariosEncontradosLabel" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
+    <div class="modal-dialog modal modal-lg modal-dialog-centered mx-auto my-0">
+        <div class="modal-content rounded-8 rounded-24">
+            <button type="button" class="btn-close position-absolute end-0 top-0 me-3 mt-3 fw-bold" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
+            <div class="modal-body px-64 py-24 text-center">
+                <h2 class="fs-24 line-height-32 text-royal-blue-shade-20 fw-medium my-32">Elige el paciente</h2>
+                <div class="box-items-chequeo text-start p-4 border-silver mb-32 py-3 px-32" style="max-height: 700px; overflow-y: auto;">
+                    <ul class="list-unstyled listado-coincidencias-pacientes">
+                        {{-- <li type="button" class="p-3 border-bottom-midnight-blue-tint-80 fs-16 line-height-20 text-dark-veris">
+                            <p class="mb-2">Maria Rosero Peralta</p>
+                            <p class="mb-0">XXXXXX7895</p>
+                        </li> --}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Confirmar Cita -->
 <div class="modal modal-top fade" id="modalConsultorio" aria-labelledby="modalConsultorioLabel" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
     <div class="modal-dialog modal modal-lg modal-dialog-centered mx-auto my-0">
@@ -172,6 +192,64 @@
                 </div>
                 <div class="d-flex justify-content-center align-items-center gap-3 box-actions-detalle-orden">
                     
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Modales desde Mi Veris --}}
+
+<!-- Modal infomracion de la cita -->
+<div class="modal fade" id="informacionCitaModal" tabindex="-1" aria-labelledby="informacionCitaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3">
+                <h1 class="modal-title fs--20 line-height-24 my-3" id="tituloModalInformacionCita">{{ __('Información') }}</h1>
+                <p class="fs--1 fw-normal mb-0 text-veris" id = "mensajeInformacionCita"></p>
+            </div>
+            <div id="footerInformacionCita">
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 fw-medium m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Permite Cambio -->
+<div class="modal fade" id="modalPermiteCambiar" tabindex="-1" aria-labelledby="modalPermiteCambiarLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3">
+                <h1 class="modal-title fs--20 line-height-24 my-3">Veris</h1>
+                <p class="fs--1 fw-normal mb-0 text-veris" id="mensajeNoPermiteCambiar"></p>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <button type="button" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal embarazo -->
+<div class="modal fade" id="modalEmbarazo" tabindex="-1" aria-labelledby="modalEmbarazoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body p-3">
+                <div class="text-center">
+                    <div class="avatar avatar-md mx-auto mb-3">
+                        <span class="avatar-initial rounded-circle bg-primary">
+                            <i class="fa-solid fa-info fs-2"></i>
+                        </span>
+                    </div>
+                    <h1 class="modal-title fs--20 line-height-24 my-3">Información solicitada por tu aseguradora</h1>
+                    <p class="fs--1 fw-normal text-veris mb-3 mx-3 line-height-16">¿Esta cita es por control de <b>embarazo</b>?</p>
+                    <input type="hidden" id="datosGen">
+                </div>
+                <div class="d-flex">
+                    <div respuesta-rel="S" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary-veris waves-effect w-50 m-0 px-4 py-3 me-3 btn-respuesta-embarazo">SI</div>
+                    <div respuesta-rel="N" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary-veris waves-effect w-50 m-0 px-4 py-3 btn-respuesta-embarazo">NO</div>
                 </div>
             </div>
         </div>

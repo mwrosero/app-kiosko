@@ -10,8 +10,8 @@
 	<div class="row mx-0">
 		<div class="col-6 mx-auto px-3 h-100" style="height: 70vh !important;">
 			<div class="row flex-column h-100 justify-content-center align-items-center text-center">
-				<p class="mt-4 text-secundary-00 fs-32 line-height-40 fw-bold text-center mb-40">Pago exitoso</p>
-				<p class="mt-4 text-secundary-00 fs-24 line-height-32 fw-bold text-center mb-40">Nos vemos pronto.</p>
+				<p class="mt-4 text-secundary-00 fs-32 line-height-40 fw-bold text-center mb-40 d-none label-factura label-exitoso-1">Pago exitoso</p>
+				<p class="mt-4 text-secundary-00 fs-24 line-height-32 fw-bold text-center mb-40 d-none label-factura">Nos vemos pronto.</p>
 				<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/pago-exitoso.svg" class="m-2 img-fluid" alt="">
 				<p class="mt-3 text-silver-dark fs-16 line-height-32 detalleComprobante"></p>
 				<div class="mt-56 d-flex justify-content-between align-items-center g-2">
@@ -39,16 +39,24 @@
 				$('.btn-redirect').attr('href',`/paquetes-preventivos/{{ $mac }}`);
 				$('.btn-redirect').html(`Ver paquete preventivo`);
 			break;
+			default:
+				$('.label-exitoso-1').html(`Agendamiento realizado exitosamente.`).removeClass('d-none');
+				$('.btn-redirect').attr('href',`/menu/{{ $mac }}`);
+				$('.btn-redirect').html(`Volver al menú`);
+			break;
 		}
 
-		if(datosFacturados.factura.transacciones.length == 1){
-			$('.detalleComprobante').html(`Tu número de comprobante es el ${datosFacturados.factura.transacciones[0].numeroComprobante}, llegará <br> con tu factura al correo electrónico.`)
-		}else{
-			let comprobantesArr = [];
-			$.each(datosFacturados.factura.transacciones, function(key, value){
-				comprobantesArr.push(value.numeroComprobante);
-			})
-			$('.detalleComprobante').html(`Tus comprobantes son: ${comprobantesArr.join(', ')}, llegarán <br> con tus facturas al correo electrónico.`)
+		if(datosFacturados !== null){
+			$('.label-factura').removeClass('d-none');
+			if(datosFacturados.factura.transacciones.length == 1){
+				$('.detalleComprobante').html(`Tu número de comprobante es el ${datosFacturados.factura.transacciones[0].numeroComprobante}, llegará <br> con tu factura al correo electrónico.`)
+			}else{
+				let comprobantesArr = [];
+				$.each(datosFacturados.factura.transacciones, function(key, value){
+					comprobantesArr.push(value.numeroComprobante);
+				})
+				$('.detalleComprobante').html(`Tus comprobantes son: ${comprobantesArr.join(', ')}, llegarán <br> con tus facturas al correo electrónico.`)
+			}
 		}
 	})
 </script>

@@ -30,18 +30,23 @@
 	document.addEventListener("DOMContentLoaded", async function () {
 		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
         
+		let turno = await generarTurno();
+		if(turno.code !== 200){
+			return;
+		}
 		if(tipoTurnoGenerar == "demanda"){
-			let turno = await generarTurno();
-			if(turno.code !== 200){
-				return;
-			}
 			$('.info-turno').removeClass('d-none')
 			$('.msg-turno').html(`Tu turno es el:`)
 			$('.numero-turno').html(turno.data.turno)
-			setTimeout(function(){
-				location.href = `/{{ $mac }}`;
-			},2000);
+		}else if(tipoTurnoGenerar == "pretransaccion"){
+			$('.info-turno').removeClass('d-none')
+			$('.msg-turno').html(`Tu turno es el:`)
+			$('.numero-turno').html(turno.data.turno)
 		}
+		
+		setTimeout(function(){
+			location.href = `/{{ $mac }}`;
+		}, 3000);
 	})
 </script>
 @endsection

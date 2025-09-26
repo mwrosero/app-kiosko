@@ -23,7 +23,7 @@
 			<div class="fs-14 line-height-16 fw-medium">Gestionar mi <br>tratamiento</div>
 		</a>
 	</div>
-	<div class="col-12 d-flex align-items-stretch px-0 {{ $page == 'orden-externa' ? 'active-item-menu' : '' }}">
+	<div class="col-12 d-flex align-items-stretch btn-generar-turno px-0 {{ $page == 'orden-externa' ? 'active-item-menu' : '' }}">
 		<button class="btn w-100 py-24 d-flex flex-column justify-content-center h-100">
 			<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-orden-externa.svg" alt="" class="mb-2" style="height:80px">
 			<div class="fs-14 line-height-16 fw-medium">Tengo una orden <br>externa</div>

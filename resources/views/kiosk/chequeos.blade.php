@@ -134,7 +134,12 @@
 		$('body').on('click', '.btn-agendar', async function(){
 			let detalle = JSON.parse($(this).attr('data-rel'));
 			let item = JSON.parse($(this).attr('item-rel'));
+			let origen = "Listatratamientos";
+
+			console.log(detalle)
+			console.log(item)
 			
+
 			let dataCita = {}
 			let modalidad = (item.esTeleconsulta) ? 'S' : 'N';
 	        dataCita.online = modalidad;
@@ -153,27 +158,37 @@
 
 	        let dataCitaReserva = {
                 "paciente": {
-                    "tipoIdentificacion": paciente.codigoTipoIdentificacion,
-                    "numeroIdentificacion": paciente.numeroIdentificacion,
-                    "numeroPaciente": paciente.idPaciente,
-                    "primerNombre": paciente.primerNombre,
-                    "segundoNombre": paciente.segundoNombre,
-                    "primerApellido": paciente.primerApellido,
-                    "segundoApellido": paciente.segundoApellido,
+                    "tipoIdentificacion": datosCliente.codigoTipoIdentificacion,
+                    "numeroIdentificacion": datosCliente.numeroIdentificacion,
+                    "numeroPaciente": datosCliente.idPaciente,
+                    "primerNombre": datosCliente.primerNombre,
+                    "segundoNombre": datosCliente.segundoNombre,
+                    "primerApellido": datosCliente.primerApellido,
+                    "segundoApellido": datosCliente.segundoApellido,
+                    "pacPacNumero": datosCliente.idPaciente,
                     // "idPersona": "MTQwMDc4MDA3Ni0y",
                 },
-                "convenio": convenioItem,
+                "convenio": {
+                	"codigoCliente": null,
+                    "codigoConvenio": detalle.codigoConvenio,
+                    "nombreConvenio": detalle.nombreConvenio,
+                    "codigoTipoConvenio": detalle.codigoTipoConvenio,
+                    "nombreTipoConvenio": detalle.nombreTipoConvenio,
+                    "permitePago": "S",
+                    "permiteReserva": "S"//(detalle.esAgendable || detalle.requiereAgendamientoPrevio) ? "S" : "N"
+                },
                 "tratamiento": {
-                    "numeroOrden": item.codigoOrdApoyo,
-                    "codigoEmpOrden": detalle.codigoEmpresa,
-                    "lineaDetalle": detalle.lineaDetalleOrden,
+                    "numeroOrden": item.numeroOrden,
+                    "codigoEmpOrden": 1,//detalle.codigoEmpresa,
+                    "lineaDetalle": item.lineaDetalleOrden,
                     "codigoEmpOrden": 1,
-                    "esPagada": esPagada
+                    "esPagada": "S"
                 },
                 "online": (detalle.esTeleconsulta) ? "S" : "N",
                 "especialidad": {
                     "codigoEspecialidad": item.codigoEspecialidadServicio,
-                    "nombre": "",
+                    "nombre" : item.nombreEspecialidadServicio,
+	            	"imagen" : item.urlImagenTipoServicio,
                     "esOnline": modalidad,
                     "codigoServicio": item.codigoServicio,
                     "codigoPrestacion": item.codigoPrestacion,
@@ -182,6 +197,16 @@
                     "origen": "Listatratamientos"
                 },
                 "origen": origen,
+            }
+
+            console.log(dataCitaReserva)
+            {{-- return; --}}
+
+            localStorage.setItem('agendamiento', JSON.stringify(dataCitaReserva));
+			if(detalle.esTeleconsulta){
+                location.href = '/citas-elegir-fecha-doctor/{{ $mac }}';
+            }else{
+                location.href = '/cita-elegir-datos/{{ $mac }}';
             }
 
 			{{-- let datosServicio = $(this).data('rel');
