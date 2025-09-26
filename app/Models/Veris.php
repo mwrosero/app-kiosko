@@ -162,8 +162,8 @@ class Veris extends Model
                 ])->post(self::BASE_URL_DIGITALES.'/'.self::BASE_WAR.$method);
         $response = json_decode($res->body());
 
-        echo self::BASE_URL_DIGITALES.'/'.self::BASE_WAR.$method;
-        dd($response);
+        // echo self::BASE_URL_DIGITALES.'/'.self::BASE_WAR.$method;
+        // dd($response);
         
         session(['accessToken' => $response->data]);
         return $response->data;
