@@ -159,12 +159,12 @@
 						page = 1;
 	                    $('#listado-paquetes').empty();
 	                    cargandoContenido = true;
-	                    await obtenerPaquetesPromocionales();
+	                    await obtenerPaquetesPromocionales(false);
 					}else if(input.length == 0){
 		                page = 1;
 		                $('#listado-paquetes').empty();
 		                cargandoContenido = false;
-		                await obtenerPaquetesPromocionales();
+		                await obtenerPaquetesPromocionales(false);
             		}
 				}
 			},
@@ -340,7 +340,7 @@
             if(!cargandoContenido && !isFiltered && $(window).scrollTop() + $(window).height() + 100 > $(document).height()) {
                 cargandoContenido = true;
                 console.log("near bottom!");
-                await obtenerPaquetesPromocionales();
+                await obtenerPaquetesPromocionales(false);
             }else{
             	console.log(1)
             }
@@ -377,13 +377,13 @@
                     page = 1;
                     $('#listado-paquetes').empty();
                     cargandoContenido = true;
-                    await obtenerPaquetesPromocionales(); // Llamar a la función de búsqueda después de la pausa
+                    await obtenerPaquetesPromocionales(false); // Llamar a la función de búsqueda después de la pausa
                 }, doneTypingInterval);
             }else if(searchText.length == 0){
                 page = 1;
                 $('#listado-paquetes').empty();
                 cargandoContenido = false;
-                await obtenerPaquetesPromocionales();
+                await obtenerPaquetesPromocionales(false);
             }
         });
 
@@ -392,7 +392,7 @@
                 page = 1;
                 $('#listado-paquetes').empty();
                 cargandoContenido = false;
-                obtenerPaquetesPromocionales();
+                obtenerPaquetesPromocionales(false);
             }
         });
 
@@ -447,13 +447,14 @@
     }
 
 	let servicios;
-	async function obtenerPaquetesPromocionales(){
+	async function obtenerPaquetesPromocionales(showLoader = true){
 		let nemonicos = await obtenerNemonicosCategoriasSeleccionadas();
 
 		let args = [];
 		args["endpoint"] = `${api_url_digitales}/${api_war}/paquetes?macAddress={{ $mac }}&page=${page}&perPage=${perPage}&nemonicoGrupoPaciente=${nemonicos.join(',')}&busqueda=${ (getInput('buscarPorPromocion').replace(/\s/g, '+')) }`;
         args["method"] = "GET";
-        args["showLoader"] = (getInput('buscarPorPromocion') == "") ? true : false;
+        //if( getInput('buscarPorPromocion') == "" ) ? true : false
+        args["showLoader"] = showLoader;
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data);

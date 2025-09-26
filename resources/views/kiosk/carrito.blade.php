@@ -26,7 +26,7 @@
 					</div>
 					<div class="col-9 d-flex justify-content-center align-items-center gap-3 mt-32 mx-auto">
 						<a href="/menu/{{ $mac }}" class="btn fw-medium py-3 text-royal-blue border-royal-blue rounded-8 fs-18 line-height-24 w-50">Agregar más servicios</a>
-	                    <a href="/datos-facturacion/{{ $mac }}" class="btn fw-medium py-3 bg-royal-blue text-white rounded-8 fs-18 line-height-24 w-50">Pagar</a>
+	                    <a href="/datos-facturacion/{{ $mac }}" class="btn disabled fw-medium py-3 bg-royal-blue text-white rounded-8 fs-18 line-height-24 w-50" id="btn-pagar">Pagar</a>
 					</div>
 	            </div>
 			</div>
@@ -74,8 +74,9 @@
 	})
 
 	async function eliminarItemCarrito(idAgrupacion){
+		console.log(idAgrupacion)
 		let args = [];
-        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/eliminar?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`;
+        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/eliminar?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}&idAgrupacion=${idAgrupacion}`;
         args["method"] = "DELETE";
         args["showLoader"] = true;
         {{-- args["sendHeaders"] = false; --}}
@@ -182,8 +183,18 @@
 				</div>`
 			})
 		})
-		$('#listadoItems').html(elem);
 		$('.subtotal').html(`$${subtotal.toFixed(2)}`)
+		if(subtotal == 0){
+			$('#btn-pagar').addClass('disabled');
+			elem = `<div class="row d-flex justify-content-between align-items-center py-4 border-bottom-midnight-blue-tint-80">
+					<div class="col-12">
+						<p class="fs-16 py-94 line-height-20 fw-medium text-royal-blue mb-1 text-center">No existen productos agregados al carrito</p>
+					</div>
+				</div>`;
+		}else{
+			$('#btn-pagar').removeClass('disabled');
+		}
+		$('#listadoItems').html(elem);
 	}
 
 </script>

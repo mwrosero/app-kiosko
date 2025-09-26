@@ -68,7 +68,7 @@
 	async function facturar(){
 		let agrupacion = JSON.parse(localStorage.getItem("agrupacionFacturar"));
 		let args = [];
-        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/facturar?macAddress={{ $mac }}&esPrueba=true`;
+        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/facturar?macAddress={{ $mac }}`;//&esPrueba=true
         args["method"] = "POST";
         args["showLoader"] = true;
         {{-- args["sendHeaders"] = false; --}}
