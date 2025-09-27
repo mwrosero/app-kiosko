@@ -699,12 +699,13 @@
                             respuesta += ``;
                         }
                         //condición para 'aplicaSolicitud'
-                        if (datosServicio.aplicaSolicitud == "S") {
+                        {{-- if (datosServicio.aplicaSolicitud == "S") {
                             let ruta = "/laboratorio-domicilio/" + "{{ $mac }}";
                             respuesta += `<a url-rel="${ruta}" class="btn btn-sm btn-primary-veris shadow-none me-1 btnSolicitarLaboratorio" data-rel='${JSON.stringify(datosServicio)}'><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
                             
                         
-                        } else if (datosServicio.permitePago == "S"){
+                        } else  --}}
+                        if (datosServicio.permitePago == "S"){
                             if(datosServicio.esPagada == "N"){
                                 let params = {}
                                 params.idPaciente = detalleTratamiento.idPaciente;
@@ -740,7 +741,7 @@
                             //respuestaReceta += ` <button class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                         }
                         if(datosServicio.aplicaSolicitud == "S"){
-                            respuestaReceta += `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                            // respuestaReceta += `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
                         }
                     }
                     return respuestaReceta;

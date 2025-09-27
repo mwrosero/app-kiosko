@@ -3,18 +3,26 @@
 <link rel="stylesheet" href="https://unpkg.com/simple-keyboard@latest/build/css/index.css">
 
 <div class="container-fluid px-0 d-flex flex-column min-vh-100">
-	@include('components.header')
+	@include('components.header', ['showSettingBtn' => false])
 	<!-- Sub-header -->
 	@include('components.sub-header', ['showTurnoBtn' => false, 'url' => '/'.$mac])
 	<div class="row rounded-24 bg-white py-40 mx-0" style="margin-top: 350px;">
 		<div class="col-12 text-center my-3 pb-5">
-			<h2 class="fw-bold fs-40 line-height-40" id="title"></h2>
+			<h2 class="fw-bold fs-40 line-height-40" id="title">Ingresar Host</h2>
 		</div>
 		<div class="col-8 offset-2" id="box-input">
+			<input type="text" autofocus id="user" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" placeholder="Usuario" readonly>			
 			
+			<div class="mt-32 d-flex justify-columns-between align-items-center gap-2">
+				<input type="password" class="form-control input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" id="password" placeholder="Contraseña" readonly>
+				<button class="btn border-midnight-blue h-100 rounded-8" type="button" id="togglePasswordVisibility">
+					<i class="bi bi-eye"></i> <!-- Bootstrap Icons eye icon -->
+				</button>
+			</div>
 		</div>
+
 		<div class="col-6 offset-3 text-center mt-56 mb-40">
-			<button disabled class="btn bg-silver text-silver-neutral-40 fs-18 line-height-24 py-3 rounded-8 w-100 fw-medium shadow-none" id="btn-ingresar">Ingresar</button>
+			<button class="btn bg-silver text-silver-neutral-40 fs-18 line-height-24 py-3 rounded-8 w-100 fw-medium shadow-none" id="btn-ingresar">Acceder</button>
 		</div>
 		<div class="col-10 offset-1 mt-56 bg-silver-light p-44">
 			<div class="simple-keyboard"></div>
@@ -101,60 +109,31 @@
 			keyboardInit.destroy()
 		});
 
-		switch(tipo){
-			case 'C':
-				$('#box-input').html(`<input type="text" autofocus id="numeroDocumento" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" readonly>`);
-				tipoFiltro = "CEDULA";
-				$('#title').html(`Ingresa el número de cédula del paciente`);
-				keyboardInit = new Keyboard({
-					onChange: input => onChange(input),
-					onKeyPress: button => onKeyPress(button),
-					layout: {
-						default: ["1 2 3", "4 5 6", "7 8 9", " 0 {bksp}"]
-					},
-					display: {
-						"{bksp}": "<i class='fa fa-backspace'></i>",
-					},
-					theme: "hg-theme-default hg-layout-numeric numeric-theme"
-				});
+		loadKeyboardAlfanumerico();
 
-				/**
-				 * Update simple-keyboard when input is changed directly
-				 */
-				document.querySelector(".input").addEventListener("input", event => {
-					keyboardInit.setInput(event.target.value);
-				});
-			break;
-			case 'P':
-				$('#box-input').html(`<input type="text" autofocus id="numeroDocumento" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" readonly>`);
-				tipoFiltro = "PASAPORTE";
-				$('#title').html(`Ingresa el número de pasaporte del paciente`);
-				loadKeyboardAlfanumerico()
-			break;
-			case 'N':
-				$('#box-input').html(`<input type="text" autofocus id="numeroDocumento" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" placeholder="Nombres y Apellidos" readonly>`);
-				tipoFiltro = "NOMBRES";
-				$('#title').html(`Ingresa los nombres y apellidos del paciente`);
-				loadKeyboardAlfanumerico()
-			break;
-		}
+		const togglePasswordVisibility = document.getElementById('togglePasswordVisibility');
+		const passwordInput = document.getElementById('password');
+		const eyeIcon = togglePasswordVisibility.querySelector('i');
 
+		togglePasswordVisibility.addEventListener('click', function() {
+			// Toggle the type attribute
+			const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+			passwordInput.setAttribute('type', type);
+
+			// Toggle the eye icon
+			eyeIcon.classList.toggle('bi-eye');
+			eyeIcon.classList.toggle('bi-eye-slash');
+		});
+
+		
 		{{-- const myKeyboard = new Keyboard({
 		 	onChange: input => onChange(input),
 		  	onKeyPress: button => onKeyPress(button)
 		}); --}}
 
 		$('body').on('click', '#btn-ingresar', async function(){
-			await buscarCliente();
+			await loginUser();
 		})
-
-		$('body').on('click', '.btn-acceder-user', async function(){
-			let paciente = $(this).attr('data-rel')
-			localStorage.setItem("datosCliente", paciente);
-        	await verificarUsuarioDigital();
-        	location.href = '/menu/{{ $mac }}'
-		})
-
 	})
 
 	async function loadKeyboardAlfanumerico(){
@@ -163,7 +142,7 @@
 			onChange: input => {
 				if(currentInput){
 					$(currentInput).val(input);
-					$('#btn-ingresar').attr('disabled', false);
+					// $('#btn-ingresar').attr('disabled', false);
 					$('#btn-ingresar').addClass('bg-royal-blue text-white').removeClass('bg-silver text-silver-neutral-40');
 				}
 			},
@@ -197,14 +176,14 @@
 				default: [
 					"q w e r t y u i o p {backspace}",
 					"a s d f g h j k l ñ {ent}",
-					"{shift} z x c v b n m -",
-					"{numbers} @ {space} . _"
+					"{shift} z x c v b n m - =",
+					"{numbers} @ {space} . _ * + !"
 				],
 				shift: [
 					"Q W E R T Y U I O P {backspace}",
 					"A S D F G H J K L Ñ {ent}",
-					"{shift} Z X C V B N M -",
-					"{numbers} @ {space} . _"
+					"{shift} Z X C V B N M - =",
+					"{numbers} @ {space} . _ * + !"
 				],
 				numbers: [
 					"1 2 3",
@@ -242,87 +221,36 @@
 		});
 	}
 
-	async function buscarCliente(){
-		let args = [];
-        args["endpoint"] = `${api_url_digitales}/${api_war}/pacientes/validar_datos?macAddress={{ $mac }}&tipoFiltro=${tipoFiltro}&valorFiltro=${getInput('numeroDocumento')}`;
-        args["method"] = "GET";
-        args["showLoader"] = true;
-        {{-- args["sendHeaders"] = false; --}}
-        args["token"] = "{{ $accessToken }}";
-        const data = await call(args);
-        console.log(data);
-        if(data.code == 200){
-	        localStorage.setItem("trackId", data.trackId);
-        	if(tipoFiltro == "NOMBRES"){
-        		if(data.data.length == 0){
-        			$('#modalError').modal('show');
-					$('.titleError').html(`Atención`);
-					$('.msgError').html(`No se encontraron coincidencias para la búsqueda del paciente.`);
-        		}else{
-        			let elem = ``;
-        			$.each(data.data, function(key, value){
-	        			elem += `<li data-rel='${JSON.stringify(value)}' type="button" class="p-3 border-bottom-midnight-blue-tint-80 fs-16 line-height-20 text-dark-veris btn-acceder-user" data-bs-dismiss="modal">
-	                            <p class="mb-2 text-capitalize">${value.nombreCompleto.toLowerCase()}</p>
-	                            <p class="mb-0">${enmascarar(value.numeroIdentificacion)}</p>
-	                        </li>`
-	                })
-	                $('.listado-coincidencias-pacientes').html(elem);
-	                $('#modalUsuariosEncontrados').modal('show')
-        		}
-        	}else{
-        		if(data.data.length == 0){
-        			$('#modalError').modal('show');
-					$('.titleError').html(`Atención`);
-					$('.msgError').html(`No se encontraron coincidencias para la búsqueda del paciente.`);
-        		}else{
-		        	localStorage.setItem("datosCliente", JSON.stringify(data.data[0]));
-		        	await verificarUsuarioDigital();
-		        	location.href = '/menu/{{ $mac }}'
-		        }
-	        }
-        }
+	function b64EncodeUnicode(str) {
+	    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+	    	return String.fromCharCode(parseInt(p1,16))
+	    }));
 	}
 
-	function enmascarar(str) {
-		return str.replace(/.(?=.{4})/g, 'X');
-	}
-
-	async function verificarUsuarioDigital(){
-		let datosCliente = JSON.parse(localStorage.getItem('datosCliente'));
-		trackId = localStorage.getItem('trackId');
-		await cargarParametros();
-		let args = [];
-		args["endpoint"] = `${api_url_digitales}/${api_war}/pacientes/validar_cuenta_digital?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`;
-        args["method"] = "POST";
-        args["showLoader"] = true;
-        {{-- args["sendHeaders"] = false; --}}
-        args["token"] = "{{ $accessToken }}";
-        const data = await call(args);
-        console.log(data);
-        if(data.code == 200){
-        	localStorage.setItem("usuarioDigital", JSON.stringify(data.data));
-        }
-	}
-
-	function onChange(input) {
-		document.querySelector(".input").value = input;
-		// console.log("Input changed", input);
-		switch(tipo){
-			case 'C':
-				if(esValidaCedula(input)){
-					$('#btn-ingresar').attr('disabled', false);
-					$('#btn-ingresar').addClass('bg-royal-blue text-white').removeClass('bg-silver text-silver-neutral-40');
-				}else{
-					$('#btn-ingresar').attr('disabled', true);
-					$('#btn-ingresar').addClass('bg-silver text-silver-neutral-40').removeClass('bg-royal-blue text-white');
-				}
-			break;
+	async function loginUser(){
+		let user = $('#user').val();
+		let password = $('#password').val();
+		if(user == "" || password == "" ){
+			alert("Debe ingresar sus credenciales");
+			return;
 		}
-
-	}
-	 
-	function onKeyPress(button) {
-	  	// console.log("Button pressed", button);
+		let basicData = b64EncodeUnicode(user.toUpperCase()+":"+password);
+		console.log(basicData);
+		let args = [];
+		args["endpoint"] = `${api_url_digitales}/${api_war_seguridad}/autenticacion/login`;
+        args["method"] = "POST";
+        args["token"] = accessToken;
+        args["esLogin"] = true;
+        args["basic"] = basicData//btoa("lzuÃ±iga:Andres34.*");//btoa(user.toUpperCase()+":"+password);
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+      	if(data.code == 200){
+      		localStorage.setItem('host', JSON.stringify(data.data))
+      		location.href = '/{{ $mac }}'
+      	}else{
+      		alert(data.message)
+      	}	
 	}
 
 	async function cargarParametros(){
@@ -333,7 +261,7 @@
 		let args = [];
         args["endpoint"] = `${api_url_digitales}/${api_war}/parametros?macAddress={{ $mac }}`;
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         {{-- args["sendHeaders"] = false; --}}
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);

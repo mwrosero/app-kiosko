@@ -95,10 +95,15 @@
         <script>
             document.addEventListener("DOMContentLoaded", async function () {
                 await contadorItemsCarrito()
+                if(localStorage.getItem('host') !== null){
+                    $('.cerrar-sesion').removeClass('d-none');
+                }else{
+                    $('.ingresar-host').removeClass('d-none');
+                }
             })
 
             async function contadorItemsCarrito(){
-                if(localStorage.getItem('idPreTransaccion') === null){
+                if(localStorage.getItem('idPreTransaccion') === null || !callCounter){
                     return;
                 }
                 let args = [];
