@@ -140,6 +140,30 @@
 		})
 
 		$('body').on('click', '.btn-CambiarFechaCita', async function(){
+			let dataCita = JSON.parse($(this).parent().attr('data-rel'));
+			dataCita.paciente.idPaciente = dataCita.paciente.numeroPaciente;
+			dataCita.paciente.pacPacNumero = dataCita.paciente.numeroPaciente;
+			if(dataCita.beneficio !== null){
+				dataCita.convenio = dataCita.beneficio.convenio;
+			}else{
+				dataCita.convenio = {
+                    "nombreConvenio": "Ninguno",
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                }
+			}
+			dataCita.online = (dataCita.esTeleconsulta) ? "S" : "N";
+			localStorage.setItem('agendamiento', JSON.stringify(dataCita));
+			if(dataCita.esTeleconsulta){
+				location.href = '/citas-elegir-fecha-doctor/{{ $mac }}'
+			}else{
+				location.href = '/cita-elegir-datos/{{ $mac }}'
+			}
+		})
+
+		$('body').on('click', '.BK_btn-CambiarFechaCita', async function(){
 			let detalle = JSON.parse($(this).parent().attr('data-rel'));
 			console.log(detalle)
 			{{-- estaPagado
@@ -283,14 +307,14 @@
 				elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-agendar d-none">Agendar</button>`;
 			}else{
 				if(condicionTiempo == "TIEMPO_AGOTADO"){
-					elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-CambiarFechaCita d-none">Reagendar</button>`;
+					elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-CambiarFechaCita">Reagendar</button>`;
 				}else{
-					elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3 btn-CambiarFechaCita d-none">Reagendar</button>
+					elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3 btn-CambiarFechaCita">Reagendar</button>
 						<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-consultorio" consultorio-rel='${(detalle.nombreSitio.split(' '))[1]}'>Ver consultorio</button>`;
 				}
 			}
 		}else{
-			elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3 d-none">Reagendar</button>`;
+			elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3">Reagendar</button>`;
 			//if(detalle.permitePago){
 				elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Agregar al carrito</button>`
 			//}
