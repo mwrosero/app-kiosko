@@ -866,6 +866,15 @@ body {
   border-bottom-left-radius: inherit;
 }
 
+.tooltip-kiosko .tooltip-inner {
+    background-color: var(--redLight) !important;
+    color: var(--midnightBlue) !important;
+    font-size: 14px !important;
+    line-height: 16px !important;
+    padding: 10px !important;
+    border-radius: 8px !important;
+}
+
 .progress-circle {
   width: 68px;
   height: 68px;

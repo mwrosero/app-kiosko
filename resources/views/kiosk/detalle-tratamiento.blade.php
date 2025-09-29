@@ -500,14 +500,24 @@
 		let elemContent = ``;
 		let detallePrestacionesValores = await obtenerValoresOrden(detalle);
 		let valorTotal = 0;
+		let showTooltip = false;
 		if(detallePrestacionesValores.code == 200){
 			$.each(detallePrestacionesValores.data, function(key, value){
 				let nombrePrestacion = value.nombrePrestacion.replace(/\u00A0/g, " ").replace(/\n/g, "<br>");
+				let classMsgCobertura = (value.mensajeCobertura === null) ? `invisible` : ``;
+				let textMsgCobertura = ``;
+				if(value.mensajeCobertura !== null){
+					textMsgCobertura = value.mensajeCobertura;
+					showTooltip = true;
+				}
 				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
-			    	<p class="col-6 mb-0 fs-12 line-height-16">${capitalizarPrimeraLetra(nombrePrestacion)}</p>
+			    	<p class="col-5 mb-0 fs-12 line-height-16">${capitalizarPrimeraLetra(nombrePrestacion)}</p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorServicio.toFixed(2)}</p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorEmpresa.toFixed(2)}</p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorPaciente.toFixed(2)}</p>
+		            <p class="col-1 mb-0 fs-12 text-center line-height-16 ${classMsgCobertura}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${textMsgCobertura}">
+						<i class="fa-solid fa-circle-info text-red-dark"></i>
+		            </p>
 				</li>`
 				valorTotal += value.valorTotal;
 			})
@@ -564,6 +574,25 @@
 		$('.listado-items-orden-detalle').html(elemContent);
 		$('.totalesDetalleOrden').html(elemTotales);
 		//$('.listado-items-orden-detalle')
+		if(showTooltip){
+			setTimeout(function(){
+				var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+				var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+					console.log(88)
+					var tooltip = new bootstrap.Tooltip(tooltipTriggerEl, {
+						customClass: 'tooltip-kiosko'
+					})
+
+					tooltipTriggerEl.addEventListener('shown.bs.tooltip', function () {
+						setTimeout(function () {
+							tooltip.hide()
+						}, 8000) // 8 segundos
+					})
+
+					return tooltip
+				})
+			}, 100)
+		}
 	}
 
 	function determinarCondicionesBotones(datosServicio, estado, datosTratamiento){

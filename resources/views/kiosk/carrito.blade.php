@@ -54,7 +54,7 @@
 		await consultarCarrito();
 		$('body').on('click', '.box-action', function(){
 			let type = $(this).attr('type-rel');
-			console.log(type);
+			
 			if(type == "S"){
 				$(this).attr('type-rel','H');
 				$(this).html(`Ocultar detalle <i class="fa-solid fa-chevron-up ms-2"></i>`);
@@ -70,6 +70,21 @@
 			let idAgrupacion = $(this).attr('idAgrupacion-rel');
 			await eliminarItemCarrito(idAgrupacion);
 		});
+
+		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+		var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+			var tooltip = new bootstrap.Tooltip(tooltipTriggerEl, {
+				customClass: 'tooltip-kiosko'
+			})
+
+			tooltipTriggerEl.addEventListener('shown.bs.tooltip', function () {
+				setTimeout(function () {
+					tooltip.hide()
+				}, 8000) // 8 segundos
+			})
+
+			return tooltip
+		})
 
 	})
 
@@ -128,6 +143,7 @@
 		let totalItem = ``;
 		let convenio = ``;
 		let subtotal = 0;
+		let showTooltip = false;
 		$.each(carrito, function(key, value){
 			let prestaciones = ``;
 			let idAgrupacion;
@@ -143,12 +159,13 @@
 				}
 				$.each(item.detallesAgrupacion, function(k1, v1){
 					let classMsgCobertura = (v1.mensajeCreditoAutogestion === null && v1.mensajeCobertura === null) ? `invisible` : ``;
-					let classMsgCoberturaLabel = (v1.mensajeCreditoAutogestion === null && v1.mensajeCobertura === null) ? `d-none` : ``;
 					let textMsgCobertura = ``;
 					if(v1.mensajeCreditoAutogestion !== null){
 						textMsgCobertura = v1.mensajeCreditoAutogestion;
+						showTooltip = true;
 					}else if(v1.mensajeCobertura !== null){
 						textMsgCobertura = v1.mensajeCobertura;
+						showTooltip = true;
 					}
 					prestaciones += `<li class="p-3 fs-14 line-height-16">
 						<div class="d-flex justify-content-between align-items-center">
@@ -161,11 +178,8 @@
 								</div>
 							</div>
 							<div class="col-1 text-end ${hideInfoPaquetes}">
-								<i class="fa-solid fa-circle-info text-red-dark ${classMsgCobertura}"></i>
+								<i class="fa-solid fa-circle-info text-red-dark ${classMsgCobertura}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${textMsgCobertura}"></i>
 							</div>
-						</div>
-						<div class="col-12 text-red-dark mt-1 ${classMsgCoberturaLabel}">
-							${textMsgCobertura}
 						</div>
 					</li>`;
 				})
@@ -208,6 +222,23 @@
 			$('#btn-pagar').removeClass('disabled');
 		}
 		$('#listadoItems').html(elem);
+
+		if(showTooltip){
+			setTimeout(function(){
+				var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+				var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+					var tooltip = new bootstrap.Tooltip(tooltipTriggerEl)
+
+					tooltipTriggerEl.addEventListener('shown.bs.tooltip', function () {
+						setTimeout(function () {
+							tooltip.hide()
+						}, 8000) // 8 segundos
+					})
+
+					return tooltip
+				})
+			}, 100)
+		}
 	}
 
 </script>
