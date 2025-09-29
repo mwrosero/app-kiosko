@@ -71,21 +71,6 @@
 			await eliminarItemCarrito(idAgrupacion);
 		});
 
-		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-		var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-			var tooltip = new bootstrap.Tooltip(tooltipTriggerEl, {
-				customClass: 'tooltip-kiosko'
-			})
-
-			tooltipTriggerEl.addEventListener('shown.bs.tooltip', function () {
-				setTimeout(function () {
-					tooltip.hide()
-				}, 8000) // 8 segundos
-			})
-
-			return tooltip
-		})
-
 	})
 
 	async function eliminarItemCarrito(idAgrupacion){
@@ -178,7 +163,7 @@
 								</div>
 							</div>
 							<div class="col-1 text-end ${hideInfoPaquetes}">
-								<i class="fa-solid fa-circle-info text-red-dark ${classMsgCobertura}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${textMsgCobertura}"></i>
+								<i class="fa-solid fa-circle-info text-red-dark ${classMsgCobertura}" data-bs-toggle="tooltip" data-bs-placement="top" title="${textMsgCobertura}"></i>
 							</div>
 						</div>
 					</li>`;
@@ -227,7 +212,9 @@
 			setTimeout(function(){
 				var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
 				var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-					var tooltip = new bootstrap.Tooltip(tooltipTriggerEl)
+					var tooltip = new bootstrap.Tooltip(tooltipTriggerEl, {
+						customClass: 'tooltip-kiosko'
+					})
 
 					tooltipTriggerEl.addEventListener('shown.bs.tooltip', function () {
 						setTimeout(function () {

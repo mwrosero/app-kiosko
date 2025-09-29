@@ -875,6 +875,12 @@ body {
     border-radius: 8px !important;
 }
 
+/* Flecha del tooltip */
+.tooltip-kiosko .tooltip-arrow::before {
+    border-right-color: var(--redLight) !important;
+    border-left-color: var(--redLight) !important;
+}
+
 .progress-circle {
   width: 68px;
   height: 68px;

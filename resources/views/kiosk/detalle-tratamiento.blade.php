@@ -515,7 +515,7 @@
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorServicio.toFixed(2)}</p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorEmpresa.toFixed(2)}</p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorPaciente.toFixed(2)}</p>
-		            <p class="col-1 mb-0 fs-12 text-center line-height-16 ${classMsgCobertura}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${textMsgCobertura}">
+		            <p class="col-1 mb-0 fs-12 text-center line-height-16 ${classMsgCobertura}" data-bs-toggle="tooltip" data-bs-placement="top" title="${textMsgCobertura}">
 						<i class="fa-solid fa-circle-info text-red-dark"></i>
 		            </p>
 				</li>`
@@ -578,7 +578,6 @@
 			setTimeout(function(){
 				var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
 				var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-					console.log(88)
 					var tooltip = new bootstrap.Tooltip(tooltipTriggerEl, {
 						customClass: 'tooltip-kiosko'
 					})
