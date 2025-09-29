@@ -5,8 +5,8 @@
 <div class="container-fluid px-0 d-flex flex-column min-vh-100">
 	@include('components.header')
 	<!-- Sub-header -->
-	{{-- @include('components.sub-header', ['showTurnoBtn' => true, 'url' => '/carrito/'.$mac]) --}}
-	@include('components.sub-header', ['showTurnoBtn' => true, 'url' => url()->previous() ])
+	@include('components.sub-header', ['showTurnoBtn' => true, 'url' => '/carrito/'.$mac])
+	{{-- @include('components.sub-header', ['showTurnoBtn' => true, 'url' => url()->previous() ]) --}}
 	<!-- Carrito -->
 	@include('components.cart-bar', ['title' => 'Revisa los datos de facturación'])
 	<main class="flex-grow-1 d-flex flex-column">
