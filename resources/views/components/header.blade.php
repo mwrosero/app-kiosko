@@ -14,9 +14,11 @@
 			<button class="btn btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
 				<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-configuracion.svg" alt="">
 			</button>
-			<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-				<li class="d-none fs-14 line-height-18 ingresar-host"><a class="dropdown-item" href="/host/{{ $mac }}">Ingresar Host</a></li>
-				<li class="d-none fs-14 line-height-18 cerrar-sesion"><div class="dropdown-item" type="button">Cerrar sesión</div></li>
+			<ul class="dropdown-menu rounded-8 p-0" aria-labelledby="dropdownMenuButton1">
+				<li class="d-none fs-16 line-height-20 ingresar-host"><a class="dropdown-item px-3 py-2" href="/host/{{ $mac }}">Ingresar Host</a></li>
+				<li class="fs-16 line-height-20 central-caja d-none"><div class="dropdown-item px-3 py-2 text-capitalize disabled" type="button"></div></li>
+				<li class="d-none fs-16 line-height-20 cerrar-sesion label-username"><div class="dropdown-item px-3 py-2 disabled" type="button"></div></li>
+				<li class="d-none fs-16 line-height-20 cerrar-sesion btn-logout"><div class="dropdown-item px-3 py-2 text-red-dark" type="button">Cerrar sesión</div></li>
 			</ul>
 		</div>
 
@@ -28,9 +30,25 @@
 </header>
 <script>
 	document.addEventListener("DOMContentLoaded", async function () {
-		$('body').on('click', '.cerrar-sesion', function(){
-			localStorage.removeItem("host");
-			location.href = '/{{ $mac }}'
+		$('body').on('click', '.btn-logout', async function(){
+			await logoutHost();
 		})
 	})
+
+	async function logoutHost(){
+		let args = [];
+		args["endpoint"] = `${api_url_digitales}/${api_war}/seguridad/salir_host?macAddress={{ $mac }}`;
+        args["method"] = "POST";
+        args["token"] = accessToken;
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+      	if(data.code == 200){
+      		localStorage.removeItem("host");
+			location.href = '/{{ $mac }}'
+      	}else{
+      		alert(data.message)
+      	}	
+	}
+
 </script>

@@ -132,7 +132,7 @@
 		}); --}}
 
 		$('body').on('click', '#btn-ingresar', async function(){
-			await loginUser();
+			await loginHost();
 		})
 	})
 
@@ -227,7 +227,7 @@
 	    }));
 	}
 
-	async function loginUser(){
+	async function loginHost(){
 		let user = $('#user').val();
 		let password = $('#password').val();
 		if(user == "" || password == "" ){
@@ -237,7 +237,7 @@
 		let basicData = b64EncodeUnicode(user.toUpperCase()+":"+password);
 		console.log(basicData);
 		let args = [];
-		args["endpoint"] = `${api_url_digitales}/${api_war_seguridad}/autenticacion/login`;
+		args["endpoint"] = `${api_url_digitales}/${api_war}/seguridad/iniciar_host?macAddress={{ $mac }}`;
         args["method"] = "POST";
         args["token"] = accessToken;
         args["esLogin"] = true;
