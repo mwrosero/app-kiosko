@@ -84,7 +84,7 @@
 					${labelInfo}
 					${boxEstadoPago(paquete.estaPagado)}
 				</div>
-				<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-detalle-orden">Ver detalle</button>
+				<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-detalle-orden" style="width: 150px;">Ver detalle</button>
 			</div>`
 		})
 		
