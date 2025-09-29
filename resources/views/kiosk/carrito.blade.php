@@ -142,17 +142,30 @@
 					tipoServicio = item.beneficio.paquetePromocional.nombrePaquete;
 				}
 				$.each(item.detallesAgrupacion, function(k1, v1){
-					prestaciones += `<li class="p-3 d-flex justify-content-between align-items-center fs-14 line-height-16">
-						<div class="col-7 text-capitalize">${v1.nombrePrestacion.toLowerCase()}</div>
-						<div class="col-4 ${hideInfoPaquetes}">
-							<div class="row fw-medium text-end">
-								<div class="col-4">$${v1.valoresPaciente.valorTotal}</div>
-								<div class="col-4">$${v1.valoresEmpresa.valorTotal}</div>
-								<div class="col-4">$${v1.valoresVenta.valorTotal}</div>
+					let classMsgCobertura = (v1.mensajeCreditoAutogestion === null && v1.mensajeCobertura === null) ? `invisible` : ``;
+					let classMsgCoberturaLabel = (v1.mensajeCreditoAutogestion === null && v1.mensajeCobertura === null) ? `d-none` : ``;
+					let textMsgCobertura = ``;
+					if(v1.mensajeCreditoAutogestion !== null){
+						textMsgCobertura = v1.mensajeCreditoAutogestion;
+					}else if(v1.mensajeCobertura !== null){
+						textMsgCobertura = v1.mensajeCobertura;
+					}
+					prestaciones += `<li class="p-3 fs-14 line-height-16">
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="col-7 text-capitalize">${v1.nombrePrestacion.toLowerCase()}</div>
+							<div class="col-4 ${hideInfoPaquetes}">
+								<div class="row fw-medium text-end">
+									<div class="col-4">$${v1.valoresPaciente.valorTotal}</div>
+									<div class="col-4">$${v1.valoresEmpresa.valorTotal}</div>
+									<div class="col-4">$${v1.valoresVenta.valorTotal}</div>
+								</div>
+							</div>
+							<div class="col-1 text-end ${hideInfoPaquetes}">
+								<i class="fa-solid fa-circle-info text-red-dark ${classMsgCobertura}"></i>
 							</div>
 						</div>
-						<div class="col-1 text-end ${hideInfoPaquetes}">
-							<i class="fa-solid fa-circle-info text-red-dark"></i>
+						<div class="col-12 text-red-dark mt-1 ${classMsgCoberturaLabel}">
+							${textMsgCobertura}
 						</div>
 					</li>`;
 				})
