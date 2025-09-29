@@ -537,7 +537,7 @@
 
 		buttonActions = determinarCondicionesBotones(detalle, 'PENDIENTE', detalleTratamiento)
 		
-		/*if(detalle.tipoServicio == "LABORATORIO"){
+		{{-- if(detalle.tipoServicio == "LABORATORIO"){
 			buttonActions += `<button class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50" data-bs-dismiss="modal">Cerrar</button>`;
 		}else{
 			if(detalle.esPagada == "S"){
@@ -555,7 +555,7 @@
 			}else{
 				buttonActions += `<button item-rel='${JSON.stringify(detalle)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-agendar w-50">Agendar</button>`;
 			}
-		}*/
+		} --}}
 
 		$('.box-actions-detalle-orden').html(buttonActions)
 		
