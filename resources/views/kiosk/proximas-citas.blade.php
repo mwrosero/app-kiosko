@@ -341,7 +341,7 @@
 			}
 		}else{
 			if(detalle.codigoReserva !== null){
-				elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3">Reagendar</button>`;
+				elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3 btn-CambiarFechaCita">Reagendar</button>`;
 			}
 			if(!detalle.agregadoCarrito){
 				if(detalle.codigoReserva !== null){
