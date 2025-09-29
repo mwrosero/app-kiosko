@@ -176,7 +176,7 @@
                     <p class="mb-2 fs-18 line-height-24 fw-medium text-royal-blue">Detalle</p>
                     <p class="fs-12 line-height-16 mb-0 text-dark-veris">A continuación se  muestra la prestación y los valores después de aplicado el crédito de la aseguradora, mientras la orden se encuentra vigente.</p>
                 </div>
-                <div class="row mt-24 mb-2 px-3">
+                <div class="row mt-24 mb-2 px-3 th-details-prestaciones">
                     <p class="col-5 mb-0 fs-16 line-height-20 fw-medium">Prestación</p>
                     <p class="col-2 mb-0 fs-16 line-height-20 fw-medium text-center">PVP.</p>
                     <p class="col-2 mb-0 fs-16 line-height-20 fw-medium text-center">Crédito</p>
@@ -189,7 +189,7 @@
                         <li class="p-3 border-bottom-midnight-blue-tint-80">asdasdlist-unstyled</li> --}}
                     </ul>
                 </div>
-                <div class="row mt-24 mb-32 px-3 totalesDetalleOrden">
+                <div class="row mt-24 mb-32 px-3 totalesDetalleOrden th-details-prestaciones">
                 </div>
                 <div class="d-flex justify-content-center align-items-center gap-3 box-actions-detalle-orden">
                     

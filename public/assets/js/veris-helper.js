@@ -1376,3 +1376,24 @@ async function printTurnoAPI(detalle){
     }
     return;
 }
+
+async function notificarLlegada(codigoOrdApoyo){
+    let args = [];
+    args["endpoint"] = `${api_url_digitales}/${api_war}/turnero/activar_orden_laboratorio?macAddress=${mac}&idPaciente=${datosCliente.idPaciente}`;
+    args["method"] = "POST";
+    args["showLoader"] = true;
+    args["token"] = accessToken;
+    args["bodyType"] = "json";
+    args["data"] = JSON.stringify({
+        "codigoOrdenApoyo": codigoOrdApoyo
+    });
+    args["dismissAlert"] = true;
+    const data = await call(args);
+    console.log(data);
+    if(data.code != 200){
+        $('#modalError').modal('show')
+        $('.titleError').html(`Ha ocurrido un error`)
+        $('.msgError').html(data.message);
+    }
+    return data;
+}

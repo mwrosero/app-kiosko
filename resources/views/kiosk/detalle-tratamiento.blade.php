@@ -66,6 +66,18 @@
 			$('#modalDetalleOrdenTratamiento').modal('show');
 		})
 
+		$('body').on('click', '.btn-notificar-llegada', async function(){
+			let detalle = JSON.parse($(this).parent().attr('data-rel'));
+			let notificar = await notificarLlegada(detalle);
+			if(notificar.code != 200){
+				return;
+			}
+			await mostrarDetalleModalChequeoDetalle(detalle);
+			$('.title-detalle-chequeo').html(detalle.nombreServicioNivel1.toLowerCase())
+			$('#modalDetalleChequeo').modal('show');
+			await cargarMisChequeos(false)
+		})
+
 		{{-- $('body').on('click', '.btn-agendar', async function(){
 		}) --}}
 
@@ -498,10 +510,18 @@
 
 	async function mostrarDetalleOrdenModal(detalle){
 		let elemContent = ``;
-		let detallePrestacionesValores = await obtenerValoresOrden(detalle);
+		$('.th-details-prestaciones').removeClass('d-none');
+		let detallePrestacionesValores = {};
+		if(detalle.esPagada == "S"){
+			detallePrestacionesValores.code = 400;
+		}else{
+			detallePrestacionesValores = await obtenerValoresOrden(detalle);
+		}
 		let valorTotal = 0;
 		let showTooltip = false;
-		if(detallePrestacionesValores.code == 200){
+		let activar = false;
+		let codigoOrdenApoyo;
+		if(detallePrestacionesValores.code == 200 && detalle.esPagada == "N"){
 			$.each(detallePrestacionesValores.data, function(key, value){
 				let nombrePrestacion = value.nombrePrestacion.replace(/\u00A0/g, " ").replace(/\n/g, "<br>");
 				let classMsgCobertura = (value.mensajeCobertura === null) ? `invisible` : ``;
@@ -525,11 +545,15 @@
 			// Default
 			console.log("default")
 			$.each(detalle.detalleLaboratorio.listaOrdenesDetalle, function(key, value){
+				if(value.estadoExamen == "PENDIENTE"){
+					activar = true;
+					codigoOrdenApoyo = value.codigoOrdenApoyo;
+				}
 				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
-			    	<p class="col-6 mb-0 fs-12 line-height-16 text-capitalize">${value.nombrePrestacion.toLowerCase()}</p>
+			    	<p class="col-12 mb-0 fs-12 line-height-16 text-capitalize">${value.nombrePrestacion.toLowerCase()}</p>
+		            {{-- <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p> --}}
 				</li>`
 			})
 		}
@@ -546,6 +570,11 @@
                     <p class="col-6 mb-0 fs-16 line-height-20 fw-medium text-end text-royal-blue">$${valorTotal.toFixed(2)}</p>`;
 
 		buttonActions = determinarCondicionesBotones(detalle, 'PENDIENTE', detalleTratamiento)
+		console.log({activar})
+		$('.th-details-prestaciones').addClass('d-none');
+		if(activar){
+			buttonActions += `<button item-rel='${JSON.stringify(detalle)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-notificar-llegada w-50" data-bs-dismiss="modal">Activar</button>`;
+		}
 		
 		{{-- if(detalle.tipoServicio == "LABORATORIO"){
 			buttonActions += `<button class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50" data-bs-dismiss="modal">Cerrar</button>`;

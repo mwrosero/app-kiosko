@@ -128,6 +128,10 @@
 		background: transparent !important;
 		font-size: 42px !important;
 	}
+
+	.hg-button[data-skbtnuid="default-r3b4"]{
+		color: red !important;
+	}
 </style>
 <script>
 	let datosCliente = JSON.parse(localStorage.getItem('datosCliente'));
@@ -197,12 +201,7 @@
 				}
 
 				if(button === "{ent}" && currentInput){
-					if(currentInput.id === "numeroIdentificacion"){
-						let valor = $(currentInput).val();
-						if(parseInt($('#tipoIdentificacion option:selected').val()) == 3 && valor.length > 5){
-							await verificarDatosFacturacion();
-						}
-					}
+					$('#box-simple-keyboard').addClass('d-none');
 				}
 			},
 			onFocus: async button => {
@@ -336,7 +335,6 @@
 
         async function onScroll(){
             console.log('onScroll');
-            $('#box-simple-keyboard').addClass('d-none');
             
             if(!cargandoContenido && !isFiltered && $(window).scrollTop() + $(window).height() + 100 > $(document).height()) {
                 cargandoContenido = true;
