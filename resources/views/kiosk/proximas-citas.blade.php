@@ -139,6 +139,32 @@
 			await agregarItem(datosPago);
 		})
 
+		$('body').on('click', '.btn-agendar', async function(){
+			let dataCita = JSON.parse($(this).parent().attr('data-rel'));
+			delete dataCita.reservaEdit;
+			dataCita.paciente.idPaciente = dataCita.paciente.numeroPaciente;
+			dataCita.paciente.pacPacNumero = dataCita.paciente.numeroPaciente;
+			if(dataCita.beneficio !== null){
+				dataCita.convenio = dataCita.beneficio.convenio;
+			}else{
+				dataCita.convenio = {
+                    "nombreConvenio": "Ninguno",
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                }
+			}
+			dataCita.online = (dataCita.esTeleconsulta) ? "S" : "N";
+			// console.log(dataCita);return;
+			localStorage.setItem('agendamiento', JSON.stringify(dataCita));
+			if(dataCita.esTeleconsulta){
+				location.href = '/citas-elegir-fecha-doctor/{{ $mac }}'
+			}else{
+				location.href = '/cita-elegir-datos/{{ $mac }}'
+			}
+		})
+
 		$('body').on('click', '.btn-CambiarFechaCita', async function(){
 			let dataCita = JSON.parse($(this).parent().attr('data-rel'));
 			dataCita.paciente.idPaciente = dataCita.paciente.numeroPaciente;
@@ -304,7 +330,7 @@
 		let elem = ``;
 		if(estaPagado){
 			if(detalle.codigoReserva === null){
-				elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-agendar d-none">Agendar</button>`;
+				elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-agendar">Agendar</button>`;
 			}else{
 				if(condicionTiempo == "TIEMPO_AGOTADO"){
 					elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-CambiarFechaCita">Reagendar</button>`;
@@ -314,10 +340,18 @@
 				}
 			}
 		}else{
-			elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3">Reagendar</button>`;
-			//if(detalle.permitePago){
-				elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Agregar al carrito</button>`
-			//}
+			if(detalle.codigoReserva !== null){
+				elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3">Reagendar</button>`;
+			}
+			if(!detalle.agregadoCarrito){
+				if(detalle.codigoReserva !== null){
+					elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Agregar al carrito</button>`
+				}else{
+					elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-agendar">Agendar</button>`;
+				}
+			}else{
+				elem += `<button class="btn disabled fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Agregado al carrito</button>`
+			}
 		}
 		return elem;
 	}
@@ -330,10 +364,10 @@
 					        <img src="${detalle.iconoEspecialidad}" class="m-2" width="56px" alt="">
 					    </div>
 					    <div class="box-info-agendamiento flex-grow-1">
-					        <h3 class="fs-18 line-height-24 text-royal-blue fw-medium mb-2 text-capitalize">${detalle.nombreEspecialidad.toLowerCase()}</h3>
-					        <p class="fs-14 line-height-16 fw-medium mb-1 text-capitalize"><span class="text-royal-blue-shade-20 me-1">Profesional:</span> ${detalle.nombreMedico.toLowerCase()}</p>
-					        <p class="fs-14 line-height-16 fw-medium mb-1 text-capitalize"><span class="text-royal-blue-shade-20 me-1 text-capitalize">Central médica:</span> ${detalle.nombreSucursal.toLowerCase()}</p>
-					        <p class="fs-14 line-height-16 fw-medium mb-1"><span class="text-royal-blue-shade-20 me-1">Hora:</span> ${detalle.horaInicioFin}</p>
+					        <h3 class="fs-18 line-height-24 text-royal-blue fw-medium mb-2 text-capitalize">${(detalle.nombreEspecialidad !== null) ? detalle.nombreEspecialidad.toLowerCase() : ``}</h3>
+					        <p class="fs-14 line-height-16 fw-medium mb-1 text-capitalize"><span class="text-royal-blue-shade-20 me-1">Profesional:</span> ${(detalle.nombreMedico !== null) ? detalle.nombreMedico.toLowerCase() : ``}</p>
+					        <p class="fs-14 line-height-16 fw-medium mb-1 text-capitalize"><span class="text-royal-blue-shade-20 me-1 text-capitalize">Central médica:</span> ${(detalle.nombreSucursal !== null) ? detalle.nombreSucursal.toLowerCase() : ``}</p>
+					        <p class="fs-14 line-height-16 fw-medium mb-1"><span class="text-royal-blue-shade-20 me-1">Hora:</span> ${(detalle.horaInicioFin !== null) ? detalle.horaInicioFin : ``}</p>
 					        <div class="box-action pt-32 pb-2 pb-0 d-flex justify-content-end align-items-center gap-2" data-rel='${JSON.stringify(detalle)}'>
 								${drawStatusButtons(detalle)}
 					        </div>
