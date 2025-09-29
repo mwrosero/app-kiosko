@@ -67,7 +67,7 @@
 		})
 
 		$('body').on('click', '.btn-notificar-llegada', async function(){
-			let detalle = JSON.parse($(this).parent().attr('data-rel'));
+			let detalle = JSON.parse($(this).attr('item-rel'));
 			let notificar = await notificarLlegada(detalle.detalleLaboratorio.listaOrdenesDetalle[0].codigoOrdenApoyo);
 			if(notificar.code != 200){
 				return;
@@ -750,7 +750,7 @@
                         // condición para 'verResultados'
                         if (datosServicio.verResultados == "S") {
                             let ruta = "/laboratorio-domicilio/" + "{{ $mac }}";
-                            respuesta += `<a url-rel="${ruta}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-veris btnSolicitarLaboratorio" data-rel='${JSON.stringify(datosServicio)}'>Ver resultados</a>`;
+                            // respuesta += `<a url-rel="${ruta}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-veris btnSolicitarLaboratorio" data-rel='${JSON.stringify(datosServicio)}'>Ver resultados</a>`;
                         
                         } else {
                             respuesta += ``;
