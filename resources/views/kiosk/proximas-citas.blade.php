@@ -259,7 +259,7 @@
 	let servicios;
 	async function cargarProximasCitas(){
 		let args = [];
-        args["endpoint"] = `${api_url_digitales}/${api_war}/pacientes/proximas_citas?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`;
+        args["endpoint"] = `${api_url_digitales}/${api_war}/pacientes/proximas_citas?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}&idPreTransaccion=${localStorage.getItem("idPreTransaccion")}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["token"] = "{{ $accessToken }}";
