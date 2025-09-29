@@ -188,6 +188,19 @@
 						<i class="fa-regular fa-trash-can text-red-dark fs-28 line-height-28 btn-eliminar-item" idAgrupacion-rel='${idAgrupacion}'></i>
 					</div>
 					<div class="col-12 pt-40 box-detail d-none">
+						<div class="row mx-40 text-veris">
+							<p class="col-7 mb-0 fs-16 line-height-20 fw-medium">Prestación</p>
+							<div class="col-4">
+								<div class="row fw-medium text-end">
+				                    <p class="col-4 mb-0 fs-16 line-height-20 fw-medium text-center">PVP.</p>
+				                    <p class="col-4 mb-0 fs-16 line-height-20 fw-medium">Crédito</p>
+				                    <p class="col-4 mb-0 fs-16 line-height-20 fw-medium">Total</p>
+								</div>
+							</div>
+		                    <p class="col-1 mb-0 fs-16 line-height-20 fw-medium text-end"></p>
+						</div>
+					</div>
+					<div class="col-12 box-detail d-none">
 						<ul class="list-unstyled border-bottom-midnight-blue-tint-80 mx-40 my-0">
 							${prestaciones}
 						</ul>

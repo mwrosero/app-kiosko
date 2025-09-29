@@ -336,6 +336,7 @@
 
         async function onScroll(){
             console.log('onScroll');
+            $('#box-simple-keyboard').addClass('d-none');
             
             if(!cargandoContenido && !isFiltered && $(window).scrollTop() + $(window).height() + 100 > $(document).height()) {
                 cargandoContenido = true;
