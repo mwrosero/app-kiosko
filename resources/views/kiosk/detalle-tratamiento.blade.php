@@ -68,7 +68,7 @@
 
 		$('body').on('click', '.btn-notificar-llegada', async function(){
 			let detalle = JSON.parse($(this).parent().attr('data-rel'));
-			let notificar = await notificarLlegada(detalle);
+			let notificar = await notificarLlegada(detalle.detalleLaboratorio.listaOrdenesDetalle[0].codigoOrdenApoyo);
 			if(notificar.code != 200){
 				return;
 			}
