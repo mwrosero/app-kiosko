@@ -162,8 +162,8 @@
 									<div class="col-4">$${v1.valoresVenta.valorTotal}</div>
 								</div>
 							</div>
-							<div class="col-1 text-end ${hideInfoPaquetes}">
-								<i class="fa-solid fa-circle-info text-red-dark ${classMsgCobertura}" data-bs-toggle="tooltip" data-bs-placement="top" title="${textMsgCobertura}"></i>
+							<div class="col-1 text-end ${hideInfoPaquetes}" data-bs-toggle="tooltip" data-bs-placement="top" title="${textMsgCobertura}">
+								<i class="fa-solid fa-circle-info text-red-dark ${classMsgCobertura}"></i>
 							</div>
 						</div>
 					</li>`;
