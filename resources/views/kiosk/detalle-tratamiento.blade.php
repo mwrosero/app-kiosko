@@ -730,38 +730,6 @@
                     // console.log('estadossss', estado);
                     let respuesta = "";
                     if (estado == 'PENDIENTE'){
-                        if(datosServicio.verResultados != "S" && datosServicio.aplicaSolicitud != "S" && datosServicio.permitePago != "S"){
-                            // respuesta += ` <button type="button" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
-                            //respuesta += ` <button type="button" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
-                            let params = {}
-                            params.idPaciente = detalleTratamiento.idPaciente;
-                            params.numeroOrden = datosServicio.idOrden;
-                            params.codigoEmpresa = datosServicio.codigoEmpresa;
-                            let ulrParams = btoa(JSON.stringify(params));
-                            if(datosServicio.modalidad == "PRESENCIAL"){
-                                respuesta += `<div url-rel="/citas-laboratorio/{{$mac}}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-pagar" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-rel='${JSON.stringify(datosServicio)}'><i class="fa-solid fa-circle-info me-2 line-height-20"></i>Agendar</div>`;
-                            }else{
-                                respuesta += `<div url-rel="/citas-laboratorio/{{$mac}}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-pagar" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-rel='${JSON.stringify(datosServicio)}'>Pagar</div>`;
-                            }
-                        }else{
-                            //respuesta += ` <button type="button" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
-                        }
-                        
-                        // condición para 'verResultados'
-                        if (datosServicio.verResultados == "S") {
-                            let ruta = "/laboratorio-domicilio/" + "{{ $mac }}";
-                            // respuesta += `<a url-rel="${ruta}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-veris btnSolicitarLaboratorio" data-rel='${JSON.stringify(datosServicio)}'>Ver resultados</a>`;
-                        
-                        } else {
-                            respuesta += ``;
-                        }
-                        //condición para 'aplicaSolicitud'
-                        {{-- if (datosServicio.aplicaSolicitud == "S") {
-                            let ruta = "/laboratorio-domicilio/" + "{{ $mac }}";
-                            respuesta += `<a url-rel="${ruta}" class="btn btn-sm btn-primary-veris shadow-none me-1 btnSolicitarLaboratorio" data-rel='${JSON.stringify(datosServicio)}'><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-                            
-                        
-                        } else  --}}
                         if (datosServicio.permitePago == "S"){
                             if(datosServicio.esPagada == "N"){
                                 let params = {}
@@ -770,9 +738,9 @@
                                 params.codigoEmpresa = datosServicio.codigoEmpresa;
                                 let ulrParams = btoa(JSON.stringify(params));
                                 respuesta += `<div url-rel="/citas-laboratorio/{{$mac}}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-pagar" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-rel='${JSON.stringify(datosServicio)}'>Pagar</div>`;
-                            }else{
+                            }{{-- else{
                                 respuesta += `<div url-rel="/citas-laboratorio/{{$mac}}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-pagar" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-rel='${JSON.stringify(datosServicio)}'><i class="fa-solid fa-circle-info me-2 line-height-20"></i>Agendar</div>`;
-                            }
+                            } --}}
                         }
                     } else if (estado == 'REALIZADO'){
                         // console.log('estadossss2', estado);
