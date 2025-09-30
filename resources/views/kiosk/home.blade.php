@@ -48,7 +48,7 @@ bg-royal-blue-tint-90
 <script>
 	callCounter = false;
 	document.addEventListener("DOMContentLoaded", async function () {
-		await cargarParametros();
+		// await cargarParametros();
 		deleteStorage();
 		$('body').on('click','.item-access', async function(){
 			let type = $(this).attr('type-rel')
@@ -58,12 +58,13 @@ bg-royal-blue-tint-90
 	})
 
 	function deleteStorage(){
+		//localStorage.clear();
 		localStorage.removeItem("tipo");
 		localStorage.removeItem("datosCliente");
 		localStorage.removeItem("trackId");
 		localStorage.removeItem("usuarioDigital");
 		localStorage.removeItem("idPreTransaccion");
-		{{-- localStorage.removeItem("detalle-paquete-preventivo");
+		localStorage.removeItem("detalle-paquete-preventivo");
 		localStorage.removeItem("idPreTransaccion");
 		localStorage.removeItem("paquete");
 		localStorage.removeItem("origen");
@@ -71,7 +72,7 @@ bg-royal-blue-tint-90
 		localStorage.removeItem("agendamiento");
 		localStorage.removeItem("agrupacionFacturar");
 		localStorage.removeItem("datosFacturados");
-		localStorage.removeItem("pagoUnico"); --}}
+		localStorage.removeItem("pagoUnico");
 	}
 
 	async function cargarParametros(){

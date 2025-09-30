@@ -19,7 +19,7 @@
 						<button class="btn p-3 rounded-4 bg-royal-blue text-white fs-20 line-height-16 flex-fill">Agendar</button>
 					</div>
 					<div class="col-10 offset-1 py-4 d-flex justify-content-between align-items-center gap-2">
-						<div class="row" id="listado-paquetes">
+						<div class="row w-100" id="listado-paquetes">
 						</div>
 					</div>
 				</div>

@@ -116,7 +116,7 @@
 
 		$('body').on('click', '.btn-notificar-llegada', async function(){
 			let detalle = JSON.parse($(this).parent().attr('data-rel'));
-			let notificar = await notificarLlegada(detalle);
+			let notificar = await notificarLlegada(detalle.detalles[0].codigoOrdApoyo);
 			if(notificar.code != 200){
 				return;
 			}
@@ -307,27 +307,6 @@
             // reiniciarConteo();
         });
 	})
-
-	async function notificarLlegada(detalle){
-		let args = [];
-	    args["endpoint"] = `${api_url_digitales}/${api_war}/turnero/activar_orden_laboratorio?macAddress=${mac}&idPaciente=${datosCliente.idPaciente}`;
-	    args["method"] = "POST";
-	    args["showLoader"] = true;
-	    args["token"] = accessToken;
-	    args["bodyType"] = "json";
-	    args["data"] = JSON.stringify({
-	        "codigoOrdenApoyo": detalle.detalles[0].codigoOrdApoyo
-	    });
-	    args["dismissAlert"] = true;
-	    const data = await call(args);
-	    console.log(data);
-	    if(data.code != 200){
-	    	$('#modalError').modal('show')
-			$('.titleError').html(`Ha ocurrido un error`)
-			$('.msgError').html(data.message);
-	    }
-	    return data;
-	}
 
 	async function mostrarDetalleModalChequeoDetalle(detalle){
 		let elem = ``;

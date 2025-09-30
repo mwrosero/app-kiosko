@@ -54,7 +54,7 @@
 		await consultarCarrito();
 		$('body').on('click', '.box-action', function(){
 			let type = $(this).attr('type-rel');
-			console.log(type);
+			
 			if(type == "S"){
 				$(this).attr('type-rel','H');
 				$(this).html(`Ocultar detalle <i class="fa-solid fa-chevron-up ms-2"></i>`);
@@ -128,6 +128,7 @@
 		let totalItem = ``;
 		let convenio = ``;
 		let subtotal = 0;
+		let showTooltip = false;
 		$.each(carrito, function(key, value){
 			let prestaciones = ``;
 			let idAgrupacion;
@@ -142,17 +143,28 @@
 					tipoServicio = item.beneficio.paquetePromocional.nombrePaquete;
 				}
 				$.each(item.detallesAgrupacion, function(k1, v1){
-					prestaciones += `<li class="p-3 d-flex justify-content-between align-items-center fs-14 line-height-16">
-						<div class="col-7 text-capitalize">${v1.nombrePrestacion.toLowerCase()}</div>
-						<div class="col-4 ${hideInfoPaquetes}">
-							<div class="row fw-medium text-end">
-								<div class="col-4">$${v1.valoresPaciente.valorTotal}</div>
-								<div class="col-4">$${v1.valoresEmpresa.valorTotal}</div>
-								<div class="col-4">$${v1.valoresVenta.valorTotal}</div>
+					let classMsgCobertura = (v1.mensajeCreditoAutogestion === null && v1.mensajeCobertura === null) ? `invisible` : ``;
+					let textMsgCobertura = ``;
+					if(v1.mensajeCreditoAutogestion !== null){
+						textMsgCobertura = v1.mensajeCreditoAutogestion;
+						showTooltip = true;
+					}else if(v1.mensajeCobertura !== null){
+						textMsgCobertura = v1.mensajeCobertura;
+						showTooltip = true;
+					}
+					prestaciones += `<li class="p-3 fs-14 line-height-16">
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="col-7 text-capitalize">${v1.nombrePrestacion.toLowerCase()}</div>
+							<div class="col-4 ${hideInfoPaquetes}">
+								<div class="row fw-medium text-end">
+									<div class="col-4">$${v1.valoresPaciente.valorTotal}</div>
+									<div class="col-4">$${v1.valoresEmpresa.valorTotal}</div>
+									<div class="col-4">$${v1.valoresVenta.valorTotal}</div>
+								</div>
 							</div>
-						</div>
-						<div class="col-1 text-end ${hideInfoPaquetes}">
-							<i class="fa-solid fa-circle-info text-red-dark"></i>
+							<div class="col-1 text-end ${hideInfoPaquetes}" data-bs-toggle="tooltip" data-bs-placement="top" title="${textMsgCobertura}">
+								<i class="fa-solid fa-circle-info text-red-dark ${classMsgCobertura}"></i>
+							</div>
 						</div>
 					</li>`;
 				})
@@ -176,6 +188,19 @@
 						<i class="fa-regular fa-trash-can text-red-dark fs-28 line-height-28 btn-eliminar-item" idAgrupacion-rel='${idAgrupacion}'></i>
 					</div>
 					<div class="col-12 pt-40 box-detail d-none">
+						<div class="row mx-40 text-veris">
+							<p class="col-7 mb-0 fs-16 line-height-20 fw-medium">Prestación</p>
+							<div class="col-4">
+								<div class="row fw-medium text-end">
+				                    <p class="col-4 mb-0 fs-16 line-height-20 fw-medium text-center">PVP.</p>
+				                    <p class="col-4 mb-0 fs-16 line-height-20 fw-medium">Crédito</p>
+				                    <p class="col-4 mb-0 fs-16 line-height-20 fw-medium">Total</p>
+								</div>
+							</div>
+		                    <p class="col-1 mb-0 fs-16 line-height-20 fw-medium text-end"></p>
+						</div>
+					</div>
+					<div class="col-12 box-detail d-none">
 						<ul class="list-unstyled border-bottom-midnight-blue-tint-80 mx-40 my-0">
 							${prestaciones}
 						</ul>
@@ -195,6 +220,25 @@
 			$('#btn-pagar').removeClass('disabled');
 		}
 		$('#listadoItems').html(elem);
+
+		if(showTooltip){
+			setTimeout(function(){
+				var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+				var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+					var tooltip = new bootstrap.Tooltip(tooltipTriggerEl, {
+						customClass: 'tooltip-kiosko'
+					})
+
+					tooltipTriggerEl.addEventListener('shown.bs.tooltip', function () {
+						setTimeout(function () {
+							tooltip.hide()
+						}, 8000) // 8 segundos
+					})
+
+					return tooltip
+				})
+			}, 100)
+		}
 	}
 
 </script>

@@ -66,6 +66,18 @@
 			$('#modalDetalleOrdenTratamiento').modal('show');
 		})
 
+		$('body').on('click', '.btn-notificar-llegada', async function(){
+			let detalle = JSON.parse($(this).attr('item-rel'));
+			let notificar = await notificarLlegada(detalle.detalleLaboratorio.listaOrdenesDetalle[0].codigoOrdenApoyo);
+			if(notificar.code != 200){
+				return;
+			}
+			await mostrarDetalleModalChequeoDetalle(detalle);
+			$('.title-detalle-chequeo').html(detalle.nombreServicioNivel1.toLowerCase())
+			$('#modalDetalleChequeo').modal('show');
+			await cargarMisChequeos(false)
+		})
+
 		{{-- $('body').on('click', '.btn-agendar', async function(){
 		}) --}}
 
@@ -498,16 +510,35 @@
 
 	async function mostrarDetalleOrdenModal(detalle){
 		let elemContent = ``;
-		let detallePrestacionesValores = await obtenerValoresOrden(detalle);
+		$('.th-details-prestaciones').addClass('d-none');
+		let detallePrestacionesValores = {};
+		if(detalle.esPagada == "S"){
+			detallePrestacionesValores.code = 400;
+		}else{
+			$('.th-details-prestaciones').removeClass('d-none');
+			detallePrestacionesValores = await obtenerValoresOrden(detalle);
+		}
 		let valorTotal = 0;
-		if(detallePrestacionesValores.code == 200){
+		let showTooltip = false;
+		let activar = false;
+		let codigoOrdenApoyo;
+		if(detallePrestacionesValores.code == 200 && detalle.esPagada == "N"){
 			$.each(detallePrestacionesValores.data, function(key, value){
 				let nombrePrestacion = value.nombrePrestacion.replace(/\u00A0/g, " ").replace(/\n/g, "<br>");
+				let classMsgCobertura = (value.mensajeCobertura === null) ? `invisible` : ``;
+				let textMsgCobertura = ``;
+				if(value.mensajeCobertura !== null){
+					textMsgCobertura = value.mensajeCobertura;
+					showTooltip = true;
+				}
 				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
-			    	<p class="col-6 mb-0 fs-12 line-height-16">${capitalizarPrimeraLetra(nombrePrestacion)}</p>
+			    	<p class="col-5 mb-0 fs-12 line-height-16">${capitalizarPrimeraLetra(nombrePrestacion)}</p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorServicio.toFixed(2)}</p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorEmpresa.toFixed(2)}</p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorPaciente.toFixed(2)}</p>
+		            <p class="col-1 mb-0 fs-12 text-center line-height-16 ${classMsgCobertura}" data-bs-toggle="tooltip" data-bs-placement="top" title="${textMsgCobertura}">
+						<i class="fa-solid fa-circle-info text-red-dark"></i>
+		            </p>
 				</li>`
 				valorTotal += value.valorTotal;
 			})
@@ -515,11 +546,15 @@
 			// Default
 			console.log("default")
 			$.each(detalle.detalleLaboratorio.listaOrdenesDetalle, function(key, value){
+				if(value.estadoExamen == "PENDIENTE"){
+					activar = true;
+					codigoOrdenApoyo = value.codigoOrdenApoyo;
+				}
 				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
-			    	<p class="col-6 mb-0 fs-12 line-height-16 text-capitalize">${value.nombrePrestacion.toLowerCase()}</p>
+			    	<p class="col-12 mb-0 fs-12 line-height-16 text-capitalize">${value.nombrePrestacion.toLowerCase()}</p>
+		            {{-- <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p> --}}
 				</li>`
 			})
 		}
@@ -536,8 +571,12 @@
                     <p class="col-6 mb-0 fs-16 line-height-20 fw-medium text-end text-royal-blue">$${valorTotal.toFixed(2)}</p>`;
 
 		buttonActions = determinarCondicionesBotones(detalle, 'PENDIENTE', detalleTratamiento)
+		console.log({activar})
+		if(activar){
+			buttonActions += `<button item-rel='${JSON.stringify(detalle)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-notificar-llegada w-50" data-bs-dismiss="modal">Activar</button>`;
+		}
 		
-		/*if(detalle.tipoServicio == "LABORATORIO"){
+		{{-- if(detalle.tipoServicio == "LABORATORIO"){
 			buttonActions += `<button class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50" data-bs-dismiss="modal">Cerrar</button>`;
 		}else{
 			if(detalle.esPagada == "S"){
@@ -555,7 +594,7 @@
 			}else{
 				buttonActions += `<button item-rel='${JSON.stringify(detalle)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-agendar w-50">Agendar</button>`;
 			}
-		}*/
+		} --}}
 
 		$('.box-actions-detalle-orden').html(buttonActions)
 		
@@ -564,6 +603,24 @@
 		$('.listado-items-orden-detalle').html(elemContent);
 		$('.totalesDetalleOrden').html(elemTotales);
 		//$('.listado-items-orden-detalle')
+		if(showTooltip){
+			setTimeout(function(){
+				var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+				var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+					var tooltip = new bootstrap.Tooltip(tooltipTriggerEl, {
+						customClass: 'tooltip-kiosko'
+					})
+
+					tooltipTriggerEl.addEventListener('shown.bs.tooltip', function () {
+						setTimeout(function () {
+							tooltip.hide()
+						}, 8000) // 8 segundos
+					})
+
+					return tooltip
+				})
+			}, 100)
+		}
 	}
 
 	function determinarCondicionesBotones(datosServicio, estado, datosTratamiento){
@@ -693,18 +750,19 @@
                         // condición para 'verResultados'
                         if (datosServicio.verResultados == "S") {
                             let ruta = "/laboratorio-domicilio/" + "{{ $mac }}";
-                            respuesta += `<a url-rel="${ruta}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-veris btnSolicitarLaboratorio" data-rel='${JSON.stringify(datosServicio)}'>Ver resultados</a>`;
+                            // respuesta += `<a url-rel="${ruta}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-veris btnSolicitarLaboratorio" data-rel='${JSON.stringify(datosServicio)}'>Ver resultados</a>`;
                         
                         } else {
                             respuesta += ``;
                         }
                         //condición para 'aplicaSolicitud'
-                        if (datosServicio.aplicaSolicitud == "S") {
+                        {{-- if (datosServicio.aplicaSolicitud == "S") {
                             let ruta = "/laboratorio-domicilio/" + "{{ $mac }}";
                             respuesta += `<a url-rel="${ruta}" class="btn btn-sm btn-primary-veris shadow-none me-1 btnSolicitarLaboratorio" data-rel='${JSON.stringify(datosServicio)}'><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
                             
                         
-                        } else if (datosServicio.permitePago == "S"){
+                        } else  --}}
+                        if (datosServicio.permitePago == "S"){
                             if(datosServicio.esPagada == "N"){
                                 let params = {}
                                 params.idPaciente = detalleTratamiento.idPaciente;
@@ -740,7 +798,7 @@
                             //respuestaReceta += ` <button class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                         }
                         if(datosServicio.aplicaSolicitud == "S"){
-                            respuestaReceta += `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                            // respuestaReceta += `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
                         }
                     }
                     return respuestaReceta;

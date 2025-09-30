@@ -25,13 +25,13 @@
         <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/fonts/fontawesome.css" />
         {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/> --}}
         <!-- Core CSS -->
-        <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/css/theme-veris-kiosko.css?v=1.1.2')}}">
+        <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/css/theme-veris-kiosko.css?v=1.1.5')}}">
         <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/css/keyboard.css?v=1.0.1')}}">
         <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/css/bootstrap-icons.min.css?v=1.0')}}">
 
         <!-- Vendors CSS -->
         {{-- <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/swiper/swiper.css" /> --}}
-        <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.css" />
+        {{-- <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.css" /> --}}
         @stack('css')
         
         <script>
@@ -55,9 +55,9 @@
         </script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script> 
-        <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.2.3"></script>
+        <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.2.5"></script>
         {{-- <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/jquery.idle.min.js"></script> --}}
-        <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.js"></script>
+        {{-- <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.js"></script> --}}
     </head>
 
     <body class="d-flex flex-column min-vh-100 @yield('bodybg')">
@@ -95,15 +95,28 @@
         <script>
             document.addEventListener("DOMContentLoaded", async function () {
                 await contadorItemsCarrito()
+                if(localStorage.getItem('parametrosGenerales') !== null){
+                    let params_gen = JSON.parse(localStorage.getItem('parametrosGenerales'));
+                    $('.central-caja').removeClass('d-none')
+                    $('.central-caja div').html(params_gen.nombreCaja.toLowerCase())
+                }
+                if(localStorage.getItem('host') !== null){
+                    let host = JSON.parse(localStorage.getItem('host'));
+                    $('.label-username div').html(`Usuario: ${host.codigoUsuario.toLowerCase()}`)
+                    $('.cerrar-sesion').removeClass('d-none');
+                }else{
+                    $('.ingresar-host').removeClass('d-none');
+                }
             })
 
             async function contadorItemsCarrito(){
-                if(localStorage.getItem('idPreTransaccion') === null){
+                if(localStorage.getItem('idPreTransaccion') === null || !callCounter){
                     return;
                 }
                 let args = [];
                 args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/contador?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`;
                 args["method"] = "GET";
+                args["sendTrackId"] = false;
                 args["showLoader"] = false;
                 {{-- args["sendHeaders"] = false; --}}
                 args["token"] = "{{ $accessToken }}";

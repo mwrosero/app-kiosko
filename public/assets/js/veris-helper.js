@@ -116,7 +116,9 @@ async function call(args){
     }
 
     const url = new URL(args.endpoint, window.location.origin); // base por si endpoint es relativo
-    url.searchParams.set("trackId", trackId); // genera uno si no viene
+    if(trackId !== ""){
+        url.searchParams.set("trackId", trackId); // genera uno si no viene
+    }
     const endpointWithTrackId = url.toString();
     // console.log(endpointWithTrackId)
     
@@ -133,10 +135,11 @@ async function call(args){
             }
             if(!args.dismissAlert && data.code == 400 && localStorage.getItem('flujo') === null){
                 // console.log(5555)
-                toastr.clear();
-                toastr.warning(data.message, `Ha ocurrido un error`, {
-                    timeOut: 8000
-                });
+                //toastr.clear();
+                // toastr.warning(data.message, `Ha ocurrido un error`, {
+                //     timeOut: 8000
+                // });
+                showMessageModal('warning', data.message)
                 return;
             }
             return data;
@@ -218,19 +221,23 @@ function maxLengthNumber(input, maxLength) {
 }
 
 function showMessage(type,title,message){
-    toastr.clear();
+    //toastr.clear();
 	switch(type){
 		case 'warning':
-			toastr.warning(message,title);
+			//toastr.warning(message,title);
+            showMessageModal(type, message)
 		break;
 		case 'success':
-			toastr.success(message,title);
+			//toastr.success(message,title);
+            showMessageModal(type, message)
 		break;
 		case 'info':
-			toastr.info(message,title);
+			//toastr.info(message,title);
+            showMessageModal(type, message)
 		break;
 		case 'error':
-			toastr.error(message,title);
+			//toastr.error(message,title);
+            showMessageModal(type, message)
 		break;
 	}
 }
@@ -1368,4 +1375,25 @@ async function printTurnoAPI(detalle){
         // console.log(data)
     }
     return;
+}
+
+async function notificarLlegada(codigoOrdApoyo){
+    let args = [];
+    args["endpoint"] = `${api_url_digitales}/${api_war}/turnero/activar_orden_laboratorio?macAddress=${mac}&idPaciente=${datosCliente.idPaciente}`;
+    args["method"] = "POST";
+    args["showLoader"] = true;
+    args["token"] = accessToken;
+    args["bodyType"] = "json";
+    args["data"] = JSON.stringify({
+        "codigoOrdenApoyo": codigoOrdApoyo
+    });
+    args["dismissAlert"] = true;
+    const data = await call(args);
+    console.log(data);
+    if(data.code != 200){
+        $('#modalError').modal('show')
+        $('.titleError').html(`Ha ocurrido un error`)
+        $('.msgError').html(data.message);
+    }
+    return data;
 }
