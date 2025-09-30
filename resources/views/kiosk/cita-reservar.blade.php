@@ -702,7 +702,7 @@
             codigoReserva = dataCita.reservaEdit.idCita;
             numeroOrden = dataCita.reservaEdit.numeroOrden || '';
             codigoEmpOrden = dataCita.reservaEdit.codigoEmpresaOrden || '';
-            lineaDetalle = dataCita.reservaEdit.lineaDetalleOrden || '';
+            lineaDetalle = dataCita.reservaEdit.lineaDetalleOrden || dataCita.reservaEdit.lineaDetalle;
         }
         if(dataCita.tratamiento && !dataCita.sesion){
             if(dataCita.origen && dataCita.origen == "Listatratamientos"){
