@@ -325,7 +325,7 @@
 
     async function reservaEstaPagada(codigoReserva){
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/agenda/reserva/${codigoReserva}?canalOrigen=${window.config.canalOrigen}`;
+        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/agenda/reserva/${codigoReserva}?canalOrigen=${canalOrigen}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["sendHeaders"] = false;

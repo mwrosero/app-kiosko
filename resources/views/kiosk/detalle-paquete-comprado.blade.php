@@ -84,11 +84,51 @@
 					${labelInfo}
 					${boxEstadoPago(paquete.estaPagado)}
 				</div>
-				<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-detalle-orden" style="width: 150px;">Ver detalle</button>
+				${ drawBtnCardItem(value) }
 			</div>`
 		})
 		
 		$('#listadoOrdenes').html(elem);
 	}
+
+	function drawButtonItem(value){
+		let elem = ``;
+		elem += `<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-detalle-orden" style="min-width: 150px !important;">Ver detalle</button>`;
+		return elem;
+	}
+
+	function drawBtnCardItem(detalles){
+        console.log(detalles);
+        let tipoAgenda = detalles.tipoAgenda;
+        // let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA","IMAGENES","PROCEDIMIENTOS"];
+        let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA","TERAPIA_FISICA_AGRUPADA"];
+        let titleBtn = `Ver detalle`;
+        let tieneItemsSinAgendar = verificarItemsSinAgendar(detalles.detalles);
+        let btnEnviaAgendarClass = `btn-detalle`;
+        {{-- if(tiposAgendaPermitida.includes(tipoAgenda) && detalles.esAgendable && tieneItemsSinAgendar){ --}}
+        if(tiposAgendaPermitida.includes(tipoAgenda) && detalles.esAgendable){
+            titleBtn = `Agendar`;
+            if((detalles.detalles.length == 1 && detalles.preparacionPrevia == null) || tipoAgenda == "TERAPIA_FISICA_AGRUPADA"){
+                btnEnviaAgendarClass = `btn-agendar-item`;
+            }
+        }
+        let esTerapiaAgrupada = false
+        if(tipoAgenda == "TERAPIA_FISICA_AGRUPADA"){
+            esTerapiaAgrupada = true;
+        }
+        return `<div class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 ${btnEnviaAgendarClass}" style="min-width: 150px !important;" esTerapiAgrupada-rel='${esTerapiaAgrupada}' promocion-rel='${JSON.stringify(detalles)}' data-rel='${JSON.stringify(detalles.detalles)}'>
+                ${titleBtn}
+            </div>`;
+    }
+
+    function verificarItemsSinAgendar(items){
+        let tieneItems = false;
+        $.each(items, function(key, value){
+            if(value.detalleReserva == null){
+                tieneItems = true;
+            }
+        })
+        return tieneItems;
+    }
 </script>
 @endsection
