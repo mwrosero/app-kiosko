@@ -952,8 +952,10 @@
             datosReserva.itemPaquete = dataCita.detalleItemPaquete.itemPaquete;
             // if(dataCita.tratamiento){
                 /*se recibe desde 3 flujos: tratamiento/re-agendamiento*/
-                datosReserva.numeroOrden = dataCita.detalleItemPaquete.numeroOrden;
-                datosReserva.codigoEmpOrden = dataCita.detalleItemPaquete.codigoEmpresaOrden;
+                {{-- datosReserva.numeroOrden = dataCita.detalleItemPaquete.numeroOrden; --}}
+                datosReserva.numeroOrden = null;
+                {{-- datosReserva.codigoEmpOrden = dataCita.detalleItemPaquete.codigoEmpresaOrden; --}}
+                datosReserva.codigoEmpOrden = 1;
                 datosReserva.lineaDetalle = dataCita.detalleItemPaquete.lineaDetalleOrden;
             // }
         }
