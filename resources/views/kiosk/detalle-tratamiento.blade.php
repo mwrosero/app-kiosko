@@ -510,11 +510,12 @@
 
 	async function mostrarDetalleOrdenModal(detalle){
 		let elemContent = ``;
-		$('.th-details-prestaciones').removeClass('d-none');
+		$('.th-details-prestaciones').addClass('d-none');
 		let detallePrestacionesValores = {};
 		if(detalle.esPagada == "S"){
 			detallePrestacionesValores.code = 400;
 		}else{
+			$('.th-details-prestaciones').removeClass('d-none');
 			detallePrestacionesValores = await obtenerValoresOrden(detalle);
 		}
 		let valorTotal = 0;
@@ -571,7 +572,6 @@
 
 		buttonActions = determinarCondicionesBotones(detalle, 'PENDIENTE', detalleTratamiento)
 		console.log({activar})
-		$('.th-details-prestaciones').addClass('d-none');
 		if(activar){
 			buttonActions += `<button item-rel='${JSON.stringify(detalle)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-notificar-llegada w-50" data-bs-dismiss="modal">Activar</button>`;
 		}

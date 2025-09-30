@@ -34,8 +34,10 @@
 			case 'cita':
 				$('.btn-redirect').attr('href',`/proximas-citas/{{ $mac }}`);
 				$('.btn-redirect').html(`Ver mi cita`);
+				$('.label-factura label-exitoso-1').html('Agendamiento realizado exitosamente').removeClass('d-none');
 			break;
 			case 'paquete':
+				$('.label-factura label-exitoso-1').html('Pago exitoso').removeClass('d-none');
 				$('.btn-redirect').attr('href',`/paquetes-preventivos/{{ $mac }}`);
 				$('.btn-redirect').html(`Ver paquete preventivo`);
 			break;
