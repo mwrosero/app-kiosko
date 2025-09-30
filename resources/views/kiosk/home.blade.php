@@ -11,7 +11,7 @@ bg-royal-blue-tint-90
 		</div>
 		<div class="col-4">
 			<div class="item-access card rounded-24 bg-royal-blue-tint-90 border-0 text-center p-44" type-rel="C">
-				<div class="box-icon-home d-flex justify-content-end align-items-center mx-auto">
+				<div class="box-icon-home w-100 d-flex justify-content-end align-items-center mx-auto">
 					<img class="img-fluid mx-auto" src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-cedula.svg" alt="">
 				</div>
 				<p class="fs-24 line-height-28 fw-medium">Con número<br>de cédula</p>
@@ -19,7 +19,7 @@ bg-royal-blue-tint-90
 		</div>
 		<div class="col-4">
 			<div class="item-access card rounded-24 bg-royal-blue-tint-90 border-0 text-center p-44" type-rel="P">
-				<div class="box-icon-home d-flex justify-content-end align-items-center mx-auto">
+				<div class="box-icon-home w-100 d-flex justify-content-end align-items-center mx-auto">
 					<img class="img-fluid mx-auto" src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-pasaporte.svg" alt="">
 				</div>
 				<p class="fs-24 line-height-28 fw-medium">Con número<br> de Pasaporte</p>
@@ -27,7 +27,7 @@ bg-royal-blue-tint-90
 		</div>
 		<div class="col-4">
 			<div class="item-access card rounded-24 bg-royal-blue-tint-90 border-0 text-center p-44" type-rel="N">
-				<div class="box-icon-home d-flex justify-content-end align-items-center mx-auto">
+				<div class="box-icon-home w-100 d-flex justify-content-end align-items-center mx-auto">
 					<img class="img-fluid mx-auto" src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-nombres.svg" alt="">
 				</div>
 				<p class="fs-24 line-height-28 fw-medium">Con nombres<br>y apellidos</p>

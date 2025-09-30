@@ -129,6 +129,91 @@
 		$('body').on('click', '.btn-reagendar', async function(){
 			let detalle = JSON.parse($(this).attr('data-rel'));
 			let item = JSON.parse($(this).attr('item-rel'));
+			let origen = "Listatratamientos";
+			console.log(detalle)
+			console.log(item)
+
+			let dataCita = {}
+			let modalidad = (item.esTeleconsulta) ? 'S' : 'N';
+	        dataCita.online = modalidad;
+	       	
+	       	dataCita.especialidad = {
+	            codigoEspecialidad: item.codigoEspecialidadServicio,
+	            nombre : item.nombreEspecialidad,
+	            imagen : item.urlImagenTipoServicio,
+	            esOnline : modalidad,
+	            codigoServicio : item.codigoServicio,
+	            codigoPrestacion : item.codigoPrestacion,
+	            codigoTipoAtencion : "C",
+	            // codigoSucursal : item.codigoSucursal,
+	            origen: "Listatratamientos"
+	        };
+
+	        let dataCitaReserva = {
+                "paciente": {
+                    "tipoIdentificacion": datosCliente.codigoTipoIdentificacion,
+                    "numeroIdentificacion": datosCliente.numeroIdentificacion,
+                    "numeroPaciente": datosCliente.idPaciente,
+                    "primerNombre": datosCliente.primerNombre,
+                    "segundoNombre": datosCliente.segundoNombre,
+                    "primerApellido": datosCliente.primerApellido,
+                    "segundoApellido": datosCliente.segundoApellido,
+                    "pacPacNumero": datosCliente.idPaciente,
+                    // "idPersona": "MTQwMDc4MDA3Ni0y",
+                },
+                "convenio": {
+                	"codigoCliente": null,
+                    "codigoConvenio": detalle.codigoConvenio,
+                    "nombreConvenio": detalle.nombreConvenio,
+                    "codigoTipoConvenio": detalle.codigoTipoConvenio,
+                    "nombreTipoConvenio": detalle.nombreTipoConvenio,
+                    "permitePago": "S",
+                    "permiteReserva": "S"//(detalle.esAgendable || detalle.requiereAgendamientoPrevio) ? "S" : "N"
+                },
+                "tratamiento": {
+                    "numeroOrden": item.numeroOrden,
+                    "codigoEmpOrden": 1,//detalle.codigoEmpresa,
+                    "lineaDetalle": item.lineaDetalleOrden,
+                    "codigoEmpOrden": 1,
+                    "esPagada": "S"
+                },
+                "online": (detalle.esTeleconsulta) ? "S" : "N",
+                "especialidad": {
+                    "codigoEspecialidad": item.codigoEspecialidadServicio,
+                    "nombre" : (item.hasOwnProperty('nombreEspecialidadServicio') &&  item.nombreEspecialidadServicio !== null) ? item.nombreEspecialidadServicio : item.nombrePrestacion,
+	            	"imagen" : item.urlImagenTipoServicio,
+                    "esOnline": modalidad,
+                    "codigoServicio": item.codigoServicio,
+                    "codigoPrestacion": item.codigoPrestacion,
+                    "codigoTipoAtencion": "C",
+                    // "codigoSucursal": detalle.codigoSucursal,
+                    "origen": "Listatratamientos"
+                },
+                "reservaEdit": {
+                	"estaPagada": "S",
+	                "numeroOrden": item.numeroOrden,
+	                "lineaDetalleOrden": item.lineaDetalleOrden,
+	                "codigoEmpresaOrden": 1,//item.codigoEmpresaOrden
+	                "idOrdenAgendable": item.numeroOrden,
+	                "idCita": item.codigoReserva
+                },
+                "ciudad": {
+	                "codigoPais": 1,
+	                "codigoProvincia": 1,
+	                "codigoCiudad": 1
+	            },
+                "origen": origen,
+            }
+
+            console.log(dataCitaReserva)
+            {{-- return; --}}
+
+            localStorage.setItem('agendamiento', JSON.stringify(dataCitaReserva));
+			if(detalle.esTeleconsulta){
+                location.href = '/citas-elegir-fecha-doctor/{{ $mac }}';
+            }else{
+                location.href = '/cita-elegir-datos/{{ $mac }}';
+            }
 		})
 
 		$('body').on('click', '.btn-agendar', async function(){

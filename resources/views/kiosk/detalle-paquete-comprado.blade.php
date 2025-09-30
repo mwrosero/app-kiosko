@@ -50,6 +50,121 @@
 		$('.nombrePaciente').html(datosCliente.nombreCompleto.toLowerCase());
 		$('.fechaVigencia').html(paquete.fechaCaducidadUsoPaquete);
 
+		{{-- $('body').on('click', '.btn-agendar', async function(){
+			let detalle = $(this).attr('item-rel');
+			console.log(detalle);
+		}) --}}
+
+		$('body').on('click','.btn-agendar', function(){
+            let promocion = paquete;
+            let detalle = JSON.parse($(this).attr('item-rel'));
+            let esTerapiaAgrupada = false;
+            var esOnline = (detalle.esTeleconsulta) ? 'S' : 'N';
+            
+            let url = '/cita-elegir-datos/{{ $mac }}';
+            if(esOnline == "S"){
+                url = '/citas-elegir-fecha-doctor/{{ $mac }}';
+            }
+
+            let dataCita = {};
+            dataCita.secuenciaPaquetePaciente = detalle.secuenciaPaquetePaciente;
+            dataCita.nombrePaciente = detalle.paciente.nombrePaciente;
+            dataCita.paciente = detalle.paciente;
+            dataCita.paciente.idPaciente = dataCita.paciente.numeroPaciente;
+			dataCita.paciente.pacPacNumero = dataCita.paciente.numeroPaciente;
+            dataCita.promocion = paquete;
+            dataCita.detalle = detalle;
+            dataCita.detalleItemPaquete = detalle;
+            dataCita.origen = "paquetes";
+            dataCita.online = esOnline;
+            dataCita.especialidad = detalle.especialidad;
+            dataCita.detalleItemPaquete.itemPaquete = {
+			    "numeroOrden": detalle.numeroOrden,
+			    "lineaDetalle": detalle.lineaDetalleOrden
+			}
+            {{-- dataCita.especialidad = {
+                codigoEspecialidad: promocion.codigoEspecialidad,
+                codigoPrestacion: promocion.codigoPrestacion,
+                codigoServicio: promocion.codigoServicio,
+                esOnline: promocion.esOnline,
+                nombre: promocion.nombreEspecialidad
+            } --}}
+            dataCita.convenio = {
+                "permitePago": "S",
+                "permiteReserva": "S",
+                "idCliente": null,
+                "codigoConvenio": null,
+                "secuenciaAfiliado" : null,
+            };
+
+            dataCita.tipoFlujo = "agenda/paquetes";
+            tipoFlujo = dataCita.tipoFlujo;
+
+            {{-- if(esTerapiaAgrupada){
+                detalle.forEach(item => {
+                    item.lineaDetalleTratamiento = item.itemPaquete?.lineaDetalle || null;
+                    item.nombreServicio = item.nombreDetalle;
+                });
+
+                dataCita.tipoFlujo = "agenda/tratamiento/terapia_agrupada";
+                dataCita.detallesServicios = detalle;
+                dataCita.datosTratamiento = promocion;
+                dataCita.cantidadMaximaAgenda = cantidadMaximaAgenda;
+                localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
+                location = "/agendamiento-multiple/{{ $tokenMods }}";;
+                return;
+            } --}}
+
+            //return;
+
+            localStorage.setItem('agendamiento', JSON.stringify(dataCita));
+            location.href = `${url}`;
+        })
+
+        $('body').on('click', '.btn-reagendar', async function(){
+        	let promocion = paquete;
+            let detalle = JSON.parse($(this).attr('item-rel'));
+        	console.log(detalle.datosReserva)
+            let esTerapiaAgrupada = false;
+            var esOnline = (detalle.esTeleconsulta) ? 'S' : 'N';
+            
+            let url = '/cita-elegir-datos/{{ $mac }}';
+            if(esOnline == "S"){
+                url = '/citas-elegir-fecha-doctor/{{ $mac }}';
+            }
+
+            let dataCita = {};
+            //dataCita.secuenciaPaquetePaciente = detalle.secuenciaPaquetePaciente;
+            dataCita.nombrePaciente = detalle.paciente.nombrePaciente;
+            dataCita.paciente = detalle.paciente;
+            dataCita.paciente.idPaciente = dataCita.paciente.numeroPaciente;
+			dataCita.paciente.pacPacNumero = dataCita.paciente.numeroPaciente;
+            dataCita.promocion = paquete;
+            dataCita.detalle = detalle;
+            dataCita.detalleItemPaquete = detalle;
+            dataCita.origen = "paquetes";
+            dataCita.online = esOnline;
+            dataCita.especialidad = detalle.especialidad;
+            dataCita.detalleItemPaquete.itemPaquete = {
+			    "numeroOrden": detalle.numeroOrden,
+			    "lineaDetalle": detalle.lineaDetalleOrden
+			}
+			dataCita.convenio = {
+                "permitePago": "S",
+                "permiteReserva": "S",
+                "idCliente": null,
+                "codigoConvenio": null,
+                "secuenciaAfiliado" : null,
+            };
+            dataCita.central = detalle.datosReserva.central;
+            dataCita.ciudad = detalle.datosReserva.ciudad;
+            dataCita.reservaEdit = detalle.datosReserva.reservaEdit;
+			dataCita.tipoFlujo = "agenda/paquetes";
+            tipoFlujo = dataCita.tipoFlujo;
+			localStorage.setItem('agendamiento', JSON.stringify(dataCita));
+            location.href = `${url}`;
+        })
+
 		await drawCardsItems();
 	})
 
@@ -84,11 +199,67 @@
 					${labelInfo}
 					${boxEstadoPago(paquete.estaPagado)}
 				</div>
-				<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-detalle-orden" style="width: 150px;">Ver detalle</button>
+				${ drawButtonItem(value) }
 			</div>`
 		})
 		
 		$('#listadoOrdenes').html(elem);
 	}
+
+	function drawButtonItem(value){
+		let elem = ``;
+		{{-- elem += `<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-detalle-orden" style="min-width: 150px !important;">Ver detalle</button>`; --}}
+		switch(value.accionBoton){
+			case "AGENDAR":
+				if(value.datosReserva !== null){
+					elem += `<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-reagendar" style="min-width: 150px !important;">Reagendar</button>`;
+				}else{
+					elem += `<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-agendar" style="min-width: 150px !important;">Agendar</button>`;
+				}
+			break;
+			case "ACTIVAR_LABORATORIO":
+				elem += `<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-notificar-llegada" style="min-width: 150px !important;">Notificar llegada</button>`;
+			break;
+			case "ACTIVAR_PAQUETE":
+				elem += `<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-activar" style="min-width: 150px !important;">Activar</button>`;
+			break;
+		}
+		
+		return elem;
+	}
+
+	function drawBtnCardItem(detalles){
+        console.log(detalles);
+        let tipoAgenda = detalles.tipoAgenda;
+        // let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA","IMAGENES","PROCEDIMIENTOS"];
+        let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA","TERAPIA_FISICA_AGRUPADA"];
+        let titleBtn = `Ver detalle`;
+        let tieneItemsSinAgendar = verificarItemsSinAgendar(detalles.detalles);
+        let btnEnviaAgendarClass = `btn-detalle`;
+        {{-- if(tiposAgendaPermitida.includes(tipoAgenda) && detalles.esAgendable && tieneItemsSinAgendar){ --}}
+        if(tiposAgendaPermitida.includes(tipoAgenda) && detalles.esAgendable){
+            titleBtn = `Agendar`;
+            if((detalles.detalles.length == 1 && detalles.preparacionPrevia == null) || tipoAgenda == "TERAPIA_FISICA_AGRUPADA"){
+                btnEnviaAgendarClass = `btn-agendar-item`;
+            }
+        }
+        let esTerapiaAgrupada = false
+        if(tipoAgenda == "TERAPIA_FISICA_AGRUPADA"){
+            esTerapiaAgrupada = true;
+        }
+        return `<div class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 ${btnEnviaAgendarClass}" style="min-width: 150px !important;" esTerapiAgrupada-rel='${esTerapiaAgrupada}' promocion-rel='${JSON.stringify(detalles)}' data-rel='${JSON.stringify(detalles.detalles)}'>
+                ${titleBtn}
+            </div>`;
+    }
+
+    function verificarItemsSinAgendar(items){
+        let tieneItems = false;
+        $.each(items, function(key, value){
+            if(value.detalleReserva == null){
+                tieneItems = true;
+            }
+        })
+        return tieneItems;
+    }
 </script>
 @endsection

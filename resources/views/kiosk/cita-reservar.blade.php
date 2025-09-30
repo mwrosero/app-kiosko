@@ -188,6 +188,13 @@
             $('#msg-cita').removeClass('d-none')
         }
 
+        if(dataCita.hasOwnProperty('tratamiento')){
+            $('.box-card-precio').addClass('d-none')
+        }else{
+            $('.box-card-precio').removeClass('d-none')
+        }
+        
+
         if(dataCita.reserva){
             await eliminarReserva();
         }
@@ -318,7 +325,7 @@
 
     async function reservaEstaPagada(codigoReserva){
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/agenda/reserva/${codigoReserva}?canalOrigen=${window.config.canalOrigen}`;
+        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/agenda/reserva/${codigoReserva}?canalOrigen=${canalOrigen}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["sendHeaders"] = false;
@@ -702,7 +709,7 @@
             codigoReserva = dataCita.reservaEdit.idCita;
             numeroOrden = dataCita.reservaEdit.numeroOrden || '';
             codigoEmpOrden = dataCita.reservaEdit.codigoEmpresaOrden || '';
-            lineaDetalle = dataCita.reservaEdit.lineaDetalleOrden || '';
+            lineaDetalle = dataCita.reservaEdit.lineaDetalleOrden || dataCita.reservaEdit.lineaDetalle;
         }
         if(dataCita.tratamiento && !dataCita.sesion){
             if(dataCita.origen && dataCita.origen == "Listatratamientos"){
@@ -945,8 +952,10 @@
             datosReserva.itemPaquete = dataCita.detalleItemPaquete.itemPaquete;
             // if(dataCita.tratamiento){
                 /*se recibe desde 3 flujos: tratamiento/re-agendamiento*/
-                datosReserva.numeroOrden = dataCita.detalleItemPaquete.numeroOrden;
-                datosReserva.codigoEmpOrden = dataCita.detalleItemPaquete.codigoEmpresaOrden;
+                {{-- datosReserva.numeroOrden = dataCita.detalleItemPaquete.numeroOrden; --}}
+                datosReserva.numeroOrden = null;
+                {{-- datosReserva.codigoEmpOrden = dataCita.detalleItemPaquete.codigoEmpresaOrden; --}}
+                datosReserva.codigoEmpOrden = 1;
                 datosReserva.lineaDetalle = dataCita.detalleItemPaquete.lineaDetalleOrden;
             // }
         }

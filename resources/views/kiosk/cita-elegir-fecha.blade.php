@@ -812,7 +812,7 @@
                                         </div>` : ``;
 
                         elemento += `<div class="border-light-sky-blue-tint-60 rounded-8 px-3 py-32 mb-3 d-flex justify-content-center align-items-start gap-4">
-                            <div class="header-doctor d-flex justify-content-between align-items-start mb-3" style="width: 60%">
+                            <div class="header-doctor d-flex justify-content-between align-items-start mb-3" style="width: 350px !important">
                                 <div class="picture-doctor border-box-light-blue border-3 rounded-circle" style="background: url(${img_doctor}) no-repeat top center;background-size: cover;">
                                 </div>
                                 <div class="content-doctor ms-2 flex-grow-1">

@@ -130,7 +130,6 @@
 		let subtotal = 0;
 		let showTooltip = false;
 		$.each(carrito, function(key, value){
-			let prestaciones = ``;
 			let idAgrupacion;
 			$.each(value.agrupaciones, function(k, item){
 				idAgrupacion = item.idAgrupacion
@@ -142,6 +141,7 @@
 				if(item.beneficio.paquetePromocional !== null){
 					tipoServicio = item.beneficio.paquetePromocional.nombrePaquete;
 				}
+				let prestaciones = ``;
 				$.each(item.detallesAgrupacion, function(k1, v1){
 					let classMsgCobertura = (v1.mensajeCreditoAutogestion === null && v1.mensajeCobertura === null) ? `invisible` : ``;
 					let textMsgCobertura = ``;
@@ -157,9 +157,9 @@
 							<div class="col-7 text-capitalize">${v1.nombrePrestacion.toLowerCase()}</div>
 							<div class="col-4 ${hideInfoPaquetes}">
 								<div class="row fw-medium text-end">
-									<div class="col-4">$${v1.valoresPaciente.valorTotal}</div>
-									<div class="col-4">$${v1.valoresEmpresa.valorTotal}</div>
-									<div class="col-4">$${v1.valoresVenta.valorTotal}</div>
+									<div class="col-4">$${v1.valoresVenta.valorTotal.toFixed(2)}</div>
+									<div class="col-4">$${v1.valoresEmpresa.valorTotal.toFixed(2)}</div>
+									<div class="col-4">$${v1.valoresPaciente.valorTotal.toFixed(2)}</div>
 								</div>
 							</div>
 							<div class="col-1 text-end ${hideInfoPaquetes}" data-bs-toggle="tooltip" data-bs-placement="top" title="${textMsgCobertura}">

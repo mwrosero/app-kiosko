@@ -610,6 +610,11 @@
 				options += `<option class="text-capitalize" value="${value.codigoTipoIdentificacion}">${value.nombreTipoIdentificacion.toLowerCase()}</option>`
 			})
 			$('#tipoIdentificacion').html(options);
+			$('#subtotal').html(`$${datosFacturacion.totales.subtotalVenta.toFixed(2)}`);
+			$('#creditoConvenio').html(`$${datosFacturacion.totales.valorTotalCliente.toFixed(2)}`);
+			$('#descuentoAplicado').html(`$${datosFacturacion.totales.valorDescuento.toFixed(2)}`);
+			$('#iva').html(`$${datosFacturacion.totales.valorIva.toFixed(2)}`);
+			$('#total').html(`$${datosFacturacion.totales.valorTotalPaciente.toFixed(2)}`);
         	if(data.data.datosFactura !== null){
         		await fillFormDatosFactura();
         		datosSeteados = true;
@@ -620,11 +625,6 @@
 	}
 
 	async function fillFormDatosFactura(){
-		$('#subtotal').html(`$${datosFacturacion.totales.subtotalVenta.toFixed(2)}`);
-		$('#creditoConvenio').html(`$${datosFacturacion.totales.valorTotalCliente.toFixed(2)}`);
-		$('#descuentoAplicado').html(`$${datosFacturacion.totales.valorDescuento.toFixed(2)}`);
-		$('#iva').html(`$${datosFacturacion.totales.valorIva.toFixed(2)}`);
-		$('#total').html(`$${datosFacturacion.totales.valorTotalPaciente.toFixed(2)}`);
 
 		$('#tipoIdentificacion').val(parseInt(datosFacturacion.datosFactura.codigoTipoIdentificacion));
 		$('#numeroIdentificacion').val(datosFacturacion.datosFactura.numeroIdentificacion)

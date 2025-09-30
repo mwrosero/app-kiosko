@@ -270,6 +270,23 @@
 	        	}
 	        }
 
+	        if(datosServicio.tipoCard == "AGENDA" && datosServicio.detalleReserva !== null){
+	        	let lineaDetalleOrdenArr = [];
+	        	lineaDetalleOrdenArr.push(datosServicio.lineaDetalleOrden)
+	        	let datosPago = {
+					"tratamientos": {
+					    "idPaciente": detalleTratamiento.idPaciente,
+					    "numeroOrden": datosServicio.idOrden,
+					    "codigoConvenio": detalleTratamiento.datosConvenio.codigoConvenio,
+					    "codigoTratamiento": detalleTratamiento.codigoTratamiento,
+					    "detalles": lineaDetalleOrdenArr
+					}
+				}
+				await agregarItem(datosPago);
+        		return;
+	        }
+
+
 	        if(datosServicio.permitePago == "N" && datosServicio.tipoCard != "LAB"){
 	            $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoPago);
 	            $('#modalPermiteCambiar').modal('show');
@@ -551,12 +568,19 @@
 					codigoOrdenApoyo = value.codigoOrdenApoyo;
 				}
 				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
-			    	<p class="col-12 mb-0 fs-12 line-height-16 text-capitalize">${value.nombrePrestacion.toLowerCase()}</p>
+			    	<p class="col-12 mb-0 fs-12 line-height-16 text-capitalize">${nombrePrestacion.nombrePrestacion.toLowerCase()}</p>
 		            {{-- <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p> --}}
 				</li>`
 			})
+		}else{
+			elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
+			    	<p class="col-12 mb-0 fs-12 line-height-16 text-capitalize">${detalle.nombrePrestacion.toLowerCase()}</p>
+		            {{-- <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p> --}}
+				</li>`
 		}
 		let buttonActions = ``;
 		let sucursal = (detalle.nombreSucursal !== null) ? `<p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-40 me-1 text-capitalize">Central médica:</span> ${detalle.nombreSucursal.toLowerCase()}</p>` : ``;
@@ -654,7 +678,8 @@
                             console.log(44)
                             //respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
                         }
-                        if(datosServicio.esCaducado == 'S' || datosServicio.esAgendable == "N"){
+                        {{-- if(datosServicio.esCaducado == 'S' || datosServicio.esAgendable == "N"){ --}}
+                        if(datosServicio.esAgendable == "N"){
                             // mostrar boton de informacion que llama al modal de informacion
                             respuestaAgenda += `<a href="#" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-informacion" qty-rel='${qtyMaximaAgrupado}' esTerapiAgrupada-rel='${esTerapiaAgrupada}' data-rel='${JSON.stringify(datosServicio)}' datosTratamiento-rel='${JSON.stringify(datosTratamiento)}'>Agendar</a>`;
                         } else {
@@ -685,16 +710,18 @@
                         }
                         if (datosServicio.permitePago == 'S' && datosServicio.esPagada == "N"){
                             // mostrar boton de pagar
+                            respuestaAgenda += `<div url-rel="/citas-datos-facturacion/{{ $mac }}" class="btn fs-18 line-height-25 border-royal-blue text-royal-blue rounded-12 p-3 btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}'>Pagar</div>`;
                             if(datosServicio.detalleReserva === null){
                                 //respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
                             }else{
                                 respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
                             }
-
-                            respuestaAgenda += `<div url-rel="/citas-datos-facturacion/{{ $mac }}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}'>Pagar</div>`;
                         }else if(datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
                             if(datosServicio.modalidad != "ONLINE" && datosServicio.esPagada == "S"){
                                 //respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
+                            }
+                            if(datosServicio.esPagada == "N"){
+                                respuestaAgenda += `<div url-rel="/citas-datos-facturacion/{{ $mac }}" class="btn fs-18 line-height-25 border-royal-blue text-royal-blue rounded-12 p-3 btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}'>Pagar</div>`;
                             }
                             if((datosServicio.esPagada == "S" && datosServicio.modalidad == "ONLINE") || datosServicio.esPagada == "N"){
                                 respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
@@ -703,9 +730,6 @@
                             }
                             if(datosServicio.modalidad == "ONLINE" && datosServicio.esPagada == "S"){
                                 respuestaAgenda += `<a href="${datosServicio.detalleReserva.idTeleconsulta}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50">Conectarme</a>`;
-                            }
-                            if(datosServicio.esPagada == "N"){
-                                respuestaAgenda += `<div url-rel="/citas-datos-facturacion/{{ $mac }}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}'>Pagar</div>`;
                             }
                         } else if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
                             // mostrar boton de informacion
@@ -730,38 +754,6 @@
                     // console.log('estadossss', estado);
                     let respuesta = "";
                     if (estado == 'PENDIENTE'){
-                        if(datosServicio.verResultados != "S" && datosServicio.aplicaSolicitud != "S" && datosServicio.permitePago != "S"){
-                            // respuesta += ` <button type="button" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
-                            //respuesta += ` <button type="button" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
-                            let params = {}
-                            params.idPaciente = detalleTratamiento.idPaciente;
-                            params.numeroOrden = datosServicio.idOrden;
-                            params.codigoEmpresa = datosServicio.codigoEmpresa;
-                            let ulrParams = btoa(JSON.stringify(params));
-                            if(datosServicio.modalidad == "PRESENCIAL"){
-                                respuesta += `<div url-rel="/citas-laboratorio/{{$mac}}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-pagar" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-rel='${JSON.stringify(datosServicio)}'><i class="fa-solid fa-circle-info me-2 line-height-20"></i>Agendar</div>`;
-                            }else{
-                                respuesta += `<div url-rel="/citas-laboratorio/{{$mac}}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-pagar" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-rel='${JSON.stringify(datosServicio)}'>Pagar</div>`;
-                            }
-                        }else{
-                            //respuesta += ` <button type="button" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
-                        }
-                        
-                        // condición para 'verResultados'
-                        if (datosServicio.verResultados == "S") {
-                            let ruta = "/laboratorio-domicilio/" + "{{ $mac }}";
-                            // respuesta += `<a url-rel="${ruta}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-veris btnSolicitarLaboratorio" data-rel='${JSON.stringify(datosServicio)}'>Ver resultados</a>`;
-                        
-                        } else {
-                            respuesta += ``;
-                        }
-                        //condición para 'aplicaSolicitud'
-                        {{-- if (datosServicio.aplicaSolicitud == "S") {
-                            let ruta = "/laboratorio-domicilio/" + "{{ $mac }}";
-                            respuesta += `<a url-rel="${ruta}" class="btn btn-sm btn-primary-veris shadow-none me-1 btnSolicitarLaboratorio" data-rel='${JSON.stringify(datosServicio)}'><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-                            
-                        
-                        } else  --}}
                         if (datosServicio.permitePago == "S"){
                             if(datosServicio.esPagada == "N"){
                                 let params = {}
@@ -770,9 +762,9 @@
                                 params.codigoEmpresa = datosServicio.codigoEmpresa;
                                 let ulrParams = btoa(JSON.stringify(params));
                                 respuesta += `<div url-rel="/citas-laboratorio/{{$mac}}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-pagar" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-rel='${JSON.stringify(datosServicio)}'>Pagar</div>`;
-                            }else{
+                            }{{-- else{
                                 respuesta += `<div url-rel="/citas-laboratorio/{{$mac}}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-pagar" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-rel='${JSON.stringify(datosServicio)}'><i class="fa-solid fa-circle-info me-2 line-height-20"></i>Agendar</div>`;
-                            }
+                            } --}}
                         }
                     } else if (estado == 'REALIZADO'){
                         // console.log('estadossss2', estado);
