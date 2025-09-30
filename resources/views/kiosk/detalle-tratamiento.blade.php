@@ -654,7 +654,8 @@
                             console.log(44)
                             //respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
                         }
-                        if(datosServicio.esCaducado == 'S' || datosServicio.esAgendable == "N"){
+                        {{-- if(datosServicio.esCaducado == 'S' || datosServicio.esAgendable == "N"){ --}}
+                        if(datosServicio.esAgendable == "N"){
                             // mostrar boton de informacion que llama al modal de informacion
                             respuestaAgenda += `<a href="#" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-informacion" qty-rel='${qtyMaximaAgrupado}' esTerapiAgrupada-rel='${esTerapiaAgrupada}' data-rel='${JSON.stringify(datosServicio)}' datosTratamiento-rel='${JSON.stringify(datosTratamiento)}'>Agendar</a>`;
                         } else {
