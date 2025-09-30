@@ -130,7 +130,6 @@
 		let subtotal = 0;
 		let showTooltip = false;
 		$.each(carrito, function(key, value){
-			let prestaciones = ``;
 			let idAgrupacion;
 			$.each(value.agrupaciones, function(k, item){
 				idAgrupacion = item.idAgrupacion
@@ -142,6 +141,7 @@
 				if(item.beneficio.paquetePromocional !== null){
 					tipoServicio = item.beneficio.paquetePromocional.nombrePaquete;
 				}
+				let prestaciones = ``;
 				$.each(item.detallesAgrupacion, function(k1, v1){
 					let classMsgCobertura = (v1.mensajeCreditoAutogestion === null && v1.mensajeCobertura === null) ? `invisible` : ``;
 					let textMsgCobertura = ``;

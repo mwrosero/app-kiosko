@@ -188,6 +188,13 @@
             $('#msg-cita').removeClass('d-none')
         }
 
+        if(dataCita.hasOwnProperty('tratamiento')){
+            $('.box-card-precio').addClass('d-none')
+        }else{
+            $('.box-card-precio').removeClass('d-none')
+        }
+        
+
         if(dataCita.reserva){
             await eliminarReserva();
         }
