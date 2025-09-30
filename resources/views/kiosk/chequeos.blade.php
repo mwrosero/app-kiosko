@@ -81,7 +81,9 @@
 
 			let secuenciaPrestacionesXAfiliado = [];
 			$.each(detalleChequeoSeleccionado.detalles, function(key, value){
-			    secuenciaPrestacionesXAfiliado.push(value.secuenciaPreXAfi)
+				if(value.cantidadDisponible > 0){
+			    	secuenciaPrestacionesXAfiliado.push(value.secuenciaPreXAfi)
+			    }
 			})
 
 			let datosPago = {
