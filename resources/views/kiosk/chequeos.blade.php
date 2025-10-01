@@ -126,6 +126,7 @@
 				$('#modalError').modal('show')
 				$('.titleError').html(`Orden activada`)
 				$('.msgError').html("Por favor espere ser llamado");
+				await cargarMisChequeos();
 			}
 			{{-- await mostrarDetalleModalChequeoDetalle(detalle);
 			$('.title-detalle-chequeo').html(detalle.nombreServicioNivel1.toLowerCase())
