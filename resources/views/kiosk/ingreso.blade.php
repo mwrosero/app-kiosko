@@ -172,8 +172,15 @@
 		activeInput = input;    // seteamos el input activo
 		keyboardInit.setInput(input.value); // sincronizamos teclado
 
-	    // Detectamos el input activo
-	    document.querySelectorAll("input").forEach(input => {
+	    document.querySelectorAll(".hg-button").forEach(btn => {
+		    btn.addEventListener("pointerdown", (e) => {
+		        e.preventDefault();
+		        const button = btn.dataset.skbtn;
+		        keyboardInit.buttonClicked(button);
+		    });
+		});
+
+		document.querySelectorAll("input").forEach(input => {
 	        input.addEventListener("focus", () => {
 	            activeInput = input;
 	            keyboardInit.setInput(activeInput.value);
