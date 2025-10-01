@@ -167,10 +167,21 @@
 
 		$('body').on('click', '.btn-CambiarFechaCita', async function(){
 			let dataCita = JSON.parse($(this).parent().attr('data-rel'));
+			
 			dataCita.paciente.idPaciente = dataCita.paciente.numeroPaciente;
 			dataCita.paciente.pacPacNumero = dataCita.paciente.numeroPaciente;
 			if(dataCita.beneficio !== null){
-				dataCita.convenio = dataCita.beneficio.convenio;
+				if(dataCita.beneficio.convenio !== null){
+					dataCita.convenio = dataCita.beneficio.convenio;
+				}else{
+					dataCita.convenio = {
+	                    "nombreConvenio": dataCita.beneficio.paquete.nombrePaquete,
+	                    "permitePago": "S",
+	                    "permiteReserva": "S",
+	                    "idCliente": null,
+	                    "codigoConvenio": null,
+	                }					
+				}
 			}else{
 				dataCita.convenio = {
                     "nombreConvenio": "Ninguno",
@@ -180,6 +191,10 @@
                     "codigoConvenio": null,
                 }
 			}
+
+			{{-- console.log(dataCita);
+			return; --}}
+
 			dataCita.online = (dataCita.esTeleconsulta) ? "S" : "N";
 			localStorage.setItem('agendamiento', JSON.stringify(dataCita));
 			if(dataCita.esTeleconsulta){
