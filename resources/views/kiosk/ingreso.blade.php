@@ -133,6 +133,7 @@
 				$('#box-input').html(`<input type="text" autofocus id="numeroDocumento" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" readonly>`);
 				tipoFiltro = "CEDULA";
 				$('#title').html(`Ingresa el número de cédula del paciente`);
+
 				keyboardInit = new Keyboard({
 					onChange: input => onChange(input),
 					onKeyPress: button => onKeyPress(button),
@@ -149,6 +150,7 @@
 				 * Update simple-keyboard when input is changed directly
 				 */
 				document.querySelector(".input").addEventListener("input", event => {
+					console.log(0);
 					keyboardInit.setInput(event.target.value);
 				});
 			break;
@@ -333,6 +335,7 @@
 
 	function onChange(input) {
 		document.querySelector(".input").value = input;
+		console.log(input)
 		// console.log("Input changed", input);
 		switch(tipo){
 			case 'C':
