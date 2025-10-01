@@ -51,7 +51,7 @@
 		visibility: hidden;
 	}
 
-	.numeric-theme .hg-button[data-skbtnuid="numbers-r3b0"]{
+	.hg-layout-numbers .hg-button[data-skbtnuid="numbers-r3b0"]{
 		visibility: hidden;
 	}
 
@@ -151,7 +151,7 @@
 					"1 2 3",
 					"4 5 6",
 					"7 8 9",
-					"{abc} 0 {backspace}"
+					" 0 {backspace}"
 				]
 	        },
 	        display: {
@@ -172,20 +172,29 @@
 		activeInput = input;    // seteamos el input activo
 		keyboardInit.setInput(input.value); // sincronizamos teclado
 
-	    document.querySelectorAll(".hg-button").forEach(btn => {
-		    btn.addEventListener("pointerdown", (e) => {
-		        e.preventDefault();
-		        const button = btn.dataset.skbtn;
-		        keyboardInit.buttonClicked(button);
-		    });
-		});
-
-		document.querySelectorAll("input").forEach(input => {
-	        input.addEventListener("focus", () => {
+	    // Detectamos el input activo
+	    document.querySelectorAll("input").forEach(input => {
+	        {{-- input.addEventListener("focus", () => {
 	            activeInput = input;
 	            keyboardInit.setInput(activeInput.value);
-	        });
+	        }); --}}
+
+	        input.addEventListener("focus", () => {
+			  	setTimeout(() => {
+			    	activeInput = input;
+			    	keyboardInit.setInput(activeInput.value || "");
+			  	}, 50); // 50ms suele bastar
+			});
+
 	    });
+
+	    document.body.addEventListener("focusin", e => {
+		  	if (e.target.tagName === "INPUT") {
+		    	activeInput = e.target;
+		    	keyboardInit.setInput(activeInput.value || "");
+		  	}
+		});
+
 
 		$('body').on('click', '#btn-ingresar', async function(){
 			await buscarCliente();
