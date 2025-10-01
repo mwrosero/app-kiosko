@@ -11,7 +11,7 @@
 			<h2 class="fw-bold fs-40 line-height-40" id="title"></h2>
 		</div>
 		<div class="col-8 offset-2" id="box-input">
-			<input type="text" autofocus id="numeroDocumento" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" readonly>			
+			
 		</div>
 		<div class="col-6 offset-3 text-center mt-56 mb-40">
 			<button disabled class="btn bg-silver text-silver-neutral-40 fs-18 line-height-24 py-3 rounded-8 w-100 fw-medium shadow-none" id="btn-ingresar">Ingresar</button>
@@ -48,10 +48,6 @@
 	}
 
 	.numeric-theme .hg-button[data-skbtnuid="default-r3b0"]{
-		visibility: hidden;
-	}
-
-	.numeric-theme .hg-button[data-skbtnuid="numbers-r3b0"]{
 		visibility: hidden;
 	}
 
@@ -100,6 +96,31 @@
 	callCounter = false;
 	
 	let activeInput = null;
+	document.addEventListener("focusin", (e) => {
+	    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") {
+	    	console.log(6)
+	        activeInput = e.target; // actualizamos el input activo
+	    }
+	});
+
+	function pressKey(char) {
+		console.log(7)
+	    if (!activeInput) return; // si no hay input activo, no hace nada
+
+	    // Momentáneamente quitar readonly para poder escribir
+	    activeInput.readOnly = false;
+	    activeInput.value += char;
+	    activeInput.dispatchEvent(new Event("input", { bubbles: true }));
+	    activeInput.readOnly = true;
+	}
+
+	// Asignar el evento a todas las teclas del teclado virtual
+	document.querySelectorAll(".key").forEach(btn => {
+	    btn.addEventListener("click", () => {
+	        pressKey(btn.dataset.char);
+	    });
+	});
+
 	document.addEventListener("DOMContentLoaded", async function () {
 
 		window.addEventListener("beforeunload", () => {
@@ -107,63 +128,48 @@
 			keyboardInit.destroy()
 		});
 
-		// Inicializamos el teclado una sola vez
-	    keyboardInit = new Keyboard({
-	        onChange: input => {
-	            if(activeInput) activeInput.value = input;
-	            handleBtnIngresar(input);
-	        },
-	        onKeyPress: button => {
-	            if(button === "{bksp}" && activeInput){
-	                keyboardInit.setInput(activeInput.value.slice(0, -1));
-	            }
-	        },
-	        layoutName: tipo === "C" ? "numbers" : "default",
-	        layout: {
-	            default: [
-					"q w e r t y u i o p {backspace}",
-					"a s d f g h j k l ñ {ent}",
-					"{shift} z x c v b n m -",
-					"{numbers} @ {space} . _"
-				],
-				shift: [
-					"Q W E R T Y U I O P {backspace}",
-					"A S D F G H J K L Ñ {ent}",
-					"{shift} Z X C V B N M -",
-					"{numbers} @ {space} . _"
-				],
-				numbers: [
-					"1 2 3",
-					"4 5 6",
-					"7 8 9",
-					"{abc} 0 {backspace}"
-				]
-	        },
-	        display: {
-				"{numbers}": "123",
-				"{ent}": "<i class='fa-solid fa-arrow-right'></i>",
-				"{escape}": "esc ⎋",
-				"{tab}": "tab ⇥",
-				"{backspace}": "<i class='fa fa-backspace'></i>",
-				"{capslock}": "caps ⇪",
-				"{shift}": "⇧",
-				"{space}": " ",
-				"{abc}": "ABC"
-			}
-	    });
+		switch(tipo){
+			case 'C':
+				$('#box-input').html(`<input type="text" autofocus id="numeroDocumento" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" readonly>`);
+				tipoFiltro = "CEDULA";
+				$('#title').html(`Ingresa el número de cédula del paciente`);
+				keyboardInit = new Keyboard({
+					onChange: input => onChange(input),
+					onKeyPress: button => onKeyPress(button),
+					layout: {
+						default: ["1 2 3", "4 5 6", "7 8 9", " 0 {bksp}"]
+					},
+					display: {
+						"{bksp}": "<i class='fa fa-backspace'></i>",
+					},
+					theme: "hg-theme-default hg-layout-numeric numeric-theme"
+				});
 
-	    const input = document.querySelector("#numeroDocumento");
-		input.focus();          // forzamos el foco
-		activeInput = input;    // seteamos el input activo
-		keyboardInit.setInput(input.value); // sincronizamos teclado
+				/**
+				 * Update simple-keyboard when input is changed directly
+				 */
+				document.querySelector(".input").addEventListener("input", event => {
+					keyboardInit.setInput(event.target.value);
+				});
+			break;
+			case 'P':
+				$('#box-input').html(`<input type="text" autofocus id="numeroDocumento" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" readonly>`);
+				tipoFiltro = "PASAPORTE";
+				$('#title').html(`Ingresa el número de pasaporte del paciente`);
+				loadKeyboardAlfanumerico()
+			break;
+			case 'N':
+				$('#box-input').html(`<input type="text" autofocus id="numeroDocumento" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" placeholder="Nombres y Apellidos" readonly>`);
+				tipoFiltro = "NOMBRES";
+				$('#title').html(`Ingresa los nombres y apellidos del paciente`);
+				loadKeyboardAlfanumerico()
+			break;
+		}
 
-	    // Detectamos el input activo
-	    document.querySelectorAll("input").forEach(input => {
-	        input.addEventListener("focus", () => {
-	            activeInput = input;
-	            keyboardInit.setInput(activeInput.value);
-	        });
-	    });
+		{{-- const myKeyboard = new Keyboard({
+		 	onChange: input => onChange(input),
+		  	onKeyPress: button => onKeyPress(button)
+		}); --}}
 
 		$('body').on('click', '#btn-ingresar', async function(){
 			await buscarCliente();
@@ -178,21 +184,7 @@
 
 	})
 
-	function handleBtnIngresar(input){
-	    if(tipo === "C"){
-	        if(esValidaCedula(input)){
-	            $('#btn-ingresar').prop('disabled', false).addClass('bg-royal-blue text-white').removeClass('bg-silver text-silver-neutral-40');
-	        } else {
-	            $('#btn-ingresar').prop('disabled', true).addClass('bg-silver text-silver-neutral-40').removeClass('bg-royal-blue text-white');
-	        }
-	    } else {
-	        $('#btn-ingresar').prop('disabled', input.length === 0);
-	    }
-	}
-
-
 	async function loadKeyboardAlfanumerico(){
-		console.log(77)
 		$('.simple-keyboard').css('width','100%');
 		keyboardInit = new Keyboard({
 			onChange: input => {
@@ -340,12 +332,7 @@
 	}
 
 	function onChange(input) {
-		// document.querySelector(".input").value = input;
-		console.log(input)
-		if (activeInput) {
-	        activeInput.value = input;
-	    }
-
+		document.querySelector(".input").value = input;
 		// console.log("Input changed", input);
 		switch(tipo){
 			case 'C':
