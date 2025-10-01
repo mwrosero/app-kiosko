@@ -585,7 +585,10 @@
                 codigoEmpOrden = dataCita.tratamiento.codigoEmpresaOrden;
                 lineaDetalle = dataCita.tratamiento.lineaDetalleOrden;
             }
-            
+        }
+
+        if(!dataCita.estaPagado){
+            lineaDetalle = '';
         }
 
         let codigoUsuario = dataCita.paciente.numeroIdentificacion;
@@ -722,6 +725,11 @@
                 lineaDetalle = dataCita.tratamiento.lineaDetalleOrden;
             }
             
+        }
+
+        {{-- if(!dataCita.estaPagado){ --}}
+        if(lineaDetalle === null){
+            lineaDetalle = '';
         }
 
         let codigoUsuario = dataCita.paciente.numeroIdentificacion;
