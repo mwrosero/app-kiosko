@@ -90,7 +90,7 @@
 		flex: 8; /* ocupa el triple de espacio que una tecla normal */
 	}
 </style>
-<script src="https://unpkg.com/simple-keyboard@latest/build/index.js"></script>
+<script src="https://unpkg.com/simple-keyboard@latest/build/index.js?v={{ time() }}"></script>
 <script>
 	let tipo = localStorage.getItem('tipo');
 	let tipoFiltro;
@@ -106,6 +106,10 @@
 			console.log("Destroy Keyboard");
 			keyboardInit.destroy()
 		});
+
+		if (Keyboard) {
+	        Keyboard.destroy(); // limpia instancia anterior
+	    }
 
 		switch(tipo){
 			case 'C':
