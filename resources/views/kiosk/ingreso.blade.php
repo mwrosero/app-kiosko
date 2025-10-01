@@ -107,8 +107,8 @@
 			keyboardInit.destroy()
 		});
 
-		if (Keyboard) {
-	        Keyboard.destroy(); // limpia instancia anterior
+		if (keyboardInit) {
+	        keyboardInit.destroy(); // limpia instancia anterior
 	    }
 
 		switch(tipo){
