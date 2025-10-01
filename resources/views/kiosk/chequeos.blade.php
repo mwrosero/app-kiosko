@@ -121,11 +121,16 @@
 			let notificar = await notificarLlegada(detalle.detalles[0].codigoOrdApoyo);
 			if(notificar.code != 200){
 				return;
+			}else{
+				$('#modalDetalleChequeo').modal('hide');
+				$('#modalError').modal('show')
+				$('.titleError').html(`Orden activada`)
+				$('.msgError').html("Por favor espere ser llamado");
 			}
-			await mostrarDetalleModalChequeoDetalle(detalle);
+			{{-- await mostrarDetalleModalChequeoDetalle(detalle);
 			$('.title-detalle-chequeo').html(detalle.nombreServicioNivel1.toLowerCase())
 			$('#modalDetalleChequeo').modal('show');
-			await cargarMisChequeos(false)
+			await cargarMisChequeos(false) --}}
 		})
 
 		$('body').on('click', '.btn-reagendar', async function(){
