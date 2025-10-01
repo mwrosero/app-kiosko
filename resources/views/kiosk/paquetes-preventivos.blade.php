@@ -144,6 +144,33 @@
     let keyboardInit;
 
     let currentInput = null;
+
+    let activeInput = null;
+	document.addEventListener("focusin", (e) => {
+	    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") {
+	    	console.log(6)
+	        activeInput = e.target; // actualizamos el input activo
+	    }
+	});
+
+	function pressKey(char) {
+		console.log(7)
+	    if (!activeInput) return; // si no hay input activo, no hace nada
+
+	    // Momentáneamente quitar readonly para poder escribir
+	    activeInput.readOnly = false;
+	    activeInput.value += char;
+	    activeInput.dispatchEvent(new Event("input", { bubbles: true }));
+	    activeInput.readOnly = true;
+	}
+
+	// Asignar el evento a todas las teclas del teclado virtual
+	document.querySelectorAll(".key").forEach(btn => {
+	    btn.addEventListener("click", () => {
+	        pressKey(btn.dataset.char);
+	    });
+	});
+	
 	document.addEventListener("DOMContentLoaded", async function () {
 		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
 		window.addEventListener("beforeunload", () => {

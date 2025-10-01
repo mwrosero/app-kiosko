@@ -71,11 +71,16 @@
 			let notificar = await notificarLlegada(detalle.detalleLaboratorio.listaOrdenesDetalle[0].codigoOrdenApoyo);
 			if(notificar.code != 200){
 				return;
+			}else{
+				$('#modalDetalleOrdenTratamiento').modal('hide');
+				$('#modalError').modal('show')
+				$('.titleError').html(`Orden activada`)
+				$('.msgError').html("Por favor espere ser llamado");
 			}
-			await mostrarDetalleModalChequeoDetalle(detalle);
+			{{-- await mostrarDetalleModalChequeoDetalle(detalle);
 			$('.title-detalle-chequeo').html(detalle.nombreServicioNivel1.toLowerCase())
 			$('#modalDetalleChequeo').modal('show');
-			await cargarMisChequeos(false)
+			await cargarMisChequeos(false) --}}
 		})
 
 		{{-- $('body').on('click', '.btn-agendar', async function(){
