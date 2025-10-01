@@ -107,6 +107,21 @@
 			keyboardInit.destroy()
 		});
 
+		switch(tipo){
+			case 'C':
+				tipoFiltro = "CEDULA";
+				$('#title').html(`Ingresa el número de cédula del paciente`);
+			break;
+			case 'P':
+				tipoFiltro = "PASAPORTE";
+				$('#title').html(`Ingresa el número de pasaporte del paciente`);
+			break;
+			case 'N':
+				tipoFiltro = "NOMBRES";
+				$('#title').html(`Ingresa los nombres y apellidos del paciente`);
+			break;
+		}
+
 		// Inicializamos el teclado una sola vez
 	    keyboardInit = new Keyboard({
 	        onChange: input => {
