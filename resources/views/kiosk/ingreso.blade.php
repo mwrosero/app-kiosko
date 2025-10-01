@@ -98,20 +98,18 @@
 	let activeInput = null;
 	document.addEventListener("focusin", (e) => {
 	    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") {
-	    	console.log(6)
-	        activeInput = e.target; // actualizamos el input activo
+	    	console.log(999)
+	        activeInput = e.target;
+	        keyboardInit.setInput(activeInput.value); // sincroniza teclado virtual
 	    }
 	});
 
-	function pressKey(char) {
-		console.log(7)
-	    if (!activeInput) return; // si no hay input activo, no hace nada
 
-	    // Momentáneamente quitar readonly para poder escribir
-	    activeInput.readOnly = false;
-	    activeInput.value += char;
-	    activeInput.dispatchEvent(new Event("input", { bubbles: true }));
-	    activeInput.readOnly = true;
+	function pressKey(char) {
+		if (!activeInput || !keyboardInit) return;
+	    // SimpleKeyboard tiene método setInput para actualizar valores
+	    let currentValue = activeInput.value + char;
+	    keyboardInit.setInput(currentValue); // esto disparará onChange automáticamente
 	}
 
 	// Asignar el evento a todas las teclas del teclado virtual
@@ -334,8 +332,12 @@
 	}
 
 	function onChange(input) {
-		document.querySelector(".input").value = input;
+		// document.querySelector(".input").value = input;
 		console.log(input)
+		if (activeInput) {
+	        activeInput.value = input;
+	    }
+
 		// console.log("Input changed", input);
 		switch(tipo){
 			case 'C':
