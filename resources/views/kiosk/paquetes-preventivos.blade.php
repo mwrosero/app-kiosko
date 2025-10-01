@@ -50,7 +50,7 @@
 	</div>
 	@include('components.footer')
 </div>
-<script src="https://unpkg.com/simple-keyboard@latest/build/index.js"></script>
+<script src="https://unpkg.com/simple-keyboard@latest/build/index.js?v={{ time() }}"></script>
 <style>
 	#lista-categorias .ico-categoria {
 	  max-width: 36px;
@@ -177,6 +177,10 @@
 			console.log("Destroy Keyboard");
 			keyboardInit.destroy()
 		});
+
+		if (keyboardInit) {
+	        keyboardInit.destroy(); // limpia instancia anterior
+	    }
 
 		await obtenerPaquetesPromocionales();
 

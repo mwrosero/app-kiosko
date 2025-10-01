@@ -179,7 +179,7 @@
 	</div> --}}
 	@include('components.footer')
 </div>
-<script src="https://unpkg.com/simple-keyboard@latest/build/index.js"></script>
+<script src="https://unpkg.com/simple-keyboard@latest/build/index.js?v={{ time() }}"></script>
 <style>
 	.box-icon-home{
 		width: 150px;
@@ -305,6 +305,10 @@
 			console.log("Destroy Keyboard");
 			keyboardInit.destroy()
 		});
+
+		if (keyboardInit) {
+	        keyboardInit.destroy(); // limpia instancia anterior
+	    }
 
 		await consultarCarrito();
 		await obtenerDatosFacturacion();
