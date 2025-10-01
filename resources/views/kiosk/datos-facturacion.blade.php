@@ -313,7 +313,7 @@
 		await consultarCarrito();
 		await obtenerDatosFacturacion();
 
-		let keyboardInit = new Keyboard({
+		keyboardInit = new Keyboard({
 			onChange: async input => {
 				if(currentInput){
 					let max = $(currentInput).attr("maxlength"); // obtiene el maxlength del input
