@@ -27,21 +27,22 @@
     background-color: #ced4da;
 }
 
-.kb-key-Hidden{
+.kb-key-hidden{
 	visibility: hidden;
 }
 
-.kb-key-Space{
+.kb-key-space{
 	height: 62px;
 }
 
-.kb-key-Enter{
+.kb-key-enter,
+.kb-key-shift{
 	background: var(--royalBlue) !important;
     font-size: 30px !important;
     color: #fff !important;
 }
 
-.kb-key-Backspace{
+.kb-key-backspace{
 	background: #DDE1EC !important;
 	color: #586C9D !important;
 }
