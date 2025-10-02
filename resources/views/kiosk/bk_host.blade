@@ -1,5 +1,6 @@
 @extends('template.app-template')
 @section('content')
+<link rel="stylesheet" href="https://unpkg.com/simple-keyboard@latest/build/css/index.css">
 
 <div class="container-fluid px-0 d-flex flex-column min-vh-100">
 	@include('components.header', ['showSettingBtn' => false])
@@ -42,21 +43,74 @@
 		margin: auto;
 		background: transparent !important;
 	}
+	.numeric-theme .hg-button.hg-standardBtn,
+	.numeric-theme .hg-button.hg-functionBtn{
+	    font-size: 36px !important;
+	    line-height: 44px !important;
+	    padding: 20px 0px !important;
+	    height: auto !important;
+	    border: 1px solid #13243F;
+	    box-shadow: none !important;
+	    margin: 12px !important;
+	    border-radius: 8px !important;
+	}
+
+	.numeric-theme .hg-button[data-skbtnuid="default-r3b0"]{
+		visibility: hidden;
+	}
+
+	.numeric-theme .hg-button[data-skbtnuid="default-r3b2"]{
+		border: none !important;
+		background: transparent !important;
+		font-size: 42px !important;
+	}
 
 	.simple-keyboard{
 		width: 100%;
 		margin: auto;
 		background: transparent !important;
 	}
+	.hg-button.hg-standardBtn,
+	.hg-button.hg-functionBtn{
+		font-size: 24px !important;
+		line-height: 44px !important;
+		padding: 5px 0px !important;
+		height: auto !important;
+		border: 1px solid #13243F;
+		box-shadow: none !important;
+		margin: 5px !important;
+		border-radius: 8px !important;
+	}
+	.hg-button.hg-standardBtn, .hg-button.hg-functionBtn{
+		width: 20px;
+	}
+	.hg-button[data-skbtnuid="default-r1b10"]{
+		border: none !important;
+		background: var(--royalBlue) !important;
+		font-size: 30px !important;
+		color: #fff !important;
+	}
+	.hg-button[data-skbtn="{space}"] {
+		flex: 8; /* ocupa el triple de espacio que una tecla normal */
+	}
 </style>
+<script src="https://unpkg.com/simple-keyboard@latest/build/index.js"></script>
 <script>
 	let tipo = localStorage.getItem('tipo');
 	let tipoFiltro;
-	
+	let currentInput = null;
+	const Keyboard = window.SimpleKeyboard.default;
+	let keyboardInit;
 	callCounter = false;
 	document.addEventListener("DOMContentLoaded", async function () {
-		$.customKeyboard.init('input[readonly]', '.simple-keyboard');
-	
+
+		window.addEventListener("beforeunload", () => {
+			console.log("Destroy Keyboard");
+			keyboardInit.destroy()
+		});
+
+		loadKeyboardAlfanumerico();
+
 		const togglePasswordVisibility = document.getElementById('togglePasswordVisibility');
 		const passwordInput = document.getElementById('password');
 		const eyeIcon = togglePasswordVisibility.querySelector('i');
@@ -71,13 +125,11 @@
 			eyeIcon.classList.toggle('bi-eye-slash');
 		});
 
-		$('body').on('change', 'input', async function(){
-			if(getInput('user') !== "" && getInput("password") !== ""){
-				$('#btn-ingresar').addClass('bg-royal-blue text-white').removeClass('bg-silver text-silver-neutral-40');
-			}else{
-				$('#btn-ingresar').removeClass('bg-royal-blue text-white').addClass('bg-silver text-silver-neutral-40');
-			}
-		})
+		
+		{{-- const myKeyboard = new Keyboard({
+		 	onChange: input => onChange(input),
+		  	onKeyPress: button => onKeyPress(button)
+		}); --}}
 
 		$('body').on('click', '#btn-ingresar', async function(){
 			await loginHost();

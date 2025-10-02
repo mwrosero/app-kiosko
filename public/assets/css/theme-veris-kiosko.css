@@ -543,6 +543,10 @@ body {
     font-size: 32px !important;
 }
 
+.fs-36{
+    font-size: 36px !important;
+}
+
 .fs-40{
     font-size: 40px !important;
 }
@@ -593,6 +597,10 @@ body {
 
 .line-height-40{
     line-height: 40px !important;
+}
+
+.line-height-44{
+    line-height: 44px !important;
 }
 
 .line-height-48{
