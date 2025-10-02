@@ -5,7 +5,8 @@
 	@include('components.header')
 	<!-- Sub-header -->
 	@include('components.sub-header', ['showTurnoBtn' => false, 'url' => '/'.$mac])
-	<div class="row rounded-24 bg-white py-40 mx-0" style="margin-top: 350px;">
+
+	<div class="row rounded-24 bg-white py-40 mx-0 box-ingresar" style="margin-top: 350px;">
 		<div class="col-12 text-center my-3 pb-5">
 			<h2 class="fw-bold fs-40 line-height-40" id="title"></h2>
 		</div>
@@ -15,6 +16,24 @@
 		<div class="col-6 offset-3 text-center mt-56 mb-40">
 			<button disabled class="btn bg-silver text-silver-neutral-40 fs-18 line-height-24 py-3 rounded-8 w-100 fw-medium shadow-none" id="btn-ingresar">Ingresar</button>
 		</div>
+	</div>
+
+	<div class="row rounded-24 bg-white py-40 mx-0 d-none box-paciente-nuevo" style="margin-top: 350px;">
+		<div class="col-8 offset-2 text-center my-3 pb-5">
+			<h2 class="fw-bold fs-40 line-height-40" id="mensajeErrorUsuarioNoEncontrado"></h2>
+		</div>
+		<div class="col-8 offset-2 mt-3 text-start">
+            <label for="nombres" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Ingrese sus nombres y apellidos *</label>
+            <input type="text" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3" name="nombres" id="nombres" placeholder="" required readonly/>
+            <div class="invalid-feedback">
+                Ingrese sus nombres y apellidos.
+            </div>
+        </div>
+        <div class="col-6 offset-3 text-center mt-56 mb-40">
+			<button class="btn bg-royal-blue text-white fs-18 line-height-24 py-3 rounded-8 w-100 fw-medium shadow-none" id="btn-generar-turno-paciente">Generar</button>
+		</div>
+	</div>
+	<div class="row px-0 mx-0">
 		<div class="col-10 offset-1 mt-56 bg-silver-light p-44">
 			<div class="simple-keyboard"></div>
 		</div>
@@ -39,6 +58,7 @@
 <script>
 	let tipo = localStorage.getItem('tipo');
 	let tipoFiltro;
+	let esPacienteNuevo = false;
 	document.addEventListener("DOMContentLoaded", async function () {
 
 		switch(tipo){
@@ -67,6 +87,23 @@
 
 		$('body').on('change', '#numeroDocumento', function(){
 			handleBtnIngresar($(this).val());
+		})
+
+		$('body').on('click', '#btn-generar-turno-paciente', async function(){
+			if(getInput('nombres').length > 0){
+				let datosPacienteNuevo = {
+			        "tipoIdentificacion": tipoFiltro,
+			        "numeroIdentificacion": getInput('numeroDocumento'),
+			        "nombreCompleto": getInput('nombres')
+			    }
+
+			    localStorage.setItem('datosPacienteNuevo', JSON.stringify(datosPacienteNuevo));
+			    location.href = '/turno-paciente-nuevo/{{ $mac }}';
+			}else{
+				$('#modalError').modal('show');
+				$('.titleError').html(`Atención`);
+				$('.msgError').html(`Los campos solicitados son obligatorios.`);
+			}
 		})
 
 		$('body').on('click', '.btn-acceder-user', async function(){
@@ -105,6 +142,13 @@
         console.log(data);
         if(data.code == 200){
 	        localStorage.setItem("trackId", data.trackId);
+	        if(data.data.length === 0){
+	        	$('#mensajeErrorUsuarioNoEncontrado').html(`Paciente no encontrado. Por favor, ingrese sus datos a continuación para generar un turno.`)
+	        	$('.box-ingresar').addClass('d-none');
+	        	$('.box-paciente-nuevo').removeClass('d-none');
+	        	esPacienteNuevo = true;
+	        	return;
+	        }
         	if(tipoFiltro == "NOMBRES"){
         		if(data.data.length == 0){
         			$('#modalError').modal('show');

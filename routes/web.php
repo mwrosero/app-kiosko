@@ -21,6 +21,7 @@ Route::get('/ingreso/{mac}', [KioskController::class, 'ingreso'])->name('ingreso
 Route::get('/menu/{mac}', [KioskController::class, 'menu'])->name('menu');
 
 Route::get('/turno/{mac}', [KioskController::class, 'turno'])->name('turno');
+Route::get('/turno-paciente-nuevo/{mac}', [KioskController::class, 'turnoPacienteNuevo'])->name('turnoPacienteNuevo');
 
 Route::get('/proximas-citas/{mac}', [KioskController::class, 'proximasCitas'])->name('proximasCitas');
 Route::get('/paquetes-preventivos/{mac}', [KioskController::class, 'paquetesPreventivos'])->name('paquetesPreventivos');

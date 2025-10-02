@@ -36,6 +36,14 @@ class KioskController extends Controller
                 ->with('mac',$mac);
     }
 
+    public function turnoPacienteNuevo($mac) {
+        // $token = session('accessToken');
+        $token = Veris::getToken();
+        return view('kiosk.turno-paciente-nuevo')
+                ->with('accessToken',$token)
+                ->with('mac',$mac);
+    }
+
     public function menu($mac) {
         // $token = session('accessToken');
         $token = Veris::getToken();

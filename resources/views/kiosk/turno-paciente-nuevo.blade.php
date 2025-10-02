@@ -30,23 +30,35 @@
 	document.addEventListener("DOMContentLoaded", async function () {
 		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
         
-		let turno = await generarTurno();
+		let turno = await generarTurnoPacienteNuevo();
 		if(turno.code !== 200){
 			return;
 		}
-		if(tipoTurnoGenerar == "demanda"){
-			$('.info-turno').removeClass('d-none')
-			$('.msg-turno').html(`Tu turno es el:`)
-			$('.numero-turno').html(turno.data.turno)
-		}else if(tipoTurnoGenerar == "pretransaccion"){
-			$('.info-turno').removeClass('d-none')
-			$('.msg-turno').html(`Tu turno es el:`)
-			$('.numero-turno').html(turno.data.turno)
-		}
+		
+		$('.info-turno').removeClass('d-none')
+		$('.msg-turno').html(`Tu turno es el:`)
+		$('.numero-turno').html(turno.data.turno)
 		
 		setTimeout(function(){
 			location.href = `/{{ $mac }}`;
 		}, 3000);
 	})
+
+	async function generarTurnoPacienteNuevo(){
+    	let args = [];
+	    args["endpoint"] = `${api_url_digitales}/${api_war}/turnero/generar_turno?macAddress=${mac}&idPaciente=`;
+	    args["method"] = "POST";
+	    args["showLoader"] = true;
+	    args["token"] = accessToken;
+	    args["bodyType"] = "json";
+	    let payload = JSON.parse(localStorage.getItem('datosPacienteNuevo'))
+		args["data"] = JSON.stringify(payload);
+	    const data = await call(args);
+	    console.log(data);
+	    if(data.code == 200){
+	        await printTurnoAPI(data.data)
+	    }
+	    return data;
+    }
 </script>
 @endsection
