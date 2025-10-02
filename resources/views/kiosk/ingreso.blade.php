@@ -1,6 +1,5 @@
 @extends('template.app-template')
 @section('content')
-<link rel="stylesheet" href="https://unpkg.com/simple-keyboard@latest/build/css/index.css">
 
 <div class="container-fluid px-0 d-flex flex-column min-vh-100">
 	@include('components.header')
@@ -31,177 +30,43 @@
 		object-fit: cover;
 	}
 	.simple-keyboard{
-		width: 75%;
+		{{-- width: 75%; --}}
 		margin: auto;
 		background: transparent !important;
-	}
-	.numeric-theme .hg-button.hg-standardBtn,
-	.numeric-theme .hg-button.hg-functionBtn{
-	    font-size: 36px !important;
-	    line-height: 44px !important;
-	    padding: 20px 0px !important;
-	    height: auto !important;
-	    border: 1px solid #13243F;
-	    box-shadow: none !important;
-	    margin: 12px !important;
-	    border-radius: 8px !important;
-	}
-
-	.numeric-theme .hg-button[data-skbtnuid="default-r3b0"]{
-		visibility: hidden;
-	}
-
-	.hg-layout-numbers .hg-button[data-skbtnuid="numbers-r3b0"]{
-		visibility: hidden;
-	}
-
-	.numeric-theme .hg-button[data-skbtnuid="default-r3b2"]{
-		border: none !important;
-		background: transparent !important;
-		font-size: 42px !important;
-	}
-
-	.simple-keyboard{
-		width: 100%;
-		margin: auto;
-		background: transparent !important;
-	}
-	.hg-button.hg-standardBtn,
-	.hg-button.hg-functionBtn{
-		font-size: 24px !important;
-		line-height: 44px !important;
-		padding: 5px 0px !important;
-		height: auto !important;
-		border: 1px solid #13243F;
-		box-shadow: none !important;
-		margin: 5px !important;
-		border-radius: 8px !important;
-	}
-	.hg-button.hg-standardBtn, .hg-button.hg-functionBtn{
-		width: 20px;
-	}
-	.hg-button[data-skbtnuid="default-r1b10"]{
-		border: none !important;
-		background: var(--royalBlue) !important;
-		font-size: 30px !important;
-		color: #fff !important;
-	}
-	.hg-button[data-skbtn="{space}"] {
-		flex: 8; /* ocupa el triple de espacio que una tecla normal */
 	}
 </style>
-<script src="https://unpkg.com/simple-keyboard@latest/build/index.js?v={{ time() }}"></script>
+
 <script>
 	let tipo = localStorage.getItem('tipo');
 	let tipoFiltro;
-	let currentInput = null;
-	const Keyboard = window.SimpleKeyboard.default;
-	let keyboardInit;
-	callCounter = false;
-	
-	let activeInput = null;
 	document.addEventListener("DOMContentLoaded", async function () {
-
-		window.addEventListener("beforeunload", () => {
-			console.log("Destroy Keyboard");
-			keyboardInit.destroy()
-		});
-
-		if (keyboardInit) {
-	        keyboardInit.destroy(); // limpia instancia anterior
-	    }
 
 		switch(tipo){
 			case 'C':
 				tipoFiltro = "CEDULA";
+				$('#numeroDocumento').attr('data-kb','numeric');
 				$('#title').html(`Ingresa el número de cédula del paciente`);
 			break;
 			case 'P':
 				tipoFiltro = "PASAPORTE";
+				$('#numeroDocumento').attr('data-kb','alphanumeric');
 				$('#title').html(`Ingresa el número de pasaporte del paciente`);
 			break;
 			case 'N':
 				tipoFiltro = "NOMBRES";
+				$('#numeroDocumento').attr('data-kb','alphabet');
 				$('#title').html(`Ingresa los nombres y apellidos del paciente`);
 			break;
 		}
 
-		// Inicializamos el teclado una sola vez
-	    keyboardInit = new Keyboard({
-	        onChange: input => {
-	            if(activeInput) activeInput.value = input;
-	            handleBtnIngresar(input);
-	        },
-	        onKeyPress: button => {
-	            if(button === "{bksp}" && activeInput){
-	                keyboardInit.setInput(activeInput.value.slice(0, -1));
-	            }
-	        },
-	        layoutName: tipo === "C" ? "numbers" : "default",
-	        layout: {
-	            default: [
-					"q w e r t y u i o p {backspace}",
-					"a s d f g h j k l ñ {ent}",
-					"{shift} z x c v b n m -",
-					"{numbers} @ {space} . _"
-				],
-				shift: [
-					"Q W E R T Y U I O P {backspace}",
-					"A S D F G H J K L Ñ {ent}",
-					"{shift} Z X C V B N M -",
-					"{numbers} @ {space} . _"
-				],
-				numbers: [
-					"1 2 3",
-					"4 5 6",
-					"7 8 9",
-					" 0 {backspace}"
-				]
-	        },
-	        display: {
-				"{numbers}": "123",
-				"{ent}": "<i class='fa-solid fa-arrow-right'></i>",
-				"{escape}": "esc ⎋",
-				"{tab}": "tab ⇥",
-				"{backspace}": "<i class='fa fa-backspace'></i>",
-				"{capslock}": "caps ⇪",
-				"{shift}": "⇧",
-				"{space}": " ",
-				"{abc}": "ABC"
-			}
-	    });
-
-	    const input = document.querySelector("#numeroDocumento");
-		input.focus();          // forzamos el foco
-		activeInput = input;    // seteamos el input activo
-		keyboardInit.setInput(input.value); // sincronizamos teclado
-
-	    // Detectamos el input activo
-	    document.querySelectorAll("input").forEach(input => {
-	        {{-- input.addEventListener("focus", () => {
-	            activeInput = input;
-	            keyboardInit.setInput(activeInput.value);
-	        }); --}}
-
-	        input.addEventListener("focus", () => {
-			  	setTimeout(() => {
-			    	activeInput = input;
-			    	keyboardInit.setInput(activeInput.value || "");
-			  	}, 50); // 50ms suele bastar
-			});
-
-	    });
-
-	    document.body.addEventListener("focusin", e => {
-		  	if (e.target.tagName === "INPUT") {
-		    	activeInput = e.target;
-		    	keyboardInit.setInput(activeInput.value || "");
-		  	}
-		});
-
+		$.customKeyboard.init('input[readonly]', '.simple-keyboard');
 
 		$('body').on('click', '#btn-ingresar', async function(){
 			await buscarCliente();
+		})
+
+		$('body').on('change', '#numeroDocumento', function(){
+			handleBtnIngresar($(this).val());
 		})
 
 		$('body').on('click', '.btn-acceder-user', async function(){
@@ -221,95 +86,12 @@
 	            $('#btn-ingresar').prop('disabled', true).addClass('bg-silver text-silver-neutral-40').removeClass('bg-royal-blue text-white');
 	        }
 	    } else {
-	        $('#btn-ingresar').prop('disabled', input.length === 0);
+	    	if(input.length > 5){
+	    		$('#btn-ingresar').prop('disabled', false).addClass('bg-royal-blue text-white').removeClass('bg-silver text-silver-neutral-40');
+	    	}else{
+	    		$('#btn-ingresar').prop('disabled', true).addClass('bg-silver text-silver-neutral-40').removeClass('bg-royal-blue text-white');
+	    	}
 	    }
-	}
-
-
-	async function loadKeyboardAlfanumerico(){
-		console.log(77)
-		$('.simple-keyboard').css('width','100%');
-		keyboardInit = new Keyboard({
-			onChange: input => {
-				if(currentInput){
-					$(currentInput).val(input);
-					$('#btn-ingresar').attr('disabled', false);
-					$('#btn-ingresar').addClass('bg-royal-blue text-white').removeClass('bg-silver text-silver-neutral-40');
-				}
-			},
-			onKeyPress: button => {
-				if(button === "{bksp}" && currentInput){
-					let val = $(currentInput).val();
-					$(currentInput).val(val.slice(0, -1));
-					keyboardInit.setInput($(currentInput).val());
-				}
-
-    			// 👉 Aquí manejamos los cambios de layout
-				if(button === "{shift}" || button === "{lock}"){
-					handleShift();
-				}
-
-				if(button === "{numbers}"){
-					keyboardInit.setOptions({
-						layoutName: "numbers"
-					});
-				}
-
-				if(button === "{abc}"){
-					keyboardInit.setOptions({
-						layoutName: "default"
-					});
-				}
-			},
-			mergeDisplay: true,
-			layoutName: "default",
-			layout: {
-				default: [
-					"q w e r t y u i o p {backspace}",
-					"a s d f g h j k l ñ {ent}",
-					"{shift} z x c v b n m -",
-					"{numbers} @ {space} . _"
-				],
-				shift: [
-					"Q W E R T Y U I O P {backspace}",
-					"A S D F G H J K L Ñ {ent}",
-					"{shift} Z X C V B N M -",
-					"{numbers} @ {space} . _"
-				],
-				numbers: [
-					"1 2 3",
-					"4 5 6",
-					"7 8 9",
-					"{abc} 0 {backspace}"
-				]
-			},
-			display: {
-				"{numbers}": "123",
-				"{ent}": "<i class='fa-solid fa-arrow-right'></i>",
-				"{escape}": "esc ⎋",
-				"{tab}": "tab ⇥",
-				"{backspace}": "<i class='fa fa-backspace'></i>",
-				"{capslock}": "caps ⇪",
-				"{shift}": "⇧",
-				"{abc}": "ABC"
-			}
-		});
-
-		// función auxiliar para shift
-		function handleShift(){
-			let currentLayout = keyboardInit.options.layoutName;
-			let shiftToggle = currentLayout === "default" ? "shift" : "default";
-			keyboardInit.setOptions({
-				layoutName: shiftToggle
-			});
-		}
-
-
-  		// Detectar qué input tiene el foco
-		$("input").on("focus", function(){
-			currentInput = this;
-			keyboardInit.setInput($(this).val());
-		});
 	}
 
 	async function buscarCliente(){

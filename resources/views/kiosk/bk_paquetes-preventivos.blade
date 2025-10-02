@@ -1,5 +1,6 @@
 @extends('template.app-template')
 @section('content')
+<link rel="stylesheet" href="https://unpkg.com/simple-keyboard@latest/build/css/index.css">
 <div class="container-fluid px-0 d-flex flex-column min-vh-100">
 	@include('components.header')
 	<!-- Sub-header -->
@@ -22,7 +23,7 @@
 					<div class="col-10 offset-1 py-4 d-flex justify-content-between align-items-center gap-2">
 						<div class="input-group bg-beige-light border-midnight-blue-tint-80 search-box rounded-8">
 		                    <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="{{asset('assets/img/svg/search.svg')}}" alt="veris-promociones"></span>
-		                    <input type="search" class="form-control bg-transparent fs-16 line-height-20 border-0 p-2 ps-0" name="buscarPorPromocion" id="buscarPorPromocion" placeholder="Ejemplo: Exámenes de laboratorio" aria-describedby="search" style="outline: none;box-shadow: none;" readonly/>
+		                    <input type="search" class="form-control bg-transparent fs-16 line-height-20 border-0 p-2 ps-0" name="buscarPorPromocion" id="buscarPorPromocion" placeholder="Ejemplo: Exámenes de laboratorio" aria-describedby="search" style="outline: none;box-shadow: none;" readonly />
 		                </div>
 		                <button class="btn h-100 d-flex justify-content-between p-12 align-items-center fs-18 line-height-24 border-royal-blue text-royal-blue rounded-8" style="width: 175px;" data-bs-toggle="modal" data-bs-target="#modalCategorias">
 		                	Filtrar por
@@ -49,6 +50,7 @@
 	</div>
 	@include('components.footer')
 </div>
+<script src="https://unpkg.com/simple-keyboard@latest/build/index.js?v={{ time() }}"></script>
 <style>
 	#lista-categorias .ico-categoria {
 	  max-width: 36px;
@@ -138,30 +140,139 @@
     let perPage = 12;
     let cargandoContenido = false;
     let isFiltered = false;
-	tecladoFlotante = true;
+	const Keyboard = window.SimpleKeyboard.default;
+    let keyboardInit;
 
+    let currentInput = null;
+
+    let activeInput = null;
+	document.addEventListener("focusin", (e) => {
+	    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") {
+	    	console.log(6)
+	        activeInput = e.target; // actualizamos el input activo
+	    }
+	});
+
+	function pressKey(char) {
+		console.log(7)
+	    if (!activeInput) return; // si no hay input activo, no hace nada
+
+	    // Momentáneamente quitar readonly para poder escribir
+	    activeInput.readOnly = false;
+	    activeInput.value += char;
+	    activeInput.dispatchEvent(new Event("input", { bubbles: true }));
+	    activeInput.readOnly = true;
+	}
+
+	// Asignar el evento a todas las teclas del teclado virtual
+	document.querySelectorAll(".key").forEach(btn => {
+	    btn.addEventListener("click", () => {
+	        pressKey(btn.dataset.char);
+	    });
+	});
+	
 	document.addEventListener("DOMContentLoaded", async function () {
 		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
+		window.addEventListener("beforeunload", () => {
+			console.log("Destroy Keyboard");
+			keyboardInit.destroy()
+		});
+
+		if (keyboardInit) {
+	        keyboardInit.destroy(); // limpia instancia anterior
+	    }
 
 		await obtenerPaquetesPromocionales();
 
-		$.customKeyboard.init('input[readonly]', '.simple-keyboard');
+		keyboardInit = new Keyboard({
+			onChange: async input => {
+				if(currentInput){
+					$(currentInput).val(input);
+					console.log(input)
 
-		$('body').on('change', '#buscarPorPromocion', async function() {
-			let input = $(this).val();
-			if(input.length > 3){
-				page = 1;
-                $('#listado-paquetes').empty();
-                cargandoContenido = true;
-                await obtenerPaquetesPromocionales(false);
-			}else if(input.length == 0){
-                page = 1;
-                $('#listado-paquetes').empty();
-                cargandoContenido = false;
-                await obtenerPaquetesPromocionales(false);
-    		}
-		})
-		
+					if(input.length > 3){
+						page = 1;
+	                    $('#listado-paquetes').empty();
+	                    cargandoContenido = true;
+	                    await obtenerPaquetesPromocionales(false);
+					}else if(input.length == 0){
+		                page = 1;
+		                $('#listado-paquetes').empty();
+		                cargandoContenido = false;
+		                await obtenerPaquetesPromocionales(false);
+            		}
+				}
+			},
+			onKeyPress: async button => {
+				if(button === "{bksp}" && currentInput){
+					let val = $(currentInput).val();
+					$(currentInput).val(val.slice(0, -1));
+					keyboardInit.setInput($(currentInput).val());
+				}
+
+    			// 👉 Aquí manejamos los cambios de layout
+				if(button === "{shift}" || button === "{lock}"){
+					handleShift();
+				}
+
+				if(button === "{numbers}"){
+					keyboardInit.setOptions({
+						layoutName: "numbers"
+					});
+				}
+
+				if(button === "{abc}"){
+					keyboardInit.setOptions({
+						layoutName: "default"
+					});
+				}
+
+				if (button === "{close}") {
+					$('#box-simple-keyboard').addClass('d-none');
+				}
+
+				if(button === "{ent}" && currentInput){
+					$('#box-simple-keyboard').addClass('d-none');
+				}
+			},
+			onFocus: async button => {
+				console.log(0)
+			},
+			mergeDisplay: true,
+			layoutName: "default",
+			layout: {
+				default: [
+					"q w e r t y u i o p {bksp}",
+					"a s d f g h j k l ñ {ent}",
+					"{shift} z x c v b n m -",
+					"{numbers} @ {space} . {close}"
+				],
+				shift: [
+					"Q W E R T Y U I O P {bksp}",
+					"A S D F G H J K L Ñ {ent}",
+					"{shift} Z X C V B N M -",
+					"{numbers} @ {space} . {close}"
+				],
+				numbers: [
+					"1 2 3",
+					"4 5 6",
+					"7 8 9",
+					"{abc} 0 {bksp}"
+				]
+			},
+			display: {
+				"{numbers}": "123",
+				"{ent}": "<i class='fa-solid fa-arrow-right'></i>",
+				"{escape}": "esc ⎋",
+				"{tab}": "tab ⇥",
+				"{bksp}": "<i class='fa fa-backspace'></i>",
+				"{capslock}": "caps ⇪",
+				"{shift}": "⇧",
+				"{abc}": "ABC",
+				"{close}": "<i class='fa-regular fa-circle-xmark'></i>"
+			}
+		});
+
 		$(document).on('click', function(e) {
 		    if ($('#box-simple-keyboard').is(':visible') && 
 		    	!$(e.target).closest('#box-simple-keyboard').length && 
@@ -169,6 +280,40 @@
     		){
 		        $('#box-simple-keyboard').addClass('d-none');
     		}
+		});
+
+		$("input").on("focus", function () {
+			$('#box-simple-keyboard').removeClass('d-none');
+			if (this.type === "checkbox") {
+				return; // no hacer nada
+			}
+		  	currentInput = this;
+
+		  	const isNumeric =
+		    	this.type === "number" ||
+		    	$(this).attr("inputmode") === "numeric";
+
+
+		  	keyboardInit.setOptions({ layoutName: isNumeric ? "numbers" : "default" });
+
+		  	// Sincronizamos valor actual del input con el teclado
+		  	keyboardInit.setInput($(this).val() || "");
+		  	//keyboardInit.setInput($(this).val());
+		});
+
+		// función auxiliar para shift
+		function handleShift(){
+			let currentLayout = keyboardInit.options.layoutName;
+			let shiftToggle = currentLayout === "default" ? "shift" : "default";
+			keyboardInit.setOptions({
+				layoutName: shiftToggle
+			});
+		}
+
+  		// Detectar qué input tiene el foco
+		$("input").on("focus", function(){
+			currentInput = this;
+			keyboardInit.setInput($(this).val());
 		});
 
 		$('body').on('click', '.btnEliminarCategoria', async function(){
@@ -221,7 +366,7 @@
 
         async function onScroll(){
             console.log('onScroll');
-            $('#box-simple-keyboard').addClass('d-none');
+            
             if(!cargandoContenido && !isFiltered && $(window).scrollTop() + $(window).height() + 100 > $(document).height()) {
                 cargandoContenido = true;
                 console.log("near bottom!");
@@ -253,7 +398,7 @@
         var doneTypingInterval = 750; // Tiempo de pausa en milisegundos (0.5 segundos)
 
         // Evento de escritura en el input
-        $('body').on('keyup', '#buscarPorPromocion', async function() {
+        $('#buscarPorPromocion').on('keyup', async function() {
             clearTimeout(typingTimer); // Limpiar el temporizador cada vez que se escribe
 
             var searchText = $(this).val();

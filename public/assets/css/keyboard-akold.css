@@ -1,0 +1,47 @@
+#virtualKeyboard {
+    background-color: #f8f9fa;
+    border-radius: .5rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,.15);
+}
+
+.kb-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: .25rem;
+}
+
+.kb-key {
+    flex: 1 1 40px;
+    text-align: center;
+    border: 1px solid #ced4da;
+    cursor: pointer;
+    user-select: none;
+    transition: background .2s;
+}
+
+.kb-key:hover {
+    background-color: #dee2e6;
+}
+
+.kb-key:active {
+    background-color: #ced4da;
+}
+
+.kb-key-Hidden{
+	visibility: hidden;
+}
+
+.kb-key-Space{
+	height: 62px;
+}
+
+.kb-key-Enter{
+	background: var(--royalBlue) !important;
+    font-size: 30px !important;
+    color: #fff !important;
+}
+
+.kb-key-Backspace{
+	background: #DDE1EC !important;
+	color: #586C9D !important;
+}

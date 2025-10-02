@@ -1,5 +1,6 @@
 @extends('template.app-template')
 @section('content')
+<link rel="stylesheet" href="https://unpkg.com/simple-keyboard@latest/build/css/index.css">
 
 <div class="container-fluid px-0 d-flex flex-column min-vh-100">
 	@include('components.header')
@@ -27,7 +28,7 @@
 	                </div>
 	                <div class="col-6">
 	                    <label for="numeroIdentificacion" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Número de documento *</label>
-	                    <input type="number" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="" required readonly data-kb="numeric"/>
+	                    <input type="number" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="" required readonly/>
 	                    <div class="invalid-feedback">
 	                        Ingrese un número de identificacion.
 	                    </div>
@@ -41,7 +42,7 @@
 	                </div>
 	                <div class="col-12 mt-3">
 	                    <label for="mail" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Correo electrónico *</label>
-	                    <input type="email" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3" name="mail" id="mail" placeholder="" required readonly data-kb="full"/>
+	                    <input type="email" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3" name="mail" id="mail" placeholder="" required readonly/>
 	                    <div class="valid-feedback">
 	                        Ingrese un correo electronico.
 	                    </div>
@@ -178,6 +179,7 @@
 	</div> --}}
 	@include('components.footer')
 </div>
+<script src="https://unpkg.com/simple-keyboard@latest/build/index.js?v={{ time() }}"></script>
 <style>
 	.box-icon-home{
 		width: 150px;
@@ -192,56 +194,254 @@
 		margin: auto;
 		background: transparent !important;
 	}
+	.hg-button.hg-standardBtn,
+	.hg-button.hg-functionBtn{
+		font-size: 24px !important;
+		line-height: 44px !important;
+		padding: 5px 0px !important;
+		height: auto !important;
+		border: 1px solid #13243F;
+		box-shadow: none !important;
+		margin: 5px !important;
+		border-radius: 8px !important;
+	}
+
+	.numeric-theme .hg-button[data-skbtnuid="default-r3b0"]{
+		visibility: hidden;
+	}
+
+	.hg-button[data-skbtnuid="default-r1b10"],
+	.hg-button[data-skbtnuid="shift-r1b10"]
+	{
+		border: none !important;
+		background: var(--royalBlue) !important;
+		font-size: 30px !important;
+		color: #fff !important;
+	}
+	.hg-button[data-skbtn="{space}"] {
+		flex: 8; /* ocupa el triple de espacio que una tecla normal */
+	}
+	.hg-button.hg-standardBtn, .hg-button.hg-functionBtn{
+		width: 20px;
+	}
+	{{-- .hg-layout-numbers .hg-rows {
+	    width: 70%;
+	    margin: auto;
+	} --}}
+	.hg-layout-numbers .hg-button.hg-standardBtn,
+	.hg-layout-numbers .hg-button.hg-functionBtn{
+		font-size: 36px !important;
+		margin: 12px !important;
+		padding: 20px 0px !important;
+	}
+
+	.hg-layout-numbers .hg-button[data-skbtnuid="numbers-r3b2"]{
+		border: none !important;
+		background: transparent !important;
+		font-size: 42px !important;
+	}
+
+	{{-- .hg-layout-numbers .hg-button.hg-standardBtn,
+	.hg-layout-numbers .hg-button.hg-functionBtn{
+	    font-size: 36px !important;
+	    line-height: 44px !important;
+	    padding: 10px 0px !important;
+	    height: auto !important;
+	    border: 1px solid #13243F;
+	    box-shadow: none !important;
+	    margin: 10px !important;
+	    border-radius: 8px !important;
+	}
+
+	.hg-layout-numbers .hg-button[data-skbtnuid="default-r3b0"]{
+		visibility: hidden;
+	}
+
+	.hg-layout-numbers .hg-button[data-skbtnuid="default-r3b2"]{
+		border: none !important;
+		background: transparent !important;
+		font-size: 42px !important;
+	} --}}
 </style>
 <script>
 	let datosCliente = JSON.parse(localStorage.getItem('datosCliente'));
 	let tipo = localStorage.getItem('tipo');
+	let currentInput = null;
 	trackId = localStorage.getItem('trackId');
 	let infoCarrito;
-	tecladoFlotante = true;
-	
+	const Keyboard = window.SimpleKeyboard.default;
+	let keyboardInit;
+
+	let activeInput = null;
+	document.addEventListener("focusin", (e) => {
+	    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") {
+	    	console.log(6)
+	        activeInput = e.target; // actualizamos el input activo
+	    }
+	});
+
+	function pressKey(char) {
+		console.log(7)
+	    if (!activeInput) return; // si no hay input activo, no hace nada
+
+	    // Momentáneamente quitar readonly para poder escribir
+	    activeInput.readOnly = false;
+	    activeInput.value += char;
+	    activeInput.dispatchEvent(new Event("input", { bubbles: true }));
+	    activeInput.readOnly = true;
+	}
+
+	// Asignar el evento a todas las teclas del teclado virtual
+	document.querySelectorAll(".key").forEach(btn => {
+	    btn.addEventListener("click", () => {
+	        pressKey(btn.dataset.char);
+	    });
+	});
+
 	document.addEventListener("DOMContentLoaded", async function () {
 		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
+
+		window.addEventListener("beforeunload", () => {
+			console.log("Destroy Keyboard");
+			keyboardInit.destroy()
+		});
+
+		if (keyboardInit) {
+	        keyboardInit.destroy(); // limpia instancia anterior
+	    }
 
 		await consultarCarrito();
 		await obtenerDatosFacturacion();
 
-		$.customKeyboard.init('input[readonly]', '.simple-keyboard');
-
-		$('body').on('change', 'input[type="text"], input[type="number"]', async function() {
-			let currentInput = $(this);
-			let input = $(this).val();
-			let max = $(currentInput).attr("maxlength"); // obtiene el maxlength del input
-		    if(max && input.length > max){
-		    	input = input.substring(0, max); // corta el valor
-		    }
-			$(currentInput).val(input);
-			console.log(input)
-
-			if(currentInput.attr('id') === "numeroIdentificacion"){
-				// Verifica que el tipo sea 2
-				if(parseInt($('#tipoIdentificacion option:selected').val()) == 2){
-				// Verifica longitud 10
-					if(input.length == 10){
-
-						if(!esValidaCedula(input)){
-							$('#modalError').modal('show');
-							$('.titleError').html(`Atención`);
-							$('.msgError').html(`Número de cédula incorrecto.`);
-						} else {
-							await verificarDatosFacturacion();
-						}
-
-					}
-				}else if(parseInt($('#tipoIdentificacion option:selected').val()) == 1){
+		keyboardInit = new Keyboard({
+			onChange: async input => {
+				if(currentInput){
+					let max = $(currentInput).attr("maxlength"); // obtiene el maxlength del input
+				    if(max && input.length > max){
+				      input = input.substring(0, max); // corta el valor
+				      keyboardInit.setInput(input);        // actualiza el teclado con el valor truncado
+				    }
+					$(currentInput).val(input);
 					console.log(input)
-					console.log(input.length)
-					if(input.length == 13){
-						await verificarDatosFacturacion();
+
+					if(currentInput.id === "numeroIdentificacion"){
+						// Verifica que el tipo sea 2
+						if(parseInt($('#tipoIdentificacion option:selected').val()) == 2){
+        				// Verifica longitud 10
+							if(input.length == 10){
+
+								if(!esValidaCedula(input)){
+									$('#modalError').modal('show');
+									$('.titleError').html(`Atención`);
+									$('.msgError').html(`Número de cédula incorrecto.`);
+								} else {
+									await verificarDatosFacturacion();
+								}
+
+							}
+						}else if(parseInt($('#tipoIdentificacion option:selected').val()) == 1){
+							if(input.length == 13){
+								await verificarDatosFacturacion();
+							}
+						}
 					}
 				}
+			},
+			onKeyPress: async button => {
+				if(button === "{bksp}" && currentInput){
+					let val = $(currentInput).val();
+					$(currentInput).val(val.slice(0, -1));
+					keyboardInit.setInput($(currentInput).val());
+				}
+
+    			// 👉 Aquí manejamos los cambios de layout
+				if(button === "{shift}" || button === "{lock}"){
+					handleShift();
+				}
+
+				if(button === "{numbers}"){
+					keyboardInit.setOptions({
+						layoutName: "numbers"
+					});
+				}
+
+				if(button === "{abc}"){
+					keyboardInit.setOptions({
+						layoutName: "default"
+					});
+				}
+
+				if(button === "{ent}" && currentInput){
+					if(currentInput.id === "numeroIdentificacion"){
+						let valor = $(currentInput).val();
+						if(parseInt($('#tipoIdentificacion option:selected').val()) == 3 && valor.length > 5){
+							await verificarDatosFacturacion();
+						}
+					}
+				}
+			},
+			mergeDisplay: true,
+			layoutName: "default",
+			layout: {
+				default: [
+					"q w e r t y u i o p {bksp}",
+					"a s d f g h j k l ñ {ent}",
+					"{shift} z x c v b n m -",
+					"{numbers} @ {space} . _"
+				],
+				shift: [
+					"Q W E R T Y U I O P {bksp}",
+					"A S D F G H J K L Ñ {ent}",
+					"{shift} Z X C V B N M -",
+					"{numbers} @ {space} . _"
+				],
+				numbers: [
+					"1 2 3",
+					"4 5 6",
+					"7 8 9",
+					"{abc} 0 {bksp}"
+				]
+			},
+			display: {
+				"{numbers}": "123",
+				"{ent}": "<i class='fa-solid fa-arrow-right'></i>",
+				"{escape}": "esc ⎋",
+				"{tab}": "tab ⇥",
+				"{bksp}": "<i class='fa fa-backspace'></i>",
+				"{capslock}": "caps ⇪",
+				"{shift}": "⇧",
+				"{abc}": "ABC"
 			}
-		})
+		});
+
+		$("input").on("focus", function () {
+			if (this.type === "checkbox") {
+				console.log(99)
+				return; // no hacer nada
+			}
+			$('#box-simple-keyboard').removeClass('d-none');
+		  	currentInput = this;
+
+		  	const isNumeric =
+		    	this.type === "number" ||
+		    	$(this).attr("inputmode") === "numeric";
+
+
+		  	keyboardInit.setOptions({ layoutName: isNumeric ? "numbers" : "default" });
+
+		  	// Sincronizamos valor actual del input con el teclado
+		  	keyboardInit.setInput($(this).val() || "");
+		  	//keyboardInit.setInput($(this).val());
+		});
+
+		// función auxiliar para shift
+		function handleShift(){
+			let currentLayout = keyboardInit.options.layoutName;
+			let shiftToggle = currentLayout === "default" ? "shift" : "default";
+			keyboardInit.setOptions({
+				layoutName: shiftToggle
+			});
+		}
 
 		$(document).on('click', function(e) {
 		    if ($('#box-simple-keyboard').is(':visible') && 
