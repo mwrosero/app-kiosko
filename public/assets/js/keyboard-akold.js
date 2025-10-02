@@ -5,6 +5,7 @@
         layout: [],
         lastKeyTime: 0,
         keyDelay: 200,
+        isUppercase: true,
         currentLayoutType: 'alphanumeric',
 
         layoutTypes: {
@@ -18,20 +19,20 @@
                 ['1','2','3','4','5','6','7','8','9','0','Backspace'],
                 ['Q','W','E','R','T','Y','U','I','O','P'],
                 ['A','S','D','F','G','H','J','K','L','Ñ','Enter'],
-                ['Z','X','C','V','B','N','M','_','-','.'],
+                ['Shift','Z','X','C','V','B','N','M','_','-','.'],
                 ['Space']
             ],
             alphabet: [
                 ['Q','W','E','R','T','Y','U','I','O','P','Backspace'],
                 ['A','S','D','F','G','H','J','K','L','Ñ','Enter'],
-                ['Z','X','C','V','B','N','M'],
+                ['Shift','Z','X','C','V','B','N','M'],
                 ['Space']
             ],
             full: [
                 ['1','2','3','4','5','6','7','8','9','0','Backspace'],
                 ['Q','W','E','R','T','Y','U','I','O','P'],
                 ['A','S','D','F','G','H','J','K','L','Ñ','Enter'],
-                ['Z','X','C','V','B','N','M','_','-','.'],
+                ['Shift','Z','X','C','V','B','N','M','_','-','.'],
                 ['@','!','#','$','%','&','*','(',')'],
                 ['Space']
             ]
@@ -41,7 +42,8 @@
             'Backspace': '<i class="fa fa-backspace"></i>',
             'Space': '<span></span>',
             'Hidden': '',
-            'Enter': '<i class="fa-solid fa-arrow-right"></i>'
+            'Enter': '<i class="fa-solid fa-arrow-right"></i>',
+            'Shift': '⇧'
         },
 
         init: function(inputSelector, containerSelector){
@@ -60,7 +62,6 @@
                     self.targetInput = $(this);
                     self.setLayoutFromInput();
                     self.renderKeyboard(containerSelector);
-                    // self.positionKeyboard(containerSelector);
                 });
             });
 
@@ -70,7 +71,6 @@
                 self.targetInput = $auto;
                 self.setLayoutFromInput();
                 self.renderKeyboard(containerSelector);
-                // self.positionKeyboard(containerSelector);
             }
         },
 
@@ -92,45 +92,50 @@
             if(this.currentLayoutType == "numeric"){
                 stylesByLayout = 'py-3 m-2 fs-36 line-height-44';
             }
+
             this.layout.forEach(row => {
                 var $row = $('<div class="kb-row d-flex justify-content-center mb-1"></div>');
+
                 row.forEach(key => {
-                    var $key = $(`<button type="button" class="kb-key kb-key-${key} btn border-midnight-blue ${stylesByLayout} rounded-8 fw-medium bg-white"></button>`);
 
-                    // Si la tecla tiene icono, usar HTML del icono
-                    $key.html(this.keyIcons[key] || key);
+                    // Ajuste de mayúsculas/minúsculas para visual
+                    var displayKey = key;
+                    if(!this.keyIcons[key] && /^[A-Z]$/i.test(key)){
+                        var lowerKey = key.toLowerCase();
+                        displayKey = this.isUppercase ? lowerKey.toUpperCase() : lowerKey;
+                    }
 
-                    // $key.on('click touchstart', (e) => {
+                    // Clase consistente para el DOM (minúscula)
+                    var keyClass = `kb-key-${key.toLowerCase()}`;
+
+                    var $key = $(`<button type="button" class="kb-key ${keyClass} btn border-midnight-blue ${stylesByLayout} rounded-8 fw-medium bg-white"></button>`);
+
+                    // Iconos o letra
+                    $key.html(this.keyIcons[key] || displayKey);
+
+                    // Resaltar Shift si activo
+                    if(key === 'Shift'){
+                        $key.toggleClass('active-shift', this.isUppercase);
+                    }
+
+                    // Evento pointerdown (touch + mouse)
                     $key.on('pointerdown', (e) => {
                         if(e.cancelable) e.preventDefault();
                         let now = Date.now();
                         if(now - this.lastKeyTime > this.keyDelay){ 
                             this.lastKeyTime = now;
-                            this.keyPress(key);
+                            this.keyPress(key, containerSelector);
                         }
                     });
 
                     $row.append($key);
                 });
+
                 $kb.append($row);
             });
         },
 
-        positionKeyboard: function(containerSelector){
-            if(!this.targetInput) return;
-            var $kb = $(containerSelector);
-            var offset = this.targetInput.offset();
-            var inputHeight = this.targetInput.outerHeight();
-
-            // Posicionar justo sobre el input activo
-            $kb.css({
-                position:'absolute',
-                top: offset.top - $kb.outerHeight() - 5, 
-                left: offset.left
-            });
-        },
-
-        keyPress: function(key){
+        keyPress: function(key, containerSelector){
             if(!this.targetInput) return;
             var val = this.targetInput.val();
 
@@ -142,10 +147,16 @@
                     this.targetInput.val(val + ' ');
                     break;
                 case 'Enter':
-                    this.targetInput.trigger('enter'); // si quieres un evento extra
+                    this.targetInput.trigger('enter');
+                    break;
+                case 'Shift':
+                    this.isUppercase = !this.isUppercase;
+                    this.renderKeyboard(containerSelector); // redibuja con estado actualizado
+                    return;
                     break;
                 default:
-                    this.targetInput.val(val + key);
+                    var char = this.isUppercase ? key.toUpperCase() : key.toLowerCase();
+                    this.targetInput.val(val + char);
             }
 
             this.targetInput.trigger('input').trigger('change');

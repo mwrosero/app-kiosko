@@ -55,6 +55,23 @@
 			console.log(detalle);
 		}) --}}
 
+		$('body').on('click', '.btn-notificar-llegada', async function(){
+			let detalle = JSON.parse($(this).attr('item-rel'));
+			let notificar = await notificarLlegada(detalle.ordenesApoyoPendiente[0]);
+			if(notificar.code != 200){
+				return;
+			}else{
+				$('#modalDetalleOrdenTratamiento').modal('hide');
+				$('#modalError').modal('show')
+				$('.titleError').html(`Orden activada`)
+				$('.msgError').html("Por favor espere ser llamado");
+			}
+			{{-- await mostrarDetalleModalChequeoDetalle(detalle);
+			$('.title-detalle-chequeo').html(detalle.nombreServicioNivel1.toLowerCase())
+			$('#modalDetalleChequeo').modal('show');
+			await cargarMisChequeos(false) --}}
+		})
+
 		$('body').on('click','.btn-agendar', function(){
             let promocion = paquete;
             let detalle = JSON.parse($(this).attr('item-rel'));

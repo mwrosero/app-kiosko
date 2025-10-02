@@ -13,7 +13,7 @@
 			<input type="text" autofocus id="user" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" placeholder="Usuario" readonly>			
 			
 			<div class="mt-32 d-flex justify-columns-between align-items-center gap-2">
-				<input type="password" class="form-control input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" id="password" placeholder="Contraseña" readonly>
+				<input type="password" class="form-control input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" id="password" placeholder="Contraseña" readonly data-kb="full">
 				<button class="btn border-midnight-blue h-100 rounded-8" type="button" id="togglePasswordVisibility">
 					<i class="bi bi-eye"></i> <!-- Bootstrap Icons eye icon -->
 				</button>

@@ -18,6 +18,42 @@
     </div>
 </div>
 
+{{-- Turno para usuario nuevo --}}
+<div class="modal modal-top fade" id="modalIngresarNombres" aria-labelledby="modalIngresarNombresLabel" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
+    <div class="modal-dialog modal modal-md modal-dialog-centered mx-auto my-0">
+        <div class="modal-content rounded-8 rounded-24">
+            <button type="button" class="btn-close position-absolute end-0 top-0 me-3 mt-3 fw-bold" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
+            <div class="modal-body text-center p-3 px-32 pb-2">
+                <h2 class="fs-24 line-height-32 text-royal-blue-shade-20 fw-medium my-32">Veris</h2>
+                <h3 class="fs-16 line-height-20 text-silver-dark mb-32 msgError" id="mensajeErrorUsuario"></h3>
+                {{-- <div class="col-12 mt-3 text-start">
+                    <label for="nombres" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Ingrese sus nombres *</label>
+                    <input type="text" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3" name="nombres" id="nombres" placeholder="" required readonly/>
+                    <div class="invalid-feedback">
+                        Ingrese sus nombres.
+                    </div>
+                </div>
+                <div class="col-12 mt-3 text-start">
+                    <label for="nombres" class="form-label text-silver-neutral-40 form-label fs-18 line-height-24 mb-1">Ingrese sus apellidos *</label>
+                    <input type="text" class="form-control input w-100 rounded-12 border-midnight-blue bg-white text-silver-dark fs-18 line-height-24 py-24 px-3" name="apellidos" id="apellidos" placeholder="" required readonly/>
+                    <div class="invalid-feedback">
+                        Ingrese sus apellidos.
+                    </div>
+                </div> --}}
+                {{-- <div onclick="crearTurno();" class="btn bg-veris btn-crear-turno text-white mx-auto mb-5 rounded-8 my-5">CREAR TURNO</div> --}}
+                <button class="btn py-24 my-32 bg-royal-blue text-white rounded-12 fs-24 line-height-32 w-100 btn-paciente-nuevo">Generar turno</button>
+                {{-- <div class="w-100 d-none d-md-block">
+                    <div class="keyboardContainer w-100"></div>
+                </div> --}}
+            </div>
+            {{-- <div class="modal-footer pt-0 pb-3 px-3 border-0">
+                <button type="button" class="btn bg-veris btn-ingresar text-white mx-auto rounded-8 mt-3" data-bs-dismiss="modal">Entiendo</button>
+            </div> --}}
+        </div>
+    </div>
+</div>
+
+
 <!-- Modal Confirmar Cita -->
 <div class="modal modal-top fade" id="modalConsultorio" aria-labelledby="modalConsultorioLabel" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
     <div class="modal-dialog modal modal-lg modal-dialog-centered mx-auto my-0">
