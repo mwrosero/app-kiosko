@@ -317,7 +317,12 @@
 				}
 			}else{
 				if($('#numeroIdentificacion').val().length > 0 && $('#nombresCompletos').val().length > 0 && $('#mail').val().length > 0){
-					location.href = `/metodos-pago/{{ $mac }}`
+					let tieneSoloExentos = await tieneSoloExentosBool();
+					if(tieneSoloExentos){
+						await facturar();
+					}else{
+						location.href = `/metodos-pago/{{ $mac }}`
+					}
 				}else{
 					$('#modalError').modal('show');
 					$('.titleError').html(`Atención`);
@@ -326,6 +331,20 @@
 			}
 		})
 	})
+
+	async function tieneSoloExentosBool(){
+		let subtotal = 0;
+		$.each(infoCarrito, function(key, value){
+			$.each(value.agrupaciones, function(k, item){
+				subtotal += item.totalAgrupacion.paciente.valorTotal;
+			})
+		})
+		if(subtotal == 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
 
 	function validateFields(){
 		if($('#checkTerminosCondicion').is(':checked')) {
@@ -377,7 +396,12 @@
         const data = await call(args);
         console.log(data);
         if(data.code == 200){
-			location.href = `/metodos-pago/{{ $mac }}`
+        	let tieneSoloExentos = await tieneSoloExentosBool();
+			if(tieneSoloExentos){
+				await facturar();
+			}else{
+				location.href = `/metodos-pago/{{ $mac }}`
+			}
 		}else{
 			$('#modalError').modal('show');
 			$('.titleError').html(`Atención`);
@@ -474,6 +498,30 @@
 				// $('.simple-keyboard').parent().removeClass('d-none');
 			},100)
 		},100)
+	}
+
+	async function facturar(){
+		let agrupacion = JSON.parse(localStorage.getItem("agrupacionFacturar"));
+		let args = [];
+        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/facturar?macAddress={{ $mac }}`;//&esPrueba=true
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify({
+        	"idAgrupacion":agrupacion
+        });
+        args["dismissAlert"] = true;
+        const data = await call(args);
+        console.log(data);
+        if(data.code == 200){
+        	location.href = `/pago-realizado/{{ $mac }}`;
+        }else{
+			$('#modalError').modal('show')
+			$('.titleError').html(`Ha ocurrido un error`)
+			$('.msgError').html(data.message);
+        }
 	}
 </script>
 @endsection
