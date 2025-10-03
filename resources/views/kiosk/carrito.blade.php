@@ -123,6 +123,7 @@
 	}
 
 	async function drawCartItems(){
+		let tieneItems = false;
 		let elem = ``;
 		let tipoServicio = ``;
 		let totalItem = ``;
@@ -167,6 +168,7 @@
 							</div>
 						</div>
 					</li>`;
+					tieneItems = true;
 				})
 			
 				elem += `<div class="row d-flex justify-content-between align-items-center py-4 border-bottom-midnight-blue-tint-80">
@@ -209,7 +211,7 @@
 			})
 		})
 		$('.subtotal').html(`$${subtotal.toFixed(2)}`)
-		if(subtotal == 0){
+		if(!tieneItems){
 			$('#btn-pagar').addClass('disabled');
 			elem = `<div class="row d-flex justify-content-between align-items-center py-4 border-bottom-midnight-blue-tint-80">
 					<div class="col-12">
