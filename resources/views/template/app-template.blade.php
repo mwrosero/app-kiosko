@@ -54,6 +54,7 @@
             let canalOrigen = 'MVE_CMV';
             let callCounter = true;
             let tecladoFlotante = false;
+            let activarInactividad = true;
         </script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script> 
@@ -110,6 +111,30 @@
                 }else{
                     $('.ingresar-host').removeClass('d-none');
                 }
+
+                let inactivityTime;
+                const redirectUrl = '/{{ $mac }}';
+
+                function startTimer() {
+                    if(!activarInactividad){
+                        return;
+                    }
+                    // Limpia el contador si ya existía
+                    clearTimeout(inactivityTime);
+                    // Inicia el contador de 50 segundos (50000 ms)
+                    inactivityTime = setTimeout(() => {
+                        window.location.href = redirectUrl;
+                    }, 60000);
+                }
+
+                // Eventos que reinician el contador
+                $(document).on("mousemove keydown click scroll touchstart", function () {
+                    startTimer();
+                });
+
+                // Iniciar el contador al cargar
+                startTimer();
+
             })
 
             async function contadorItemsCarrito(){

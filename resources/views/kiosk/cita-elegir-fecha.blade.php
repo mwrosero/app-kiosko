@@ -812,8 +812,8 @@
                                         </div>` : ``;
 
                         elemento += `<div class="border-light-sky-blue-tint-60 rounded-8 px-3 py-32 mb-3 d-flex justify-content-center align-items-start gap-4">
-                            <div class="header-doctor d-flex justify-content-between align-items-start mb-3" style="width: 50% !important">
-                                <div class="picture-doctor border-box-light-blue border-3 rounded-circle flex-grow-1" style="background: url(${img_doctor}) no-repeat top center;background-size: cover;">
+                            <div class="header-doctor d-flex justify-content-between align-items-start mb-3" style="flex: 0 0 40% !important; max-width: 40% !important;">
+                                <div class="picture-doctor border-box-light-blue border-3 rounded-circle" style="background: url(${img_doctor}) no-repeat top center;background-size: cover;">
                                 </div>
                                 <div class="content-doctor ms-2">
                                     <div class="name-rate d-flex justify-content-between align-items-start mb-1">
@@ -831,14 +831,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="border-start-silver-neutral-40 mx-4 h-100"></div>
+                            <div class="border-start-silver-neutral-40 mx-2 h-100"></div>
                             <div class="dates-doctor flex-grow-1">
                                 <p class="fs-18 line-height-22 fw-medium mb-2 text-royal-blue">Horario más próximo:</p>
                                 <div class="row g-2">
                                     ${listadoHorarios}
                                     <div class="col-6">
                                         <div class="cursor-pointer waves-effect p-3 w-100 bg-time-doctor-alt rounded-3 d-flex justify-content-center align-items-center btn-disponibilidad-medico-all" data-bs-toggle="modal" data-bs-target="#elegirHorarioModal" data-rel='${JSON.stringify(medico)}'>
-                                            <span class="fs-18 line-height-20 text-center mb-0">Ver más horarios</span>
+                                            <span class="fs-16 line-height-20 text-center mb-0">Ver más horarios</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1170,6 +1170,10 @@
 	.picture-doctor{
 	    width: 88px;
 	    height: 88px;
+        flex: 0 0 auto;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
 	}
 	.star-ico{
 	    color: #FFC107;
@@ -1209,6 +1213,12 @@
 	    text-align: center;
 	    color: #EF2E79;
 	}
+    #listaMedicos .badge-discount-time{
+        width: 50px;
+    }
+    #listaMedicos .box-badge-discount-time{
+        width: 50px;
+    }
 	.box-badge-discount-time-popup {
 	    top: 0px;
 	    left: 0px;

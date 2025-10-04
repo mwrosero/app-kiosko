@@ -625,8 +625,7 @@
 			}
 		} --}}
 
-		$('.box-actions-detalle-orden').html(buttonActions)
-		
+		$('.box-actions-detalle-orden').html(buttonActions);		
 
 		$('.header-orden').html(elemHeader);
 		$('.listado-items-orden-detalle').html(elemContent);

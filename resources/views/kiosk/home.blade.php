@@ -47,6 +47,7 @@ bg-royal-blue-tint-90
 </style>
 <script>
 	callCounter = false;
+	activarInactividad = false;
 	document.addEventListener("DOMContentLoaded", async function () {
 		// await cargarParametros();
 		deleteStorage();
