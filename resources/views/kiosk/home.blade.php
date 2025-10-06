@@ -1,9 +1,6 @@
 @extends('template.app-template')
-@section('bodybg')
-bg-royal-blue-tint-90
-@endsection
 @section('content')
-<div class="container px-0 d-flex flex-column justify-content-end min-vh-100">
+<div class="container px-0 d-flex flex-column justify-content-center min-vh-100">
 	<div class="position-absolute d-flex gap-3 align-items-center" style="top: 15px;right: 15px;">
 		<div class="dropdown">
 			{{-- dropdown-toggle --}}
@@ -23,14 +20,15 @@ bg-royal-blue-tint-90
 		</button> --}}
 	</div>
 	<div class="row">
-		<div class="col-8 offset-2 d-flex justify-content-center mb-92">
+		<div class="col-8 offset-2 d-flex justify-content-center">
 			<img class="img-fluid mx-auto" src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/img/vericita-logo.svg" alt="">
 		</div>
-		<div class="col-12 d-flex justify-content-center mb-40">
+		<div class="col-12 d-flex justify-content-center my-112">
 			<h3 class="text-center text-white fw-bold fs-64 line-height-64">Bienvenido a Veris</h3>
 		</div>
 	</div>
-	<div class="row rounded-24 bg-white p-44" style="margin-bottom: 350px;">
+	{{-- <div class="row rounded-24 bg-white p-44" style="margin-bottom: 350px;"> --}}
+	<div class="row rounded-24 bg-white p-44">
 		<div class="col-12 text-center my-5 pb-5">
 			<h2 class="fw-bold fs-40 line-height-40">¿Cómo quieres empezar?</h2>
 		</div>
@@ -39,7 +37,7 @@ bg-royal-blue-tint-90
 				<div class="box-icon-home w-100 d-flex justify-content-end align-items-center mx-auto">
 					<img class="img-fluid mx-auto" src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-cedula.svg" alt="">
 				</div>
-				<p class="fs-24 line-height-28 fw-medium">Con número<br>de cédula</p>
+				<p class="fs-24 line-height-28 fw-medium mt-2">Con número<br>de cédula</p>
 			</div>
 		</div>
 		<div class="col-4">
@@ -47,22 +45,22 @@ bg-royal-blue-tint-90
 				<div class="box-icon-home w-100 d-flex justify-content-end align-items-center mx-auto">
 					<img class="img-fluid mx-auto" src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-pasaporte.svg" alt="">
 				</div>
-				<p class="fs-24 line-height-28 fw-medium">Con número<br> de Pasaporte</p>
+				<p class="fs-24 line-height-28 fw-medium mt-2">Con número<br> de Pasaporte</p>
 			</div>
 		</div>
 		<div class="col-4">
 			<div class="item-access card rounded-24 bg-royal-blue-tint-90 border-0 text-center p-44" type-rel="N">
 				<div class="box-icon-home w-100 d-flex justify-content-end align-items-center mx-auto">
-					<img class="img-fluid mx-auto" src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-nombres.svg" alt="">
+					<img class="img-fluid mx-auto" src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-nombres.svg" alt="" width="70px;">
 				</div>
-				<p class="fs-24 line-height-28 fw-medium">Con nombres<br>y apellidos</p>
+				<p class="fs-24 line-height-28 fw-medium mt-2">Con nombres<br>y apellidos</p>
 			</div>
 		</div>
 	</div>
 </div>
 <style>
 	body{
-		background: url({{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/img/bg-kiosko.png) no-repeat center !important;
+		background: url({{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/img/bg-kiosko.jpg) no-repeat center !important;
 		background-size: cover !important;
 	}
 	.box-icon-home{
@@ -77,7 +75,6 @@ bg-royal-blue-tint-90
 <script>
 	callCounter = false;
 	activarInactividad = false;
-	$('body').removeClass('.bg-royal-blue-tint-90')
 	document.addEventListener("DOMContentLoaded", async function () {
 		// await cargarParametros();
 		deleteStorage();
