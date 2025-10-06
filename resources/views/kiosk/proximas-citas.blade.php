@@ -460,7 +460,7 @@
 			}else if(detalle.beneficio.paquete !== null){
 				nombreCardLab = detalle.beneficio.paquete.nombrePaquete;
 			}
-		}else{
+		}else if(detalle.descripcionBeneficio !== null){
 			nombreCardLab = detalle.descripcionBeneficio;
 		}
 		let profesional = (detalle.nombreMedico !== null) ? detalle.nombreMedico : `Médico externo`
