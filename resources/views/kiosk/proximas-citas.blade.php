@@ -158,11 +158,17 @@
         		$.each(detalle.detalles, function(key, value){
 					lineaDetalleOrdenArr.push(value.lineaDetalleOrden)
 				})
+				let codigoConvenio = null;
+				if(detalle.beneficio !== null){
+					if(detalle.beneficio.convenio !== null){
+						codigoConvenio = detalle.beneficio.convenio.codigoConvenio;
+					}
+				}
 				datosPago = {
 					"tratamientos": {
 					    "idPaciente": datosCliente.idPaciente,
 					    "numeroOrden": detalle.detalles[0].numeroOrden,
-					    //"codigoConvenio": detalleTratamiento.datosConvenio.codigoConvenio,
+					    "codigoConvenio": codigoConvenio,
 					    "detalles": lineaDetalleOrdenArr
 					}
 				}
