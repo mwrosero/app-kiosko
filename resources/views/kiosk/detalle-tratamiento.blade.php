@@ -891,7 +891,7 @@
 		//<p class="fs-14 line-height-16 mb-12 fw-normal"><span class="text-royal-blue-shade-40">Orden Válida hasta:</span> </p>
 		$.each(detalleTratamiento.pendientes, function(key, value){
 			//if(detalleTratamiento.mostrarTerapiasAgrupadas == "S"){}
-			if(value.detallesServicios.length == 0){
+			if(value.detallesServicios === null || value.detallesServicios.length == 0){
 				let nombreServicio = ``;
 				if(value.hasOwnProperty('nombreServicio')){
 					nombreServicio = `<h2 class="text-royal-blue-shade-20 fw-medium fs-16 line-height-20 mb-1 text-capitalize">${value.nombreServicio.toLowerCase()}</h2>`;
