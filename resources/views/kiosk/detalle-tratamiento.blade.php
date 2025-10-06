@@ -892,13 +892,17 @@
 		$.each(detalleTratamiento.pendientes, function(key, value){
 			//if(detalleTratamiento.mostrarTerapiasAgrupadas == "S"){}
 			if(value.detallesServicios.length == 0){
+				let nombreServicio = ``;
+				if(value.hasOwnProperty('nombreServicio')){
+					nombreServicio = `<h2 class="text-royal-blue-shade-20 fw-medium fs-16 line-height-20 mb-1 text-capitalize">${value.nombreServicio.toLowerCase()}</h2>`;
+				}
 				let buttonActionCard = (value.tipoCard !== "RECETAS") ? `<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-detalle-orden">Ver detalle</button>` : ``;
 				let labelNumeroOrden = (value.tipoCard !== "RECETAS") ? `<p class="fs-14 line-height-16 mb-2 fw-normal"><span class="text-royal-blue-shade-40">Nro. Orden:</span> ${value.idOrden}</p>` : ``;
 
 			    elem += `<div class="col-12 px-32 py-4 fs-18 line-height-24 fw-medium d-flex justify-content-between align-items-center border-bottom-midnight-blue-tint-80">
 					<img src="${value.urlImagenTipoServicio}" alt="" width="56px">
 					<div class="mx-3 flex-grow-1">
-						<h2 class="text-royal-blue-shade-20 fw-medium fs-16 line-height-20 mb-1 text-capitalize">${value.nombreServicio.toLowerCase()}</h2>
+						${nombreServicio}
 			    		${labelNumeroOrden}
 						<p class="fs-14 line-height-16 mb-12 fw-normal d-none"><span class="text-royal-blue-shade-40">Orden Válida hasta:</span> ${value.fechaCaducidad}</p>
 			    		
