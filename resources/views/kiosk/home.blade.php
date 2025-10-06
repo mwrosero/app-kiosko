@@ -4,7 +4,32 @@ bg-royal-blue-tint-90
 @endsection
 @section('content')
 <div class="container px-0 d-flex flex-column justify-content-end min-vh-100">
-	{{-- @include('components.header') --}}
+	<div class="position-absolute d-flex gap-3 align-items-center" style="top: 15px;right: 15px;">
+		<div class="dropdown">
+			{{-- dropdown-toggle --}}
+			<button class="btn btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+				<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-configuracion.svg" alt="">
+			</button>
+			<ul class="dropdown-menu rounded-8 p-0" aria-labelledby="dropdownMenuButton1">
+				<li class="d-none fs-16 line-height-20 ingresar-host"><a class="dropdown-item px-3 py-2" href="/host/{{ $mac }}">Ingresar Host</a></li>
+				<li class="fs-16 line-height-20 central-caja d-none"><div class="dropdown-item px-3 py-2 text-capitalize disabled" type="button"></div></li>
+				<li class="d-none fs-16 line-height-20 cerrar-sesion label-username"><div class="dropdown-item px-3 py-2 disabled" type="button"></div></li>
+				<li class="d-none fs-16 line-height-20 cerrar-sesion btn-logout"><div class="dropdown-item px-3 py-2 text-red-dark" type="button">Cerrar sesión</div></li>
+			</ul>
+		</div>
+
+		{{-- <button class="btn btn-sm">
+			<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-configuracion.svg" alt="">
+		</button> --}}
+	</div>
+	<div class="row">
+		<div class="col-8 offset-2 d-flex justify-content-center mb-92">
+			<img class="img-fluid mx-auto" src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/img/vericita-logo.svg" alt="">
+		</div>
+		<div class="col-12 d-flex justify-content-center mb-40">
+			<h3 class="text-center text-white fw-bold fs-64 line-height-64">Bienvenido a Veris</h3>
+		</div>
+	</div>
 	<div class="row rounded-24 bg-white p-44" style="margin-bottom: 350px;">
 		<div class="col-12 text-center my-5 pb-5">
 			<h2 class="fw-bold fs-40 line-height-40">¿Cómo quieres empezar?</h2>
@@ -36,6 +61,10 @@ bg-royal-blue-tint-90
 	</div>
 </div>
 <style>
+	body{
+		background: url({{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/img/bg-kiosko.png) no-repeat center !important;
+		background-size: cover !important;
+	}
 	.box-icon-home{
 		width: 150px;
 		height: 120px;
@@ -48,6 +77,7 @@ bg-royal-blue-tint-90
 <script>
 	callCounter = false;
 	activarInactividad = false;
+	$('body').removeClass('.bg-royal-blue-tint-90')
 	document.addEventListener("DOMContentLoaded", async function () {
 		// await cargarParametros();
 		deleteStorage();

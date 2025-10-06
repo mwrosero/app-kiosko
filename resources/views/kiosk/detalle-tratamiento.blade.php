@@ -83,8 +83,50 @@
 			await cargarMisChequeos(false) --}}
 		})
 
-		{{-- $('body').on('click', '.btn-agendar', async function(){
-		}) --}}
+		$('body').on('click', '.check-item-prestacion', async function(){
+			let valorTotal = 0;
+			$('.check-item-prestacion').each(function(index, element) {
+			    if ($(this).is(':checked')) {
+			        valorTotal += parseFloat($(this).val());
+			    }
+			});
+			$('.totalesDetalleOrden').html(`<p class="col-6 mb-0 fs-16 line-height-20 fw-medium text-dark-veris">Subtotal</p>
+                    <p class="col-6 mb-0 fs-16 line-height-20 fw-medium text-end text-royal-blue">$${valorTotal.toFixed(2)}</p>`);
+		})
+
+		// 🔹 Evento para el checkbox principal
+		$(document).on('change', '#all-checkbox', function() {
+		    const isChecked = $(this).is(':checked');
+		    $('.check-item-prestacion').prop('checked', isChecked);
+		    console.log({isChecked})
+		    if(isChecked){
+		    	$('.box-actions-detalle-orden .btn').removeClass('disabled');
+		    }else{
+		    	$('.box-actions-detalle-orden .btn').addClass('disabled');
+		    }
+		});
+
+		// 🔹 Evento para cada checkbox individual
+		$(document).on('change', '.check-item-prestacion', function() {
+		    const total = $('.check-item-prestacion').length;
+		    const checked = $('.check-item-prestacion:checked').length;
+
+		    if(checked == 0){
+		    	$('.box-actions-detalle-orden .btn').addClass('disabled');
+		    }else{
+		    	$('.box-actions-detalle-orden .btn').removeClass('disabled');
+		    }
+
+		    // Si al desmarcar alguno ya no están todos seleccionados → desmarcar el "maestro"
+		    if (checked < total) {
+		        $('#all-checkbox').prop('checked', false);
+		    } 
+		    // Si al marcar se vuelven a seleccionar todos → marcar el "maestro"
+		    else if (checked === total) {
+		        $('#all-checkbox').prop('checked', true);
+		    }
+		});
+
 
 		$(document).on('click', '.btn-sesion', async function(){
 	        let datosServicio = $(this).data('rel');
@@ -255,9 +297,15 @@
 	        	if(datosServicio.permitePago == "S" && datosServicio.esPagada == "N"){
 	        		let lineaDetalleOrdenArr = [];
 
-	        		$.each(datosServicio.detalleLaboratorio.listaOrdenesDetalle, function(key, value){
+	        		{{-- $.each(datosServicio.detalleLaboratorio.listaOrdenesDetalle, function(key, value){
 						lineaDetalleOrdenArr.push(value.lineaDetalle)
-					})
+					}) --}}
+					$('.check-item-prestacion').each(function(index, element) {
+					    if ($(this).is(':checked')) {
+					    	let lineaDetalle = parseInt($(this).attr('lineadetalle-rel'));
+					        lineaDetalleOrdenArr.push(lineaDetalle);
+					    }
+					});
 	        		
 	        		let datosPago = {
 						"tratamientos": {
@@ -504,7 +552,7 @@
 
 	async function obtenerValoresOrden(detalle){
 		let lineaDetalleOrdenArr = [];
-		if(detalle.detallesServicios == null && detalle.detalleLaboratorio == null){
+		if((detalle.detallesServicios == null || detalle.detallesServicios.length == 0 ) && detalle.detalleLaboratorio == null){
 			lineaDetalleOrdenArr.push(detalle.lineaDetalleOrden)
 		}else if(detalle.detalleLaboratorio !== null){
 			$.each(detalle.detalleLaboratorio.listaOrdenesDetalle, function(key, value){
@@ -554,7 +602,10 @@
 					showTooltip = true;
 				}
 				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
-			    	<p class="col-5 mb-0 fs-12 line-height-16">${capitalizarPrimeraLetra(nombrePrestacion)}</p>
+			    	<p class="col-5 mb-0 fs-12 line-height-16 d-flex justify-content-start align-items-center">
+						<input type="checkbox" checked value="${value.valorTotal}" class="me-2 border-midnight-blue-tint-80 check-item-prestacion" id="prestacion-${value.codigoServicio}-${value.codigoPrestacion}" lineaDetalle-rel='${value.lineaDetalleOrden}' prestacion-rel='${JSON.stringify(value)}'>
+			    		${capitalizarPrimeraLetra(nombrePrestacion)}
+			    	</p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorServicio.toFixed(2)}</p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorEmpresa.toFixed(2)}</p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorPaciente.toFixed(2)}</p>
@@ -573,7 +624,10 @@
 					codigoOrdenApoyo = value.codigoOrdenApoyo;
 				}
 				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
-			    	<p class="col-12 mb-0 fs-12 line-height-16 text-capitalize">${value.nombrePrestacion.toLowerCase()}</p>
+			    	<p class="col-12 mb-0 fs-12 line-height-16 text-capitalize d-flex justify-content-start align-items-center">
+						<input type="checkbox" checked class="me-2 border-midnight-blue-tint-80" id="prestacion-${value.codigoServicio}-${value.codigoPrestacion}" lineaDetalle-rel='${value.lineaDetalle}' prestacion-rel='${JSON.stringify(value)}'>
+			    		${value.nombrePrestacion.toLowerCase()}
+			    	</p>
 		            {{-- <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p> --}}
@@ -891,7 +945,7 @@
 		//<p class="fs-14 line-height-16 mb-12 fw-normal"><span class="text-royal-blue-shade-40">Orden Válida hasta:</span> </p>
 		$.each(detalleTratamiento.pendientes, function(key, value){
 			//if(detalleTratamiento.mostrarTerapiasAgrupadas == "S"){}
-			if(value.detallesServicios === null || value.detallesServicios.length == 0){
+			if(value.detallesServicios == null || value.detallesServicios.length == 0){
 				let nombreServicio = ``;
 				if(value.hasOwnProperty('nombreServicio')){
 					nombreServicio = `<h2 class="text-royal-blue-shade-20 fw-medium fs-16 line-height-20 mb-1 text-capitalize">${value.nombreServicio.toLowerCase()}</h2>`;

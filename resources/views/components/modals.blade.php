@@ -213,7 +213,10 @@
                     <p class="fs-12 line-height-16 mb-0 text-dark-veris">A continuación se  muestra la prestación y los valores después de aplicado el crédito de la aseguradora, mientras la orden se encuentra vigente.</p>
                 </div>
                 <div class="row mt-24 mb-2 px-3 th-details-prestaciones">
-                    <p class="col-5 mb-0 fs-16 line-height-20 fw-medium">Prestación</p>
+                    <p class="col-5 mb-0 fs-16 line-height-20 fw-medium d-flex justify-content-start align-items-center">
+                        <input type="checkbox" checked class="me-2 border-midnight-blue-tint-80" id="all-checkbox">
+                        Prestación
+                    </p>
                     <p class="col-2 mb-0 fs-16 line-height-20 fw-medium text-center">PVP.</p>
                     <p class="col-2 mb-0 fs-16 line-height-20 fw-medium text-center">Crédito</p>
                     <p class="col-2 mb-0 fs-16 line-height-20 fw-medium text-center">Total</p>
