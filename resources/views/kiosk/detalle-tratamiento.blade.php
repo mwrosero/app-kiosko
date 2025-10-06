@@ -891,7 +891,7 @@
 		//<p class="fs-14 line-height-16 mb-12 fw-normal"><span class="text-royal-blue-shade-40">Orden Válida hasta:</span> </p>
 		$.each(detalleTratamiento.pendientes, function(key, value){
 			//if(detalleTratamiento.mostrarTerapiasAgrupadas == "S"){}
-			if(value.detallesServicios == null){
+			if(value.detallesServicios.length == 0){
 				let buttonActionCard = (value.tipoCard !== "RECETAS") ? `<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-detalle-orden">Ver detalle</button>` : ``;
 				let labelNumeroOrden = (value.tipoCard !== "RECETAS") ? `<p class="fs-14 line-height-16 mb-2 fw-normal"><span class="text-royal-blue-shade-40">Nro. Orden:</span> ${value.idOrden}</p>` : ``;
 

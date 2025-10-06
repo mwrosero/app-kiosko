@@ -123,7 +123,7 @@
                     clearTimeout(inactivityTime);
                     // Inicia el contador de 50 segundos (50000 ms)
                     inactivityTime = setTimeout(() => {
-                        window.location.href = redirectUrl;
+                        //window.location.href = redirectUrl;
                     }, 60000);
                 }
 
