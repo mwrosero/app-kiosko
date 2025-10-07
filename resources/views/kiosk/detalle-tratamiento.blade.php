@@ -195,7 +195,8 @@
 	        let datosServicio = $(this).data('rel');
 	        let url = $(this).attr('url-rel');
 	        let esTerapiaAgrupada = $(this).attr('esTerapiAgrupada-rel');
-	        // console.log(datosServicio.detallesServicios)
+	        console.log({esTerapiaAgrupada})
+	        console.log(datosServicio)
 	        // return
 	        if(esTerapiaAgrupada !== undefined && esTerapiaAgrupada !== null && esTerapiaAgrupada == "true"){
 	            esTerapiaAgrupada = true;
@@ -604,7 +605,9 @@
 				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
 			    	<p class="col-5 mb-0 fs-12 line-height-16 d-flex justify-content-start align-items-center">
 						<input type="checkbox" checked value="${value.valorTotal}" class="me-2 border-midnight-blue-tint-80 check-item-prestacion" id="prestacion-${value.codigoServicio}-${value.codigoPrestacion}" lineaDetalle-rel='${value.lineaDetalleOrden}' prestacion-rel='${JSON.stringify(value)}'>
-			    		${capitalizarPrimeraLetra(nombrePrestacion)}
+						<label for="prestacion-${value.codigoServicio}-${value.codigoPrestacion}">
+							${capitalizarPrimeraLetra(nombrePrestacion)}
+						</label>
 			    	</p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorServicio.toFixed(2)}</p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorEmpresa.toFixed(2)}</p>
@@ -626,7 +629,9 @@
 				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
 			    	<p class="col-12 mb-0 fs-12 line-height-16 text-capitalize d-flex justify-content-start align-items-center">
 						<input type="checkbox" checked class="me-2 border-midnight-blue-tint-80" id="prestacion-${value.codigoServicio}-${value.codigoPrestacion}" lineaDetalle-rel='${value.lineaDetalle}' prestacion-rel='${JSON.stringify(value)}'>
-			    		${value.nombrePrestacion.toLowerCase()}
+						<label for="prestacion-${value.codigoServicio}-${value.codigoPrestacion}">
+			    			${value.nombrePrestacion.toLowerCase()}
+						</label>
 			    	</p>
 		            {{-- <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
