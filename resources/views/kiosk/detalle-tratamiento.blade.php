@@ -305,7 +305,7 @@
 					    if ($(this).is(':checked')) {
 					    	let agregadoCarrito = $(this).attr('agregadoCarrito-rel');
 					    	let lineaDetalle = parseInt($(this).attr('lineadetalle-rel'));
-					    	if(!agregadoCarrito){
+					    	if(agregadoCarrito == 'false'){
 					        	lineaDetalleOrdenArr.push(lineaDetalle);
 					        }
 					    }
