@@ -61,7 +61,7 @@
             <div class="modal-body px-64 py-24 text-center">
                 <img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/anime-doctor.svg" class="img-fluid" alt="">
                 <p class="py-40 mb-0 fs-28 line-height-32">Tu consultorio es el</p>
-                <h2 class="fs-64 fw-bold mb-40 nombreConsultorio">#</h2>
+                <h2 class="fs-64 fw-bold mb-40 nombreConsultorio text-capitalize"></h2>
                 <button class="btn py-24 bg-royal-blue text-white rounded-12 fs-24 line-height-32 w-50" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
@@ -204,7 +204,7 @@
         <div class="modal-content rounded-8 rounded-24">
             <button type="button" class="btn-close position-absolute end-0 top-0 me-3 mt-3 fw-bold" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
             <div class="modal-body px-64 py-24">
-                <h2 class="fs-24 line-height-32 fw-medium my-32 text-center">Revisa el detalle de tu orden</h2>
+                <h2 class="fs-24 line-height-32 fw-medium my-32 text-center title-modal-detalle-orden">Revisa el detalle de tu orden</h2>
                 {{-- <p class="text-dark-veris fs-16 line-height-20 mt-32 mb-4 subtitle-detalle-chequeo"></p> --}}
                 <div class="header-orden my-3"></div>
                 <hr>
@@ -213,7 +213,10 @@
                     <p class="fs-12 line-height-16 mb-0 text-dark-veris">A continuación se  muestra la prestación y los valores después de aplicado el crédito de la aseguradora, mientras la orden se encuentra vigente.</p>
                 </div>
                 <div class="row mt-24 mb-2 px-3 th-details-prestaciones">
-                    <p class="col-5 mb-0 fs-16 line-height-20 fw-medium">Prestación</p>
+                    <p class="col-5 mb-0 fs-16 line-height-20 fw-medium d-flex justify-content-start align-items-center">
+                        <input type="checkbox" checked class="me-2 border-midnight-blue-tint-80" id="all-checkbox">
+                        Prestación
+                    </p>
                     <p class="col-2 mb-0 fs-16 line-height-20 fw-medium text-center">PVP.</p>
                     <p class="col-2 mb-0 fs-16 line-height-20 fw-medium text-center">Crédito</p>
                     <p class="col-2 mb-0 fs-16 line-height-20 fw-medium text-center">Total</p>

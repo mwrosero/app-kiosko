@@ -25,9 +25,9 @@
         <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/fonts/fontawesome.css" />
         {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/> --}}
         <!-- Core CSS -->
-        <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/css/theme-veris-kiosko.css?v=1.1.5')}}">
+        <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/css/theme-veris-kiosko.css?v=1.1.6')}}">
         {{-- <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/css/keyboard.css?v=1.0.1')}}"> --}}
-        <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/css/keyboard-akold.css?v=1.0.2')}}">
+        <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/css/keyboard-akold.css?v=1.0.3')}}">
         <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/css/bootstrap-icons.min.css?v=1.0')}}">
 
         <!-- Vendors CSS -->
@@ -38,6 +38,7 @@
         <script>
             let accessToken = "{{ $accessToken }}";
             let mac = "{{ $mac }}";
+            let ambiente = "{{ \App\Models\Veris::AMBIENTE }}";
             let web_url = "{{ \App\Models\Veris::WEBURL }}";
             const url_payment = "{{ \App\Models\Veris::URLPAYMENT }}";
             const api_url = "{{ \App\Models\Veris::BASE_URL }}";
@@ -54,10 +55,11 @@
             let canalOrigen = 'MVE_CMV';
             let callCounter = true;
             let tecladoFlotante = false;
+            let activarInactividad = true;
         </script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script> 
-        <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.2.5"></script>
+        <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.2.6"></script>
         <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/keyboard-akold.js?v=1.0.1"></script>
         {{-- <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/jquery.idle.min.js"></script> --}}
         {{-- <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.js"></script> --}}
@@ -110,6 +112,32 @@
                 }else{
                     $('.ingresar-host').removeClass('d-none');
                 }
+
+                let inactivityTime;
+                const redirectUrl = '/{{ $mac }}';
+
+                function startTimer() {
+                    if(!activarInactividad){
+                        return;
+                    }
+                    // Limpia el contador si ya existía
+                    clearTimeout(inactivityTime);
+                    // Inicia el contador de 50 segundos (50000 ms)
+                    inactivityTime = setTimeout(() => {
+                        if(ambiente == "PROD"){
+                            window.location.href = redirectUrl;
+                        }
+                    }, 60000);
+                }
+
+                // Eventos que reinician el contador
+                $(document).on("mousemove keydown click scroll touchstart", function () {
+                    startTimer();
+                });
+
+                // Iniciar el contador al cargar
+                startTimer();
+
             })
 
             async function contadorItemsCarrito(){

@@ -611,6 +611,10 @@ body {
     line-height: 56px !important;
 }
 
+.line-height-64{
+    line-height: 64px !important;
+}
+
 .line-height-128{
     line-height: 128px !important;
 }
@@ -728,6 +732,11 @@ body {
 
 .mt-56{
     margin-top: 56px !important;
+}
+
+.my-112{
+    margin-top: 112px !important;
+    margin-bottom: 112px !important;
 }
 
 .my-32{

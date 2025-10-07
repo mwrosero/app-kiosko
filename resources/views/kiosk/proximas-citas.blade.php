@@ -124,16 +124,59 @@
 
 		$('body').on('click', '.btn-consultorio', function(){
 			let nombreConsultorio = $(this).attr('consultorio-rel');
-			$('.nombreConsultorio').html(`#${nombreConsultorio}`);
+			{{-- $('.nombreConsultorio').html(`#${nombreConsultorio}`); --}}
+			$('.nombreConsultorio').html(`${nombreConsultorio}`);
 			$('#modalConsultorio').modal('show')
+		})
+
+		$('body').on('click', '.btn-ver-detalle-lab', async function(){
+			let detalle = JSON.parse($(this).parent().attr('data-rel'));
+			await mostrarDetalleLaboratorioModal(detalle);
+			$('#modalDetalleOrdenTratamiento').modal('show');
+		})
+
+		$('body').on('click', '.btn-notificar-llegada', async function(){
+			let detalle = JSON.parse($(this).attr('item-rel'));
+			let notificar = await notificarLlegada(detalle.codigosOrdenesApoyo[0]);
+			if(notificar.code != 200){
+				return;
+			}else{
+				$('#modalDetalleOrdenTratamiento').modal('hide');
+				$('#modalError').modal('show')
+				$('.titleError').html(`Orden activada`)
+				$('.msgError').html("Por favor espere ser llamado");
+			}
 		})
 
 		$('body').on('click', '.btn-pagar', async function(){
 			let detalle = JSON.parse($(this).parent().attr('data-rel'));
-			//if(detalle.permitePago){}
-			let datosPago = {
-				"reserva": {
-					"codigoReserva": detalle.codigoReserva
+			let datosPago;
+
+			if(detalle.nombreEspecialidad == "OPTICA"){
+				let lineaDetalleOrdenArr = [];
+
+        		$.each(detalle.detalles, function(key, value){
+					lineaDetalleOrdenArr.push(value.lineaDetalleOrden)
+				})
+				let codigoConvenio = null;
+				if(detalle.beneficio !== null){
+					if(detalle.beneficio.convenio !== null){
+						codigoConvenio = detalle.beneficio.convenio.codigoConvenio;
+					}
+				}
+				datosPago = {
+					"tratamientos": {
+					    "idPaciente": datosCliente.idPaciente,
+					    "numeroOrden": detalle.detalles[0].numeroOrden,
+					    "codigoConvenio": codigoConvenio,
+					    "detalles": lineaDetalleOrdenArr
+					}
+				}
+			}else{
+				datosPago = {
+					"reserva": {
+						"codigoReserva": detalle.codigoReserva
+					}
 				}
 			}
 			await agregarItem(datosPago);
@@ -298,15 +341,28 @@
 		let servicio = $('.item-selected').attr('servicio-rel')
 		let data = servicios.filter(s => s.nombreServicioN1 === servicio);
 		let elem = ``;
+		let labelSubHeader = ``;
 		$.each(data, function(key, value){
+			if(value.nombreServicioN1 == "LABORATORIO"){
+				elem += `<p class="mt-4 mb-0 fs-18 line-height-24 text-silver-neutral-80 fw-light">Antes de acudir al laboratorio debes activiar tu orden, esto ayudará a nuestro equipo de laboratorio a saber que llegaste</p>
+					<div class="row box-dia pt-4">`
+					labelSubHeader = `Enviado`
+			}else{
+				elem += `<div class="row box-dia pt-64">`
+				labelSubHeader = `Agendada para`
+			}
 			$.each(value.fechaAtencionGrouped, function(k, v){
 				let cards = ``;
 				$.each(v, function(k1, v1){
-					cards += drawCardItem(v1)
+					if(value.nombreServicioN1 == "LABORATORIO"){
+						cards += drawCardLabItem(v1, value.nombreServicioN1);
+					}else{
+						cards += drawCardItem(v1, value.nombreServicioN1);
+					}
 				})
-				elem += `<div class="row box-dia pt-64">
+				elem += `
 					<div class="col-12 fs-18 line-height-24 fw-medium">
-						<span class="text-royal-blue">Agendada para:</span> ${k}
+						<span class="text-royal-blue">${labelSubHeader}:</span> ${k}
 					</div>
 				</div>
 				<div class="row pt-32 cards-items d-flex justify-content-between align-items-start">
@@ -339,39 +395,50 @@
 		return elem;
 	}
 
-	function drawStatusButtons(detalle){
-		let estaPagado = detalle.estaPagado;
-		let condicionTiempo = detalle.condicionTiempo;
+	function drawStatusButtons(detalle, nombreServicio = "CONSULTA"){
 		let elem = ``;
-		if(estaPagado){
-			if(detalle.codigoReserva === null){
-				elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-agendar">Agendar</button>`;
+		if(nombreServicio == "LABORATORIO"){
+			return `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-ver-detalle-lab">Ver detalle</button>`;
+		}else if(nombreServicio == "OPTICA" ){
+			if(detalle.hasOwnProperty('agregadoCarrito') && detalle.agregadoCarrito){
+				elem += `<button class="btn disabled fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Agregado al carrito</button>`
 			}else{
-				if(condicionTiempo == "TIEMPO_AGOTADO"){
-					elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-CambiarFechaCita">Reagendar</button>`;
-				}else{
-					elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3 btn-CambiarFechaCita">Reagendar</button>
-						<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-consultorio" consultorio-rel='${(detalle.nombreSitio.split(' '))[1]}'>Ver consultorio</button>`;
-				}
+				elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Agregar al carrito</button>`
 			}
 		}else{
-			if(detalle.codigoReserva !== null){
-				elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3 btn-CambiarFechaCita">Reagendar</button>`;
-			}
-			if(!detalle.agregadoCarrito){
-				if(detalle.codigoReserva !== null){
-					elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Agregar al carrito</button>`
-				}else{
+			let estaPagado = detalle.estaPagado;
+			let condicionTiempo = detalle.condicionTiempo;
+			if(estaPagado){
+				if(detalle.codigoReserva === null){
 					elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-agendar">Agendar</button>`;
+				}else{
+					if(condicionTiempo == "TIEMPO_AGOTADO"){
+						elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-CambiarFechaCita">Reagendar</button>`;
+					}else{
+						//(detalle.nombreSitio.split(' '))[1]
+						elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3 btn-CambiarFechaCita">Reagendar</button>
+							<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-consultorio" consultorio-rel='${detalle.nombreSitio.toLowerCase()}'>Ver consultorio</button>`;
+					}
 				}
 			}else{
-				elem += `<button class="btn disabled fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Agregado al carrito</button>`
+				if(detalle.codigoReserva !== null){
+					elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3 btn-CambiarFechaCita">Reagendar</button>`;
+				}
+				if(!detalle.agregadoCarrito){
+					if(detalle.codigoReserva !== null){
+						elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Agregar al carrito</button>`
+					}else{
+						elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-agendar">Agendar</button>`;
+					}
+				}else{
+					elem += `<button class="btn disabled fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Agregado al carrito</button>`
+				}
 			}
 		}
 		return elem;
 	}
 
-	function drawCardItem(detalle){
+	function drawCardItem(detalle, nombreServicio){
 		return `<div class="col-6 col-md-6 box-agenda mb-4">
 					${drawStatusBox(detalle)}
 					<div class="box-contenido rounded-bottom-16 border-royal-blue-tint-60 border-top-0 border-inside p-12 d-flex justify-content-between align-items-stretch">
@@ -384,7 +451,38 @@
 					        <p class="fs-14 line-height-16 fw-medium mb-1 text-capitalize"><span class="text-royal-blue-shade-20 me-1 text-capitalize">Central médica:</span> ${(detalle.nombreSucursal !== null) ? detalle.nombreSucursal.toLowerCase() : ``}</p>
 					        <p class="fs-14 line-height-16 fw-medium mb-1"><span class="text-royal-blue-shade-20 me-1">Hora:</span> ${(detalle.horaInicioFin !== null) ? detalle.horaInicioFin : ``}</p>
 					        <div class="box-action pt-32 pb-2 pb-0 d-flex justify-content-end align-items-center gap-2" data-rel='${JSON.stringify(detalle)}'>
-								${drawStatusButtons(detalle)}
+								${drawStatusButtons(detalle,nombreServicio)}
+					        </div>
+					    </div>
+					</div>
+				</div>`
+	}
+
+	function drawCardLabItem(detalle, nombreServicio){
+		let nombreCardLab = `Laboratorio`;
+		if(detalle.beneficio !== null){
+			if(detalle.beneficio.convenio !== null){
+				nombreCardLab = `Laboratorio`
+			}else if(detalle.beneficio.paquete !== null){
+				nombreCardLab = detalle.beneficio.paquete.nombrePaquete;
+			}
+		}else if(detalle.descripcionBeneficio !== null){
+			nombreCardLab = detalle.descripcionBeneficio;
+		}
+		let profesional = (detalle.nombreMedico !== null) ? detalle.nombreMedico : `Médico externo`
+		return `<div class="col-6 col-md-6 box-agenda mb-4">
+					${drawStatusBox(detalle)}
+					<div class="box-contenido rounded-bottom-16 border-royal-blue-tint-60 border-top-0 border-inside p-12 d-flex justify-content-between align-items-stretch">
+					    <div class="box-icon bg-royal-blue-tint-90 me-2 d-flex align-items-center justify-content-center rounded-8">
+					        <img src="${detalle.iconoEspecialidad}" class="m-2" width="56px" alt="">
+					    </div>
+					    <div class="box-info-agendamiento flex-grow-1">
+					        <h3 class="fs-18 line-height-24 text-royal-blue fw-medium mb-2 text-capitalize"></h3>
+					        <p class="fs-14 line-height-16 fw-medium mb-1 text-capitalize">${nombreCardLab.toLowerCase()}</p>
+							<p class="fs-14 line-height-16 fw-medium mb-1 text-capitalize"><span class="text-royal-blue-shade-20 me-1">Profesional:</span> ${profesional.toLowerCase()}</p>
+							<p class="fs-14 line-height-16 fw-medium mb-1 text-capitalize"><span class="text-royal-blue-shade-20 me-1 text-capitalize">Orden:</span> ${detalle.detalles[0].numeroOrden}</p>
+					        <div class="box-action pt-32 pb-2 pb-0 d-flex justify-content-end align-items-center gap-2" data-rel='${JSON.stringify(detalle)}'>
+								${drawStatusButtons(detalle,nombreServicio)}
 					        </div>
 					    </div>
 					</div>
@@ -403,6 +501,27 @@
 			</div>`;
 		})
 		$('#menu-horizontal').html(menu)
+	}
+
+	async function mostrarDetalleLaboratorioModal(detalle){
+		$('.th-details-prestaciones').addClass('d-none');
+		let elemContent = ``;
+		let buttonActions = `<button item-rel='${JSON.stringify(detalle)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-notificar-llegada w-50" data-bs-dismiss="modal">Activar</button>`;
+		$.each(detalle.detalles, function(key, value){
+			if(value.estadoExamen == "PENDIENTE"){
+				activar = true;
+				codigoOrdenApoyo = value.codigoOrdenApoyo;
+			}
+			elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
+		    	<p class="col-12 mb-0 fs-12 line-height-16 text-capitalize">${value.nombrePrestacion.toLowerCase()}</p>
+	            {{-- <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
+	            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
+	            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p> --}}
+			</li>`
+		})
+		$('.title-modal-detalle-orden').html(`Revisa el detalle de la orden: <span class='text-royal-blue'>${detalle.detalles[0].numeroOrden}</span>`)
+		$('.box-actions-detalle-orden').html(buttonActions);
+		$('.listado-items-orden-detalle').html(elemContent);
 	}
 </script>
 @endsection

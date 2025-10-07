@@ -83,8 +83,50 @@
 			await cargarMisChequeos(false) --}}
 		})
 
-		{{-- $('body').on('click', '.btn-agendar', async function(){
-		}) --}}
+		$('body').on('click', '.check-item-prestacion', async function(){
+			let valorTotal = 0;
+			$('.check-item-prestacion').each(function(index, element) {
+			    if ($(this).is(':checked')) {
+			        valorTotal += parseFloat($(this).val());
+			    }
+			});
+			$('.totalesDetalleOrden').html(`<p class="col-6 mb-0 fs-16 line-height-20 fw-medium text-dark-veris">Subtotal</p>
+                    <p class="col-6 mb-0 fs-16 line-height-20 fw-medium text-end text-royal-blue">$${valorTotal.toFixed(2)}</p>`);
+		})
+
+		// 🔹 Evento para el checkbox principal
+		$(document).on('change', '#all-checkbox', function() {
+		    const isChecked = $(this).is(':checked');
+		    $('.check-item-prestacion').prop('checked', isChecked);
+		    console.log({isChecked})
+		    if(isChecked){
+		    	$('.box-actions-detalle-orden .btn').removeClass('disabled');
+		    }else{
+		    	$('.box-actions-detalle-orden .btn').addClass('disabled');
+		    }
+		});
+
+		// 🔹 Evento para cada checkbox individual
+		$(document).on('change', '.check-item-prestacion', function() {
+		    const total = $('.check-item-prestacion').length;
+		    const checked = $('.check-item-prestacion:checked').length;
+
+		    if(checked == 0){
+		    	$('.box-actions-detalle-orden .btn').addClass('disabled');
+		    }else{
+		    	$('.box-actions-detalle-orden .btn').removeClass('disabled');
+		    }
+
+		    // Si al desmarcar alguno ya no están todos seleccionados → desmarcar el "maestro"
+		    if (checked < total) {
+		        $('#all-checkbox').prop('checked', false);
+		    } 
+		    // Si al marcar se vuelven a seleccionar todos → marcar el "maestro"
+		    else if (checked === total) {
+		        $('#all-checkbox').prop('checked', true);
+		    }
+		});
+
 
 		$(document).on('click', '.btn-sesion', async function(){
 	        let datosServicio = $(this).data('rel');
@@ -153,7 +195,8 @@
 	        let datosServicio = $(this).data('rel');
 	        let url = $(this).attr('url-rel');
 	        let esTerapiaAgrupada = $(this).attr('esTerapiAgrupada-rel');
-	        // console.log(datosServicio.detallesServicios)
+	        console.log({esTerapiaAgrupada})
+	        console.log(datosServicio)
 	        // return
 	        if(esTerapiaAgrupada !== undefined && esTerapiaAgrupada !== null && esTerapiaAgrupada == "true"){
 	            esTerapiaAgrupada = true;
@@ -255,9 +298,18 @@
 	        	if(datosServicio.permitePago == "S" && datosServicio.esPagada == "N"){
 	        		let lineaDetalleOrdenArr = [];
 
-	        		$.each(datosServicio.detalleLaboratorio.listaOrdenesDetalle, function(key, value){
+	        		{{-- $.each(datosServicio.detalleLaboratorio.listaOrdenesDetalle, function(key, value){
 						lineaDetalleOrdenArr.push(value.lineaDetalle)
-					})
+					}) --}}
+					$('.check-item-prestacion').each(function(index, element) {
+					    if ($(this).is(':checked')) {
+					    	let agregadoCarrito = $(this).attr('agregadoCarrito-rel');
+					    	let lineaDetalle = parseInt($(this).attr('lineadetalle-rel'));
+					    	if(agregadoCarrito == 'false'){
+					        	lineaDetalleOrdenArr.push(lineaDetalle);
+					        }
+					    }
+					});
 	        		
 	        		let datosPago = {
 						"tratamientos": {
@@ -504,7 +556,7 @@
 
 	async function obtenerValoresOrden(detalle){
 		let lineaDetalleOrdenArr = [];
-		if(detalle.detallesServicios == null && detalle.detalleLaboratorio == null){
+		if((detalle.detallesServicios == null || detalle.detallesServicios.length == 0 ) && detalle.detalleLaboratorio == null){
 			lineaDetalleOrdenArr.push(detalle.lineaDetalleOrden)
 		}else if(detalle.detalleLaboratorio !== null){
 			$.each(detalle.detalleLaboratorio.listaOrdenesDetalle, function(key, value){
@@ -513,7 +565,7 @@
 		}
 
 		let args = [];
-        args["endpoint"] = `${api_url_digitales}/${api_war}/util/valorizar_prestaciones?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}&codigoTratamiento=${tratamiento.codigoTratamiento}`;
+        args["endpoint"] = `${api_url_digitales}/${api_war}/util/valorizar_prestaciones?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}&codigoTratamiento=${tratamiento.codigoTratamiento}&idPreTransaccion=${localStorage.getItem("idPreTransaccion")}`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -549,20 +601,32 @@
 				let nombrePrestacion = value.nombrePrestacion.replace(/\u00A0/g, " ").replace(/\n/g, "<br>");
 				let classMsgCobertura = (value.mensajeCobertura === null) ? `invisible` : ``;
 				let textMsgCobertura = ``;
+				let esPagada = (value.hasOwnProperty('esPagada')) ? value.esPagada : false;
+				let agregadoCarrito = (value.hasOwnProperty('agregadoCarrito')) ? value.agregadoCarrito : false;
 				if(value.mensajeCobertura !== null){
 					textMsgCobertura = value.mensajeCobertura;
 					showTooltip = true;
 				}
+				let elemInput = `<input type="checkbox" checked value="${value.valorTotal}" class="me-2 border-midnight-blue-tint-80 check-item-prestacion" id="prestacion-${value.codigoServicio}-${value.codigoPrestacion}" agregadoCarrito-rel='${agregadoCarrito}' lineaDetalle-rel='${value.lineaDetalleOrden}' prestacion-rel='${JSON.stringify(value)}'>
+						<label for="prestacion-${value.codigoServicio}-${value.codigoPrestacion}">
+							${capitalizarPrimeraLetra(nombrePrestacion)}
+						</label>`
+				if(esPagada){
+					elemInput = `${capitalizarPrimeraLetra(nombrePrestacion)} <span class="badge gradient-green text-green-dark p-2 ms-2">Pagado</span>`;
+				}else{
+					valorTotal += value.valorTotal;
+				}
 				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
-			    	<p class="col-5 mb-0 fs-12 line-height-16">${capitalizarPrimeraLetra(nombrePrestacion)}</p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorServicio.toFixed(2)}</p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorEmpresa.toFixed(2)}</p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${value.valorPaciente.toFixed(2)}</p>
+			    	<p class="col-5 mb-0 fs-12 line-height-16 d-flex justify-content-start align-items-center">
+						${elemInput}
+			    	</p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${ (esPagada) ? `` : value.valorServicio.toFixed(2)}</p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${ (esPagada) ? `` : value.valorEmpresa.toFixed(2)}</p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${ (esPagada) ? `` : value.valorPaciente.toFixed(2)}</p>
 		            <p class="col-1 mb-0 fs-12 text-center line-height-16 ${classMsgCobertura}" data-bs-toggle="tooltip" data-bs-placement="top" title="${textMsgCobertura}">
 						<i class="fa-solid fa-circle-info text-red-dark"></i>
 		            </p>
 				</li>`
-				valorTotal += value.valorTotal;
 			})
 		}else if(detalle.detalleLaboratorio !== null){
 			// Default
@@ -573,7 +637,12 @@
 					codigoOrdenApoyo = value.codigoOrdenApoyo;
 				}
 				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
-			    	<p class="col-12 mb-0 fs-12 line-height-16 text-capitalize">${value.nombrePrestacion.toLowerCase()}</p>
+			    	<p class="col-12 mb-0 fs-12 line-height-16 text-capitalize d-flex justify-content-start align-items-center">
+						<input type="checkbox" checked class="me-2 border-midnight-blue-tint-80" id="prestacion-${value.codigoServicio}-${value.codigoPrestacion}" lineaDetalle-rel='${value.lineaDetalle}' prestacion-rel='${JSON.stringify(value)}'>
+						<label for="prestacion-${value.codigoServicio}-${value.codigoPrestacion}">
+			    			${value.nombrePrestacion.toLowerCase()}
+						</label>
+			    	</p>
 		            {{-- <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p> --}}
@@ -625,8 +694,7 @@
 			}
 		} --}}
 
-		$('.box-actions-detalle-orden').html(buttonActions)
-		
+		$('.box-actions-detalle-orden').html(buttonActions);		
 
 		$('.header-orden').html(elemHeader);
 		$('.listado-items-orden-detalle').html(elemContent);
@@ -851,7 +919,7 @@
 	let detalleTratamiento;
 	async function cargarDetalleTratamiento(showLoader = true){
 		let args = [];
-        args["endpoint"] = `${api_url_digitales}/${api_war}/pacientes/mis_tratamientos/detalles?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}&codigoTratamiento=${tratamiento.codigoTratamiento}`;
+        args["endpoint"] = `${api_url_digitales}/${api_war}/pacientes/mis_tratamientos/detalles?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}&codigoTratamiento=${tratamiento.codigoTratamiento}&idPreTransaccion=${localStorage.getItem("idPreTransaccion")}`;
         args["method"] = "GET";
         args["showLoader"] = showLoader;
         args["token"] = "{{ $accessToken }}";
@@ -892,14 +960,18 @@
 		//<p class="fs-14 line-height-16 mb-12 fw-normal"><span class="text-royal-blue-shade-40">Orden Válida hasta:</span> </p>
 		$.each(detalleTratamiento.pendientes, function(key, value){
 			//if(detalleTratamiento.mostrarTerapiasAgrupadas == "S"){}
-			if(value.detallesServicios == null){
+			if(value.detallesServicios == null || value.detallesServicios.length == 0){
+				let nombreServicio = ``;
+				if(value.hasOwnProperty('nombreServicio')){
+					nombreServicio = `<h2 class="text-royal-blue-shade-20 fw-medium fs-16 line-height-20 mb-1 text-capitalize">${value.nombreServicio.toLowerCase()}</h2>`;
+				}
 				let buttonActionCard = (value.tipoCard !== "RECETAS") ? `<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-detalle-orden">Ver detalle</button>` : ``;
 				let labelNumeroOrden = (value.tipoCard !== "RECETAS") ? `<p class="fs-14 line-height-16 mb-2 fw-normal"><span class="text-royal-blue-shade-40">Nro. Orden:</span> ${value.idOrden}</p>` : ``;
 
 			    elem += `<div class="col-12 px-32 py-4 fs-18 line-height-24 fw-medium d-flex justify-content-between align-items-center border-bottom-midnight-blue-tint-80">
 					<img src="${value.urlImagenTipoServicio}" alt="" width="56px">
 					<div class="mx-3 flex-grow-1">
-						<h2 class="text-royal-blue-shade-20 fw-medium fs-16 line-height-20 mb-1 text-capitalize">${value.nombreServicio.toLowerCase()}</h2>
+						${nombreServicio}
 			    		${labelNumeroOrden}
 						<p class="fs-14 line-height-16 mb-12 fw-normal d-none"><span class="text-royal-blue-shade-40">Orden Válida hasta:</span> ${value.fechaCaducidad}</p>
 			    		
