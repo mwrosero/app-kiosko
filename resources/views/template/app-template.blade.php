@@ -38,6 +38,7 @@
         <script>
             let accessToken = "{{ $accessToken }}";
             let mac = "{{ $mac }}";
+            let ambiente = "{{ \App\Models\Veris::AMBIENTE }}";
             let web_url = "{{ \App\Models\Veris::WEBURL }}";
             const url_payment = "{{ \App\Models\Veris::URLPAYMENT }}";
             const api_url = "{{ \App\Models\Veris::BASE_URL }}";
@@ -123,7 +124,9 @@
                     clearTimeout(inactivityTime);
                     // Inicia el contador de 50 segundos (50000 ms)
                     inactivityTime = setTimeout(() => {
-                        //window.location.href = redirectUrl;
+                        if(ambiente == "PROD"){
+                            window.location.href = redirectUrl;
+                        }
                     }, 60000);
                 }
 
