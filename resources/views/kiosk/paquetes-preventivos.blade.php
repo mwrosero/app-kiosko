@@ -212,6 +212,7 @@
         $('body').on('click', '.btn-comprar', function(){
         	let paquete = $(this).attr('data-rel');
         	console.log(paquete);
+        	localStorage.setItem("origenPaquete", "nuevo");
         	localStorage.setItem("paquete", paquete);
         	location.href = `/detalle-paquete/{{ $mac }}`;
         })

@@ -38,6 +38,7 @@
 <script>
 	let datosCliente = JSON.parse(localStorage.getItem('datosCliente'));
 	let paquete = JSON.parse(localStorage.getItem('paquete'));
+	let origen = localStorage.getItem("origenPaquete");
 	trackId = localStorage.getItem('trackId');
 	
 	document.addEventListener("DOMContentLoaded", async function () {
