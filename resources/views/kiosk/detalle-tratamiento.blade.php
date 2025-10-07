@@ -601,15 +601,17 @@
 				let nombrePrestacion = value.nombrePrestacion.replace(/\u00A0/g, " ").replace(/\n/g, "<br>");
 				let classMsgCobertura = (value.mensajeCobertura === null) ? `invisible` : ``;
 				let textMsgCobertura = ``;
+				let esPagada = (value.hasOwnProperty('esPagada')) ? value.esPagada : false;
+				let agregadoCarrito = (value.hasOwnProperty('agregadoCarrito')) ? value.agregadoCarrito : false;
 				if(value.mensajeCobertura !== null){
 					textMsgCobertura = value.mensajeCobertura;
 					showTooltip = true;
 				}
-				let elemInput = `<input type="checkbox" checked value="${value.valorTotal}" class="me-2 border-midnight-blue-tint-80 check-item-prestacion" id="prestacion-${value.codigoServicio}-${value.codigoPrestacion}" agregadoCarrito-rel='${value.agregadoCarrito}' lineaDetalle-rel='${value.lineaDetalleOrden}' prestacion-rel='${JSON.stringify(value)}'>
+				let elemInput = `<input type="checkbox" checked value="${value.valorTotal}" class="me-2 border-midnight-blue-tint-80 check-item-prestacion" id="prestacion-${value.codigoServicio}-${value.codigoPrestacion}" agregadoCarrito-rel='${agregadoCarrito}' lineaDetalle-rel='${value.lineaDetalleOrden}' prestacion-rel='${JSON.stringify(value)}'>
 						<label for="prestacion-${value.codigoServicio}-${value.codigoPrestacion}">
 							${capitalizarPrimeraLetra(nombrePrestacion)}
 						</label>`
-				if(value.esPagada){
+				if(esPagada){
 					elemInput = `${capitalizarPrimeraLetra(nombrePrestacion)} <span class="badge gradient-green text-green-dark p-2 ms-2">Pagado</span>`;
 				}else{
 					valorTotal += value.valorTotal;
@@ -618,9 +620,9 @@
 			    	<p class="col-5 mb-0 fs-12 line-height-16 d-flex justify-content-start align-items-center">
 						${elemInput}
 			    	</p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${ (value.esPagada) ? `` : value.valorServicio.toFixed(2)}</p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${ (value.esPagada) ? `` : value.valorEmpresa.toFixed(2)}</p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${ (value.esPagada) ? `` : value.valorPaciente.toFixed(2)}</p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${ (esPagada) ? `` : value.valorServicio.toFixed(2)}</p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${ (esPagada) ? `` : value.valorEmpresa.toFixed(2)}</p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16">$${ (esPagada) ? `` : value.valorPaciente.toFixed(2)}</p>
 		            <p class="col-1 mb-0 fs-12 text-center line-height-16 ${classMsgCobertura}" data-bs-toggle="tooltip" data-bs-placement="top" title="${textMsgCobertura}">
 						<i class="fa-solid fa-circle-info text-red-dark"></i>
 		            </p>
