@@ -66,8 +66,6 @@
 			let datosPago = {
 				"paquetesPromocionales": {
 					"secuenciaPaquetePaciente": parseInt(detalle.secuenciaPaquetePaciente),
-					"codigoPaquete": parseInt(detalle.codigoPaquete),
-					"idPaciente": datosCliente.idPaciente
 				}
 			}
 			await agregarItem(datosPago);
