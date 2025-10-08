@@ -1030,7 +1030,11 @@
 						"codigoReserva": dataCita.reserva.codigoReserva
 					}
 				}
-				await agregarItem(datosPago, true);
+                if(dataCita.hasOwnProperty('agregadoCarrito') && dataCita.agregadoCarrito){
+                    location.href = `/carrito/${mac}`;
+                }else{
+				    await agregarItem(datosPago, true);
+                }
                 //location.href = '/citas-datos-facturacion/{{ $mac }}';
             }else{
                 location.href = '/pago-realizado/{{ $mac }}';

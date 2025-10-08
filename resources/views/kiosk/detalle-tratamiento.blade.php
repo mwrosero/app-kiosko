@@ -328,15 +328,27 @@
 	        }
 
 	        if(datosServicio.tipoCard == "AGENDA" && datosServicio.detalleReserva !== null){
-	        	let lineaDetalleOrdenArr = [];
-	        	lineaDetalleOrdenArr.push(datosServicio.lineaDetalleOrden)
-	        	let datosPago = {
-					"tratamientos": {
-					    "idPaciente": detalleTratamiento.idPaciente,
-					    "numeroOrden": datosServicio.idOrden,
-					    "codigoConvenio": detalleTratamiento.datosConvenio.codigoConvenio,
-					    "codigoTratamiento": detalleTratamiento.codigoTratamiento,
-					    "detalles": lineaDetalleOrdenArr
+	        	if(datosServicio.agregadoCarrito){
+	        		location.href = `/carrito/${mac}`;
+	        		return;
+	        	}
+	        	if(datosServicio.detalleReserva !== null){
+	        		datosPago = {
+						"reserva": {
+							"codigoReserva": datosServicio.detalleReserva.codigoReserva
+						}
+					}
+	        	}else{
+		        	let lineaDetalleOrdenArr = [];
+		        	lineaDetalleOrdenArr.push(datosServicio.lineaDetalleOrden)
+		        	let datosPago = {
+						"tratamientos": {
+						    "idPaciente": detalleTratamiento.idPaciente,
+						    "numeroOrden": datosServicio.idOrden,
+						    "codigoConvenio": detalleTratamiento.datosConvenio.codigoConvenio,
+						    "codigoTratamiento": detalleTratamiento.codigoTratamiento,
+						    "detalles": lineaDetalleOrdenArr
+						}
 					}
 				}
 				await agregarItem(datosPago);
@@ -501,6 +513,7 @@
 
 	        console.log('dataCa', data);
 	        console.log('urlCa', url);
+
 	        // const dataConvenio = await consultarConvenios(data);
 	        // const dataPaciente = await consultarDatosPaciente(data);
 	        let esVirtual = "N";
@@ -547,7 +560,9 @@
 	        }
 	        params.origen = "inicios";
 	        params.convenio = convenio;
-	        
+	        params.agregadoCarrito = data.agregadoCarrito;
+	        console.log(params);
+	        //return;
 	        localStorage.setItem('agendamiento', JSON.stringify(params));
 	        location = url;
 	    });
@@ -789,7 +804,7 @@
                             if(datosServicio.detalleReserva === null){
                                 //respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
                             }else{
-                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-CambiarFechaCita">Reagendar</a>`;
                             }
                         }else if(datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
                             if(datosServicio.modalidad != "ONLINE" && datosServicio.esPagada == "S"){
@@ -799,9 +814,9 @@
                                 respuestaAgenda += `<div url-rel="/citas-datos-facturacion/{{ $mac }}" class="btn fs-18 line-height-25 border-royal-blue text-royal-blue rounded-12 p-3 btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}'>Pagar</div>`;
                             }
                             if((datosServicio.esPagada == "S" && datosServicio.modalidad == "ONLINE") || datosServicio.esPagada == "N"){
-                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-CambiarFechaCita">Reagendar</a>`;
                             }else{
-                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-CambiarFechaCita">Reagendar</a>`;
                             }
                             if(datosServicio.modalidad == "ONLINE" && datosServicio.esPagada == "S"){
                                 respuestaAgenda += `<a href="${datosServicio.detalleReserva.idTeleconsulta}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50">Conectarme</a>`;

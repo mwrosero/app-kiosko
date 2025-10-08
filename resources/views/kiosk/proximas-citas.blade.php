@@ -210,7 +210,6 @@
 
 		$('body').on('click', '.btn-CambiarFechaCita', async function(){
 			let dataCita = JSON.parse($(this).parent().attr('data-rel'));
-			
 			dataCita.paciente.idPaciente = dataCita.paciente.numeroPaciente;
 			dataCita.paciente.pacPacNumero = dataCita.paciente.numeroPaciente;
 			if(dataCita.beneficio !== null){
@@ -237,7 +236,6 @@
 
 			{{-- console.log(dataCita);
 			return; --}}
-
 			dataCita.online = (dataCita.esTeleconsulta) ? "S" : "N";
 			localStorage.setItem('agendamiento', JSON.stringify(dataCita));
 			if(dataCita.esTeleconsulta){
