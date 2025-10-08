@@ -86,7 +86,7 @@
 		                </div>
 		            </div>
 		            <div class="col-12 mt-4 text-center">
-		            	<button class="btn bg-royal-blue text-white fs-18 line-height-24 py-3 rounded-8 w-50 fw-medium shadow-none disabled" id="btn-validar-datos-factura">Pagar ahora</button>
+		            	<button class="btn bg-royal-blue text-white fs-18 line-height-24 py-3 rounded-8 w-50 fw-medium shadow-none disabled" id="btn-validar-datos-factura"></button>
 		            </div>
 	            </div>
 			</div>
@@ -206,6 +206,13 @@
 		await consultarCarrito();
 		await obtenerDatosFacturacion();
 
+		let tieneSoloExentos = await tieneSoloExentosBool();
+		if(tieneSoloExentos){
+			$('#btn-validar-datos-factura').html(`Continuar`);
+		}else{
+			$('#btn-validar-datos-factura').html(`Pagar ahora`);
+		}
+
 		$.customKeyboard.init('input[readonly]', '.simple-keyboard');
 
 		$('body').on('change', 'input[type="text"], input[type="number"]', async function() {
@@ -321,7 +328,7 @@
 					if(tieneSoloExentos){
 						await facturar();
 					}else{
-						location.href = `/metodos-pago/{{ $mac }}`
+						location.href = `/metodos-pago/{{ $mac }}`;
 					}
 				}else{
 					$('#modalError').modal('show');
