@@ -612,15 +612,14 @@
 							${capitalizarPrimeraLetra(nombrePrestacion)}
 						</label>`
 				let observacion = ``;
-				{{-- if(esPagada){
+				if(esPagada){
 					elemInput = `${capitalizarPrimeraLetra(nombrePrestacion)} <span class="badge gradient-green text-green-dark p-2 ms-2">Pagado</span>`;
-				}else{ --}}
+				}else{
 					observacion = `<p class="col-1 mb-0 fs-12 text-center line-height-16 ${classMsgCobertura}" data-bs-toggle="tooltip" data-bs-placement="top" title="${textMsgCobertura}">
 						<i class="fa-solid fa-circle-info text-red-dark"></i>
 		            </p>`;
 					valorTotal += value.valorTotal;
-				{{-- } --}}
-				esPagada = false;
+				}
 				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
 			    	<p class="col-5 mb-0 fs-12 line-height-16 d-flex justify-content-start align-items-center">
 						${elemInput}

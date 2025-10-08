@@ -140,6 +140,12 @@
             if(!this.targetInput) return;
             var val = this.targetInput.val();
 
+            var decodeEntity = function(str){
+                var txt = document.createElement('textarea');
+                txt.innerHTML = str;
+                return txt.value;
+            };
+
             switch(key){
                 case 'Backspace':
                     this.targetInput.val(val.slice(0,-1));
@@ -156,8 +162,12 @@
                     return;
                     break;
                 default:
-                    var char = this.isUppercase ? key.toUpperCase() : key.toLowerCase();
+                    // var char = this.isUppercase ? key.toUpperCase() : key.toLowerCase();
+                    // this.targetInput.val(val + char);
+                    var decodedKey = decodeEntity(key);
+                    var char = this.isUppercase ? decodedKey.toUpperCase() : decodedKey.toLowerCase();
                     this.targetInput.val(val + char);
+
             }
 
             this.targetInput.trigger('input').trigger('change');
