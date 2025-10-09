@@ -222,7 +222,6 @@
 
         async function onScroll(){
             console.log('onScroll');
-            $('#box-simple-keyboard').addClass('d-none');
             if(!cargandoContenido && !isFiltered && $(window).scrollTop() + $(window).height() + 100 > $(document).height()) {
                 cargandoContenido = true;
                 console.log("near bottom!");
@@ -339,7 +338,9 @@
 		let args = [];
 		args["endpoint"] = `${api_url_digitales}/${api_war}/paquetes?macAddress={{ $mac }}&page=${page}&perPage=${perPage}&nemonicoGrupoPaciente=${nemonicos.join(',')}&busqueda=${ (getInput('buscarPorPromocion').replace(/\s/g, '+')) }`;
         args["method"] = "GET";
-        //if( getInput('buscarPorPromocion') == "" ) ? true : false
+        if( getInput('buscarPorPromocion') !== "" && page > 1 ){
+        	$('#box-simple-keyboard').addClass('d-none');
+        }
         args["showLoader"] = showLoader;
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);

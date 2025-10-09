@@ -113,6 +113,10 @@
                     $('.ingresar-host').removeClass('d-none');
                 }
 
+                $('body').on('click', '.btn-logout', async function(){
+                    await logoutHost();
+                })
+
                 let inactivityTime;
                 const redirectUrl = '/{{ $mac }}';
 
@@ -155,6 +159,22 @@
                 if(data.code == 200){
                     $('.qtyCart').html(data.data.contador);
                 }
+            }
+
+            async function logoutHost(){
+                let args = [];
+                args["endpoint"] = `${api_url_digitales}/${api_war}/seguridad/salir_host?macAddress={{ $mac }}`;
+                args["method"] = "POST";
+                args["token"] = accessToken;
+                args["showLoader"] = true;
+                const data = await call(args);
+                console.log(data);
+                if(data.code == 200){
+                    localStorage.removeItem("host");
+                    location.href = '/{{ $mac }}'
+                }else{
+                    alert(data.message)
+                }   
             }
         </script>
     </body>

@@ -28,27 +28,3 @@
 	</div>
 	@endif
 </header>
-<script>
-	document.addEventListener("DOMContentLoaded", async function () {
-		$('body').on('click', '.btn-logout', async function(){
-			await logoutHost();
-		})
-	})
-
-	async function logoutHost(){
-		let args = [];
-		args["endpoint"] = `${api_url_digitales}/${api_war}/seguridad/salir_host?macAddress={{ $mac }}`;
-        args["method"] = "POST";
-        args["token"] = accessToken;
-        args["showLoader"] = true;
-        const data = await call(args);
-        console.log(data);
-      	if(data.code == 200){
-      		localStorage.removeItem("host");
-			location.href = '/{{ $mac }}'
-      	}else{
-      		alert(data.message)
-      	}	
-	}
-
-</script>

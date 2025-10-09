@@ -26,7 +26,7 @@
 					</div>
 					<div class="col-9 d-flex justify-content-center align-items-center gap-3 mt-32 mx-auto">
 						<a href="/menu/{{ $mac }}" class="btn fw-medium py-3 text-royal-blue border-royal-blue rounded-8 fs-18 line-height-24 w-50">Agregar más servicios</a>
-	                    <a href="/datos-facturacion/{{ $mac }}" class="btn disabled fw-medium py-3 bg-royal-blue text-white rounded-8 fs-18 line-height-24 w-50" id="btn-pagar">Pagar</a>
+	                    <div class="btn disabled fw-medium py-3 bg-royal-blue text-white rounded-8 fs-18 line-height-24 w-50" id="btn-pagar">Pagar</div>
 					</div>
 	            </div>
 			</div>
@@ -41,7 +41,7 @@
 	let datosCliente = JSON.parse(localStorage.getItem('datosCliente'));
 	let tipo = localStorage.getItem('tipo');
 	trackId = localStorage.getItem('trackId');
-	let carrito;
+	let infoCarrito;
 
 	document.addEventListener("DOMContentLoaded", async function () {
 		localStorage.removeItem("origen");
@@ -71,7 +71,55 @@
 			await eliminarItemCarrito(idAgrupacion);
 		});
 
+		$('body').on('click', '#btn-pagar', async function(){
+			let agrupaciones = await obtenerAgrupaciones();
+			let tieneSoloExentos = await tieneSoloExentosBool();
+			if(tieneSoloExentos){
+				await facturar();
+			}else{
+				location.href = "/datos-facturacion/{{ $mac }}"
+			}
+		});
+
 	})
+
+	async function facturar(){
+		let agrupacion = JSON.parse(localStorage.getItem("agrupacionFacturar"));
+		let args = [];
+        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/facturar?macAddress={{ $mac }}`;//&esPrueba=true
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify({
+        	"idAgrupacion":agrupacion
+        });
+        args["dismissAlert"] = true;
+        const data = await call(args);
+        console.log(data);
+        if(data.code == 200){
+        	location.href = `/pago-realizado/{{ $mac }}`;
+        }else{
+			$('#modalError').modal('show')
+			$('.titleError').html(`Ha ocurrido un error`)
+			$('.msgError').html(data.message);
+        }
+	}
+
+	async function tieneSoloExentosBool(){
+		let subtotal = 0;
+		$.each(infoCarrito, function(key, value){
+			$.each(value.agrupaciones, function(k, item){
+				subtotal += item.totalAgrupacion.paciente.valorTotal;
+			})
+		})
+		if(subtotal == 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
 
 	async function eliminarItemCarrito(idAgrupacion){
 		console.log(idAgrupacion)
@@ -102,7 +150,7 @@
         const data = await call(args);
         console.log(data);
         if(data.code == 200){
-        	carrito = data.data;
+        	infoCarrito = data.data;
         	await drawCartItems();
         }else{
         	$('#modalError').modal('show');
@@ -130,7 +178,7 @@
 		let convenio = ``;
 		let subtotal = 0;
 		let showTooltip = false;
-		$.each(carrito, function(key, value){
+		$.each(infoCarrito, function(key, value){
 			let idAgrupacion;
 			$.each(value.agrupaciones, function(k, item){
 				idAgrupacion = item.idAgrupacion
