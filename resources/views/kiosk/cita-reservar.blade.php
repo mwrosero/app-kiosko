@@ -1017,7 +1017,6 @@
             guardarData();
             if(dataCita.tratamiento && dataCita.tratamiento.esPagada == "S"){
                 location.href = '/pago-realizado/{{ $mac }}';
-                console.log(1)
                 return;
             }
             if(data.data.permitePago == "S"){
@@ -1037,17 +1036,7 @@
                 }
                 //location.href = '/citas-datos-facturacion/{{ $mac }}';
             }else{
-                {{-- location.href = '/pago-realizado/{{ $mac }}'; --}}
-                let datosPago = {
-                    "reserva": {
-                        "codigoReserva": dataCita.reserva.codigoReserva
-                    }
-                }
-                if(dataCita.hasOwnProperty('agregadoCarrito') && dataCita.agregadoCarrito){
-                    location.href = `/carrito/${mac}`;
-                }else{
-                    await agregarItem(datosPago, false);
-                }
+                location.href = '/pago-realizado/{{ $mac }}';
             }
         }else{
             //guardarData();
