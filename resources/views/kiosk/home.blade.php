@@ -101,6 +101,8 @@
 		localStorage.removeItem("agrupacionFacturar");
 		localStorage.removeItem("datosFacturados");
 		localStorage.removeItem("pagoUnico");
+		localStorage.removeItem("datosPacienteNuevo");
+		localStorage.removeItem("tratamiento");
 	}
 
 	async function cargarParametros(){

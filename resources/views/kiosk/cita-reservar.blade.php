@@ -8,19 +8,18 @@
 	@include('components.cart-bar', ['title' => 'Revisa los datos'])
 
 	<!-- Modal de error -->
-	<div class="modal fade" id="ModalError" tabindex="-1" aria-labelledby="ModalError" aria-hidden="true">
-	    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+    <div class="modal modal-top fade" id="ModalError" aria-labelledby="ModalErrorLabel" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
+	    <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable mx-auto">
 	        <div class="modal-content">
 	            <div class="modal-body text-center p-3 pb-0">
-	                <h1 class="modal-title fs--20 line-height-24 my-3">Información de tu seguro</h1>
+                    <h2 class="fs-24 line-height-32 text-royal-blue-shade-20 fw-medium my-32">Información de tu seguro</h2>
 	                <p class="fs--1 line-height-16 text-veris fw-normal" id="mensajeError"></p>
+                    <h3 class="fs-16 line-height-20 text-silver-dark mb-32 msgError" id="mensajeError">Ocurrió un inconveniente con tu aseguradora, por favor toma un turno.</h3>
 	            </div>
 	            <div class="modal-footer pt-0 pb-3 px-3">
 	                <a href="tel:+59346009600" id="btn-lamar" class="btn btn-primary-veris d-none m-0 w-100 px-4 py-3 mb-2"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
-	                {{-- <button type="button" id="btn-dismiss-error" class="btn btn-action-error px-3 py-2 border-0 text-royal-blue shadow-none fw-normal fs--1 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
-	                <a href="/" id="btn-redirect-error" class="btn btn-action-error px-3 py-2 border-0 text-royal-blue shadow-none fw-normal fs--1 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Regresar</a> --}}
-	                <button type="button" id="btn-dismiss-error" class="btn btn-action-error btn-primary-veris fw-medium fs--18 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Regresar</button>
-	                <a href="/" id="btn-redirect-error" class="btn btn-action-error btn-primary-veris fw-medium fs--18 m-0 w-100 px-4 py-3">Volver al inicio</a>
+	                <button type="button" id="btn-dismiss-error" class="btn py-24 text-royal-blue border-royal-blue rounded-12 fs-24 line-height-32 w-100 d-none" data-bs-dismiss="modal">Regresar</button>
+	                <a href="/menu/{{ $mac }}" id="btn-redirect-error" class="btn py-24 bg-royal-blue text-white rounded-12 fs-24 line-height-32 w-100 mt-3">Volver al inicio</a>
 	            </div>
 	        </div>
 	    </div>
@@ -858,7 +857,7 @@
             $('#btn-pagar').removeClass('d-none');
 
             if((data.data.mensajeValidacion !== "" && data.data.mensajeValidacion !== null) || (data.data.mensajeValidacion2 !== "" && data.data.mensajeValidacion2 !== null)){
-                $('#mensajeError').html(`${data.data.mensajeValidacion} <br> ${(data.data.mensajeValidacion2 !== null) ? data.data.mensajeValidacion2 : ""}`);
+                //$('#mensajeError').html(`${data.data.mensajeValidacion} <br> ${(data.data.mensajeValidacion2 !== null) ? data.data.mensajeValidacion2 : ""}`);
                 $('.btn-action-error').addClass('d-none');
                 if(data.data.aplicaCondicionesSeguro){
                     //redirecciona al home
