@@ -1037,11 +1037,55 @@
                 //location.href = '/citas-datos-facturacion/{{ $mac }}';
             }else{
                 location.href = '/pago-realizado/{{ $mac }}';
+
+                {{-- if(dataCita.precio.valorCanalVirtual > 0){
+                    location.href = '/pago-realizado/{{ $mac }}';
+                }else{
+                    let datosPago = {
+                        "reserva": {
+                            "codigoReserva": dataCita.reserva.codigoReserva
+                        }
+                    }
+                    if(dataCita.hasOwnProperty('agregadoCarrito') && dataCita.agregadoCarrito){
+                        location.href = `/carrito/${mac}`;
+                    }else{
+                        let addItem = await agregarItem(datosPago, true, true);
+                        if(addItem.code != 200){
+                            return;
+                        }
+                        await facturarActivarReserva();
+                    }
+                } --}}
             }
         }else{
             //guardarData();
             //location.href = '/citas-datos-facturacion/{{ $mac }}';
             alert(data.message);
+        }
+    }
+
+    async function facturarActivarReserva(){
+        let agrupacion = await obtenerAgrupaciones();
+        let args = [];
+        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/facturar?macAddress={{ $mac }}`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify({
+            "idAgrupacion": agrupacion
+        });
+        args["dismissAlert"] = true;
+        const data = await call(args);
+        console.log(data);
+        // $('#modalActivarChequeo').modal('hide')
+        if(data.code == 200){
+            location.href = '/pago-realizado/{{ $mac }}';
+        }else{
+            $('#modalError').modal('show')
+            $('.titleError').html(`Ha ocurrido un error`)
+            $('.msgError').html(data.message);
         }
     }
 

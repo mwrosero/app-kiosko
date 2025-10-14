@@ -93,8 +93,8 @@
 				    "secuenciaPrestacionesXAfiliado": secuenciaPrestacionesXAfiliado
 				}
 			}
-			let agreagarItem = await agregarItem(datosPago, true, true);
-			if(agreagarItem.code != 200){
+			let addItem = await agregarItem(datosPago, true, true);
+			if(addItem.code != 200){
 				return;
 			}
 			await activarChequeo();

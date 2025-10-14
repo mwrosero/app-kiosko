@@ -179,7 +179,7 @@
 					}
 				}
 			}
-			await agregarItem(datosPago);
+			await agregarItem(datosPago, true);
 		})
 
 		$('body').on('click', '.btn-agendar', async function(){
@@ -401,7 +401,7 @@
 			if(detalle.hasOwnProperty('agregadoCarrito') && detalle.agregadoCarrito){
 				elem += `<button class="btn disabled fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Agregado al carrito</button>`
 			}else{
-				elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Agregar al carrito</button>`
+				elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Pagar ahora</button>`
 			}
 		}else{
 			let estaPagado = detalle.estaPagado;
@@ -424,7 +424,7 @@
 				}
 				if(!detalle.agregadoCarrito){
 					if(detalle.codigoReserva !== null){
-						elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Agregar al carrito</button>`
+						elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-pagar">Pagar ahora</button>`
 					}else{
 						elem += `<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-agendar">Agendar</button>`;
 					}

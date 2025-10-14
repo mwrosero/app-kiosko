@@ -47,5 +47,7 @@ Route::get('/metodos-pago/{mac}', [KioskController::class, 'listaMetodosPago'])-
 Route::get('/pago-realizado/{mac}', [KioskController::class, 'pagoExitoso'])->name('pagoExitoso');
 
 Route::get('/host/{mac}', [KioskController::class, 'host'])->name('host');
+Route::get('/lider/{mac}', [KioskController::class, 'lider'])->name('lider');
+Route::get('/admin/{mac}', [KioskController::class, 'admin'])->name('admin');
 
 // Route::get('/ingreso/{mac}', [KioskController::class, 'ingreso'])->name('ingreso');
