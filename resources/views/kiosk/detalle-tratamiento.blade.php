@@ -55,6 +55,7 @@
 	trackId = localStorage.getItem('trackId');
 	localStorage.setItem("origen", "cita");
 	document.addEventListener("DOMContentLoaded", async function () {
+		localStorage.removeItem("origen");
 		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
 		await cargarInfoTratamiento();
 		await cargarDetalleTratamiento();
@@ -287,7 +288,10 @@
 	    	$('#modalDetalleOrdenTratamiento').modal('hide')
 	        let datosServicio = $(this).data('rel');
 	        let convenio = JSON.parse($(this).attr('convenio-rel'));
-	        console.log(datosServicio);
+	        let esExcento = $(this).attr('esExcento-rel');
+	        {{-- console.log(datosServicio);
+	        console.log(esExcento);
+	        return; --}}
 
 	        {{-- if(datosServicio.esPagada == "N" && datosServicio.tipoCard == "LAB" && datosServicio.modalidad == "PRESENCIAL"){
 	            $('#mensajeNoPermiteCambiar').html('Para agendar este procedimiento acerquese a caja con el turno que emitiremos');
@@ -320,7 +324,15 @@
 						    "detalles": lineaDetalleOrdenArr
 						}
 					}
-					await agregarItem(datosPago);
+					if(esExcento === "false"){
+						await agregarItem(datosPago, true);
+					}else{
+						let addItem = await agregarItem(datosPago, true, true);
+                        if(addItem.code != 200){
+                            return;
+                        }
+                        await facturarActivarOrden();
+					}
 	        		return;
 	        	}else{
 	        		return;
@@ -351,7 +363,7 @@
 						}
 					}
 				}
-				await agregarItem(datosPago);
+				await agregarItem(datosPago,true);
         		return;
 	        }
 
@@ -569,6 +581,31 @@
 
 	})
 
+	async function facturarActivarOrden(){
+        let agrupacion = await obtenerAgrupaciones();
+        let args = [];
+        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/facturar?macAddress={{ $mac }}`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify({
+            "idAgrupacion": agrupacion
+        });
+        args["dismissAlert"] = true;
+        const data = await call(args);
+        console.log(data);
+        // $('#modalActivarChequeo').modal('hide')
+        if(data.code == 200){
+            location.href = '/pago-realizado/{{ $mac }}';
+        }else{
+            $('#modalError').modal('show')
+            $('.titleError').html(`Ha ocurrido un error`)
+            $('.msgError').html(data.message);
+        }
+    }
+
 	async function obtenerValoresOrden(detalle){
 		let lineaDetalleOrdenArr = [];
 		if((detalle.detallesServicios == null || detalle.detallesServicios.length == 0 ) && detalle.detalleLaboratorio == null){
@@ -685,7 +722,11 @@
 	    let elemTotales = `<p class="col-6 mb-0 fs-16 line-height-20 fw-medium text-dark-veris">Subtotal</p>
                     <p class="col-6 mb-0 fs-16 line-height-20 fw-medium text-end text-royal-blue">$${valorTotal.toFixed(2)}</p>`;
 
-		buttonActions = determinarCondicionesBotones(detalle, 'PENDIENTE', detalleTratamiento)
+        let esExcento = false;
+        if(valorTotal == 0){
+        	esExcento = true;
+        }
+		buttonActions = determinarCondicionesBotones(detalle, 'PENDIENTE', detalleTratamiento, esExcento)
 		console.log({activar})
 		if(activar){
 			buttonActions += `<button item-rel='${JSON.stringify(detalle)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-notificar-llegada w-50" data-bs-dismiss="modal">Activar</button>`;
@@ -737,7 +778,7 @@
 		}
 	}
 
-	function determinarCondicionesBotones(datosServicio, estado, datosTratamiento){
+	function determinarCondicionesBotones(datosServicio, estado, datosTratamiento, esExcento = false){
         if(datosServicio.tipoAgenda == "TERAPIA_FISICA_AGRUPADA"){
             console.log(datosServicio, estado, datosTratamiento)
             console.log(datosServicio)
@@ -851,7 +892,7 @@
                                 params.numeroOrden = datosServicio.idOrden;
                                 params.codigoEmpresa = datosServicio.codigoEmpresa;
                                 let ulrParams = btoa(JSON.stringify(params));
-                                respuesta += `<div url-rel="/citas-laboratorio/{{$mac}}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-pagar" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-rel='${JSON.stringify(datosServicio)}'>Pagar</div>`;
+                                respuesta += `<div url-rel="/citas-laboratorio/{{$mac}}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-pagar" esExcento-rel='${esExcento}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-rel='${JSON.stringify(datosServicio)}'>Pagar</div>`;
                             }{{-- else{
                                 respuesta += `<div url-rel="/citas-laboratorio/{{$mac}}" class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-pagar" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-rel='${JSON.stringify(datosServicio)}'><i class="fa-solid fa-circle-info me-2 line-height-20"></i>Agendar</div>`;
                             } --}}

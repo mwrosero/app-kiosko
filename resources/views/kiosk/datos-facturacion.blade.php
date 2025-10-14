@@ -87,6 +87,7 @@
 		            </div>
 		            <div class="col-12 mt-4 text-center">
 		            	<button class="btn bg-royal-blue text-white fs-18 line-height-24 py-3 rounded-8 w-50 fw-medium shadow-none disabled" id="btn-validar-datos-factura"></button>
+		            	<a href="/menu/{{ $mac }}" class="btn fw-medium py-3 mt-3 text-royal-blue border-royal-blue rounded-8 fs-18 line-height-24 w-50">Agregar más servicios</a>
 		            </div>
 	            </div>
 			</div>
