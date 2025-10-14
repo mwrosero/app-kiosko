@@ -139,6 +139,7 @@
 			let detalle = JSON.parse($(this).attr('item-rel'));
 			let notificar = await notificarLlegada(detalle.codigosOrdenesApoyo[0]);
 			if(notificar.code != 200){
+				await cargarProximasCitas();
 				return;
 			}else{
 				$('#modalDetalleOrdenTratamiento').modal('hide');
