@@ -215,7 +215,7 @@ class KioskController extends Controller
 
     public function admin($mac) {
         // $token = session('accessToken');
-        $token = Veris::getToken();
+        $token = Veris::getTokenNC();
         return view('kiosk.admin')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);

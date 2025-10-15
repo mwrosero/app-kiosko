@@ -171,6 +171,30 @@ class Veris extends Model
         return $response->data;
     }
 
+    static function getTokenNC()
+    {
+        $token = session('accessToken', null);
+
+        /*if( $token !== null ){
+            return $token;
+        }*/
+        
+        $method = '/autenticacion/login';
+        $res =  Http::withOptions([
+                    'verify' => false, // Desactivar verificación de certificados
+                ])->withHeaders([
+                    'Application' => self::APPLICATION,
+                    'Authorization' => 'Basic '.self::BASICAUTHDIGITALES,
+                ])->post(self::BASE_URL_DIGITALES.'/'.self::SEGURIDADES_WAR.$method);
+        $response = json_decode($res->body());
+
+        // echo self::BASE_URL_DIGITALES.'/'.self::BASE_WAR.$method;
+        // dd($response);
+        
+        session(['accessToken' => $response->data->idToken]);
+        return $response->data->idToken;
+    }
+
     static function getTokenPinPad()
     {
         $token = session('accessTokenPinPad', null);
