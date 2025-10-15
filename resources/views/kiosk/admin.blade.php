@@ -61,18 +61,18 @@
                     </div>
                     <div class="col-6 mb-3">
                         <label class="form-label fs-20 text-silver-dark" for="numeroIdentificacion">Número de documento</label>
-                        <input autocomplete="off" class="form-control w-100 keyboard-input virtual-keyboard-numpad p-1 rounded-8 text-start fs-25 onlyNumber" type="number" name="numeroIdentificacion" id="numeroIdentificacion" data-kioskboard-type="numpad">
+                        <input autocomplete="off" class="form-control w-100 p-1 rounded-8 text-start fs-25 onlyNumber" type="number" name="numeroIdentificacion" id="numeroIdentificacion" readonly data-kb="numeric">
                     </div>
                     <div class="col-12 mb-3">
                         <label class="form-label fs-20 text-silver-dark" for="nombreCompleto">Nombre completo</label>
-                        <input autocomplete="off" class="form-control w-100 onlyLetters text-uppercase keyboard-input virtual-keyboard-all p-1 rounded-8 text-start fs-25 mb-2" type="text" name="nombreCompleto" id="nombreCompleto">
+                        <input autocomplete="off" class="form-control w-100 onlyLetters text-uppercase p-1 rounded-8 text-start fs-25 mb-2" type="text" name="nombreCompleto" id="nombreCompleto" readonly>
                     </div>
                     <div class="col-12 mb-3">
                         <label class="form-label fs-20 text-silver-dark" for="email">Correo electrónico</label>
-                        <input autocomplete="off" class="form-control w-100 onlyLetters text-lowercase keyboard-input virtual-keyboard-all p-1 rounded-8 text-start fs-25 mb-2" type="email" name="email" id="email" data-kioskboard-specialcharacters="true"/>
+                        <input autocomplete="off" class="form-control w-100 onlyLetters text-lowercase p-1 rounded-8 text-start fs-25 mb-2" type="email" name="email" id="email" data-kioskboard-specialcharacters="true" readonly/>
                     </div>
-                    <div class="col-12 mb-3">
-                        <button type="button" class="btn bg-veris fs-25 line-height-25 text-white w-100 py-3 px-32 shadow-none d-flex justify-content-center align-items-center btn-disabled btn-continuar-factura rounded-8">Actualizar datos de Factura</button>
+                    <div class="col-12 mb-3 text-center">
+                        <button type="button" class="btn bg-royal-blue text-white fs-18 line-height-24 py-3 rounded-8 w-50 fw-medium shadow-none btn-disabled btn-continuar-factura">Actualizar datos de Factura</button>
                     </div>
                 </div>
             </div>
@@ -148,7 +148,7 @@
                             <p class="fs--2 fw-bold text-veris mt-3">Número de Factura</p>
                             <div class="d-flex mt-3 align-items-center justify-content-between">
                                 <input type="text" maxlength="3" 
-                                    class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2 keyboard-input virtual-keyboard-numpad" 
+                                    class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2 keyboard-input " 
                                     oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" 
                                     onkeypress="return validarNumeros(event)" 
                                     onblur="completarConCeros(this)" 
@@ -160,7 +160,7 @@
                                     id="first-input">
                                 <i class="fa-solid fa-minus txt-veris fw-bold mx-1 mx-md-3"></i>
                                 <input type="text" maxlength="3" 
-                                    class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2 keyboard-input virtual-keyboard-numpad" 
+                                    class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2 keyboard-input " 
                                     oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" 
                                     onkeypress="return validarNumeros(event)" 
                                     onblur="completarConCeros(this)" 
@@ -172,13 +172,14 @@
                                     id="medium-input">
                                 <i class="fa-solid fa-minus txt-veris fw-bold mx-1 mx-md-3"></i>
                                 <input type="text" maxlength="9" 
-                                    class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2 keyboard-input virtual-keyboard-numpad" 
+                                    class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2"
                                     oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" 
                                     onkeypress="return validarNumeros(event)" 
                                     onblur="completarConCeros(this)" 
                                     required 
                                     autocomplete="off"
-                                    data-kioskboard-type="numpad"
+                                    readonly 
+                                    data-kb="numeric"
                                     id="last-input">
                                 <button class="m-0 mx-1 mx-md-3 bg-transparent border-0" id="btnSearch">
                                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -227,6 +228,9 @@
         </div>
     </div>
 </div>
+<div class="w-100 bg-silver-light p-44 position-absolute bottom-0 start-0 d-none" id="box-simple-keyboard" style="z-index: 9999999999;">
+    <div class="simple-keyboard"></div>
+</div>
 {{-- <div class="wrapper">
     <!-- Header -->
     <header class="header p-3">
@@ -252,6 +256,8 @@
     </header>
 </div> --}}
 <script>
+    tecladoFlotante = true;
+
     // Valida que solo se puedan ingresar números
     function validarNumeros(event) {
         return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) 
@@ -307,12 +313,22 @@
     document.addEventListener('DOMContentLoaded', async function () {
         actualizarFechaHora()
 
+        $.customKeyboard.init('input[readonly]', '.simple-keyboard');
+
         history.replaceState({noCache: true}, '');
         window.addEventListener('popstate', function (e) {
           // cuando el usuario presiona atrás, recarga
           window.location.reload();
         });
 
+        $(document).on('click', function(e) {
+            if ($('#box-simple-keyboard').is(':visible') && 
+                !$(e.target).closest('#box-simple-keyboard').length && 
+                !$(e.target).is('input')
+            ){
+                $('#box-simple-keyboard').addClass('d-none');
+            }
+        });
         
         $('#first-input').val(dataParametrosGenerales.caja.numeroEstablecimientoSri);
         $('#medium-input').val(dataParametrosGenerales.caja.numeroPuntoEmisionSri);

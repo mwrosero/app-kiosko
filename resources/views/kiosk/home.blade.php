@@ -87,9 +87,9 @@
 	})
 
 	async function cargarParametros(){
-		if(localStorage.getItem('parametrosGenerales') !== null){
+		{{-- if(localStorage.getItem('parametrosGenerales') !== null){
 			return;
-		}
+		} --}}
 		
 		let args = [];
         args["endpoint"] = `${api_url_digitales}/${api_war}/parametros?macAddress={{ $mac }}`;
