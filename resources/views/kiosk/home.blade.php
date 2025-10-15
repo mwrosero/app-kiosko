@@ -77,8 +77,8 @@
 	callCounter = false;
 	activarInactividad = false;
 	document.addEventListener("DOMContentLoaded", async function () {
+		await deleteStorage();
 		await cargarParametros();
-		deleteStorage();
 		$('body').on('click','.item-access', async function(){
 			let type = $(this).attr('type-rel')
 			localStorage.setItem("tipo", type);
@@ -104,8 +104,11 @@
         }
 	}
 
-	function deleteStorage(){
+	async function deleteStorage(){
 		//localStorage.clear();
+		localStorage.removeItem("origenPaquete");
+		localStorage.removeItem("parametrosGenerales");
+		localStorage.removeItem("tipoTurnoGenerar");
 		localStorage.removeItem("tipo");
 		localStorage.removeItem("datosCliente");
 		localStorage.removeItem("trackId");
