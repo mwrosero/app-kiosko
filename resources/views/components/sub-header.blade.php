@@ -7,7 +7,7 @@
 		$visibilityClass = "invisible";
 	@endphp
 	@endif
-	<a href="{{ $url }}" class="text-decoration-none back d-flex align-items-center justify-content-start {{ $visibilityClass }}">
+	<a href="{{ $url }}" class="btn-volver-subheader text-decoration-none back d-flex align-items-center justify-content-start {{ $visibilityClass }}">
 		<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-back.svg" alt="">
 		<span class="ms-3 fs-24 line-height-32 fw-bold">Volver</span>
 	</a>

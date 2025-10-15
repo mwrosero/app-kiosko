@@ -297,18 +297,29 @@
         }
     }
 
+    if(localStorage.getItem('dataAdmin') === null){
+        location.href = `/{{ $mac }}`;
+    }
+
     let dataAdmin = JSON.parse(localStorage.getItem('dataAdmin'));
     let dataParametrosGenerales = JSON.parse(localStorage.getItem('parametrosGenerales'));
 
     document.addEventListener('DOMContentLoaded', async function () {
         actualizarFechaHora()
+
+        history.replaceState({noCache: true}, '');
+        window.addEventListener('popstate', function (e) {
+          // cuando el usuario presiona atrás, recarga
+          window.location.reload();
+        });
+
         
         $('#first-input').val(dataParametrosGenerales.caja.numeroEstablecimientoSri);
         $('#medium-input').val(dataParametrosGenerales.caja.numeroPuntoEmisionSri);
 
-        $('body').on('click', '.exitAdmin', function(){
+        $('body').on('click', '.btn-volver-subheader', function(){
             localStorage.removeItem('dataAdmin');
-            location.href = '/kiosko/{{ $mac }}';
+            location.reload();
         })
 
         $('body').on('click', '.btn-anular-voucher', async function(){
