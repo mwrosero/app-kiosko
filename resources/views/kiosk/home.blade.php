@@ -76,6 +76,7 @@
 <script>
 	callCounter = false;
 	activarInactividad = false;
+	trackId = "39cf232c-c7c6-4cea-bbc9-48afdeda8979";
 	document.addEventListener("DOMContentLoaded", async function () {
 		await deleteStorage();
 		await cargarParametros();
