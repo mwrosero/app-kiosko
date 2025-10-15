@@ -80,7 +80,7 @@
     </div>
 </div>
 
-<div class="container px-0 d-flex flex-column justify-content-start min-vh-100">
+<div class="container-fluid px-0 d-flex flex-column min-vh-100" style="overflow-x: hidden;">
     @include('components.header', ['showSettingBtn' => false, 'showExitBtn' => false])
     <!-- Sub-header -->
     @include('components.sub-header', ['showTurnoBtn' => false, 'url' => '/'.$mac])
