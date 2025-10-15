@@ -34,7 +34,7 @@
                 <h2 class="text-start text-veris my-4 mensajeInformativo"></h2>
             </div>
             <div class="modal-footer pt-0 pb-3 px-3 border-0">
-                <button type="button" class="btn fw-normal fs--16 badge bg-veris text-white m-0 px-4 py-2 mx-auto fs-4" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn fw-normal fs--16 badge bg-royal-blue text-white m-0 px-4 py-2 mx-auto fs-4" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </form>
     </div>
@@ -206,7 +206,7 @@
                             </table>
                         </div>
                         <div class="col-4 offset-4 box-info-factura d-none mt-5 text-center">
-                            <button class="btn bg-veris btn-action text-white mx-auto fs--20 p-3 mb-5 rounded-8 my-5">Crear Nota de Crédito</button>
+                            <button class="btn bg-royal-blue text-white fs-18 line-height-24 py-3 rounded-8 w-50 fw-medium shadow-none btn-action">Crear Nota de Crédito</button>
                         </div>
                     </div>
                 </div>
