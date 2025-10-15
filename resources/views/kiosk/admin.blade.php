@@ -83,7 +83,7 @@
 <div class="container px-0 d-flex flex-column justify-content-start min-vh-100">
     @include('components.header', ['showSettingBtn' => false, 'showExitBtn' => false])
     <!-- Sub-header -->
-    @include('components.sub-header', ['showTurnoBtn' => false, 'url' => '/lider'.$mac])
+    @include('components.sub-header', ['showTurnoBtn' => false, 'url' => '/'.$mac])
     <div class="row h-100">
         <div class="col-12 h-100 px-0 rounded-t-8">
             <ul class="nav nav-pills d-flex align-items-center justify-content-between bg-white gap-2 rounded-t-8 border-start-0 border-start-0 my-2" id="pills-tab-servicios" role="tablist">
