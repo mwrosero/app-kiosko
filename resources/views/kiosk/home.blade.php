@@ -8,7 +8,7 @@
 				<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/icon-configuracion.svg" alt="">
 			</button>
 			<ul class="dropdown-menu rounded-8 p-0" aria-labelledby="dropdownMenuButton1">
-				{{-- <li class="fs-16 line-height-20"><a class="dropdown-item px-3 py-2" href="/lider/{{ $mac }}">Lider de Caja</a></li> --}}
+				<li class="fs-16 line-height-20"><a class="dropdown-item px-3 py-2" href="/lider/{{ $mac }}">Lider de Caja</a></li>
 				<li class="d-none fs-16 line-height-20 ingresar-host"><a class="dropdown-item px-3 py-2" href="/host/{{ $mac }}">Ingresar Host</a></li>
 				<li class="fs-16 line-height-20 central-caja d-none"><div class="dropdown-item px-3 py-2 text-capitalize disabled" type="button"></div></li>
 				<li class="d-none fs-16 line-height-20 cerrar-sesion label-username"><div class="dropdown-item px-3 py-2 disabled" type="button"></div></li>
@@ -77,7 +77,7 @@
 	callCounter = false;
 	activarInactividad = false;
 	document.addEventListener("DOMContentLoaded", async function () {
-		// await cargarParametros();
+		await cargarParametros();
 		deleteStorage();
 		$('body').on('click','.item-access', async function(){
 			let type = $(this).attr('type-rel')
@@ -85,6 +85,24 @@
 			location.href = '/ingreso/{{ $mac }}'
 		});
 	})
+
+	async function cargarParametros(){
+		if(localStorage.getItem('parametrosGenerales') !== null){
+			return;
+		}
+		
+		let args = [];
+        args["endpoint"] = `${api_url_digitales}/${api_war}/parametros?macAddress={{ $mac }}`;
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
+        const data = await call(args);
+        console.log(data);
+        if(data.code == 200){
+        	localStorage.setItem("parametrosGenerales",JSON.stringify(data.data));
+        }
+	}
 
 	function deleteStorage(){
 		//localStorage.clear();
