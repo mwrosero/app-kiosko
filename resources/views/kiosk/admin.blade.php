@@ -315,12 +315,6 @@
 
         $.customKeyboard.init('input[readonly]', '.simple-keyboard');
 
-        history.replaceState({noCache: true}, '');
-        window.addEventListener('popstate', function (e) {
-          // cuando el usuario presiona atrás, recarga
-          window.location.reload();
-        });
-
         $(document).on('click', function(e) {
             if ($('#box-simple-keyboard').is(':visible') && 
                 !$(e.target).closest('#box-simple-keyboard').length && 
@@ -335,7 +329,7 @@
 
         $('body').on('click', '.btn-volver-subheader', function(){
             localStorage.removeItem('dataAdmin');
-            location.reload();
+            //location.reload();
         })
 
         $('body').on('click', '.btn-anular-voucher', async function(){
