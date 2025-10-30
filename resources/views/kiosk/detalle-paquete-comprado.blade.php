@@ -228,10 +228,15 @@
 		{{-- elem += `<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-detalle-orden" style="min-width: 150px !important;">Ver detalle</button>`; --}}
 		switch(value.accionBoton){
 			case "AGENDAR":
-				if(value.datosReserva !== null){
+				{{-- if(value.datosReserva !== null){
 					elem += `<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-reagendar" style="min-width: 150px !important;">Reagendar</button>`;
 				}else{
 					elem += `<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-agendar" style="min-width: 150px !important;">Agendar</button>`;
+				} --}}
+				if(value.cantidadDisponible > 0){
+					elem += `<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-agendar" style="min-width: 150px !important;">Agendar</button>`;
+				}else{
+					elem += `<a href='/proximas-citas/{{ $mac }}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12" style="min-width: 150px !important;">Ver detalles</a>`;
 				}
 			break;
 			case "ACTIVAR_LABORATORIO":
