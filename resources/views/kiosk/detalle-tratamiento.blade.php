@@ -945,7 +945,11 @@
                     respuestaSesion += `<div url-rel="${ruta}" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-sesion">Ver sesión<i class="fa-solid fa-angle-right ms-2"></i></div>`;
                     return respuestaSesion;
                     break;
-
+                case "ORDEN":
+                	if(datosServicio.esPagada == "N"){
+                		return `<div url-rel="/citas-datos-facturacion/{{ $mac }}" class="btn fs-18 line-height-25 bg-royal-blue text-white rounded-12 p-3 btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}'>Pagar</div>`;
+                	}
+                break;
             }
         }
     }
