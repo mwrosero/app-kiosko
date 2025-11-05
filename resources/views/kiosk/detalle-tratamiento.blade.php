@@ -298,7 +298,7 @@
 	            $('#modalPermiteCambiar').modal('show');
 	            return;
 	        } --}}
-	        if(datosServicio.tipoCard == "LAB"){
+	        if(datosServicio.tipoCard == "LAB" || datosServicio.tipoCard == "ORDEN"){
 	        	if(datosServicio.permitePago == "S" && datosServicio.esPagada == "N"){
 	        		let lineaDetalleOrdenArr = [];
 
@@ -324,6 +324,7 @@
 						    "detalles": lineaDetalleOrdenArr
 						}
 					}
+
 					if(esExcento === "false"){
 						await agregarItem(datosPago, true);
 					}else{
@@ -947,7 +948,7 @@
                     break;
                 case "ORDEN":
                 	if(datosServicio.esPagada == "N"){
-                		return `<div url-rel="/citas-datos-facturacion/{{ $mac }}" class="btn fs-18 line-height-25 bg-royal-blue text-white rounded-12 p-3 btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}'>Pagar</div>`;
+                		return `<div url-rel="/citas-datos-facturacion/{{ $mac }}" class="btn fs-18 line-height-25 bg-royal-blue text-white rounded-12 p-3 btn-pagar" esExcento-rel='${esExcento}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}'>Pagar</div>`;
                 	}
                 break;
             }
