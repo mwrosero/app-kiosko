@@ -681,9 +681,10 @@
 				if(excluyeBeneficio){
 					$('.th-details-prestaciones').addClass('d-none');
 					elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
-				    	<p class="col-12 mb-0 fs-12 line-height-16 d-flex justify-content-start align-items-center">
+				    	<p class="col-11 mb-0 fs-12 line-height-16 d-flex justify-content-start align-items-center">
 							${elemInput}
 				    	</p>
+						${observacion}
 					</li>`
 				}else{
 					$('.th-details-prestaciones').removeClass('d-none');
@@ -707,15 +708,15 @@
 					codigoOrdenApoyo = value.codigoOrdenApoyo;
 				}
 				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
-			    	<p class="col-10 mb-0 fs-12 line-height-16 text-capitalize d-flex justify-content-start align-items-center">
+			    	<p class="col-12 mb-0 fs-12 line-height-16 text-capitalize d-flex justify-content-start align-items-center">
 						<input type="checkbox" checked class="me-2 border-midnight-blue-tint-80" id="prestacion-${value.codigoServicio}-${value.codigoPrestacion}" lineaDetalle-rel='${value.lineaDetalle}' prestacion-rel='${JSON.stringify(value)}'>
 						<label for="prestacion-${value.codigoServicio}-${value.codigoPrestacion}">
 			    			${value.nombrePrestacion.toLowerCase()}
 						</label>
 			    	</p>
 		            {{-- <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
+		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p> --}}
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p> 
 				</li>`
 			})
 		}else{
