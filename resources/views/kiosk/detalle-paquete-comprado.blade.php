@@ -209,11 +209,16 @@
 			}else{
 				nombrePrestacion = value.nombrePrestacion.toLowerCase();
 			}
+			let strDisponibles = ``;
+			if(value.cantidad > 1){
+				strDisponibles = `<p class="mb-1 fs-14 line-height-18 fw-medium">${value.cantidadDisponible} detalle${(value.cantidadDisponible>1) ? `s` : ``} disponible${(value.cantidadDisponible>1) ? `s` : ``}</p>`;
+			}
 		    elem += `<div class="col-12 px-32 py-4 fs-18 line-height-24 fw-medium d-flex justify-content-between align-items-center border-bottom-midnight-blue-tint-80">
 				<img src="${value.imagenServicioNivel1}" alt="" width="56px">
 				<div class="mx-3 flex-grow-1">
 					<h2 class="text-royal-blue-shade-20 fw-medium fs-16 line-height-20 mb-1 text-capitalize">${nombrePrestacion}</h2>
 					${labelInfo}
+		    		${strDisponibles}
 					${boxEstadoPago(paquete.estaPagado)}
 				</div>
 				${ drawButtonItem(value) }

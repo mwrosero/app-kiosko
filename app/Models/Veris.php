@@ -16,51 +16,51 @@ class Veris extends Model
     public const MACS_PARAMI = ["1C-69-7A-AE-99-3D","48-21-0B-2D-28-8F","48-21-0B-2D-1F-3C","48-21-0B-2D-2F-04","1C-69-7A-6A-CF-95"];
 
     //DEV
-    // public const BASE_URL = 'https://desa-turnero.phantomx.com.ec';
-    // public const BASE_URL_DIGITALES = 'https://api-phantomx.veris.com.ec';
-    // public const BASE_WAR = 'kiosko/v1';
-    // public const SEGURIDADES_WAR = 'seguridadtest/v1';
-    // public const BASE_WAR_DIGITALES = 'digitalestest/v1';
-    // public const CANAL_ORIGEN = 'MVE_CMV';
-    // public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';//UEhBTlRPTVhfRU1QUkVTQVJJQUw=
-    // public const IDORGANIZACION = 'adf4e264-cd20-4653-9a44-025b13050992';
-    // public const AMPLITUDE = "1cbd8baed97a6c8abf6b8e398b77cf6f";
-    // public const BASICAUTH = 'd3NLaW9za28zOlBoeEsxMCRrMDIwMjU=';
-    // public const BASICAUTHDIGITALES = 'QkFDS0VORFBIQU5UT006Q2xAdmUxMjM0';
-    // public const WEBURL = 'https://digiturno.akold.com';
-    // public const URLPAYMENT = 'https://miveris.akold.com';
-    // public const APPLICATION_LOGIN = 'UEhBTlRPTVhfRU1QUkVTQVJJQUw=';
-    // public const IDORGANIZACION_LOGIN = '365509c8-9596-4506-a5b3-487782d5876e';
-    // public const BASICAUTHPINPAD = 'd3NwaW5wYWQ6VyRQwqFOUEBEQVVUIzNOVMKhQ0BUSTBO';
-    // public const BASIC_URL_PINPAD = 'https://ipnws.veris.com.ec/pinpadTest-api/v1';
-    // public const APPLICATION_LOGIN_LIDER = 'UEhBTlRPTVhfV0VC';
-    // public const BASIC_LOGIN_LIDER = 'TFBMVUE6Q2xAdmUxMjM=';
-    // public const URL_EPI = 'http://ecstest.veris.com.ec/Verisrest/v1/formularioepi1';
-    // public const AMBIENTE = 'TEST';
-
-
-    //PROD 
-    public const BASE_URL = 'https://turnero.phantomx.com.ec';
-    public const BASE_URL_DIGITALES = 'https://api.phantomx.com.ec';
+    public const BASE_URL = 'https://desa-turnero.phantomx.com.ec';
+    public const BASE_URL_DIGITALES = 'https://api-phantomx.veris.com.ec';
     public const BASE_WAR = 'kiosko/v1';
-    public const SEGURIDADES_WAR = 'seguridad/v1';
-    public const BASE_WAR_DIGITALES = 'digitales/v1';
+    public const SEGURIDADES_WAR = 'seguridadtest/v1';
+    public const BASE_WAR_DIGITALES = 'digitalestest/v1';
     public const CANAL_ORIGEN = 'MVE_CMV';
-    public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';
-    public const IDORGANIZACION = '365509c8-9596-4506-a5b3-487782d5876e';
-    public const AMPLITUDE = "93127ac840f734cdcc8bf469f8bc95d5";
+    public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';//UEhBTlRPTVhfRU1QUkVTQVJJQUw=
+    public const IDORGANIZACION = 'adf4e264-cd20-4653-9a44-025b13050992';
+    public const AMPLITUDE = "1cbd8baed97a6c8abf6b8e398b77cf6f";
     public const BASICAUTH = 'd3NLaW9za28zOlBoeEsxMCRrMDIwMjU=';
-    public const BASICAUTHDIGITALES = 'YmFja2VuZHBoYW50b206QmFja1BAbnRoMG1QQHNzMjAyMQ==';
-    public const WEBURL = 'https://digiturno.veris.com.ec';
-    public const URLPAYMENT = 'https://app.veris.com.ec';
+    public const BASICAUTHDIGITALES = 'QkFDS0VORFBIQU5UT006Q2xAdmUxMjM0';
+    public const WEBURL = 'https://digiturno.akold.com';
+    public const URLPAYMENT = 'https://miveris.akold.com';
     public const APPLICATION_LOGIN = 'UEhBTlRPTVhfRU1QUkVTQVJJQUw=';
     public const IDORGANIZACION_LOGIN = '365509c8-9596-4506-a5b3-487782d5876e';
     public const BASICAUTHPINPAD = 'd3NwaW5wYWQ6VyRQwqFOUEBEQVVUIzNOVMKhQ0BUSTBO';
-    public const BASIC_URL_PINPAD = 'https://phantom-wsinternos.phantomx.com.ec/pinpad-api/v1';
+    public const BASIC_URL_PINPAD = 'https://ipnws.veris.com.ec/pinpadTest-api/v1';
     public const APPLICATION_LOGIN_LIDER = 'UEhBTlRPTVhfV0VC';
     public const BASIC_LOGIN_LIDER = 'TFBMVUE6Q2xAdmUxMjM=';
-    public const URL_EPI = 'https://phantom-wsexternos.phantomx.com.ec/Verisrest/v1/formularioepi1';
-    public const AMBIENTE = 'PROD';
+    public const URL_EPI = 'http://ecstest.veris.com.ec/Verisrest/v1/formularioepi1';
+    public const AMBIENTE = 'TEST';
+
+
+    //PROD 
+    // public const BASE_URL = 'https://turnero.phantomx.com.ec';
+    // public const BASE_URL_DIGITALES = 'https://api.phantomx.com.ec';
+    // public const BASE_WAR = 'kiosko/v1';
+    // public const SEGURIDADES_WAR = 'seguridad/v1';
+    // public const BASE_WAR_DIGITALES = 'digitales/v1';
+    // public const CANAL_ORIGEN = 'MVE_CMV';
+    // public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';
+    // public const IDORGANIZACION = '365509c8-9596-4506-a5b3-487782d5876e';
+    // public const AMPLITUDE = "93127ac840f734cdcc8bf469f8bc95d5";
+    // public const BASICAUTH = 'd3NLaW9za28zOlBoeEsxMCRrMDIwMjU=';
+    // public const BASICAUTHDIGITALES = 'YmFja2VuZHBoYW50b206QmFja1BAbnRoMG1QQHNzMjAyMQ==';
+    // public const WEBURL = 'https://digiturno.veris.com.ec';
+    // public const URLPAYMENT = 'https://app.veris.com.ec';
+    // public const APPLICATION_LOGIN = 'UEhBTlRPTVhfRU1QUkVTQVJJQUw=';
+    // public const IDORGANIZACION_LOGIN = '365509c8-9596-4506-a5b3-487782d5876e';
+    // public const BASICAUTHPINPAD = 'd3NwaW5wYWQ6VyRQwqFOUEBEQVVUIzNOVMKhQ0BUSTBO';
+    // public const BASIC_URL_PINPAD = 'https://phantom-wsinternos.phantomx.com.ec/pinpad-api/v1';
+    // public const APPLICATION_LOGIN_LIDER = 'UEhBTlRPTVhfV0VC';
+    // public const BASIC_LOGIN_LIDER = 'TFBMVUE6Q2xAdmUxMjM=';
+    // public const URL_EPI = 'https://phantom-wsexternos.phantomx.com.ec/Verisrest/v1/formularioepi1';
+    // public const AMBIENTE = 'PROD';
  
     static function call(Array $config)
     {
