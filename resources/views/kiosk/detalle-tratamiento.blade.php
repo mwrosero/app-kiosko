@@ -636,9 +636,14 @@
 	}
 
 	async function mostrarDetalleOrdenModal(detalle){
+
 		let elemContent = ``;
 		$('.th-details-prestaciones').addClass('d-none');
 		let detallePrestacionesValores = {};
+		let excluyeBeneficio = false;
+		if(detalleTratamiento.datosConvenio !== null && detalleTratamiento.datosConvenio.codigoCliente == 13){
+			excluyeBeneficio = true;
+		}
 		if(detalle.esPagada == "S"){
 			detallePrestacionesValores.code = 400;
 		}else{
@@ -673,15 +678,25 @@
 		            </p>`;
 					valorTotal += value.valorTotal;
 				}
-				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
-			    	<p class="col-5 mb-0 fs-12 line-height-16 d-flex justify-content-start align-items-center">
-						${elemInput}
-			    	</p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16">${ (esPagada) ? `` : `${value.valorServicio.toFixed(2)}`}</p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16">${ (esPagada) ? `` : `${value.valorEmpresa.toFixed(2)}`}</p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16">${ (esPagada) ? `` : `${value.valorPaciente.toFixed(2)}`}</p>
-		            ${observacion}
-				</li>`
+				if(excluyeBeneficio){
+					$('.th-details-prestaciones').addClass('d-none');
+					elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
+				    	<p class="col-12 mb-0 fs-12 line-height-16 d-flex justify-content-start align-items-center">
+							${elemInput}
+				    	</p>
+					</li>`
+				}else{
+					$('.th-details-prestaciones').removeClass('d-none');
+					elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
+				    	<p class="col-5 mb-0 fs-12 line-height-16 d-flex justify-content-start align-items-center">
+							${elemInput}
+				    	</p>
+			            <p class="col-2 mb-0 fs-12 text-center line-height-16">${ (esPagada) ? `` : `${value.valorServicio.toFixed(2)}`}</p>
+			            <p class="col-2 mb-0 fs-12 text-center line-height-16">${ (esPagada) ? `` : `${value.valorEmpresa.toFixed(2)}`}</p>
+			            <p class="col-2 mb-0 fs-12 text-center line-height-16">${ (esPagada) ? `` : `${value.valorPaciente.toFixed(2)}`}</p>
+			            ${observacion}
+					</li>`
+				}
 			})
 		}else if(detalle.detalleLaboratorio !== null){
 			// Default
