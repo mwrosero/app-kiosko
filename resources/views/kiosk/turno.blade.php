@@ -46,7 +46,7 @@
 		
 		setTimeout(function(){
 			location.href = `/{{ $mac }}`;
-		}, 3000);
+		}, 5000);
 	})
 </script>
 @endsection
