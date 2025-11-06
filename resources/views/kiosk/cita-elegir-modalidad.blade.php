@@ -16,7 +16,7 @@
 				<p class="fs-26 line-height-34 mt-40 mb-3 w-100">1. Elige la modalidad de la cita médica</p>
 				<div class="d-flex justify-content-between align-items-center gap-4 w-100">
 					<button class="btn bg-silver-light border-silver-3 text-silver-blue fs-24 line-height-28 p-4 rounded-12 flex-grow-1 fw-medium btn-modalidad" online-rel="N">Presencial</button>
-					<button class="btn bg-silver-light border-silver-3 text-silver-blue fs-24 line-height-28 p-4 rounded-12 flex-grow-1 fw-medium btn-modalidad" online-rel="S">Virtual</button>
+					<button class="btn bg-silver-light border-silver-3 text-silver-blue fs-24 line-height-28 p-4 rounded-12 flex-grow-1 fw-medium btn-modalidad btn-modalidad-virtual" online-rel="S">Virtual</button>
 				</div>
 			</div>
 		</div>
@@ -29,8 +29,16 @@
 	trackId = localStorage.getItem('trackId');
 	
 	document.addEventListener("DOMContentLoaded", async function () {
+		let usuarioDigital = JSON.parse(localStorage.getItem('usuarioDigital'))
+        {{-- if(!usuarioDigital.tieneCuentaDigital){
+            $('.btn-modalidad-virtual').css('pointer-events','none');
+        } --}}
 		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
         $('body').on('click', '.btn-modalidad', async function(){
+        	if(!usuarioDigital.tieneCuentaDigital){
+        		showMessage('warning','Atención','Modalidad no permitida a usuario con datos incompletos, obtenga un turno y actualice sus datos en caja.')
+	            return;
+	        }
         	$('.btn-modalidad').removeClass('btn bg-silver-light border-silver-3 text-silver-blue');
         	$(this).addClass('btn bg-royal-blue border-blue-veris-3 text-white');
         	let online = $(this).attr('online-rel');

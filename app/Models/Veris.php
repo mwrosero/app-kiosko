@@ -7,6 +7,7 @@ use session;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class Veris extends Model
 {
@@ -166,6 +167,19 @@ class Veris extends Model
 
         // echo self::BASE_URL_DIGITALES.'/'.self::BASE_WAR.$method;
         // dd($response);
+
+        if ($res->failed()) {
+            Log::channel('curl')->error('Error en petición HTTP', [
+                'url' => self::BASE_URL_DIGITALES.'/'.self::BASE_WAR.$method,
+                'headers' => [
+                    'Application' => self::APPLICATION,
+                    'Authorization' => 'Basic ' . substr(self::BASICAUTH, 0, 5) . '...', // evita exponer el auth completo
+                ],
+                'params' => $params ?? [],
+                'status' => $res->status(),
+                'body' => $res->body(),
+            ]);
+        }
         
         session(['accessToken' => $response->data]);
         return $response->data;

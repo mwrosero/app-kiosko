@@ -298,7 +298,7 @@
 	            $('#modalPermiteCambiar').modal('show');
 	            return;
 	        } --}}
-	        if(datosServicio.tipoCard == "LAB"){
+	        if(datosServicio.tipoCard == "LAB" || datosServicio.tipoCard == "ORDEN"){
 	        	if(datosServicio.permitePago == "S" && datosServicio.esPagada == "N"){
 	        		let lineaDetalleOrdenArr = [];
 
@@ -324,6 +324,7 @@
 						    "detalles": lineaDetalleOrdenArr
 						}
 					}
+
 					if(esExcento === "false"){
 						await agregarItem(datosPago, true);
 					}else{
@@ -635,9 +636,14 @@
 	}
 
 	async function mostrarDetalleOrdenModal(detalle){
+
 		let elemContent = ``;
 		$('.th-details-prestaciones').addClass('d-none');
 		let detallePrestacionesValores = {};
+		let excluyeBeneficio = false;
+		if(detalleTratamiento.datosConvenio !== null && detalleTratamiento.datosConvenio.codigoCliente == 13){
+			excluyeBeneficio = true;
+		}
 		if(detalle.esPagada == "S"){
 			detallePrestacionesValores.code = 400;
 		}else{
@@ -672,15 +678,26 @@
 		            </p>`;
 					valorTotal += value.valorTotal;
 				}
-				elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
-			    	<p class="col-5 mb-0 fs-12 line-height-16 d-flex justify-content-start align-items-center">
-						${elemInput}
-			    	</p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16">${ (esPagada) ? `` : `${value.valorServicio.toFixed(2)}`}</p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16">${ (esPagada) ? `` : `${value.valorEmpresa.toFixed(2)}`}</p>
-		            <p class="col-2 mb-0 fs-12 text-center line-height-16">${ (esPagada) ? `` : `${value.valorPaciente.toFixed(2)}`}</p>
-		            ${observacion}
-				</li>`
+				if(excluyeBeneficio){
+					$('.th-details-prestaciones').addClass('d-none');
+					elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
+				    	<p class="col-11 mb-0 fs-12 line-height-16 d-flex justify-content-start align-items-center">
+							${elemInput}
+				    	</p>
+						${observacion}
+					</li>`
+				}else{
+					$('.th-details-prestaciones').removeClass('d-none');
+					elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
+				    	<p class="col-5 mb-0 fs-12 line-height-16 d-flex justify-content-start align-items-center">
+							${elemInput}
+				    	</p>
+			            <p class="col-2 mb-0 fs-12 text-center line-height-16">${ (esPagada) ? `` : `${value.valorServicio.toFixed(2)}`}</p>
+			            <p class="col-2 mb-0 fs-12 text-center line-height-16">${ (esPagada) ? `` : `${value.valorEmpresa.toFixed(2)}`}</p>
+			            <p class="col-2 mb-0 fs-12 text-center line-height-16">${ (esPagada) ? `` : `${value.valorPaciente.toFixed(2)}`}</p>
+			            ${observacion}
+					</li>`
+				}
 			})
 		}else if(detalle.detalleLaboratorio !== null){
 			// Default
@@ -703,8 +720,10 @@
 				</li>`
 			})
 		}else{
+			console.log(detalle);
+			let nombreP = (detalle.nombrePrestacion !== undefined) ? detalle.nombrePrestacion : detalle.nombreServicio;
 			elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
-			    	<p class="col-12 mb-0 fs-12 line-height-16 text-capitalize">${detalle.nombrePrestacion.toLowerCase()}</p>
+			    	<p class="col-12 mb-0 fs-12 line-height-16 text-capitalize">${nombreP.toLowerCase()}</p>
 		            {{-- <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p>
 		            <p class="col-2 mb-0 fs-12 text-center line-height-16"></p> --}}
@@ -713,7 +732,7 @@
 		let buttonActions = ``;
 		let sucursal = (detalle.nombreSucursal !== null) ? `<p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-40 me-1 text-capitalize">Central médica:</span> ${detalle.nombreSucursal.toLowerCase()}</p>` : ``;
 
-		let tituloDetalle = (detalle.tipoServicio == "LABORATORIO") ? `${detalle.tipoServicio}` : `${detalle.tipoServicio} - ${detalle.nombreEspecialidad}`;
+		let tituloDetalle = (detalle.tipoServicio == "LABORATORIO") ? `${detalle.tipoServicio}` : `${detalle.tipoServicio.replaceAll("_", " ")} - ${detalle.nombreEspecialidad}`;
 		let elemHeader = `<h3 class="fs-24 line-height-32 text-royal-blue-shade-20 fw-medium mb-2 text-capitalize">${tituloDetalle.toLowerCase()}</h3>
 	        <p class="fs-14 line-height-16 fw-medium mb-2 text-capitalize"><span class="text-royal-blue-shade-40 me-1">Profesional:</span> ${tratamiento.nombreMedico.toLowerCase()}</p>
 			${sucursal}
@@ -943,7 +962,11 @@
                     respuestaSesion += `<div url-rel="${ruta}" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn p-3 bg-royal-blue text-white rounded-12 fs-18 line-height-24 w-50 btn-sesion">Ver sesión<i class="fa-solid fa-angle-right ms-2"></i></div>`;
                     return respuestaSesion;
                     break;
-
+                case "ORDEN":
+                	if(datosServicio.esPagada == "N"){
+                		return `<div url-rel="/citas-datos-facturacion/{{ $mac }}" class="btn fs-18 line-height-25 bg-royal-blue text-white rounded-12 p-3 btn-pagar" esExcento-rel='${esExcento}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}'>Pagar</div>`;
+                	}
+                break;
             }
         }
     }

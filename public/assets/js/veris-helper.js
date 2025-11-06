@@ -134,7 +134,7 @@ async function call(args){
                 }
             }
             if(!args.dismissAlert && data.code == 400 && localStorage.getItem('flujo') === null){
-                // console.log(5555)
+                console.log(5555)
                 //toastr.clear();
                 // toastr.warning(data.message, `Ha ocurrido un error`, {
                 //     timeOut: 8000
@@ -144,7 +144,7 @@ async function call(args){
             }
             return data;
         }).catch(function(error) {
-            // console.log("catch error call")
+            console.log("catch error call")
             if(args.showLoader || args.showLoader == true){
                 hideLoader();
             }
@@ -1361,7 +1361,7 @@ async function generarTurno(){
     const data = await call(args);
     console.log(data);
     if(data.code == 200){
-        await printTurnoAPI(data.data)
+        await printTurnoAPI(data.data);
     }
     return data;
 }
@@ -1370,9 +1370,14 @@ async function printTurnoAPI(detalle){
     let args = [];
     args["endpoint"] = `http://localhost:3002/printer-ticket/v1/turnero?turno=${detalle.turno}&sucursal=${detalle.nombreSucursalTurnero.toUpperCase()}&paciente=${detalle.nombreCompleo}&fechaTicket=${detalle.fechaEmision}&nombreMuestraTurnero=${detalle.nombreMuestraTurnero}`;
     args["method"] = "GET";
-    const data = await call(args);
-    if(data.code == 200){
-        // console.log(data)
+    args["dismissAlert"] = true;
+    try {
+        const data = await call(args);
+        if(data.code == 200){
+            // console.log(data)
+        }
+    } catch (error) {
+        console.error("Error capturado en el flujo:", error);
     }
     return;
 }
