@@ -150,7 +150,7 @@ class Veris extends Model
             return $token;
         }*/
         
-        $method = '/seguridad/loginw';
+        $method = '/seguridad/login';
         // $response = Veris::call([
         //     'endpoint' => self::BASE_URL_DIGITALES.'/'.self::SEGURIDADES_WAR.$method,
         //     'basic' => self::BASICAUTHDIGITALES,
