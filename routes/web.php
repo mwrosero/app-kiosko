@@ -16,6 +16,7 @@ use App\Http\Controllers\KioskController;
 */
 
 Route::get('/refreshToken', [KioskController::class, 'refreshToken'])->name('refreshToken');
+Route::get('/estadisticas', [KioskController::class, 'stats'])->name('stats');
 Route::get('/{mac}', [KioskController::class, 'index'])->name('index');
 Route::get('/ingreso/{mac}', [KioskController::class, 'ingreso'])->name('ingreso');
 Route::get('/menu/{mac}', [KioskController::class, 'menu'])->name('menu');
