@@ -221,6 +221,12 @@ class KioskController extends Controller
                 ->with('mac',$mac);
     }
 
+    public function stats() {
+        $token = Veris::getToken();
+        return view('kiosk.stats')
+                ->with('accessToken',$token);
+    }
+
     public function refreshToken(){
         $token = Veris::getToken();
         if($token != ""){

@@ -179,6 +179,28 @@ class Veris extends Model
                 'status' => $res->status(),
                 'body' => $res->body(),
             ]);
+
+            $res =  Http::withOptions([
+                    'verify' => false, // Desactivar verificación de certificados
+                ])->withHeaders([
+                    'Application' => self::APPLICATION,
+                    'Authorization' => 'Basic '.self::BASICAUTH,
+                ])->post(self::BASE_URL_DIGITALES.'/'.self::BASE_WAR.$method);
+            $response = json_decode($res->body());
+
+            if ($res->failed()) {
+                Log::channel('curl')->error('Error en petición HTTP', [
+                    'url' => self::BASE_URL_DIGITALES.'/'.self::BASE_WAR.$method,
+                    'headers' => [
+                        'Application' => self::APPLICATION,
+                        'Authorization' => 'Basic ' . substr(self::BASICAUTH, 0, 5) . '...', // evita exponer el auth completo
+                    ],
+                    'params' => $params ?? [],
+                    'status' => $res->status(),
+                    'body' => $res->body(),
+                ]);
+            }
+
         }
         
         session(['accessToken' => $response->data]);

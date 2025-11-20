@@ -248,7 +248,7 @@
 				elem += `<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-notificar-llegada" style="min-width: 150px !important;">Notificar llegada</button>`;
 			break;
 			case "ACTIVAR_PAQUETE":
-				elem += `<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-activar" style="min-width: 150px !important;">Activar</button>`;
+				elem += `<button item-rel='${JSON.stringify(value)}' class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 px-3 p-12 btn-activar btn-notificar-llegada" style="min-width: 150px !important;">Activar</button>`;
 			break;
 		}
 		
