@@ -639,7 +639,6 @@
     }
 
     async function cargarConvenios(){
-        //return;
         let args = [];
         args["endpoint"] = api_url_digitales + `/${api_war}/comercial/paciente/convenios?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&tipoIdentificacion=${dataCita.paciente.codigoTipoIdentificacion}&numeroIdentificacion=${dataCita.paciente.numeroIdentificacion}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&excluyeNinguno=S`;
         args["method"] = "GET";
