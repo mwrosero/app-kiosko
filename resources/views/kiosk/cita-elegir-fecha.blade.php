@@ -424,7 +424,7 @@
 
     async function preReservar(horario){
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/reservarPrecio?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/reservarPrecio?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -630,7 +630,7 @@
 
     async function validacionFecha(){
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war}/comercial/validacionFecha`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/comercial/validacionFecha?macAddress={{ $mac }}`;
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
@@ -685,7 +685,7 @@
         }
         
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/fechasdisponibles?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&idMedico=${codigoMedico}&esPlanStar=${esPlanStar}`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/fechasdisponibles?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&idMedico=${codigoMedico}&esPlanStar=${esPlanStar}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["sendHeaders"] = false;
@@ -746,7 +746,7 @@
             urlAdicionales = `&codigoCliente=${dataCita.convenio.codigoCliente}&secuenciaAfiliado=${dataCita.convenio.secuenciaAfiliado}&codigoConvenio=${dataCita.convenio.codigoConvenio}`;
         }
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/medicos/horarios?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent($('.selected-day').attr("fechaSeleccionada-rel"))}&esPlanStar=${esPlanStar}&mostrarDisponibilidad=S&idPaciente=${dataCita.paciente.pacPacNumero}&soloDescuento=${soloDescuento}${urlAdicionales}`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/medicos/horarios?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent($('.selected-day').attr("fechaSeleccionada-rel"))}&esPlanStar=${esPlanStar}&mostrarDisponibilidad=S&idPaciente=${dataCita.paciente.pacPacNumero}&soloDescuento=${soloDescuento}${urlAdicionales}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["sendHeaders"] = false;
@@ -924,7 +924,7 @@
             urlAdicionales = `&codigoCliente=${dataCita.convenio.codigoCliente}&secuenciaAfiliado=${dataCita.convenio.secuenciaAfiliado}&codigoConvenio=${dataCita.convenio.codigoConvenio}`;
         }
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&esPlanStar=${esPlanStar}&bloques=${bloques}${argsSesion}${urlAdicionales}`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/medicos/disponibilidad?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&esPlanStar=${esPlanStar}&bloques=${bloques}${argsSesion}${urlAdicionales}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["sendHeaders"] = false;
@@ -1003,7 +1003,7 @@
 
     async function obtenerPreparacionPrevia(){
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war}/domicilio/laboratorio/preparacionPrevia?canalOrigen=${_canalOrigen}&codigoSolicitud=${ dataCita.ordenExterna.codigoSolicitud }`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/domicilio/laboratorio/preparacionPrevia?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&codigoSolicitud=${ dataCita.ordenExterna.codigoSolicitud }`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["sendHeaders"] = false;
@@ -1046,7 +1046,7 @@
     async function consultarHorasMotorizados() {
         //let fechaSeleccionada = $('.selected-day').attr('fechaSeleccionada-rel');
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war}/domicilio/laboratorio/disponibilidad?canalOrigen=${_canalOrigen}&codigoSolicitud=${codigoSolicitud}&latitud=${latitud}&longitud=${longitud}&fecha=${$('.selected-day').attr("fechaSeleccionada-rel")}&codigoZona=${codigoZona}`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/domicilio/laboratorio/disponibilidad?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&codigoSolicitud=${codigoSolicitud}&latitud=${latitud}&longitud=${longitud}&fecha=${$('.selected-day').attr("fechaSeleccionada-rel")}&codigoZona=${codigoZona}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         //args["dismissAlert"] = true;

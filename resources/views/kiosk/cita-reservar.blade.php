@@ -272,7 +272,7 @@
 
     async function validarReservas(){
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/validacionReservas?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/validacionReservas?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -325,7 +325,7 @@
 
     async function reservaEstaPagada(codigoReserva){
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/reserva/${codigoReserva}?canalOrigen=${canalOrigen}`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/reserva/${codigoReserva}?macAddress={{ $mac }}&canalOrigen=${canalOrigen}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["sendHeaders"] = false;
@@ -350,7 +350,7 @@
         let args = [];
         let canalOrigen = _canalOrigen
         let codigoUsuario = dataCita.paciente.numeroIdentificacion;
-        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/eliminarReserva?codigoReserva=${codigoReservaEliminar}`
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/eliminarReserva?macAddress={{ $mac }}&codigoReserva=${codigoReservaEliminar}`
         args["method"] = "PUT";
         args["bodyType"] = "json";
         args["showLoader"] = true;
@@ -601,7 +601,7 @@
         if(dataCita.sesion){
             argsSesion = `&secuenciaPlanTto=${dataCita.sesion.secuenciaPlanTto}&numeroSesion=${dataCita.sesion.numeroSesion}`;
         }
-        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/lista/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}${argsSesion}`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/lista/precio?macAddress={{ $mac }}&canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}${argsSesion}`;
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
@@ -743,7 +743,7 @@
             argsSesion = `&secuenciaPlanTto=${dataCita.sesion.secuenciaPlanTto}&numeroSesion=${dataCita.sesion.numeroSesion}`;
         }
 
-        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&codigoReserva=${codigoReserva}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&codigoReserva=${codigoReserva}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}${argsSesion}`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/precio?macAddress={{ $mac }}&canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&codigoReserva=${codigoReserva}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&codigoReserva=${codigoReserva}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}${argsSesion}`;
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
@@ -897,7 +897,7 @@
 
     async function reservarCita(){
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/reservar?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/reservar?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -1022,7 +1022,7 @@
             }
             if(data.data.permitePago == "S"){
                 /*
-                https://api-phantomx.veris.com.ec/${api_war}/v1/agenda/validarPermitePago?canalOrigen=MVE_CMV&codigoUsuario=0926178534&tipoItem=C&codigoReserva=4222668939
+                https://api-phantomx.veris.com.ec/${api_war}/v1/agenda/validarPermitePago?macAddress={{ $mac }}&canalOrigen=MVE_CMV&codigoUsuario=0926178534&tipoItem=C&codigoReserva=4222668939
                 */
                 // await crearPreTransaccion()
                 let datosPago = {
@@ -1093,7 +1093,7 @@
 
     async function crearPreTransaccion(){
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war}/facturacion/crear_pretransaccion?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/facturacion/crear_pretransaccion?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
