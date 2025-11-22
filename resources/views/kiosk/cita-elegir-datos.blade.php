@@ -626,10 +626,11 @@
             paramasAditional += `&codigoServicio=${ dataCita.especialidad.codigoServicio }&codigoPrestacion=${ dataCita.especialidad.codigoPrestacion }&tipoModalidad=${ (dataCita.online == "N") ? "PRESENCIAL" : "ONLINE" }`;
         }
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/comercial/validaCondicionConvenio?canalOrigen=${_canalOrigen}&esValidacionLink=false&codigoEmpresa=1&codigoConvenio=${(dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : ''}&esVerisCare=${esVerisCare}&secuenciaAfiliado=${secuenciaAfiliado}${paramasAditional}`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/comercial/validaCondicionConvenio?canalOrigen=${_canalOrigen}&esValidacionLink=false&codigoEmpresa=1&codigoConvenio=${(dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : ''}&esVerisCare=${esVerisCare}&secuenciaAfiliado=${secuenciaAfiliado}${paramasAditional}`;
         args["method"] = "GET";
         args["showLoader"] = true;
-        args["sendHeaders"] = false;
+        //args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         if(data.code == 200){
             dataCita.validarCondicionConvenio = data.data;
@@ -640,10 +641,11 @@
     async function cargarConvenios(){
         //return;
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${dataCita.paciente.codigoTipoIdentificacion}&numeroIdentificacion=${dataCita.paciente.numeroIdentificacion}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&excluyeNinguno=S`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${dataCita.paciente.codigoTipoIdentificacion}&numeroIdentificacion=${dataCita.paciente.numeroIdentificacion}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&excluyeNinguno=S`;
         args["method"] = "GET";
         args["showLoader"] = true;
-        args["sendHeaders"] = false;
+        //args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
 
         // llenar modal
@@ -726,10 +728,11 @@
 
     async function consultarCiudades() {
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/agenda/ciudades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&excluyeVirtual=true&idPaciente=${dataCita.paciente.pacPacNumero}`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/ciudades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&excluyeVirtual=true&idPaciente=${dataCita.paciente.pacPacNumero}`;
         args["method"] = "GET";
         args["showLoader"] = false;
-        args["sendHeaders"] = false;
+        //args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         // console.log(data);return;esDefault
 
@@ -769,10 +772,11 @@
     async function consultarCentralesMedicasRecomendadas(){
         console.log(0);
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/agenda/listado/centrosMedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1&codigoCiudad=${dataCita.ciudad.codigoPais+'-'+dataCita.ciudad.codigoProvincia+'-'+dataCita.ciudad.codigoCiudad}&idPaciente=${dataCita.paciente.pacPacNumero}`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/listado/centrosMedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1&codigoCiudad=${dataCita.ciudad.codigoPais+'-'+dataCita.ciudad.codigoProvincia+'-'+dataCita.ciudad.codigoCiudad}&idPaciente=${dataCita.paciente.pacPacNumero}`;
         args["method"] = "GET";
         args["showLoader"] = true;
-        args["sendHeaders"] = false;
+        //args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         if(data.code == 200){
             drawCentrales(data.data);
@@ -787,10 +791,11 @@
 
     async function obtenerCiudadParaMedicoFavoritoPorCentral(){
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/agenda/listado/centrosMedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/listado/centrosMedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1`;
         args["method"] = "GET";
         args["showLoader"] = true;
-        args["sendHeaders"] = false;
+        //args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         if(data.code == 200){
             return data.data;
@@ -844,10 +849,11 @@
         let mostrarVua = (dataCita.vua && !dataCita.tratamiento) ? dataCita.vua : false;
         let ciudad = dataCita.ciudad;
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/agenda/centrosmedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&codigoPais=${dataCita.ciudad.codigoPais}&codigoProvincia=${dataCita.ciudad.codigoProvincia}&codigoCiudad=${dataCita.ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/centrosmedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&codigoPais=${dataCita.ciudad.codigoPais}&codigoProvincia=${dataCita.ciudad.codigoProvincia}&codigoCiudad=${dataCita.ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
         args["method"] = "GET";
         args["showLoader"] = true;
-        args["sendHeaders"] = false;
+        //args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         if(data.code == 200){
             let existeSucursal = data.data.some(sucursal => parseInt(sucursal.codigoSucursal) === parseInt(dataCita.central.codigoSucursal));
@@ -870,10 +876,11 @@
         let mostrarVua = (dataCita.vua && !dataCita.tratamiento) ? dataCita.vua : false;
         let ciudad = dataCita.ciudad;
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/agenda/centrosmedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&codigoPais=${dataCita.ciudad.codigoPais}&codigoProvincia=${dataCita.ciudad.codigoProvincia}&codigoCiudad=${dataCita.ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/centrosmedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&codigoPais=${dataCita.ciudad.codigoPais}&codigoProvincia=${dataCita.ciudad.codigoProvincia}&codigoCiudad=${dataCita.ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
         args["method"] = "GET";
         args["showLoader"] = true;
-        args["sendHeaders"] = false;
+        //args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data);
         if(data.code == 200){
@@ -883,7 +890,7 @@
 
     async function validacionConvenio(){
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/comercial/validacionConvenio`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/comercial/validacionConvenio`;
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
@@ -894,7 +901,8 @@
             "idPaciente": parseInt(dataCita.paciente.pacPacNumero),
             "codigoTipoAtencion": dataCita.especialidad.codigoTipoAtencion
         });
-        args["sendHeaders"] = false;
+        //args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         
         if(data.code == 200){
@@ -909,10 +917,11 @@
         listaEspecialidades.empty();
         
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/agenda/especialidades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${ dataCita.online }`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/especialidades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${ dataCita.online }`;
         args["method"] = "GET";
         args["showLoader"] = true;
-        args["sendHeaders"] = false;
+        //args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
 
         if (data.code == 200){
@@ -956,12 +965,13 @@
             return;
         }
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/tratamientos/obtener_tratamiento_compatible?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${dataCita.online}&idPaciente=${dataCita.paciente.pacPacNumero}
+        args["endpoint"] = api_url_digitales + `/${api_war}/tratamientos/obtener_tratamiento_compatible?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${dataCita.online}&idPaciente=${dataCita.paciente.pacPacNumero}
         &codigoServicio=${ dataCita.especialidad.codigoServicio }&codigoPrestacion=${ dataCita.especialidad.codigoPrestacion }&codigoConvenio=${ (dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : '' }`;
         
         args["method"] = "GET";
         args["showLoader"] = true;
-        args["sendHeaders"] = false;
+        //args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         let params = {}
 

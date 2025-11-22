@@ -184,9 +184,15 @@ class KioskController extends Controller
     public function listaMetodosPago($mac) {
         // $token = session('accessToken');
         $token = Veris::getToken();
-        return view('kiosk.lista-metodos-pago')
+        if($mac == "8C-C5-8C-09-BC-94"){
+            return view('kiosk.lista-metodos-pago-diferido')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
+        }else{
+            return view('kiosk.lista-metodos-pago')
+                    ->with('accessToken',$token)
+                    ->with('mac',$mac);
+        }
     }
 
     public function pagoExitoso($mac) {
