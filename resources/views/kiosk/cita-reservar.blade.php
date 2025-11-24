@@ -304,6 +304,7 @@
         }
         args["data"] = JSON.stringify(payload);
         args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         if(data.code == 200){
             return data;
@@ -329,6 +330,7 @@
         args["method"] = "GET";
         args["showLoader"] = true;
         args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data);
         if(data.code == 200){
@@ -355,6 +357,7 @@
         args["bodyType"] = "json";
         args["showLoader"] = true;
         args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
 
         //Menos para edictar reserva 
@@ -625,6 +628,7 @@
         })
         args["data"] = JSON.stringify(payload);
         args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data)
         if(data.code == 200){
@@ -755,6 +759,7 @@
             "medPayPlan": medPayPlan
         });
         args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         
         if(data.code == 200){
@@ -888,6 +893,7 @@
         }
         args["data"] = JSON.stringify(datosReserva);
         args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
 
         if (data.code == 200){
@@ -1010,6 +1016,7 @@
 
         args["data"] = JSON.stringify(datosReserva);
         args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         {{-- return; --}}
 
@@ -1078,7 +1085,6 @@
             "idAgrupacion": agrupacion
         });
         //args["dismissAlert"] = true;
-        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data);
         // $('#modalActivarChequeo').modal('hide')
@@ -1204,6 +1210,7 @@
 
         args["data"] = JSON.stringify(dataPT);
         args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data);
 
