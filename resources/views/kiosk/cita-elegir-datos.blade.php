@@ -626,7 +626,7 @@
             paramasAditional += `&codigoServicio=${ dataCita.especialidad.codigoServicio }&codigoPrestacion=${ dataCita.especialidad.codigoPrestacion }&tipoModalidad=${ (dataCita.online == "N") ? "PRESENCIAL" : "ONLINE" }`;
         }
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war}/comercial/validaCondicionConvenio?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&esValidacionLink=false&codigoEmpresa=1&codigoConvenio=${(dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : ''}&esVerisCare=${esVerisCare}&secuenciaAfiliado=${secuenciaAfiliado}${paramasAditional}`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/comercial/validaCondicionConvenio?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&esValidacionLink=false&codigoEmpresa=1&codigoConvenio=${(dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : ''}&idPaciente=${dataCita.paciente.pacPacNumero}&esVerisCare=${esVerisCare}&secuenciaAfiliado=${secuenciaAfiliado}${paramasAditional}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         //args["sendHeaders"] = false;

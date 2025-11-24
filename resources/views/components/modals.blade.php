@@ -303,12 +303,12 @@
             <div class="modal-body p-3">
                 <div class="text-center">
                     <h2 class="fs-24 line-height-32 text-royal-blue fw-medium mb-32 titleError">Información del pago</h2>
-                    <h3 class="fs-16 line-height-20 text-silver-dark mb-32 label-diferido-cuotas">En un plazo de 3 meses, tu pago será de $33.33 mensual, aplicado un interés de $4.50. Toca pagar para continuar con la transacción.</h3>
+                    <h3 class="fs-16 line-height-20 text-silver-dark mb-32 label-diferido-cuotas"></h3>
                     <input type="hidden" id="datosDiferido">
                 </div>
                 <div class="d-flex justify-content-between align-items-center gap-3">
                     <div respuesta-rel="N" data-bs-dismiss="modal" class="btn -royal-blue border-royal-blue w-50 m-0 px-4 py-3">Cancelar</div>
-                    <div respuesta-rel="S" data-bs-dismiss="modal" class="btn bg-royal-blue text-white w-50 m-0 px-4 py-3 me-3 btn-pagar-diferido">Pagar</div>
+                    <div respuesta-rel="S" class="btn bg-royal-blue text-white w-50 m-0 px-4 py-3 me-3 btn-pagar-diferido">Pagar</div>
                 </div>
             </div>
         </div>

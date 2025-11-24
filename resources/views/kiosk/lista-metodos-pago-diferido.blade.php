@@ -67,11 +67,19 @@
 	trackId = localStorage.getItem('trackId');
 	let carrito;
 
-	let codigoPlazoTarjeta = null;
+	let codigoPlazoTarjeta = 1;
   	let secuenciaDiferido = null;
+
+  	let subtotal = 0;
 
 	document.addEventListener("DOMContentLoaded", async function () {
 		await consultarCarrito();
+
+		$.each(carrito, function(key, value){
+		    $.each(value.agrupaciones, function(k, item){
+		        subtotal += item.totalAgrupacion.paciente.valorTotal;
+		    })
+		})
 
 		$('body').on('click', '.btn-payment-type', async function(){
 			let metodo = $(this).attr('metodo-rel')
@@ -91,15 +99,39 @@
 
 		$('body').on('click', '.btn-opcion-diferido', async function(){
 			let detalle = JSON.parse($(this).attr('data-rel'));
-
-			$('.page-title').html(`Pagar`);
-			$('.box-steps').addClass('d-none');
-			$('.box-pasarela').removeClass('d-none');
+			
 			codigoPlazoTarjeta = detalle.codigoPlazoTarjeta;
 			secuenciaDiferido = detalle.secuenciaDiferido;
-			await facturar();
+
+			if(detalle.aplicaDiferido){
+				let valorCuota = subtotal/detalle.numeroPlazo;
+				let elem = `En un plazo de 3 meses, tu pago estimado será de $${valorCuota.toFixed(2)} por mes. Este valor no incluye los intereses que aplicará tu banco o tarjeta, los cuales serán calculados directamente por la entidad emisora. Toca pagar para continuar con la transacción.`;
+
+				$('.label-diferido-cuotas').html(elem)
+				$('#datosDiferido').val($(this).attr('data-rel'))
+				$('#modalDiferido').modal('show');
+			}else{
+				$('.page-title').html(`Pagar`);
+				$('.box-steps').addClass('d-none');
+				$('.box-pasarela').removeClass('d-none');
+				
+				await facturar();
+			}
 		})
+
+		$('body').on('click', '.btn-pagar-diferido', async function(){
+			$('#modalDiferido').modal('hide');
+			await aceptarDiferido();
+		});
 	})
+
+	async function aceptarDiferido(){
+		let detalle = JSON.parse($('#datosDiferido').val());
+		$('.page-title').html(`Pagar`);
+		$('.box-steps').addClass('d-none');
+		$('.box-pasarela').removeClass('d-none');
+		await facturar();
+	}
 
 	async function cargarOpcionesDiferido(){
 		let args = [];
@@ -162,7 +194,9 @@
         args["token"] = "{{ $accessToken }}";
         args["bodyType"] = "json";
         args["data"] = JSON.stringify({
-        	"idAgrupacion":agrupacion
+        	"idAgrupacion":agrupacion,
+        	"codigoPlazoTarjeta": codigoPlazoTarjeta,
+        	"secuenciaDiferido": secuenciaDiferido
         });
         args["dismissAlert"] = true;
         const data = await call(args);

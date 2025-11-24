@@ -744,12 +744,18 @@
         }
         // console.log(fechaSeleccionada);
 
+        let bloques = '';
+        if(dataCita.tratamiento && dataCita.tratamiento.cantidadIntervalosReserva){
+            bloques = dataCita.tratamiento.cantidadIntervalosReserva
+        }
+
+
         let urlAdicionales = ``;
         if(dataCita.convenio.hasOwnProperty('idCliente') && dataCita.convenio.idCliente !== null){
             urlAdicionales = `&codigoCliente=${dataCita.convenio.codigoCliente}&secuenciaAfiliado=${dataCita.convenio.secuenciaAfiliado}&codigoConvenio=${dataCita.convenio.codigoConvenio}`;
         }
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/medicos/horarios?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent($('.selected-day').attr("fechaSeleccionada-rel"))}&esPlanStar=${esPlanStar}&mostrarDisponibilidad=S&idPaciente=${dataCita.paciente.pacPacNumero}&soloDescuento=${soloDescuento}${urlAdicionales}`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/medicos/horarios?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent($('.selected-day').attr("fechaSeleccionada-rel"))}&esPlanStar=${esPlanStar}&mostrarDisponibilidad=S&idPaciente=${dataCita.paciente.pacPacNumero}&soloDescuento=${soloDescuento}&bloques=${bloques}${urlAdicionales}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["sendHeaders"] = false;
