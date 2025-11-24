@@ -303,7 +303,7 @@
             "listaCita": citas
         }
         args["data"] = JSON.stringify(payload);
-        args["sendHeaders"] = false;
+        {{-- args["sendHeaders"] = false; --}}
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         if(data.code == 200){
@@ -329,7 +329,7 @@
         args["endpoint"] = api_url_digitales + `/${api_war}/agenda/reserva/${codigoReserva}?macAddress={{ $mac }}&canalOrigen=${canalOrigen}`;
         args["method"] = "GET";
         args["showLoader"] = true;
-        args["sendHeaders"] = false;
+        {{-- args["sendHeaders"] = false; --}}
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data);
@@ -356,7 +356,7 @@
         args["method"] = "PUT";
         args["bodyType"] = "json";
         args["showLoader"] = true;
-        args["sendHeaders"] = false;
+        {{-- args["sendHeaders"] = false; --}}
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
 
@@ -628,7 +628,7 @@
             })
         })
         args["data"] = JSON.stringify(payload);
-        args["sendHeaders"] = false;
+        {{-- args["sendHeaders"] = false; --}}
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data)
@@ -760,7 +760,7 @@
             "esEmbarazada": (dataCita.estaEmbarazada) ? dataCita.estaEmbarazada : "N",
             "medPayPlan": medPayPlan
         });
-        args["sendHeaders"] = false;
+        {{-- args["sendHeaders"] = false; --}}
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         
@@ -894,7 +894,7 @@
             "canalOrigen": _canalOrigen
         }
         args["data"] = JSON.stringify(datosReserva);
-        args["sendHeaders"] = false;
+        {{-- args["sendHeaders"] = false; --}}
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
 
@@ -1017,7 +1017,7 @@
         }
 
         args["data"] = JSON.stringify(datosReserva);
-        args["sendHeaders"] = false;
+        {{-- args["sendHeaders"] = false; --}}
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         {{-- return; --}}
@@ -1080,7 +1080,7 @@
         args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/facturar?macAddress={{ $mac }}`;
         args["method"] = "POST";
         args["showLoader"] = true;
-        {{-- args["sendHeaders"] = false; --}}
+        args["sendHeaders"] = false;
         args["token"] = "{{ $accessToken }}";
         args["bodyType"] = "json";
         args["data"] = JSON.stringify({
@@ -1211,7 +1211,7 @@
         // return;
 
         args["data"] = JSON.stringify(dataPT);
-        args["sendHeaders"] = false;
+        {{-- args["sendHeaders"] = false; --}}
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data);
