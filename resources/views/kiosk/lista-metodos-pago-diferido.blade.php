@@ -105,7 +105,7 @@
 
 			if(detalle.aplicaDiferido){
 				let valorCuota = subtotal/detalle.numeroPlazo;
-				let elem = `En un plazo de 3 meses, tu pago estimado será de $${valorCuota.toFixed(2)} por mes. Este valor no incluye los intereses que aplicará tu banco o tarjeta, los cuales serán calculados directamente por la entidad emisora. Toca pagar para continuar con la transacción.`;
+				let elem = `En un plazo de <b>${detalle.numeroPlazo} meses</b>, tu pago estimado será de <b>$${valorCuota.toFixed(2)}</b> por mes. Este valor no incluye los intereses que aplicará tu banco o tarjeta, los cuales serán calculados directamente por la entidad emisora. Toca pagar para continuar con la transacción.`;
 
 				$('.label-diferido-cuotas').html(elem)
 				$('#datosDiferido').val($(this).attr('data-rel'))
@@ -188,7 +188,7 @@
 		console.log("Inicia facturación");
 		let agrupacion = JSON.parse(localStorage.getItem("agrupacionFacturar"));
 		let args = [];
-        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/facturar?macAddress={{ $mac }}`;//&esPrueba=true
+        args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/facturar?macAddress={{ $mac }}`;
         args["method"] = "POST";
         args["showLoader"] = true;
         {{-- args["sendHeaders"] = false; --}}

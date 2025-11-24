@@ -608,6 +608,7 @@
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
+        args["token"] = "{{ $accessToken }}";
         let payload = [];
         $.each(dataCita.detalle_pre_agendamiento, function(key,value){
             payload.push({
@@ -750,6 +751,7 @@
         args["endpoint"] = api_url_digitales + `/${api_war}/agenda/precio?macAddress={{ $mac }}&canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&codigoReserva=${codigoReserva}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&codigoReserva=${codigoReserva}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}${argsSesion}`;
         args["method"] = "POST";
         args["bodyType"] = "json";
+        args["token"] = "{{ $accessToken }}";
         args["showLoader"] = true;
         args["data"] = JSON.stringify({
             "fechaSeleccionada": dataCita.horario.dia2,
