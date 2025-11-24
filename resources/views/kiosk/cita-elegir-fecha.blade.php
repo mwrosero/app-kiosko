@@ -545,7 +545,7 @@
         args["bodyType"] = "json";
         args["data"] = JSON.stringify(datosReserva);
 
-        args["sendHeaders"] = false;
+        // args["sendHeaders"] = false;
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data)
@@ -641,7 +641,7 @@
             "idCliente": dataCita.convenio.idCliente,
             "fechaSeleccionada": $('.selected-day').attr("fechaSeleccionada-rel")
         });
-        args["sendHeaders"] = false;
+        // args["sendHeaders"] = false;
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data)
@@ -690,7 +690,7 @@
         args["endpoint"] = api_url_digitales + `/${api_war}/agenda/fechasdisponibles?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&idMedico=${codigoMedico}&esPlanStar=${esPlanStar}`;
         args["method"] = "GET";
         args["showLoader"] = true;
-        args["sendHeaders"] = false;
+        // args["sendHeaders"] = false;
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
 
@@ -758,7 +758,7 @@
         args["endpoint"] = api_url_digitales + `/${api_war}/agenda/medicos/horarios?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent($('.selected-day').attr("fechaSeleccionada-rel"))}&esPlanStar=${esPlanStar}&mostrarDisponibilidad=S&idPaciente=${dataCita.paciente.pacPacNumero}&soloDescuento=${soloDescuento}&bloques=${bloques}${urlAdicionales}`;
         args["method"] = "GET";
         args["showLoader"] = true;
-        args["sendHeaders"] = false;
+        // args["sendHeaders"] = false;
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         let listaMedicos = $('#listaMedicos');
@@ -937,7 +937,7 @@
         args["endpoint"] = api_url_digitales + `/${api_war}/agenda/medicos/disponibilidad?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&esPlanStar=${esPlanStar}&bloques=${bloques}${argsSesion}${urlAdicionales}`;
         args["method"] = "GET";
         args["showLoader"] = true;
-        args["sendHeaders"] = false;
+        // args["sendHeaders"] = false;
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(7,data);
@@ -1017,7 +1017,7 @@
         args["endpoint"] = api_url_digitales + `/${api_war}/domicilio/laboratorio/preparacionPrevia?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&codigoSolicitud=${ dataCita.ordenExterna.codigoSolicitud }`;
         args["method"] = "GET";
         args["showLoader"] = true;
-        args["sendHeaders"] = false;
+        // args["sendHeaders"] = false;
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data);
@@ -1063,7 +1063,7 @@
         args["showLoader"] = true;
         //args["dismissAlert"] = true;
         args["token"] = "{{ $accessToken }}";
-        args["sendHeaders"] = false;
+        // args["sendHeaders"] = false;
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log('consultarHorasMotorizados', data);
