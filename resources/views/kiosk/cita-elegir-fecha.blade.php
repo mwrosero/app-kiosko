@@ -546,6 +546,7 @@
         args["data"] = JSON.stringify(datosReserva);
 
         args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data)
         if(data.code == 200){
@@ -641,6 +642,7 @@
             "fechaSeleccionada": $('.selected-day').attr("fechaSeleccionada-rel")
         });
         args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data)
         if(data.code == 200){
@@ -689,6 +691,7 @@
         args["method"] = "GET";
         args["showLoader"] = true;
         args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
 
         if (data.code == 200){
@@ -750,6 +753,7 @@
         args["method"] = "GET";
         args["showLoader"] = true;
         args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         let listaMedicos = $('#listaMedicos');
         listaMedicos.empty();
@@ -928,6 +932,7 @@
         args["method"] = "GET";
         args["showLoader"] = true;
         args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(7,data);
 
@@ -1007,6 +1012,7 @@
         args["method"] = "GET";
         args["showLoader"] = true;
         args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data);
 
@@ -1052,6 +1058,7 @@
         //args["dismissAlert"] = true;
         args["token"] = "{{ $accessToken }}";
         args["sendHeaders"] = false;
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log('consultarHorasMotorizados', data);
         
