@@ -1,8 +1,9 @@
 <header class="d-flex justify-content-center align-items-center p-3" style="height: 134px;">
 	@if(!isset($showExitBtn))
 	<div class="position-absolute d-flex gap-3 align-items-center" style="top: 25px;left: 15px;">
-		<a href="/{{ $mac }}">
-			<i class="fa-solid fa-arrow-right-from-bracket fs-40 text-silver-dark"></i>
+		<a href="/{{ $mac }}" class="text-decoration-none text-white bg-royal-blue p-2 px-4 fw-medium fs-24 line-height-32 rounded-8">
+			{{-- <i class="fa-solid fa-arrow-right-from-bracket fs-40 text-silver-dark"></i> --}}
+			Salir
 		</a>
 	</div>
 	@endif

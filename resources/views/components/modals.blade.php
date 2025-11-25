@@ -296,6 +296,25 @@
     </div>
 </div>
 
+<!-- Modal confirmar diferido -->
+<div class="modal fade" id="modalDiferido" tabindex="-1" aria-labelledby="modalDiferidoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body p-3">
+                <div class="text-center">
+                    <h2 class="fs-24 line-height-32 text-royal-blue fw-medium mb-32 titleError">Información del pago</h2>
+                    <h3 class="fs-16 line-height-20 text-silver-dark mb-32 label-diferido-cuotas"></h3>
+                    <input type="hidden" id="datosDiferido">
+                </div>
+                <div class="d-flex justify-content-between align-items-center gap-3">
+                    <div respuesta-rel="N" data-bs-dismiss="modal" class="btn -royal-blue border-royal-blue w-50 m-0 px-4 py-3">Cancelar</div>
+                    <div respuesta-rel="S" class="btn bg-royal-blue text-white w-50 m-0 px-4 py-3 me-3 btn-pagar-diferido">Pagar</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @include('components.modal-terminos-reultados')
 
 <script>
