@@ -272,11 +272,12 @@
 
     async function validarReservas(){
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/agenda/validacionReservas?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/validacionReservas?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
-        // args["dismissAlert"] = true;
+        // //args["dismissAlert"] = true;
+        args["token"] = "{{ $accessToken }}";
 
         let aplicaProntoPago = 'S';
         if(dataCita.convenio.aplicaProntoPago){
@@ -302,7 +303,8 @@
             "listaCita": citas
         }
         args["data"] = JSON.stringify(payload);
-        args["sendHeaders"] = false;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         if(data.code == 200){
             return data;
@@ -324,10 +326,11 @@
 
     async function reservaEstaPagada(codigoReserva){
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/agenda/reserva/${codigoReserva}?canalOrigen=${canalOrigen}`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/reserva/${codigoReserva}?macAddress={{ $mac }}&canalOrigen=${canalOrigen}`;
         args["method"] = "GET";
         args["showLoader"] = true;
-        args["sendHeaders"] = false;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data);
         if(data.code == 200){
@@ -349,11 +352,12 @@
         let args = [];
         let canalOrigen = _canalOrigen
         let codigoUsuario = dataCita.paciente.numeroIdentificacion;
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/agenda/eliminarReserva?codigoReserva=${codigoReservaEliminar}`
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/eliminarReserva?macAddress={{ $mac }}&codigoReserva=${codigoReservaEliminar}`
         args["method"] = "PUT";
         args["bodyType"] = "json";
         args["showLoader"] = true;
-        args["sendHeaders"] = false;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
 
         //Menos para edictar reserva 
@@ -600,10 +604,11 @@
         if(dataCita.sesion){
             argsSesion = `&secuenciaPlanTto=${dataCita.sesion.secuenciaPlanTto}&numeroSesion=${dataCita.sesion.numeroSesion}`;
         }
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/agenda/lista/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}${argsSesion}`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/lista/precio?macAddress={{ $mac }}&canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}${argsSesion}`;
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
+        args["token"] = "{{ $accessToken }}";
         let payload = [];
         $.each(dataCita.detalle_pre_agendamiento, function(key,value){
             payload.push({
@@ -623,7 +628,8 @@
             })
         })
         args["data"] = JSON.stringify(payload);
-        args["sendHeaders"] = false;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data)
         if(data.code == 200){
@@ -742,9 +748,10 @@
             argsSesion = `&secuenciaPlanTto=${dataCita.sesion.secuenciaPlanTto}&numeroSesion=${dataCita.sesion.numeroSesion}`;
         }
 
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&codigoReserva=${codigoReserva}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&codigoReserva=${codigoReserva}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}${argsSesion}`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/precio?macAddress={{ $mac }}&canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&codigoReserva=${codigoReserva}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&codigoReserva=${codigoReserva}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}${argsSesion}`;
         args["method"] = "POST";
         args["bodyType"] = "json";
+        args["token"] = "{{ $accessToken }}";
         args["showLoader"] = true;
         args["data"] = JSON.stringify({
             "fechaSeleccionada": dataCita.horario.dia2,
@@ -753,7 +760,8 @@
             "esEmbarazada": (dataCita.estaEmbarazada) ? dataCita.estaEmbarazada : "N",
             "medPayPlan": medPayPlan
         });
-        args["sendHeaders"] = false;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         
         if(data.code == 200){
@@ -877,7 +885,7 @@
 
     async function cambiarModalidadCita(){
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/agenda/cambiarModalidadCita`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/cambiarModalidadCita`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -886,7 +894,8 @@
             "canalOrigen": _canalOrigen
         }
         args["data"] = JSON.stringify(datosReserva);
-        args["sendHeaders"] = false;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
 
         if (data.code == 200){
@@ -896,7 +905,7 @@
 
     async function reservarCita(){
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/agenda/reservar?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/reservar?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -1008,7 +1017,8 @@
         }
 
         args["data"] = JSON.stringify(datosReserva);
-        args["sendHeaders"] = false;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         {{-- return; --}}
 
@@ -1021,7 +1031,7 @@
             }
             if(data.data.permitePago == "S"){
                 /*
-                https://api-phantomx.veris.com.ec/${api_war}/v1/agenda/validarPermitePago?canalOrigen=MVE_CMV&codigoUsuario=0926178534&tipoItem=C&codigoReserva=4222668939
+                https://api-phantomx.veris.com.ec/${api_war}/v1/agenda/validarPermitePago?macAddress={{ $mac }}&canalOrigen=MVE_CMV&codigoUsuario=0926178534&tipoItem=C&codigoReserva=4222668939
                 */
                 // await crearPreTransaccion()
                 let datosPago = {
@@ -1070,13 +1080,13 @@
         args["endpoint"] = `${api_url_digitales}/${api_war}/carrito/${localStorage.getItem("idPreTransaccion")}/facturar?macAddress={{ $mac }}`;
         args["method"] = "POST";
         args["showLoader"] = true;
-        {{-- args["sendHeaders"] = false; --}}
+        args["sendHeaders"] = false;
         args["token"] = "{{ $accessToken }}";
         args["bodyType"] = "json";
         args["data"] = JSON.stringify({
             "idAgrupacion": agrupacion
         });
-        args["dismissAlert"] = true;
+        //args["dismissAlert"] = true;
         const data = await call(args);
         console.log(data);
         // $('#modalActivarChequeo').modal('hide')
@@ -1091,7 +1101,7 @@
 
     async function crearPreTransaccion(){
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war_digitales}/facturacion/crear_pretransaccion?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/facturacion/crear_pretransaccion?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -1201,7 +1211,8 @@
         // return;
 
         args["data"] = JSON.stringify(dataPT);
-        args["sendHeaders"] = false;
+        {{-- args["sendHeaders"] = false; --}}
+        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data);
 
