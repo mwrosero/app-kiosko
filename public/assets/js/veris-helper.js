@@ -1355,14 +1355,14 @@ async function generarTurno(){
         "nombreCompleto": datosCliente.nombreCompleto
     }
 
-    $('.info-turno').removeClass('d-none');
-    $('.msg-turno').html(`Tu turno es el:`);
-    $('.numero-turno').html(data.data.turno);
 
     if(localStorage.getItem('tipoTurnoGenerar') !== "demanda"){
         payload.idPreTransaccion = parseInt(localStorage.getItem('idPreTransaccion'))
     }
     args["data"] = JSON.stringify(payload);
+    $('.info-turno').removeClass('d-none');
+    $('.msg-turno').html(`Tu turno es el:`);
+    $('.numero-turno').html(data.data.turno);
     const data = await call(args);
     console.log(data);
     if(data.code == 200){
