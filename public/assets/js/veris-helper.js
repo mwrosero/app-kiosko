@@ -1360,12 +1360,12 @@ async function generarTurno(){
         payload.idPreTransaccion = parseInt(localStorage.getItem('idPreTransaccion'))
     }
     args["data"] = JSON.stringify(payload);
-    $('.info-turno').removeClass('d-none');
-    $('.msg-turno').html(`Tu turno es el:`);
-    $('.numero-turno').html(data.data.turno);
     const data = await call(args);
     console.log(data);
     if(data.code == 200){
+        $('.info-turno').removeClass('d-none');
+        $('.msg-turno').html(`Tu turno es el:`);
+        $('.numero-turno').html(data.data.turno);
         await printTurnoAPI(data.data);
     }
     return data;
