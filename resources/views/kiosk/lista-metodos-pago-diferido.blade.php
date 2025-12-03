@@ -11,6 +11,7 @@
 	<div class="row mx-0">
 		<div class="col-6 mx-auto px-3 h-100 box-steps box-metodos" style="height: 70vh !important;">
 			<div class="row flex-column h-100 justify-content-center align-items-center text-center">
+				<div type="button" metodo-rel="COR" class="btn-payment-type d-flex justify-content-center align-items-center text-secundary-00 fs-32 line-height-40 fw-bold rounded-32 d-none btn-corriente">Tarjeta de débito o <br>crédito</div>
 				<div type="button" metodo-rel="TD" class="btn-payment-type d-flex justify-content-center align-items-center text-secundary-00 fs-32 line-height-40 fw-bold rounded-32 d-none btn-tarjeta">Tarjeta de débito</div>
 				<div type="button" metodo-rel="TC" class="btn-payment-type d-flex justify-content-center align-items-center text-secundary-00 fs-32 line-height-40 fw-bold rounded-32 d-none btn-tarjeta">Tarjeta de crédito</div>
 				<div type="button" metodo-rel="CAJA" class="btn-payment-type d-flex justify-content-center align-items-center text-secundary-00 fs-32 line-height-40 fw-bold rounded-32">Pago en caja</div>
@@ -75,15 +76,11 @@
 	document.addEventListener("DOMContentLoaded", async function () {
 		await consultarCarrito();
 
-		$.each(carrito, function(key, value){
-		    $.each(value.agrupaciones, function(k, item){
-		        subtotal += item.totalAgrupacion.paciente.valorTotal;
-		    })
-		})
+		console.log(subtotal);
 
 		$('body').on('click', '.btn-payment-type', async function(){
 			let metodo = $(this).attr('metodo-rel')
-			if(metodo == "TD"){
+			if(metodo == "TD" || metodo == "COR"){
 				$('.page-title').html(`Pagar`);
 				$('.box-steps').addClass('d-none');
 				$('.box-pasarela').removeClass('d-none');
@@ -168,14 +165,25 @@
         	let permitePago = true;
         	$.each(carrito, function(key, value){
 				$.each(value.agrupaciones, function(k, item){
+					subtotal += item.totalAgrupacion.paciente.valorTotal;
 					if(!item.permitirPago){
 						permitePago = false;
 					}
 				})
 			})
 
+			{{-- $.each(carrito, function(key, value){
+			    $.each(value.agrupaciones, function(k, item){
+			        subtotal += item.totalAgrupacion.paciente.valorTotal;
+			    })
+			}) --}}
+
         	if(permitePago){
-        		$('.btn-tarjeta').removeClass('d-none')
+        		if(subtotal >= 50){
+        			$('.btn-tarjeta').removeClass('d-none');
+        		}else{
+        			$('.btn-corriente').removeClass('d-none');
+        		}
         	}
         }else{
         	$('#modalError').modal('show');
