@@ -190,8 +190,8 @@ class KioskController extends Controller
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
         }else{
-            // return view('kiosk.lista-metodos-pago')
-            return view('kiosk.lista-metodos-pago-diferido')
+            // return view('kiosk.lista-metodos-pago-diferido')
+            return view('kiosk.lista-metodos-pago')
                     ->with('accessToken',$token)
                     ->with('mac',$mac);
         }
