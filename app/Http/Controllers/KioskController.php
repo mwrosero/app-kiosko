@@ -120,7 +120,7 @@ class KioskController extends Controller
     public function citaElegirDatos($mac) {
         // $token = session('accessToken');
         $token = Veris::getToken();
-        return view('kiosk.cita-elegir-datos')
+        return view('kiosk.3M.cita-elegir-datos')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
     }
@@ -128,7 +128,7 @@ class KioskController extends Controller
     public function citaElegirFecha($mac) {
         // $token = session('accessToken');
         $token = Veris::getToken();
-        return view('kiosk.cita-elegir-fecha')
+        return view('kiosk.3M.cita-elegir-fecha')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
     }
@@ -136,7 +136,7 @@ class KioskController extends Controller
     public function citaReservar($mac) {
         // $token = session('accessToken');
         $token = Veris::getToken();
-        return view('kiosk.cita-reservar')
+        return view('kiosk.3M.cita-reservar')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
     }
