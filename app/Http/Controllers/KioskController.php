@@ -215,6 +215,14 @@ class KioskController extends Controller
                 ->with('mac',$mac);
     }
 
+    public function logoutHost($mac) {
+        // $token = session('accessToken');
+        $token = Veris::getToken();
+        return view('kiosk.logout-host')
+                ->with('accessToken',$token)
+                ->with('mac',$mac);
+    }
+
     public function lider($mac) {
         // $token = session('accessToken');
         $token = Veris::getToken();

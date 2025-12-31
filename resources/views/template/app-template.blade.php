@@ -107,14 +107,15 @@
                 }
                 if(localStorage.getItem('host') !== null){
                     let host = JSON.parse(localStorage.getItem('host'));
-                    $('.label-username div').html(`Usuario: ${host.codigoUsuario.toLowerCase()}`)
+                    $('.label-username div').html(`Usuario: ${host.nombreUsuario.toLowerCase()}`).addClass('text-capitalize')
                     $('.cerrar-sesion').removeClass('d-none');
                 }else{
                     $('.ingresar-host').removeClass('d-none');
                 }
 
                 $('body').on('click', '.btn-logout', async function(){
-                    await logoutHost();
+                    //await logoutHost();
+                    location.href = `/logout-host/${mac}`;
                 })
 
                 let inactivityTime;
@@ -159,22 +160,6 @@
                 if(data.code == 200){
                     $('.qtyCart').html(data.data.contador);
                 }
-            }
-
-            async function logoutHost(){
-                let args = [];
-                args["endpoint"] = `${api_url_digitales}/${api_war}/seguridad/salir_host?macAddress={{ $mac }}`;
-                args["method"] = "POST";
-                args["token"] = accessToken;
-                args["showLoader"] = true;
-                const data = await call(args);
-                console.log(data);
-                if(data.code == 200){
-                    localStorage.removeItem("host");
-                    location.href = '/{{ $mac }}'
-                }else{
-                    alert(data.message)
-                }   
             }
         </script>
     </body>
