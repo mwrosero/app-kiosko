@@ -816,9 +816,9 @@
 					</li>`
 				}
 			})
-			$('.infoAgendaMultiple').html(`<p class="fs-12 line-height-16 mb-0 text-dark-veris">
+			$('.infoAgendaMultiple').html(`<p class="fs-18 line-height-22 mb-0 text-dark-veris text-center">
             		Puedes agendar hasta <strong>${dataCita.cantidadMaximaAgenda}</strong> terapias a la vez
-        		</p>`).removeClass('d-none');
+        		</p><hr>`).removeClass('d-none');
 			$('#all-checkbox').addClass('d-none');
 		}else{
 			if(detalle.obtenerValoresOrden === null){
@@ -903,6 +903,7 @@
 	}
 
 	function determinarCondicionesBotones(datosServicio, estado, datosTratamiento, esExcento = false){
+		console.log(`---------determinarCondicionesBotones-------`)
         if(datosServicio.tipoAgenda == "TERAPIA_FISICA_AGRUPADA"){
             console.log(datosServicio, estado, datosTratamiento)
             console.log(datosServicio)
