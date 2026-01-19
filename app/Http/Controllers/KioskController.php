@@ -133,6 +133,14 @@ class KioskController extends Controller
                 ->with('mac',$mac);
     }
 
+    public function detalleAgendaMultiple($mac) {
+        // $token = session('accessToken');
+        $token = Veris::getToken();
+        return view('kiosk.detalle-agenda-multiple')
+                ->with('accessToken',$token)
+                ->with('mac',$mac);
+    }
+
     public function citaReservar($mac) {
         // $token = session('accessToken');
         $token = Veris::getToken();
@@ -152,7 +160,8 @@ class KioskController extends Controller
     public function detalleTratamiento($mac) {
         // $token = session('accessToken');
         $token = Veris::getToken();
-        return view('kiosk.detalle-tratamiento')
+        // return view('kiosk.detalle-tratamiento')
+        return view('kiosk.detalle-tratamiento-2026')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
     }

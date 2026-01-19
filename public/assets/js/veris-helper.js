@@ -1314,6 +1314,9 @@ async function agregarItem(datosPago, pagoUnico = false, onlyReturn = false){
             }
             location.href = `/datos-facturacion/${mac}`;
         }else{
+            if(onlyReturn){
+                return data;
+            }
             location.href = `/carrito/${mac}`;
         }
     }else{

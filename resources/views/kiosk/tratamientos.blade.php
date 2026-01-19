@@ -29,6 +29,7 @@
 	trackId = localStorage.getItem('trackId');
 	localStorage.setItem("origen", "cita");
 	document.addEventListener("DOMContentLoaded", async function () {
+		localStorage.removeItem("agendamiento");
 		$('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
 		await cargarMisTratamientos();
 
