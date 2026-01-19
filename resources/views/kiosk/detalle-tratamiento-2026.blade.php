@@ -774,10 +774,18 @@
 					showTooltip = true;
 				}
 				value.mensajePermiteAtencion = null;
-				let elemInput = `<input type="checkbox" value="${value.valorTotal}" class="me-2 border-midnight-blue-tint-80 check-item-prestacion atencionInmediata-input" id="prestacion-${value.codigoServicio}-${value.codigoPrestacion}-${value.lineaDetalleOrden}" agregadoCarrito-rel='${agregadoCarrito}' lineaDetalle-rel='${value.lineaDetalleOrden}' prestacion-rel='${JSON.stringify(value)}'>
+				let disabledInput = ``;
+				let elemBadge = ``;
+				if(value.hasOwnProperty('agregadoCarrito') && value.agregadoCarrito){
+					disabledInput = `disabled`;
+					elemBadge += `<span class="badge border-light-sky-blue-tint-60 bg-light-sky-blue-tint-90 ms-auto p-2 text-dark">Agregado al carrito</span>`;
+				}
+
+				let elemInput = `<input type="checkbox" value="${value.valorTotal}" class="me-2 border-midnight-blue-tint-80 check-item-prestacion atencionInmediata-input" ${disabledInput} id="prestacion-${value.codigoServicio}-${value.codigoPrestacion}-${value.lineaDetalleOrden}" agregadoCarrito-rel='${agregadoCarrito}' lineaDetalle-rel='${value.lineaDetalleOrden}' prestacion-rel='${JSON.stringify(value)}'>
 						<label for="prestacion-${value.codigoServicio}-${value.codigoPrestacion}-${value.lineaDetalleOrden}">
 							${capitalizarPrimeraLetra(nombrePrestacion)} - ${value.lineaDetalleOrden}
-						</label>`
+						</label>
+					${elemBadge}`
 				let observacion = ``;
 				if(esPagada){
 					elemInput = `${capitalizarPrimeraLetra(nombrePrestacion)} <span class="badge gradient-green text-green-dark p-2 ms-2">Pagado</span>`;
@@ -785,9 +793,9 @@
 					observacion = `<p class="col-1 mb-0 fs-12 text-center line-height-16 ${classMsgCobertura}" data-bs-toggle="tooltip" data-bs-placement="top" title="${textMsgCobertura}">
 						<i class="fa-solid fa-circle-info text-red-dark"></i>
 		            </p>`;
-					valorTotal += value.valorTotal;
+					//valorTotal += value.valorTotal;
 				}
-				if(excluyeBeneficio){
+				if(excluyeBeneficio || value.agregadoCarrito){
 					$('.th-details-prestaciones').addClass('d-none');
 					elemContent += `<li class="row text-dark-veris border-bottom-midnight-blue-tint-80 py-3">
 				    	<p class="col-11 mb-0 fs-12 line-height-16 d-flex justify-content-start align-items-center">
