@@ -76,7 +76,8 @@
                 // $('.btn-agendar').prop("disabled", true);
                 //$(".atencionInmediata-input").prop("disabled", true);
             } else {
-                $(".atencionInmediata-input").prop("disabled", false);
+                // $(".atencionInmediata-input").prop("disabled", false);
+                $(".atencionInmediata-input[agregadoCarrito-rel='false']").prop("disabled", false);
             }
         });
 
@@ -643,13 +644,13 @@
 		console.log(detalle);
 		let lineaDetalleOrdenArr = [];
 		delete dataCita.cantidadMaximaAgenda;
-		if((detalle.detallesServicios == null || detalle.detallesServicios.length == 0 ) && detalle.detalleLaboratorio == null && detalle.detallesTerapias === null){
+		if((detalle.detallesServicios == null || detalle.detallesServicios.length == 0 ) && detalle.detalleLaboratorio == null && detalle.detallesTerapias == null){
 			lineaDetalleOrdenArr.push(detalle.lineaDetalleOrden)
-		}else if(detalle.detalleLaboratorio !== null){
+		}else if(detalle.detalleLaboratorio != null){
 			$.each(detalle.detalleLaboratorio.listaOrdenesDetalle, function(key, value){
 				lineaDetalleOrdenArr.push(value.lineaDetalle)
 			})
-		}else if(detalle.detallesTerapias !== null){
+		}else if(detalle.detallesTerapias != null){
 			dataCita.cantidadMaximaAgenda = detalle.cantidadMaximaAgenda;
 			$.each(detalle.detallesTerapias, function(key, value){
 				lineaDetalleOrdenArr.push(value.lineaDetalleOrden)
@@ -694,7 +695,8 @@
 		let showTooltip = false;
 		let activar = false;
 		let codigoOrdenApoyo;
-		if(detallePrestacionesValores.code == 200 && detalle.esPagada == "N" && detalle.detallesTerapias === null){
+
+		if(detallePrestacionesValores.code == 200 && detalle.esPagada == "N" && detalle.detallesTerapias == null){
 			$.each(detallePrestacionesValores.data, function(key, value){
 				let nombrePrestacion = value.nombrePrestacion.replace(/\u00A0/g, " ").replace(/\n/g, "<br>");
 				let classMsgCobertura = (value.mensajeCobertura === null) ? `invisible` : ``;
@@ -705,10 +707,21 @@
 					textMsgCobertura = value.mensajeCobertura;
 					showTooltip = true;
 				}
-				let elemInput = `<input type="checkbox" checked value="${value.valorTotal}" class="me-2 border-midnight-blue-tint-80 check-item-prestacion" id="prestacion-${value.codigoServicio}-${value.codigoPrestacion}" agregadoCarrito-rel='${agregadoCarrito}' lineaDetalle-rel='${value.lineaDetalleOrden}' prestacion-rel='${JSON.stringify(value)}'>
+
+				let disabledInput = ``;
+				let elemBadge = ``;
+				if(value.hasOwnProperty('agregadoCarrito') && value.agregadoCarrito){
+					console.log("Deshabilitar input")
+					disabledInput = `disabled`;
+					elemBadge += `<span class="badge border-light-sky-blue-tint-60 bg-light-sky-blue-tint-90 ms-auto p-2 text-dark">Agregado al carrito</span>`;
+					$('#all-checkbox').prop('checked', false);
+				}
+
+				let elemInput = `<input type="checkbox" checked value="${value.valorTotal}" class="me-2 border-midnight-blue-tint-80 check-item-prestacion" ${disabledInput} id="prestacion-${value.codigoServicio}-${value.codigoPrestacion}" agregadoCarrito-rel='${agregadoCarrito}' lineaDetalle-rel='${value.lineaDetalleOrden}' prestacion-rel='${JSON.stringify(value)}'>
 						<label for="prestacion-${value.codigoServicio}-${value.codigoPrestacion}">
 							${capitalizarPrimeraLetra(nombrePrestacion)}
-						</label>`
+						</label>
+						${elemBadge}`
 				let observacion = ``;
 				if(esPagada){
 					elemInput = `${capitalizarPrimeraLetra(nombrePrestacion)} <span class="badge gradient-green text-green-dark p-2 ms-2">Pagado</span>`;
@@ -777,13 +790,22 @@
 				let disabledInput = ``;
 				let elemBadge = ``;
 				if(value.hasOwnProperty('agregadoCarrito') && value.agregadoCarrito){
+					console.log("Deshabilitar input")
 					disabledInput = `disabled`;
 					elemBadge += `<span class="badge border-light-sky-blue-tint-60 bg-light-sky-blue-tint-90 ms-auto p-2 text-dark">Agregado al carrito</span>`;
+				}
+
+				let elemBadgeAgendado = ``;
+				if(value.hasOwnProperty('detalleReserva') && value.detalleReserva !== null && !value.agregadoCarrito){
+					console.log("Deshabilitar input")
+					disabledInput = `disabled`;
+					elemBadgeAgendado += `<span class="badge border-light-sky-blue-tint-60 gradient-green mt-1 ms-auto p-1 text-dark">Agendado</span>`;
 				}
 
 				let elemInput = `<input type="checkbox" value="${value.valorTotal}" class="me-2 border-midnight-blue-tint-80 check-item-prestacion atencionInmediata-input" ${disabledInput} id="prestacion-${value.codigoServicio}-${value.codigoPrestacion}-${value.lineaDetalleOrden}" agregadoCarrito-rel='${agregadoCarrito}' lineaDetalle-rel='${value.lineaDetalleOrden}' prestacion-rel='${JSON.stringify(value)}'>
 						<label for="prestacion-${value.codigoServicio}-${value.codigoPrestacion}-${value.lineaDetalleOrden}">
 							${capitalizarPrimeraLetra(nombrePrestacion)} - ${value.lineaDetalleOrden}
+							${elemBadgeAgendado}
 						</label>
 					${elemBadge}`
 				let observacion = ``;
@@ -904,10 +926,7 @@
 
 	function determinarCondicionesBotones(datosServicio, estado, datosTratamiento, esExcento = false){
 		console.log(`---------determinarCondicionesBotones-------`)
-        if(datosServicio.tipoAgenda == "TERAPIA_FISICA_AGRUPADA"){
-            console.log(datosServicio, estado, datosTratamiento)
-            console.log(datosServicio)
-        }
+		console.log(datosTratamiento)
         let services = datosServicio;
         if (datosServicio.length == 0) {
             console.log(88)
@@ -927,7 +946,7 @@
                     }
                     // Agregar ver orden 
                     //respuestaAgenda += ` <a class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard">Ver orden</a>`;
-                    if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
+                    if(datosServicio.estado == 'PENDIENTE_AGENDAR' || datosServicio.estado == 'PARCIALMENTE_AGENDADO'){
                         if(datosServicio.esExterna == "N"){
                             //respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
                         }else{

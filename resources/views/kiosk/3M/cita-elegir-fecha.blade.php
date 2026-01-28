@@ -596,6 +596,7 @@
                         "codigoReserva": data.data.codigoReserva
                     }
                 }
+                //agregar que no se muestre error
                 let addItem = await agregarItem(datosPago, false, true);
                 
                 location.href = "/detalle-agenda-multiple/" + "{{ $mac }}";
