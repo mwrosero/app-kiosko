@@ -31,6 +31,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         location.href = `/turno/${mac}`;
     })
 
+    $('body').on('click', '.btn-salir-portal', async function(){
+        let url = $(this).attr('href-rel');
+        await trackExit();
+        location.href = url;
+    })
+
     $("a").on("click", function (e) {
         if ($(this).data("clicked")) {
             console.log("paralizar")
@@ -41,6 +47,16 @@ document.addEventListener("DOMContentLoaded", async function () {
         setTimeout(() => $(this).removeData("clicked"), 1200); // vuelve a habilitar
     });
 })
+
+async function trackExit(){
+    let args = [];
+    args["endpoint"] = `${api_url_digitales}/${api_war}/turnero/cerrar_actividad?macAddress={{ $mac }}`;
+    args["method"] = "PUT";
+    args["showLoader"] = true;
+    args["dismissAlert"] = true;
+    args["token"] = "{{ $accessToken }}";
+    args["bodyType"] = "json";
+}
 
 async function call(args){
     if(args.showLoader || args.showLoader == true){
