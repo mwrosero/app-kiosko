@@ -56,6 +56,8 @@ async function trackExit(){
     args["dismissAlert"] = true;
     args["token"] = "{{ $accessToken }}";
     args["bodyType"] = "json";
+    const data = await call(args);
+    console.log(data);
 }
 
 async function call(args){
