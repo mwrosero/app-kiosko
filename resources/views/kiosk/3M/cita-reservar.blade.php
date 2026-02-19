@@ -1039,8 +1039,7 @@
             }
             guardarData();
             if(dataCita.tratamiento && dataCita.tratamiento.esPagada == "S"){
-                console.log(0)
-                //location.href = '/pago-realizado/{{ $mac }}';
+                location.href = '/pago-realizado/{{ $mac }}';
                 return;
             }
             if(data.data.permitePago == "S"){
@@ -1054,16 +1053,13 @@
 					}
 				}
                 if(dataCita.hasOwnProperty('agregadoCarrito') && dataCita.agregadoCarrito){
-                    //location.href = `/carrito/${mac}`;
-                    console.log(1)
+                    location.href = `/carrito/${mac}`;
                 }else{
-				    //await agregarItem(datosPago, true);
-                    console.log(2)
+				    await agregarItem(datosPago, true);
                 }
                 //location.href = '/citas-datos-facturacion/{{ $mac }}';
             }else{
-                console.log(3)
-                //location.href = '/pago-realizado/{{ $mac }}';
+                location.href = '/pago-realizado/{{ $mac }}';
 
                 {{-- if(dataCita.precio.valorCanalVirtual > 0){
                     location.href = '/pago-realizado/{{ $mac }}';
