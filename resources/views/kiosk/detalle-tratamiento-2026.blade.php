@@ -77,6 +77,7 @@
                 //$(".atencionInmediata-input").prop("disabled", true);
             } else {
                 // $(".atencionInmediata-input").prop("disabled", false);
+                console.log(688)
                 $(".atencionInmediata-input[agregadoCarrito-rel='false']").prop("disabled", false);
             }
         });
@@ -106,6 +107,7 @@
 		})
 
 		$('body').on('click', '.check-item-prestacion', async function(){
+			console.log(977)
 			let valorTotal = 0;
 			$('.check-item-prestacion').each(function(index, element) {
 			    if ($(this).is(':checked')) {
@@ -139,6 +141,8 @@
 		    	$('.box-actions-detalle-orden .btn').removeClass('disabled');
 		    }
 
+		    console.log(777)
+
 		    // Si al desmarcar alguno ya no están todos seleccionados → desmarcar el "maestro"
 		    if (checked < total) {
 		        $('#all-checkbox').prop('checked', false);
@@ -147,6 +151,8 @@
 		    else if (checked === total) {
 		        $('#all-checkbox').prop('checked', true);
 		    }
+
+		    $(".atencionInmediata-input[estaAgendado-rel='true']").prop("disabled", true);
 		});
 
 
@@ -796,13 +802,15 @@
 				}
 
 				let elemBadgeAgendado = ``;
+				let estaAgendado = false;
 				if(value.hasOwnProperty('detalleReserva') && value.detalleReserva !== null && !value.agregadoCarrito){
 					console.log("Deshabilitar input")
 					disabledInput = `disabled`;
+					estaAgendado = true;
 					elemBadgeAgendado += `<span class="badge border-light-sky-blue-tint-60 gradient-green mt-1 ms-auto p-1 text-dark">Agendado</span>`;
 				}
 
-				let elemInput = `<input type="checkbox" value="${value.valorTotal}" class="me-2 border-midnight-blue-tint-80 check-item-prestacion atencionInmediata-input" ${disabledInput} id="prestacion-${value.codigoServicio}-${value.codigoPrestacion}-${value.lineaDetalleOrden}" agregadoCarrito-rel='${agregadoCarrito}' lineaDetalle-rel='${value.lineaDetalleOrden}' prestacion-rel='${JSON.stringify(value)}'>
+				let elemInput = `<input type="checkbox" value="${value.valorTotal}" class="me-2 border-midnight-blue-tint-80 check-item-prestacion atencionInmediata-input" ${disabledInput} id="prestacion-${value.codigoServicio}-${value.codigoPrestacion}-${value.lineaDetalleOrden}" agregadoCarrito-rel='${agregadoCarrito}' lineaDetalle-rel='${value.lineaDetalleOrden}' estaAgendado-rel='${estaAgendado}' prestacion-rel='${JSON.stringify(value)}'>
 						<label for="prestacion-${value.codigoServicio}-${value.codigoPrestacion}-${value.lineaDetalleOrden}">
 							${capitalizarPrimeraLetra(nombrePrestacion)} - ${value.lineaDetalleOrden}
 							${elemBadgeAgendado}
