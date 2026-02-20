@@ -50,11 +50,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 async function trackExit(){
     let args = [];
-    args["endpoint"] = `${api_url_digitales}/${api_war}/turnero/cerrar_actividad?macAddress={{ $mac }}`;
+    args["endpoint"] = `${api_url_digitales}/${api_war}/turnero/cerrar_actividad?macAddress=${ mac }`;
     args["method"] = "PUT";
     args["showLoader"] = true;
     args["dismissAlert"] = true;
-    args["token"] = "{{ $accessToken }}";
+    args["token"] = accessToken;
     args["bodyType"] = "json";
     const data = await call(args);
     console.log(data);
