@@ -72,12 +72,21 @@
 			await cargarMisChequeos(false) --}}
 		})
 
-		$('body').on('click','.btn-agendar', function(){
+		$('body').on('click','.btn-agendar', async function(){
             let promocion = paquete;
             let detalle = JSON.parse($(this).attr('item-rel'));
             let esTerapiaAgrupada = false;
             var esOnline = (detalle.esTeleconsulta) ? 'S' : 'N';
             
+            let datoTracking = {
+            	"codigoPaquete": paquete.codigoPaquete,
+				"numeroOrden": null,
+				"secuenciaPreXAfi": null,
+				"codigoConvenio": null,
+				"codigoReserva": null
+            }
+            await trackInicioAgendamiento(datoTracking);
+
             let url = '/cita-elegir-datos/{{ $mac }}';
             if(esOnline == "S"){
                 url = '/citas-elegir-fecha-doctor/{{ $mac }}';

@@ -216,6 +216,15 @@
             console.log(dataCitaReserva)
             {{-- return; --}}
 
+            let datoTracking = {
+            	"codigoPaquete": null,
+				"numeroOrden": item?.numeroOrden ?? null,
+				"secuenciaPreXAfi": item?.secuenciaPreXAfi,
+				"codigoConvenio": detalle?.codigoConvenio ?? null,
+				"codigoReserva": item?.codigoReserva ?? null
+            }
+            await trackInicioAgendamiento(datoTracking);
+
             localStorage.setItem('agendamiento', JSON.stringify(dataCitaReserva));
 			if(detalle.esTeleconsulta){
                 location.href = '/citas-elegir-fecha-doctor/{{ $mac }}';
@@ -295,6 +304,15 @@
             console.log(dataCitaReserva)
             {{-- return; --}}
 
+            let datoTracking = {
+            	"codigoPaquete": null,
+				"numeroOrden": item?.numeroOrden ?? null,
+				"secuenciaPreXAfi": item?.secuenciaPreXAfi,
+				"codigoConvenio": detalle?.codigoConvenio ?? null,
+				"codigoReserva": item?.codigoReserva ?? null
+            }
+            await trackInicioAgendamiento(datoTracking);
+            
             localStorage.setItem('agendamiento', JSON.stringify(dataCitaReserva));
 			if(detalle.esTeleconsulta){
                 location.href = '/citas-elegir-fecha-doctor/{{ $mac }}';

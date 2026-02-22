@@ -200,7 +200,18 @@
                     "codigoConvenio": null,
                 }
 			}
+
 			dataCita.online = (dataCita.esTeleconsulta) ? "S" : "N";
+
+			let datoTracking = {
+            	"codigoPaquete": null,
+				"numeroOrden": dataCita?.numeroOrden ?? null,
+				"secuenciaPreXAfi": null,
+				"codigoConvenio": dataCita?.convenio?.codigoConvenio ?? null,
+				"codigoReserva": null
+            }
+            await trackInicioAgendamiento(datoTracking);
+            
 			// console.log(dataCita);return;
 			localStorage.setItem('agendamiento', JSON.stringify(dataCita));
 			if(dataCita.esTeleconsulta){
@@ -235,6 +246,15 @@
                     "codigoConvenio": null,
                 }
 			}
+
+			let datoTracking = {
+            	"codigoPaquete": null,
+				"numeroOrden": dataCita?.reservaEdit?.numeroOrden ?? null,
+				"secuenciaPreXAfi": null,
+				"codigoConvenio": dataCita?.convenio?.codigoConvenio ?? null,
+				"codigoReserva": dataCita?.reservaEdit?.idCita ?? null
+            }
+            await trackInicioAgendamiento(datoTracking);
 
 			{{-- console.log(dataCita);
 			return; --}}

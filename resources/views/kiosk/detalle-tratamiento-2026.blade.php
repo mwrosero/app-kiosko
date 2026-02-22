@@ -266,6 +266,15 @@
 	        dataCita.convenio = ultimoTratamiento.datosConvenio;
 	        dataCita.convenio.origen = "Listatratamientos";
 
+	        let datoTracking = {
+            	"codigoPaquete": null,
+				"numeroOrden": datosServicio.idOrden,
+				"secuenciaPreXAfi": null,
+				"codigoConvenio": dataCita?.convenio?.codigoConvenio ?? null,
+				"codigoReserva": null
+            }
+            await trackInicioAgendamiento(datoTracking);
+
 	        dataCita.tratamiento = {
 	            cantidadIntervalosReserva: datosServicio.cantidadIntervalosReserva,
 	            numeroOrden: datosServicio.idOrden,
@@ -542,7 +551,7 @@
 	        }
 	    });
 
-		$(document).on('click', '.btn-CambiarFechaCita', function(){
+		$(document).on('click', '.btn-CambiarFechaCita', async function(){
 	        console.log('click entro a cambiar fecha');
 	        let data = $(this).data('rel');
 	        let url = $(this).attr('url-rel');
@@ -607,6 +616,16 @@
 	        params.agregadoCarrito = data.agregadoCarrito;
 	        console.log(params);
 	        //return;
+
+	        let datoTracking = {
+            	"codigoPaquete": null,
+				"numeroOrden": params?.reservaEdit?.numeroOrden ?? null,
+				"secuenciaPreXAfi": null,
+				"codigoConvenio": params?.convenio?.codigoConvenio ?? null,
+				"codigoReserva": params?.reservaEdit?.idCita ?? null
+            }
+            await trackInicioAgendamiento(datoTracking);
+
 	        localStorage.setItem('agendamiento', JSON.stringify(params));
 	        location = url;
 	    });
