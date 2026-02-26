@@ -212,6 +212,7 @@
                     <p class="mb-2 fs-18 line-height-24 fw-medium text-royal-blue">Detalle</p>
                     <p class="fs-12 line-height-16 mb-0 text-dark-veris">A continuación se  muestra la prestación y los valores después de aplicado el crédito de la aseguradora, mientras la orden se encuentra vigente.</p>
                 </div>
+                <div class="infoAgendaMultiple d-none"></div>
                 <div class="row mt-24 mb-2 px-3 th-details-prestaciones">
                     <p class="col-5 mb-0 fs-16 line-height-20 fw-medium d-flex justify-content-start align-items-center">
                         <input type="checkbox" checked class="me-2 border-midnight-blue-tint-80" id="all-checkbox">
@@ -307,7 +308,7 @@
                     <input type="hidden" id="datosDiferido">
                 </div>
                 <div class="d-flex justify-content-between align-items-center gap-3">
-                    <div respuesta-rel="N" data-bs-dismiss="modal" class="btn -royal-blue border-royal-blue w-50 m-0 px-4 py-3">Cancelar</div>
+                    <div respuesta-rel="N" data-bs-dismiss="modal" class="btn-royal-blue border-royal-blue w-50 m-0 px-4 py-3">Cancelar</div>
                     <div respuesta-rel="S" class="btn bg-royal-blue text-white w-50 m-0 px-4 py-3 me-3 btn-pagar-diferido">Pagar</div>
                 </div>
             </div>

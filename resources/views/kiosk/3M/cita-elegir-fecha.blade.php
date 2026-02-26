@@ -39,17 +39,17 @@
 
     <!-- Modal de informativo agenda multiple mismo dia -->
     <div class="modal fade" id="modalConsultaMismoDiaAgendaMultiple" tabindex="-1" aria-labelledby="modalConsultaMismoDiaAgendaMultipleLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
-            <div class="modal-content">
-                <div class="modal-body text-center p-3 pb-2">
-                    <h1 class="modal-title fs-24 line-height-28 fw-medium mb-3">Información</h1>
-                    <p class="fs-18 line-height-22 fw-normal text-veris mb-3">Ya tienes una cita agendada para este día. ¿Quieres agendar otra para el mismo día?</p>
+        <div class="modal-dialog modal modal-md modal-dialog-centered mx-auto my-0">
+            <div class="modal-content rounded-8 rounded-24">
+                <button type="button" class="btn-close position-absolute end-0 top-0 me-3 mt-3 fw-bold" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
+                <div class="modal-body text-center p-3 px-32 pb-2">
+                    <h2 class="fs-24 line-height-32 text-royal-blue-shade-20 fw-medium my-32">Información</h2>
+                    <h3 class="fs-16 line-height-20 text-silver-dark mb-32">Ya tienes una cita agendada para este día. ¿Quieres agendar otra para el mismo día?</h3>
                     <input type="hidden" id="horarioElegido">
-                </div>
-                <div class="modal-footer pt-0 pb-3 px-3">
-                    
-                    <div class="btn btn-lg btn-primary-veris w-100 m-0 mb-3 px-4 py-3 btn-aceptar-mismo-dia" data-bs-dismiss="modal">Sí, agendar</div>
-                    <button type="button" class="btn btn-lg btn-outline-primary-veris w-100 m-0 px-4 py-3" data-bs-dismiss="modal">Elegir otra fecha</button>
+                    <div class="d-flex justify-content-between align-items-center gap-3 my-3">
+                        <div data-bs-dismiss="modal" class="btn-royal-blue border-royal-blue w-50 m-0 px-4 py-3 ">Elegir otra fecha</div>
+                        <div data-bs-dismiss="modal" class="btn bg-royal-blue text-white w-50 m-0 px-4 py-3 me-3 btn-aceptar-mismo-dia">Sí, agendar</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,14 +57,16 @@
 
     <!-- Modal detalle agenda multiple -->
     <div class="modal fade" id="modaDetalleAgendaMultiple" tabindex="-1" aria-labelledby="modaDetalleAgendaMultipleLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
-            <div class="modal-content">
-                <div class="modal-body text-center p-3 pb-2">
-                    <h1 class="modal-title fs--20 line-height-24 fw-medium mb-3">Terapias seleccionadas</h1>
-                    <p class="fs--16 fw-normal text-veris mb-3" id="detalleItems"></p>
+        <div class="modal-dialog modal modal-md modal-dialog-centered mx-auto my-0">
+            <div class="modal-content rounded-8 rounded-24">
+                <button type="button" class="btn-close position-absolute end-0 top-0 me-3 mt-3 fw-bold" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1;"></button>
+                <div class="modal-body text-center p-3 px-32 pb-2">
+                    <h2 class="fs-24 line-height-32 text-royal-blue-shade-20 fw-medium my-32">Terapias seleccionadas</h2>
+                    <div class="mb-3" id="detalleItems">
+                    </div>
                 </div>
-                <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 px-4 py-3 w-100" data-bs-dismiss="modal">Cerrar</button>
+                <div class="d-flex justify-content-center align-items-center gap-3 my-3">
+                    <button class="btn py-24 bg-royal-blue text-white rounded-12 fs-24 line-height-32 w-50" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -260,6 +262,9 @@
 
     // llamada al dom 
     document.addEventListener("DOMContentLoaded", async function () {
+        if(dataCita.hasOwnProperty('items')){
+            $('.page-title').html(`Elige los datos de la terapia ${dataCita.position + 1}`);
+        }
         $('.contenido-central').css('max-height',`${$('.box-accesos-lateral').height()}px`)
         // if((dataCita.central && dataCita.central.codigoTipoSucursal == "CAP") || dataCita.hasOwnProperty('detalleItemPaquete')){
 
@@ -423,8 +428,19 @@
     }
 
     async function preReservar(horario){
+        {{-- let ruta = "/citas-revisa-tus-datos/" + "{{ $mac }}";
+        if(!dataCita.hasOwnProperty('detalle_multiple')){
+            console.log(horario)
+            dataCita.detalle_multiple = [];
+        }
+        dataCita.detalle_multiple.push(horario);
+        localStorage.setItem('agendamiento', JSON.stringify(dataCita));
+        window.location.href = ruta;
+        return; --}}
+
         let args = [];
-        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/reservarPrecio?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        //args["endpoint"] = api_url_digitales + `/${api_war}/agenda/reservarPrecio?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/reservar?macAddress={{ $mac }}&canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -574,6 +590,14 @@
                 });
                 dataCita.detalle_multiple.push(horario);
                 localStorage.setItem('agendamiento', JSON.stringify(dataCita));
+
+                let datosPago = {
+                    "reserva": {
+                        "codigoReserva": data.data.codigoReserva
+                    }
+                }
+                //agregar que no se muestre error
+                let addItem = await agregarItem(datosPago, false, true);
                 
                 location.href = "/detalle-agenda-multiple/" + "{{ $mac }}";
             }

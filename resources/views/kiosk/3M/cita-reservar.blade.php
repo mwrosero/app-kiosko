@@ -180,8 +180,10 @@
 
     document.addEventListener("DOMContentLoaded", async function () {
         if(dataCita.hasOwnProperty('detalle_multiple')){
-            $('#contentDetalleCitaMultiple').parent().addClass('py-0 px-0')
-            $('.multiple').removeClass('d-none');
+            {{-- $('#contentDetalleCitaMultiple').parent().addClass('py-0 px-0')
+            $('.multiple').removeClass('d-none'); --}}
+            $('.unica').removeClass('d-none');
+            $('#msg-cita').removeClass('d-none')
         }else{
             $('.unica').removeClass('d-none');
             $('#msg-cita').removeClass('d-none')
@@ -234,7 +236,8 @@
         }
 
         if(dataCita.hasOwnProperty('detalle_multiple')){
-            await llenarDataDetallesCitasMultiples();
+            //await llenarDataDetallesCitasMultiples();
+            await llenarDataDetallesCitas();
         }else{
             await llenarDataDetallesCitas();
         }
@@ -470,6 +473,8 @@
     }
 
     async function validarPagoMultiple(){
+
+
         const validacionReserva = await validarReservas();
         let puedeReservar = validacionReserva.data.listaCita.find(item => item.estado !== "Disponible");
 
@@ -582,7 +587,8 @@
             if(dataCita.origen && dataCita.origen == "Listatratamientos"){
                 numeroOrden = dataCita.tratamiento.numeroOrden;
                 codigoEmpOrden = dataCita.tratamiento.codigoEmpOrden;
-                lineaDetalle = dataCita.tratamiento.lineaDetalle;
+                //lineaDetalle = dataCita.tratamiento.lineaDetalle;
+                lineaDetalle = dataCita.items[dataCita.position].lineaDetalleOrden;
             }else{
                 numeroOrden = dataCita.tratamiento.numeroOrden;
                 codigoEmpOrden = dataCita.tratamiento.codigoEmpresaOrden;
@@ -590,9 +596,9 @@
             }
         }
 
-        if(!dataCita.estaPagado){
+        {{-- if(!dataCita.estaPagado){
             lineaDetalle = '';
-        }
+        } --}}
 
         let codigoUsuario = dataCita.paciente.numeroIdentificacion;
         let cantidad = '';
@@ -604,7 +610,7 @@
         if(dataCita.sesion){
             argsSesion = `&secuenciaPlanTto=${dataCita.sesion.secuenciaPlanTto}&numeroSesion=${dataCita.sesion.numeroSesion}`;
         }
-        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/lista/precio?macAddress={{ $mac }}&canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}${argsSesion}`;
+        args["endpoint"] = api_url_digitales + `/${api_war}/agenda/precio?macAddress={{ $mac }}&canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}${argsSesion}`;
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
@@ -680,6 +686,10 @@
             $('.box-precio').html(elem);
             if(dataCita.origen === "paquetes"){
                 $('.box-precio').html(`<div class="col-12 text-center"><h1 class="text-royal-blue fw-medium fs-48 line-height-56 mb-0" id="precioTotal">$0.00</h1></div>`);
+            }
+
+            if(dataCita.items.length > (dataCita.position + 1)){
+                $('#btn-pagar').html("Elige tu siguiente cita");
             }
         }
     }
@@ -1024,6 +1034,9 @@
 
         if (data.code == 200){
             dataCita.reserva = data.data;
+            if(dataCita.hasOwnProperty('items')){
+                dataCita.position = dataCita.position + 1;
+            }
             guardarData();
             if(dataCita.tratamiento && dataCita.tratamiento.esPagada == "S"){
                 location.href = '/pago-realizado/{{ $mac }}';

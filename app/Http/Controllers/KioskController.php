@@ -120,7 +120,7 @@ class KioskController extends Controller
     public function citaElegirDatos($mac) {
         // $token = session('accessToken');
         $token = Veris::getToken();
-        return view('kiosk.cita-elegir-datos')
+        return view('kiosk.3M.cita-elegir-datos')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
     }
@@ -128,7 +128,15 @@ class KioskController extends Controller
     public function citaElegirFecha($mac) {
         // $token = session('accessToken');
         $token = Veris::getToken();
-        return view('kiosk.cita-elegir-fecha')
+        return view('kiosk.3M.cita-elegir-fecha')
+                ->with('accessToken',$token)
+                ->with('mac',$mac);
+    }
+
+    public function detalleAgendaMultiple($mac) {
+        // $token = session('accessToken');
+        $token = Veris::getToken();
+        return view('kiosk.detalle-agenda-multiple')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
     }
@@ -136,7 +144,7 @@ class KioskController extends Controller
     public function citaReservar($mac) {
         // $token = session('accessToken');
         $token = Veris::getToken();
-        return view('kiosk.cita-reservar')
+        return view('kiosk.3M.cita-reservar')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
     }
@@ -152,7 +160,8 @@ class KioskController extends Controller
     public function detalleTratamiento($mac) {
         // $token = session('accessToken');
         $token = Veris::getToken();
-        return view('kiosk.detalle-tratamiento')
+        // return view('kiosk.detalle-tratamiento')
+        return view('kiosk.detalle-tratamiento-2026')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
     }
@@ -211,6 +220,14 @@ class KioskController extends Controller
         // $token = session('accessToken');
         $token = Veris::getToken();
         return view('kiosk.host')
+                ->with('accessToken',$token)
+                ->with('mac',$mac);
+    }
+
+    public function logoutHost($mac) {
+        // $token = session('accessToken');
+        $token = Veris::getToken();
+        return view('kiosk.logout-host')
                 ->with('accessToken',$token)
                 ->with('mac',$mac);
     }

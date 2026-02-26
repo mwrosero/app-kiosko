@@ -20,6 +20,8 @@ const _langDate = {
     }
 }
 
+const rutasProtegidas = ["/ingreso/", "/lider/", "/admin/", "/host/"];
+
 document.addEventListener("DOMContentLoaded", async function () {
     $('body').on('click', '.view-cart', function(){
         // location.href = `/carrito/${mac}`;
@@ -29,6 +31,16 @@ document.addEventListener("DOMContentLoaded", async function () {
     $('body').on('click', '.btn-generar-turno', async function(){
         localStorage.setItem('tipoTurnoGenerar', 'demanda');
         location.href = `/turno/${mac}`;
+    })
+
+    $('body').on('click', '.btn-salir-portal', async function(){
+        let url = $(this).attr('href-rel');
+        //if(window.location.pathname.includes("/ingreso/"))
+        const esRutaEspecial = rutasProtegidas.some(ruta => window.location.pathname.includes(ruta));
+        if(!esRutaEspecial){
+            await trackExit();
+        }
+        location.href = url;
     })
 
     $("a").on("click", function (e) {
@@ -41,6 +53,32 @@ document.addEventListener("DOMContentLoaded", async function () {
         setTimeout(() => $(this).removeData("clicked"), 1200); // vuelve a habilitar
     });
 })
+
+async function trackInicioAgendamiento(datoTracking){
+    console.log(datoTracking);
+    let args = [];
+    args["endpoint"] = `${api_url_digitales}/${api_war}/agenda/iniciar?macAddress=${ mac }`;
+    args["method"] = "PUT";
+    args["showLoader"] = true;
+    args["dismissAlert"] = true;
+    args["token"] = accessToken;
+    args["bodyType"] = "json";
+    args["data"] = JSON.stringify(datoTracking)
+    const data = await call(args);
+    console.log(data);
+}
+
+async function trackExit(){
+    let args = [];
+    args["endpoint"] = `${api_url_digitales}/${api_war}/turnero/cerrar_actividad?macAddress=${ mac }`;
+    args["method"] = "PUT";
+    args["showLoader"] = true;
+    args["dismissAlert"] = true;
+    args["token"] = accessToken;
+    args["bodyType"] = "json";
+    const data = await call(args);
+    console.log(data);
+}
 
 async function call(args){
     if(args.showLoader || args.showLoader == true){
@@ -1314,6 +1352,9 @@ async function agregarItem(datosPago, pagoUnico = false, onlyReturn = false){
             }
             location.href = `/datos-facturacion/${mac}`;
         }else{
+            if(onlyReturn){
+                return data;
+            }
             location.href = `/carrito/${mac}`;
         }
     }else{

@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="container-fluid px-0 d-flex flex-column min-vh-100">
-	@include('components.header', ['showSettingBtn' => false])
+	@include('components.header', ['showSettingBtn' => false, 'showExitBtn' => false])
 	<!-- Sub-header -->
 	@include('components.sub-header', ['showTurnoBtn' => false, 'url' => '/'.$mac])
 	<div class="row rounded-24 bg-white py-40 mx-0" style="margin-top: 350px;">

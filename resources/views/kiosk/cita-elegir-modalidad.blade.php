@@ -43,6 +43,17 @@
         	$(this).addClass('btn bg-royal-blue border-blue-veris-3 text-white');
         	let online = $(this).attr('online-rel');
         	dataCita.online = online;
+
+        	let datoTracking = {
+            	"codigoPaquete": null,
+				"numeroOrden": null,
+				"secuenciaPreXAfi": null,
+				"codigoConvenio": null,
+				"codigoReserva": null
+            }
+            await trackInicioAgendamiento(datoTracking);
+            
+
         	localStorage.setItem("agendamiento", JSON.stringify(dataCita));
         	location.href = `/cita-elegir-datos/{{ $mac }}`
 		})

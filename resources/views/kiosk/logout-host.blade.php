@@ -2,26 +2,19 @@
 @section('content')
 
 <div class="container-fluid px-0 d-flex flex-column min-vh-100">
-	@include('components.header', ['showSettingBtn' => false, 'showExitBtn' => false])
+	@include('components.header', ['showSettingBtn' => false])
 	<!-- Sub-header -->
 	@include('components.sub-header', ['showTurnoBtn' => false, 'url' => '/'.$mac])
 	<div class="row rounded-24 bg-white py-40 mx-0" style="margin-top: 350px;">
 		<div class="col-12 text-center my-3 pb-5">
-			<h2 class="fw-bold fs-40 line-height-40" id="title">Ingresar Host</h2>
+			<h2 class="fw-bold fs-40 line-height-40" id="title">Logout Host</h2>
 		</div>
 		<div class="col-8 offset-2" id="box-input">
 			<input type="text" autofocus id="user" class="input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" placeholder="Usuario" readonly>			
-			
-			<div class="mt-32 d-flex justify-columns-between align-items-center gap-2">
-				<input type="password" class="form-control input w-100 rounded-8 border-midnight-blue bg-white text-silver-dark fs-24 line-height-28 py-24 px-3" id="password" placeholder="Contraseña" readonly data-kb="full">
-				<button class="btn border-midnight-blue h-100 rounded-8" type="button" id="togglePasswordVisibility">
-					<i class="bi bi-eye"></i> <!-- Bootstrap Icons eye icon -->
-				</button>
-			</div>
 		</div>
 
 		<div class="col-6 offset-3 text-center mt-56 mb-40">
-			<button class="btn bg-silver text-silver-neutral-40 fs-18 line-height-24 py-3 rounded-8 w-100 fw-medium shadow-none" id="btn-ingresar">Acceder</button>
+			<button class="btn bg-silver text-silver-neutral-40 fs-18 line-height-24 py-3 rounded-8 w-100 fw-medium shadow-none" id="btn-logout-action">Cerrar sesión</button>
 		</div>
 		<div class="col-10 offset-1 mt-56 bg-silver-light p-44">
 			<div class="simple-keyboard"></div>
@@ -56,31 +49,24 @@
 	callCounter = false;
 	document.addEventListener("DOMContentLoaded", async function () {
 		$.customKeyboard.init('input[readonly]', '.simple-keyboard');
-	
-		const togglePasswordVisibility = document.getElementById('togglePasswordVisibility');
-		const passwordInput = document.getElementById('password');
-		const eyeIcon = togglePasswordVisibility.querySelector('i');
-
-		togglePasswordVisibility.addEventListener('click', function() {
-			// Toggle the type attribute
-			const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-			passwordInput.setAttribute('type', type);
-
-			// Toggle the eye icon
-			eyeIcon.classList.toggle('bi-eye');
-			eyeIcon.classList.toggle('bi-eye-slash');
-		});
-
+			
 		$('body').on('change', 'input', async function(){
-			if(getInput('user') !== "" && getInput("password") !== ""){
-				$('#btn-ingresar').addClass('bg-royal-blue text-white').removeClass('bg-silver text-silver-neutral-40');
+			if(getInput('user') !== ""){
+				$('#btn-logout-action').addClass('bg-royal-blue text-white').removeClass('bg-silver text-silver-neutral-40');
 			}else{
-				$('#btn-ingresar').removeClass('bg-royal-blue text-white').addClass('bg-silver text-silver-neutral-40');
+				$('#btn-logout-action').removeClass('bg-royal-blue text-white').addClass('bg-silver text-silver-neutral-40');
 			}
 		})
 
-		$('body').on('click', '#btn-ingresar', async function(){
-			await loginHost();
+		$('body').on('click', '#btn-logout-action', async function(){
+			let user = $('#user').val();
+			let host = JSON.parse(localStorage.getItem('host'));
+			console.log(host.codigoUsuario)
+			if(user.toUpperCase() === host.codigoUsuario.toUpperCase()){
+				await logoutHost();
+			}else{
+				showMessage('warning','Atención','El código de usuario no coincide con el del Host logueado');
+			}
 		})
 	})
 
@@ -90,8 +76,8 @@
 			onChange: input => {
 				if(currentInput){
 					$(currentInput).val(input);
-					// $('#btn-ingresar').attr('disabled', false);
-					$('#btn-ingresar').addClass('bg-royal-blue text-white').removeClass('bg-silver text-silver-neutral-40');
+					// $('#btn-logout-action').attr('disabled', false);
+					$('#btn-logout-action').addClass('bg-royal-blue text-white').removeClass('bg-silver text-silver-neutral-40');
 				}
 			},
 			onKeyPress: button => {
@@ -169,54 +155,20 @@
 		});
 	}
 
-	function b64EncodeUnicode(str) {
-	    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-	    	return String.fromCharCode(parseInt(p1,16))
-	    }));
-	}
-
-	async function loginHost(){
-		let user = $('#user').val();
-		let password = $('#password').val();
-		if(user == "" || password == "" ){
-			alert("Debe ingresar sus credenciales");
-			return;
-		}
-		let basicData = b64EncodeUnicode(user.toUpperCase()+":"+password);
-		console.log(basicData);
-		let args = [];
-		args["endpoint"] = `${api_url_digitales}/${api_war}/seguridad/iniciar_host?macAddress={{ $mac }}`;
+	async function logoutHost(){
+        let args = [];
+        args["endpoint"] = `${api_url_digitales}/${api_war}/seguridad/salir_host?macAddress={{ $mac }}`;
         args["method"] = "POST";
         args["token"] = accessToken;
-        args["esLogin"] = true;
-        args["basic"] = basicData//btoa("lzuÃ±iga:Andres34.*");//btoa(user.toUpperCase()+":"+password);
         args["showLoader"] = true;
-        const data = await call(args);
-        console.log(data);
-      	if(data.code == 200){
-      		localStorage.setItem('host', JSON.stringify(data.data))
-      		location.href = '/{{ $mac }}'
-      	}else{
-      		alert(data.message)
-      	}	
-	}
-
-	async function cargarParametros(){
-		if(localStorage.getItem('parametrosGenerales') !== null){
-			return;
-		}
-		
-		let args = [];
-        args["endpoint"] = `${api_url_digitales}/${api_war}/parametros?macAddress={{ $mac }}`;
-        args["method"] = "GET";
-        args["showLoader"] = true;
-        {{-- args["sendHeaders"] = false; --}}
-        args["token"] = "{{ $accessToken }}";
         const data = await call(args);
         console.log(data);
         if(data.code == 200){
-        	localStorage.setItem("parametrosGenerales",JSON.stringify(data.data));
-        }
-	}
+            localStorage.removeItem("host");
+            location.href = '/{{ $mac }}'
+        }else{
+            showMessage('warning','Atención',data.message);
+        }   
+    }
 </script>
 @endsection

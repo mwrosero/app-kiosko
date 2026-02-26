@@ -287,12 +287,11 @@
 					totalCopago += value.valorTotalCopago;
 					totalCliente += value.valorTotalCliente;
 	        	})
-	        	elem += `<tr>
+	        	elem += `<tr class="text-center">
         			<td colspan="2"></td>
     				<td class="fw-medium">${totalTrx}</td>
     				<td class="fw-medium">$${totalCopago.toFixed(2)}</td>
     				<td class="fw-medium">$${totalCliente.toFixed(2)}</td>
-	        		<td></td>
         		</tr>`;
 	    	}else{
 		    	elem += `<tr>

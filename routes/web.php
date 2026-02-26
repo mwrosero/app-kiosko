@@ -35,7 +35,9 @@ Route::get('/cita-elegir-paciente/{mac}', [KioskController::class, 'citaElegirPa
 Route::get('/cita-elegir-modalidad/{mac}', [KioskController::class, 'citaElegirModalidad'])->name('citaElegirModalidad');
 Route::get('/cita-elegir-datos/{mac}', [KioskController::class, 'citaElegirDatos'])->name('citaElegirDatos');
 Route::get('/citas-elegir-fecha-doctor/{mac}', [KioskController::class, 'citaElegirFecha'])->name('citaElegirFecha');
+Route::get('/detalle-agenda-multiple/{mac}', [KioskController::class, 'detalleAgendaMultiple'])->name('detalleAgendaMultiple');
 Route::get('/citas-revisa-tus-datos/{mac}', [KioskController::class, 'citaReservar'])->name('citaReservar');
+
 
 Route::get('/tratamientos/{mac}', [KioskController::class, 'tratamientos'])->name('tratamientos');
 Route::get('/detalle-tratamiento/{mac}', [KioskController::class, 'detalleTratamiento'])->name('detalleTratamiento');
@@ -48,6 +50,7 @@ Route::get('/metodos-pago/{mac}', [KioskController::class, 'listaMetodosPago'])-
 Route::get('/pago-realizado/{mac}', [KioskController::class, 'pagoExitoso'])->name('pagoExitoso');
 
 Route::get('/host/{mac}', [KioskController::class, 'host'])->name('host');
+Route::get('/logout-host/{mac}', [KioskController::class, 'logoutHost'])->name('logoutHost');
 Route::get('/lider/{mac}', [KioskController::class, 'lider'])->name('lider');
 Route::get('/admin/{mac}', [KioskController::class, 'admin'])->name('admin');
 

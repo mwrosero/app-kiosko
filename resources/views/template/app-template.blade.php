@@ -59,7 +59,7 @@
         </script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script> 
-        <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.2.9"></script>
+        <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.3.2"></script>
         <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/keyboard-akold.js?v=1.0.3"></script>
         {{-- <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/jquery.idle.min.js"></script> --}}
         {{-- <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.js"></script> --}}
@@ -107,14 +107,15 @@
                 }
                 if(localStorage.getItem('host') !== null){
                     let host = JSON.parse(localStorage.getItem('host'));
-                    $('.label-username div').html(`Usuario: ${host.codigoUsuario.toLowerCase()}`)
+                    $('.label-username div').html(`Usuario: ${host.nombreUsuario.toLowerCase()}`).addClass('text-capitalize')
                     $('.cerrar-sesion').removeClass('d-none');
                 }else{
                     $('.ingresar-host').removeClass('d-none');
                 }
 
                 $('body').on('click', '.btn-logout', async function(){
-                    await logoutHost();
+                    //await logoutHost();
+                    location.href = `/logout-host/${mac}`;
                 })
 
                 let inactivityTime;
@@ -159,22 +160,6 @@
                 if(data.code == 200){
                     $('.qtyCart').html(data.data.contador);
                 }
-            }
-
-            async function logoutHost(){
-                let args = [];
-                args["endpoint"] = `${api_url_digitales}/${api_war}/seguridad/salir_host?macAddress={{ $mac }}`;
-                args["method"] = "POST";
-                args["token"] = accessToken;
-                args["showLoader"] = true;
-                const data = await call(args);
-                console.log(data);
-                if(data.code == 200){
-                    localStorage.removeItem("host");
-                    location.href = '/{{ $mac }}'
-                }else{
-                    alert(data.message)
-                }   
             }
         </script>
     </body>

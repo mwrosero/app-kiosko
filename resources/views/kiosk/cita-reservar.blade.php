@@ -1010,7 +1010,9 @@
         args["data"] = JSON.stringify(datosReserva);
         args["sendHeaders"] = false;
         const data = await call(args);
-        {{-- return; --}}
+
+        {{-- console.log(datosReserva)
+        return; --}}
 
         if (data.code == 200){
             dataCita.reserva = data.data;

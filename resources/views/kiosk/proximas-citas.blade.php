@@ -122,11 +122,12 @@
 			await drawCardsServicio();
 		});
 
-		$('body').on('click', '.btn-consultorio', function(){
+		$('body').on('click', '.btn-consultorio', async function(){
 			let nombreConsultorio = $(this).attr('consultorio-rel');
 			{{-- $('.nombreConsultorio').html(`#${nombreConsultorio}`); --}}
 			$('.nombreConsultorio').html(`${nombreConsultorio}`);
 			$('#modalConsultorio').modal('show')
+			await consultarConsultorio($(this).attr('codigoReserva-rel'));
 		})
 
 		$('body').on('click', '.btn-ver-detalle-lab', async function(){
@@ -199,7 +200,18 @@
                     "codigoConvenio": null,
                 }
 			}
+
 			dataCita.online = (dataCita.esTeleconsulta) ? "S" : "N";
+
+			let datoTracking = {
+            	"codigoPaquete": null,
+				"numeroOrden": dataCita?.numeroOrden ?? null,
+				"secuenciaPreXAfi": null,
+				"codigoConvenio": dataCita?.convenio?.codigoConvenio ?? null,
+				"codigoReserva": null
+            }
+            await trackInicioAgendamiento(datoTracking);
+            
 			// console.log(dataCita);return;
 			localStorage.setItem('agendamiento', JSON.stringify(dataCita));
 			if(dataCita.esTeleconsulta){
@@ -234,6 +246,15 @@
                     "codigoConvenio": null,
                 }
 			}
+
+			let datoTracking = {
+            	"codigoPaquete": null,
+				"numeroOrden": dataCita?.reservaEdit?.numeroOrden ?? null,
+				"secuenciaPreXAfi": null,
+				"codigoConvenio": dataCita?.convenio?.codigoConvenio ?? null,
+				"codigoReserva": dataCita?.reservaEdit?.idCita ?? null
+            }
+            await trackInicioAgendamiento(datoTracking);
 
 			{{-- console.log(dataCita);
 			return; --}}
@@ -312,6 +333,15 @@
 		})
 
 	})
+
+	async function consultarConsultorio(codigoReserva){
+		let args = [];
+        args["endpoint"] = `${api_url_digitales}/${api_war}/agenda/datos_reserva/${codigoReserva}?macAddress={{ $mac }}`;
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        args["token"] = "{{ $accessToken }}";
+        const data = await call(args);
+	}
 
 	let servicios;
 	async function cargarProximasCitas(){
@@ -416,7 +446,7 @@
 					}else{
 						//(detalle.nombreSitio.split(' '))[1]
 						elem += `<button class="btn fs-16 line-height-20 border-royal-blue text-royal-blue rounded-8 p-12 px-3 btn-CambiarFechaCita">Reagendar</button>
-							<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-consultorio" consultorio-rel='${detalle.nombreSitio.toLowerCase()}'>Ver consultorio</button>`;
+							<button class="btn fs-16 line-height-20 bg-royal-blue text-white rounded-8 p-12 px-3 btn-consultorio" codigoReserva-rel='${detalle.codigoReserva}' consultorio-rel='${detalle.nombreSitio.toLowerCase()}'>Ver consultorio</button>`;
 					}
 				}
 			}else{

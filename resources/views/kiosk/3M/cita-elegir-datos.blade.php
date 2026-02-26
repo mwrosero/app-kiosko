@@ -756,6 +756,13 @@
                 if(value.esDefault && !dataCita.hasOwnProperty('reservaEdit') && dataCita.origen != "mis-citas" && dataCita.origen != "doctorFavorito"){
                     $('#btn-ciudad p').html(`${capitalizarCadaPalabra(value.nombreCiudad)}`);
                     dataCita.ciudad = value;
+                }else{
+                    if(!value.hasOwnProperty('esDefault')){
+                        $('#btn-ciudad p').html(`${capitalizarCadaPalabra(value.nombreCiudad)}`);
+                        dataCita.ciudad = value;
+                        $('.label-sugerencia-ciudad').addClass('d-none');
+                        $('.label-sugerencia-central').addClass('d-none');
+                    }
                 }
             })
             listaCiudades.append(elemento);
