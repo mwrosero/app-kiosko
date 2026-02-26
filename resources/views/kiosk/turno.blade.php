@@ -43,7 +43,10 @@
 			$('.msg-turno').html(`Tu turno es el:`)
 			$('.numero-turno').html(turno.data.turno)
 		}
-		
+		const esRutaEspecial = rutasProtegidas.some(ruta => window.location.pathname.includes(ruta));
+        if(!esRutaEspecial){
+            await trackExit();
+        }
 		setTimeout(function(){
 			location.href = `/{{ $mac }}`;
 		}, 5000);

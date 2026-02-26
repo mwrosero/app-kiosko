@@ -1022,10 +1022,6 @@
                 return;
             }
             if(data.data.permitePago == "S"){
-                /*
-                https://api-phantomx.veris.com.ec/${api_war}/v1/agenda/validarPermitePago?canalOrigen=MVE_CMV&codigoUsuario=0926178534&tipoItem=C&codigoReserva=4222668939
-                */
-                // await crearPreTransaccion()
                 let datosPago = {
 					"reserva": {
 						"codigoReserva": dataCita.reserva.codigoReserva
@@ -1036,7 +1032,6 @@
                 }else{
 				    await agregarItem(datosPago, true);
                 }
-                //location.href = '/citas-datos-facturacion/{{ $mac }}';
             }else{
                 location.href = '/pago-realizado/{{ $mac }}';
 
