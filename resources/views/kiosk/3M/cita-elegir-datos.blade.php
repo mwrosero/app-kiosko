@@ -821,6 +821,7 @@
         listaCentrales.empty();
         if(dataCentrales.length > 0){
             dataCentrales.forEach((central) => {
+                delete central.linkMap;
                 elemento += `<div id="central-${central.codigoSucursal}" data-rel='${JSON.stringify(central)}' class="card h-100 card-central-medica waves-effect shadow-item-modal cursor-pointer item-central-medica central-item select-item" data-bs-dismiss="modal">
                     <div class="card-body p-3">
                         <div class="d-flex">
