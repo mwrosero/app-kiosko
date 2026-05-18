@@ -35,7 +35,7 @@ class Veris extends Model
     public const BASICAUTHPINPAD = 'd3NwaW5wYWQ6VyRQwqFOUEBEQVVUIzNOVMKhQ0BUSTBO';
     public const BASIC_URL_PINPAD = 'https://ipnws.veris.com.ec/pinpadTest-api/v1';
     public const APPLICATION_LOGIN_LIDER = 'UEhBTlRPTVhfV0VC';
-    public const BASIC_LOGIN_LIDER = 'TFBMVUE6Q2xAdmUxMjM=';
+    public const BASIC_LOGIN_LIDER = 'TFBMVUE6UzNndXJpZEBkNQ==';
     public const URL_EPI = 'http://ecstest.veris.com.ec/Verisrest/v1/formularioepi1';
     public const AMBIENTE = 'TEST';
 
