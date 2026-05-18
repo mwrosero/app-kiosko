@@ -15,6 +15,7 @@ class Veris extends Model
 
     public const MACS_PARAMI = ["1C-69-7A-AE-99-3D","48-21-0B-2D-28-8F","48-21-0B-2D-1F-3C","48-21-0B-2D-2F-04","1C-69-7A-6A-CF-95"];
 
+    //QkFDS0VORFBIQU5UT006Q2xAdmUxMjM0 -> QkFDS0VORFBIQU5UT006UGhAbnQwbVQzJHQjMjAyNSE=
     //DEV
     // public const BASE_URL = 'https://desa-turnero.phantomx.com.ec';
     // public const BASE_URL_DIGITALES = 'https://api-phantomx.veris.com.ec';
@@ -26,7 +27,7 @@ class Veris extends Model
     // public const IDORGANIZACION = 'adf4e264-cd20-4653-9a44-025b13050992';
     // public const AMPLITUDE = "1cbd8baed97a6c8abf6b8e398b77cf6f";
     // public const BASICAUTH = 'd3NLaW9za28zOlBoeEsxMCRrMDIwMjU=';
-    // public const BASICAUTHDIGITALES = 'QkFDS0VORFBIQU5UT006Q2xAdmUxMjM0';
+    // public const BASICAUTHDIGITALES = 'QkFDS0VORFBIQU5UT006UGhAbnQwbVQzJHQjMjAyNSE=';
     // public const WEBURL = 'https://digiturno.akold.com';
     // public const URLPAYMENT = 'https://miveris.akold.com';
     // public const APPLICATION_LOGIN = 'UEhBTlRPTVhfRU1QUkVTQVJJQUw=';
