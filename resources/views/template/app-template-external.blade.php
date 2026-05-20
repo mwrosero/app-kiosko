@@ -51,14 +51,22 @@
             const _applicationLoginLider = "{{ \App\Models\Veris::APPLICATION_LOGIN_LIDER }}";
             const _idOrganizacionLogin = "{{ \App\Models\Veris::IDORGANIZACION_LOGIN }}";
             let trackId = '';
-            let canalOrigen = 'MVE_CMV';
             let callCounter = true;
             let tecladoFlotante = false;
             let activarInactividad = true;
+            let dp = JSON.parse(localStorage.getItem('parametrosGenerales'));
+            
+            let canalOrigen = 'MVE_CMV';
+            let c_o = "KIO_CMV";
+            if(dp !== null){
+                if(dp.nemonicoTipoSucursal == "PMF")
+                canalOrigen = 'MVE_PMF';
+                c_o = "KIO_PMF";
+            }
         </script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script> 
-        <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.2.9"></script>
+        <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.3.4"></script>
         <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/keyboard-akold.js?v=1.0.3"></script>
         {{-- <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/jquery.idle.min.js"></script> --}}
         {{-- <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.js"></script> --}}
