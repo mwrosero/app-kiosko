@@ -1,4 +1,4 @@
-let c_o = "KIO_CMV";
+//let c_o = "KIO_CMV";
 let cargandoConvenios = false;
 
 if(!isMobile()){

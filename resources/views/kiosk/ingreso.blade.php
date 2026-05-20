@@ -60,7 +60,6 @@
 	let tipoFiltro;
 	let esPacienteNuevo = false;
 	document.addEventListener("DOMContentLoaded", async function () {
-
 		switch(tipo){
 			case 'C':
 				tipoFiltro = "CEDULA";
