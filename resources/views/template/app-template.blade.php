@@ -46,7 +46,7 @@
             const api_url_digitales = "{{ \App\Models\Veris::BASE_URL_DIGITALES }}";
             const api_war_digitales = "{{ \App\Models\Veris::BASE_WAR_DIGITALES }}";
             const api_war_seguridad = "{{ \App\Models\Veris::SEGURIDADES_WAR }}";
-            const api_war_facturacion = "{{ \App\Models\Veris::FACTURACION }}";
+            const api_war_facturacion = "{{ \App\Models\Ism::WAR_FACTURACION }}";
             const _application = "{{ \App\Models\Veris::APPLICATION }}";
             const _idOrganizacion = "{{ \App\Models\Veris::IDORGANIZACION }}";
             const _applicationLogin = "{{ \App\Models\Veris::APPLICATION_LOGIN }}";
