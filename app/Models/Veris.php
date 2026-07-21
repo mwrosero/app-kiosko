@@ -19,9 +19,10 @@ class Veris extends Model
     //DEV
     public const BASE_URL = 'https://desa-turnero.phantomx.com.ec';
     public const BASE_URL_DIGITALES = 'https://api-phantomx.veris.com.ec';
-    public const BASE_WAR = 'kiosko/v1';
+    public const BASE_WAR = 'kiosko/v1';f
     public const SEGURIDADES_WAR = 'seguridadtest/v1';
     public const BASE_WAR_DIGITALES = 'digitalestest/v1';
+    public const WAR_FACTURACION = 'facturaciontest';
     public const CANAL_ORIGEN = 'MVE_CMV';
     public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';//UEhBTlRPTVhfRU1QUkVTQVJJQUw=
     public const IDORGANIZACION = 'adf4e264-cd20-4653-9a44-025b13050992';
@@ -46,6 +47,7 @@ class Veris extends Model
     // public const BASE_WAR = 'kiosko/v1';
     // public const SEGURIDADES_WAR = 'seguridad/v1';
     // public const BASE_WAR_DIGITALES = 'digitales/v1';
+    // public const WAR_FACTURACION = 'facturacion';
     // public const CANAL_ORIGEN = 'MVE_CMV';
     // public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';
     // public const IDORGANIZACION = '365509c8-9596-4506-a5b3-487782d5876e';
@@ -203,6 +205,8 @@ class Veris extends Model
             }
 
         }
+        // echo self::BASICAUTH;
+        // dd($response);
         
         session(['accessToken' => $response->data]);
         return $response->data;
