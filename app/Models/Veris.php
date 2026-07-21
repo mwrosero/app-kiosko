@@ -19,7 +19,7 @@ class Veris extends Model
     //DEV
     public const BASE_URL = 'https://desa-turnero.phantomx.com.ec';
     public const BASE_URL_DIGITALES = 'https://api-phantomx.veris.com.ec';
-    public const BASE_WAR = 'kiosko/v1';f
+    public const BASE_WAR = 'kiosko/v1';
     public const SEGURIDADES_WAR = 'seguridadtest/v1';
     public const BASE_WAR_DIGITALES = 'digitalestest/v1';
     public const WAR_FACTURACION = 'facturaciontest';
