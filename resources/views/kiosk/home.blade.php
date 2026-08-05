@@ -25,7 +25,7 @@
 			<img class="img-fluid mx-auto" src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/img/vericita-logo.svg" alt="">
 		</div>
 		<div class="col-12 d-flex justify-content-center my-112">
-			<h3 class="text-center text-white fw-bold fs-64 line-height-64">Bienvenido a Veris</h3>
+			<h3 class="text-center text-white fw-bold fs-64 line-height-64">Bienvenido a <span id="nombreLineaNegocio"></span></h3>
 		</div>
 	</div>
 	{{-- <div class="row rounded-24 bg-white p-44" style="margin-bottom: 350px;"> --}}
@@ -87,7 +87,7 @@
 		});
 	})
 
-	async function cargarParametros(){
+	async function BK_cargarParametros(){
 		{{-- if(localStorage.getItem('parametrosGenerales') !== null){
 			return;
 		} --}}
@@ -99,9 +99,10 @@
         {{-- args["sendHeaders"] = false; --}}
         args["token"] = "{{ $accessToken }}";
         const data = await call(args);
-        console.log(data);
+        console.table(data.data);
         if(data.code == 200){
         	localStorage.setItem("parametrosGenerales",JSON.stringify(data.data));
+        	$('#nombreLineaNegocio').html((data.data.nemonicoTipoSucursal == "CMV") ? `Veris` : `ParaMí`);
         }
 	}
 
@@ -143,6 +144,7 @@
         console.log(data);
         if(data.code == 200){
         	localStorage.setItem("parametrosGenerales",JSON.stringify(data.data));
+        	$('#nombreLineaNegocio').html((data.data.nemonicoTipoSucursal == "CMV") ? `Veris` : `ParaMí`);
         }
 	}
 </script>

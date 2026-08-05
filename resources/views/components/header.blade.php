@@ -7,7 +7,8 @@
 		</button>
 	</div>
 	@endif
-	<img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/logo-veris-2025.svg" alt="Veris Logo" height="70" class="my-3">
+	{{-- <img src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/images/logo-veris-2025.svg" alt="Veris Logo" height="70" class="my-3"> --}}
+	<img src="" alt="Veris Logo" height="70" class="my-3" id="logo-linea-negocio">
 	@if(!isset($showSettingBtn))
 	<div class="position-absolute d-flex gap-3 align-items-center" style="top: 15px;right: 15px;">
 		<div class="dropdown">

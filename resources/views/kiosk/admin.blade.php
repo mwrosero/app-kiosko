@@ -521,7 +521,7 @@
         let infoFactura = JSON.parse($('.btn-action').attr('data-rel'));
         let args = [];
 
-        args["endpoint"] =  `${api_url_digitales}/facturacion/v1/comprobantes/anulacion_paciente?codigoEmpresa=1&tipoAnulacion=AUTOMATICA`;
+        args["endpoint"] =  `${api_url_digitales}/${api_war_facturacion}/v1/comprobantes/anulacion_paciente?codigoEmpresa=1&tipoAnulacion=AUTOMATICA`;
         args["method"] = "POST";
         args["dismissAlert"] = true;
         args["showLoader"] = true;
@@ -595,7 +595,7 @@
         let numeroFactura = `${getInput('first-input')}${getInput('medium-input')}${getInput('last-input')}`
         let args = [];
 
-        args["endpoint"] =  `${api_url_digitales}/facturacion/v1/comprobantes/factura_paciente/kiosko/consulta_por_anulacion?codigoEmpresa=1&macAddress={{ $mac }}&criterioBusqueda=COMPROBANTE_CON_FACTURA&valorBusqueda=${numeroFactura}&idOpcionMenu=${opcionMenu}`;
+        args["endpoint"] =  `${api_url_digitales}/${api_war_facturacion}/v1/comprobantes/factura_paciente/kiosko/consulta_por_anulacion?codigoEmpresa=1&macAddress={{ $mac }}&criterioBusqueda=COMPROBANTE_CON_FACTURA&valorBusqueda=${numeroFactura}&idOpcionMenu=${opcionMenu}`;
         args["method"] = "GET";
         args["dismissAlert"] = true;
         args["showLoader"] = true;
@@ -639,7 +639,7 @@
 
     async function getVouchers(){
         let args = [];
-        args["endpoint"] =  `${api_url_digitales}/facturacion/v1/pin_pad/consulta/vouchers_por_anular?usuarioIngreso=${dataParametrosGenerales.codigoUsuario}&codigoEmpresa=1`;
+        args["endpoint"] =  `${api_url_digitales}/${api_war_facturacion}/v1/pin_pad/consulta/vouchers_por_anular?usuarioIngreso=${dataParametrosGenerales.codigoUsuario}&codigoEmpresa=1`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["sendHeaders"] = true;
@@ -674,7 +674,7 @@
         $('#modalPinpad').modal('show');
         let tipo = $('.tipoServicio.active').attr('tipo-rel')
         let args = [];
-        args["endpoint"] =  `${api_url_digitales}/facturacion/v1/pin_pad/anular_cobro/${datosVoucher.secuenciaDocumentoVoucher}?codigoEmpresa=1&codigoUsuario=${dataParametrosGenerales.codigoUsuario}&macAddress={{ $mac }}`;
+        args["endpoint"] =  `${api_url_digitales}/${api_war_facturacion}/v1/pin_pad/anular_cobro/${datosVoucher.secuenciaDocumentoVoucher}?codigoEmpresa=1&codigoUsuario=${dataParametrosGenerales.codigoUsuario}&macAddress={{ $mac }}`;
         args["method"] = "DELETE";
         args["token"] = accessToken;
         args["showLoader"] = true;
@@ -702,7 +702,7 @@
         let codigoTipoIdentificacion = $('#codigoTipoIdentificacion option:selected').val();
         
         let args = [];
-        args["endpoint"] = `${api_url_digitales}/facturacion/v1/pacientes/verificar_datos_factura?numeroIdentificacion=${numeroIdentificacion}&codigoTipoIdentificacion=${codigoTipoIdentificacion}`;
+        args["endpoint"] = `${api_url_digitales}/${api_war_facturacion}/v1/pacientes/verificar_datos_factura?numeroIdentificacion=${numeroIdentificacion}&codigoTipoIdentificacion=${codigoTipoIdentificacion}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["token"] = "{{ $accessToken }}";
