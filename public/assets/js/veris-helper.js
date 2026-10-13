@@ -1448,3 +1448,294 @@ async function notificarLlegada(codigoOrdApoyo){
     }
     return data;
 }
+
+/*PPD2*/
+
+document.addEventListener("DOMContentLoaded", async function () {
+    $('input[type=number]').on('wheel', function(e) {
+        e.preventDefault(); // Previene la acción por defecto del scroll
+    });
+    
+    $('body').on('click', '.link-mostrar-todo-ppd2', async function(){
+        $('.resumen-consentimiento, .link-mostrar-todo-ppd2').addClass('d-none');
+        $('#modalPPD2 .modal-dialog').removeClass('modal-sm').addClass('modal-lg');
+        $('#btnGuardarPPD2, #btnRechazarPPD2, .full-consentimiento').removeClass('d-none');
+    })
+
+    $('body').on('click', '.btn-toggle-vista', function () {
+        const $btn = $(this);
+        const $paragraph = $btn.closest('.vista-corta-container').find('.text-content');
+        const $icon = $btn.find('i');
+        const $label = $btn.find('.lbl-text');
+
+        // Alternamos la clase 'expanded' sin quitar 'text-clamp-4'
+        $paragraph.toggleClass('expanded');
+
+        if ($paragraph.hasClass('expanded')) {
+            $label.text('Mostrar menos');
+            $icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+        } else {
+            $label.text('Mostrar más');
+            $icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+        }
+    });
+
+    $('body').on('click', '#btnAceptarPPD2', async function(){
+        await marcarTodosConsentimientos(true);
+        await guardarPPD2(true);
+    });
+
+    $('body').on('click', '#btnRechazarPPD2', async function(){
+        await marcarTodosConsentimientos(false);
+        await guardarPPD2(false);
+    });
+
+    $('body').on('click', '#btnGuardarPPD2', async function(){
+        await guardarPPD2(false);
+    });
+
+    $('body').on('change', '.consentimiento-group input[type="radio"]', function () {
+        // 1. Obtener la cantidad total de grupos de consentimiento
+        const totalGrupos = $('.consentimiento-group').length;
+
+        // 2. Contar cuántos grupos tienen al menos un radio seleccionado
+        const gruposRespondidos = $('.consentimiento-group').filter(function () {
+            return $(this).find('input[type="radio"]:checked').length > 0;
+        }).length;
+
+        // 3. Evaluar si se respondieron todos los grupos
+        if (totalGrupos > 0 && totalGrupos === gruposRespondidos) {
+            $('#btnGuardarPPD2').removeClass('btn-ppd-disabled');
+        } else {
+            // Mantiene o regresa el estado deshabilitado si falta alguno
+            $('#btnGuardarPPD2').addClass('btn-ppd-disabled');
+        }
+    });
+
+});
+
+
+let objPPD = [];
+async function cargarConfiguracionesHome(usuario, modalShowId = 'modalPPD2'){
+    let args = [];
+    args["endpoint"] = api_url_digitales + `/${api_war_digitales}/configuraciones/home?canalOrigen=${_canalOrigen}&usuario=${usuario}&nemonico=FLUJO_CONSENTIMIENTO`;
+    args["method"] = "GET";
+    args["showLoader"] = false;
+    
+    const data = await call(args);
+    if(data.code == 200 && data.data.length > 0){
+        // console.log(data);
+        let opt = data.data[0].pantallas[0].configuraciones;
+        objPPD = data.data[0].pantallas;
+        let resumen = await constructHtml(opt, data.data[0].pantallas[0].nombrePantalla, 'resumen');
+        $('.resumen-consentimiento').html(resumen);
+        $(`#${modalShowId}`).modal('show');
+        await renderizarPantallasPPD();
+    }
+
+    return data;
+}
+
+async function marcarTodosConsentimientos(aceptar = true) {
+    $('.consentimiento-group').each(function () {
+        const $grupo = $(this);
+        const selector = aceptar ? '.consent-input-accept' : '.consent-input-reject';
+        const $radioTarget = $grupo.find(selector);
+
+        if ($radioTarget.length) {
+            $radioTarget.prop('checked', true).trigger('change');
+        }
+    });
+}
+
+async function obtenerEstadosConsentimientos() {
+    const resultados = [];
+
+    $('.consentimiento-group').each(function () {
+        const $grupo = $(this);
+        
+        // jQuery parsea automáticamente el JSON de data-rel
+        const relData = $grupo.data('rel') || {};
+        const $radioSeleccionado = $grupo.find('input[type="radio"]:checked');
+        
+        let valorBoolean = "";
+        if ($radioSeleccionado.length > 0) {
+            valorBoolean = $radioSeleccionado.val() === 'true';
+        }
+
+        resultados.push({
+            secuenciaConfiguracion: relData.secuencia || null,
+            nemonico: $grupo.data('key'),
+            valor: valorBoolean // true, false o "" si no está seleccionado
+        });
+    });
+
+    return resultados;
+}
+
+async function renderizarPantallasPPD() {
+    let htmlGeneral = '';
+
+    for (const pantalla of objPPD) {
+        // Ejecuta la función de maquetación para la pantalla actual
+        const htmlPantalla = await constructHtml(pantalla.configuraciones, pantalla.nombrePantalla, 'full');
+        
+        // Puedes envolver el resultado en un contenedor propio de la pantalla si lo necesitas
+        htmlGeneral += `
+            <div class="pantalla-section mb-4" data-codigo="${pantalla.codigoPantalla}" id="${pantalla.nombrePantalla}">
+                ${htmlPantalla}
+            </div>`;
+    }
+
+    // Inyectas en el DOM al finalizar
+    $('.full-consentimiento').html(htmlGeneral);
+}
+
+async function constructHtml(configuraciones, nombrePantalla, type) {
+    let elem = ``;
+    let index = 0;
+    // Usamos for...of para mantener compatibilidad pura con async/await
+    for (const item of configuraciones) {
+        const esUltima = index === configuraciones.length - 1;
+        let infoAditional = ``
+        if(esUltima && type == "resumen" && nombrePantalla == "RESUMEN_CONSENTIMIENTO"){
+            infoAditional += `<span class="text-decoration-underline my-3 text-royal-blue link-mostrar-todo-ppd2 cursor-pointer"> Ver política y consentimiento de datos personales.</span>`;
+        }
+
+        if (!item || !item.nombreTipoObjeto) continue;
+
+        switch (item.nombreTipoObjeto) {
+            case "TITLE":
+                elem += `<h3 class="fw-medium mb-2">${item.valor || ''}${infoAditional}</h3>`;
+                break;
+
+            case "SUBTITLE":
+                elem += `<h4 class="fw-normal mb-2">${item.valor || ''}${infoAditional}</h4>`;
+                break;
+
+            case "SALTO_LINEA": {
+                const multiplicador = Number(item.valor || 1);
+                elem += `<div style="height: ${multiplicador * 0.5}rem;">${infoAditional}</div>`;
+                break;
+            }
+
+            case "TEXTO": {
+                const textStr = item.valor || "";
+                const aplicaVistaCorta = item.valorAdicional === "APLICA_VISTA_CORTA";
+                
+                const startsWithStar = textStr.startsWith('* ');
+                const startsWithSection = textStr.startsWith('§ ');
+                const startsWithBullet = startsWithStar || startsWithSection;
+                const textContent = startsWithBullet ? textStr.slice(2) : textStr;
+
+                if (startsWithBullet) {
+                    const bulletChar = startsWithStar ? '•' : '§';
+                    elem += `
+                        <div class="d-flex align-items-start ${startsWithStar ? 'ms-2' : ''} mb-1">
+                            <span class="fw-normal me-2">${bulletChar}</span>
+                            <p class="fw-normal mb-0 flex-1">${textContent}</p>
+                            ${infoAditional}
+                        </div>`;
+                } else {
+                    if (aplicaVistaCorta) {
+                        elem += `
+                            <div class="vista-corta-container mb-2">
+                                <p class="fw-normal text-clamp-4 mb-1 text-content">
+                                    ${textContent}
+                                </p>
+                                <div class="d-flex justify-content-end my-3">
+                                    <button type="button" class="btn btn-link shadow-none p-0 text-royal-blue text-decoration-none fs--2 fw-medium btn-toggle-vista">
+                                        <span class="fw-normal lbl-text">Mostrar más</span> <i class="fa-solid fa-chevron-down ms-2"></i>
+                                    </button>
+                                </div>
+                            </div>${infoAditional}`;
+                    } else {
+                        elem += `<p class="fw-normal mb-2">${textContent}${infoAditional}</p>`;
+                    }
+                }
+                break;
+            }
+
+            case "PARRAFO_CON_INFO":
+                elem += `
+                    <p class="fw-normal mb-2">
+                        <span class="fw-medium">${item.valor || ''} </span>
+                        <span>${item.valorAdicional || ''}</span>
+                        ${infoAditional}
+                    </p>`;
+                break;
+
+            case "CHECK_MULTIPLE_CONSENTIMIENTO": {
+                const key = item.valor;
+                elem += `
+                    <div class="d-flex justify-content-end align-items-center gap-2 my-3 pe-3 consentimiento-group" data-key="${key}" data-rel='${JSON.stringify(item)}'>
+                        <!-- Opción Aceptar -->
+                        <input type="radio" class="btn-check consent-input-accept" name="consentimiento_${key}" id="accept_${key}" value="true" autocomplete="off">
+                        <label class="btn btn-consent-accept border p-2 d-inline-flex align-items-center justify-content-center gap-2 rounded text-nowrap user-select-none shadow-none" for="accept_${key}">
+                            <span class="custom-check-box rounded d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width: 20px; height: 20px;">
+                                <i class="fa-solid fa-check text-white fs--2 d-none"></i>
+                            </span>
+                            <span class="consent-label-text fw-normal">Acepto</span>
+                        </label>
+
+                        <!-- Opción No Aceptar -->
+                        <input type="radio" class="btn-check consent-input-reject" name="consentimiento_${key}" id="reject_${key}" value="false" autocomplete="off">
+                        <label class="btn btn-consent-reject border p-2 d-inline-flex align-items-center justify-content-center gap-2 rounded text-nowrap user-select-none shadow-none" for="reject_${key}">
+                            <span class="custom-check-box rounded d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width: 20px; height: 20px;">
+                                <i class="fa-solid fa-check text-white fs--2 d-none"></i>
+                            </span>
+                            <span class="consent-label-text fw-normal">No acepto</span>
+                        </label>
+                    </div>`;
+                break;
+            }
+
+            default:
+                break;
+        }
+
+        index++;
+    }
+
+    return elem;
+}
+
+async function guardarPPD2(esAceptacionTotal = false){
+    let consentimientosArr = await obtenerEstadosConsentimientos();
+    let aceptaPoliticas = consentimientosArr.some(item => item.valor === true);
+
+    let args = [];
+    args["endpoint"] = api_url_digitales + `/${api_war_digitales}/politicas/usuarios/${datosCliente.numeroIdentificacion }`;
+    args["method"] = "POST";
+    args["showLoader"] = true;
+    args["bodyType"] = "json"; 
+    args["token"] = accessToken;
+
+    args["data"] = JSON.stringify({
+        "versionPoliticas": 2,
+        "aceptaPoliticas": aceptaPoliticas,
+        "codigoEmpresa": 1,
+        "plataforma": "WEB",
+        "versionPlataforma": "1.0.0",
+        "canalOrigenDigital": _canalOrigen,
+        "tipoIdentificacion": datosCliente.codigoTipoIdentificacion,
+        "esAceptacionTotal": esAceptacionTotal,
+        "consentimientos": consentimientosArr
+    });
+
+    console.log(args);
+
+    const data = await call(args);
+    console.log(data);
+    if(data.code == 200){
+        $('#modalPPD2').modal('hide');
+        // if(dataCita !== null){
+        if(typeof dataCita !== 'undefined' && dataCita !== null){
+            await redirectAfterPPD2();
+        }
+    }else{
+        $('#modalPPD2').modal('hide');
+        alert(data.message);
+    }
+        //return data;
+}

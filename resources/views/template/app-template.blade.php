@@ -74,6 +74,7 @@
     </head>
 
     <body class="d-flex flex-column min-vh-100 @yield('bodybg')">
+        @include('template.modal_ppd2')
         <!-- Layout wrapper -->
         
         @yield('content')
