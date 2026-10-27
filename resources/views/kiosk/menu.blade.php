@@ -68,6 +68,7 @@
 	document.addEventListener("DOMContentLoaded", async function () {
 		$('.primerNombre').html(datosCliente.primerNombre.toLowerCase());
 		deleteStorage();
+		await cargarConfiguracionesHome(datosCliente.numeroIdentificacion);
 		await iniciarCarrito();
 
 		$('body').on('click','.item-servicio', async function(){

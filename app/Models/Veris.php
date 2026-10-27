@@ -24,7 +24,7 @@ class Veris extends Model
     // public const BASE_WAR_DIGITALES = 'digitalestest/v1';
     // public const WAR_FACTURACION = 'facturaciontest';
     // public const CANAL_ORIGEN = 'MVE_CMV';
-    // public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';//UEhBTlRPTVhfRU1QUkVTQVJJQUw=
+    // public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';
     // public const IDORGANIZACION = 'adf4e264-cd20-4653-9a44-025b13050992';
     // public const AMPLITUDE = "1cbd8baed97a6c8abf6b8e398b77cf6f";
     // public const BASICAUTH = 'd3NLaW9za28zOlBoeEsxMCRrMDIwMjU=';
