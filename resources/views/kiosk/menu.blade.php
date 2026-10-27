@@ -68,8 +68,8 @@
 	document.addEventListener("DOMContentLoaded", async function () {
 		$('.primerNombre').html(datosCliente.primerNombre.toLowerCase());
 		deleteStorage();
-		await cargarConfiguracionesHome(datosCliente.numeroIdentificacion);
 		await iniciarCarrito();
+		await cargarConfiguracionesHome(datosCliente.numeroIdentificacion);
 
 		$('body').on('click','.item-servicio', async function(){
 			$('.item-servicio').removeClass('bg-royal-blue text-white').addClass('border-royal-blue-tint-60 text-royal-blue');
