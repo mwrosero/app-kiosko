@@ -1518,7 +1518,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 let objPPD = [];
 async function cargarConfiguracionesHome(usuario, modalShowId = 'modalPPD2'){
     let args = [];
-    args["endpoint"] = api_url_digitales + `/${api_war_digitales}/configuraciones/home?canalOrigen=${_canalOrigen}&usuario=${usuario}&nemonico=FLUJO_CONSENTIMIENTO`;
+    args["endpoint"] = api_url_digitales + `/${api_war_digitales}/configuraciones/home?canalOrigen=${_canalOrigen}&usuario=${usuario}&nemonicoFlujo=FLUJO_CONSENTIMIENTO`;
     args["method"] = "GET";
     args["showLoader"] = false;
     
