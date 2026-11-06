@@ -157,7 +157,7 @@ async function call(args){
     if(trackId !== ""){
         url.searchParams.set("trackId", trackId); // genera uno si no viene
     }
-    const endpointWithTrackId = url.toString();
+    let endpointWithTrackId = url.toString();
     // console.log(endpointWithTrackId)
 
     if (endpointWithTrackId.includes("/kiosko/")) {
