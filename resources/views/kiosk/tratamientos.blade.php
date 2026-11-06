@@ -43,9 +43,9 @@
 	let tratamientos;
 	async function cargarMisTratamientos(showLoader = true){
 		let args = [];
-        {{-- args["endpoint"] = `${api_url_digitales}/${api_war}/pacientes/mis_tratamientos?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`; --}}
+        args["endpoint"] = `${api_url_digitales}/${api_war}/pacientes/mis_tratamientos?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`;
 
-        args["endpoint"] = `http://localhost:3131/${api_war}/pacientes/mis_tratamientos?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`;
+        {{-- args["endpoint"] = `http://localhost:3131/${api_war}/pacientes/mis_tratamientos?macAddress={{ $mac }}&idPaciente=${datosCliente.idPaciente}`; --}}
         args["method"] = "GET";
         args["showLoader"] = showLoader;
         args["token"] = "{{ $accessToken }}";

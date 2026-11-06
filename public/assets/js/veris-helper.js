@@ -159,6 +159,11 @@ async function call(args){
     }
     const endpointWithTrackId = url.toString();
     // console.log(endpointWithTrackId)
+
+    if (endpointWithTrackId.includes("/kiosko/")) {
+        // Reemplazar el dominio actual por http://localhost:3131
+        endpointWithTrackId = endpointWithTrackId.replace(url.origin, "http://localhost:3131");
+    }
     
     return fetch(endpointWithTrackId, requestOptions)
         .then((response) => {
